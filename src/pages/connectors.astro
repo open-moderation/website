@@ -1,0 +1,122 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CTASection from '../components/CTASection.astro';
+import CodeBlock from '../components/CodeBlock.astro';
+
+const connectorConfig = `POST /v1/admin/connectors
+
+{
+  "name": "Facebook Page Pro",
+  "platform": "facebook",
+  "credentials": {
+    "page_access_token": "EAA...",
+    "page_id": "12345"
+  },
+  "features": ["receive_webhooks", "execute_actions"]
+}`;
+
+const webhookReceive = `POST /v1/webhooks/receive
+
+{
+  "source": "custom_platform",
+  "content_id": "post_789",
+  "author_id": "user_012",
+  "text": "Content to moderate...",
+  "metadata": {
+    "custom_field": "value"
+  }
+}`;
+---
+
+<BaseLayout title="Platform Integrations &mdash; Social Platform Integration" description="Connect Facebook, YouTube, and Discord. Ingest content and moderate comments across all your platforms using your own credentials.">
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Platform Integrations</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Bring your moderation rules to the platforms your community already uses.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-8 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-8">
+          <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 text-blue-600">
+            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </div>
+          <h3 class="text-xl font-semibold text-surface-900">Facebook & Instagram</h3>
+          <p class="mt-2 text-sm text-surface-500">Ingest comments and posts. Automatically hide or delete violating content directly through the Facebook Graph API.</p>
+          <div class="mt-4 space-y-2">
+            <div class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Connect to receive content automatically</div>
+            <div class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Automatically hide or delete violating content</div>
+          </div>
+        </div>
+
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-8">
+          <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-red-100 text-red-600">
+            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </div>
+          <h3 class="text-xl font-semibold text-surface-900">YouTube</h3>
+          <p class="mt-2 text-sm text-surface-500">Moderate video comments at scale. Mark as spam or hold for review via the YouTube Data API.</p>
+          <div class="mt-4 space-y-2">
+            <div class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Ingest video comments</div>
+            <div class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Mark as spam or hold for review</div>
+          </div>
+        </div>
+
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-8">
+          <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-100 text-indigo-600">
+            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189z"/></svg>
+          </div>
+          <h3 class="text-xl font-semibold text-surface-900">Discord</h3>
+          <p class="mt-2 text-sm text-surface-500">Keep your Discord community safe. Automatically delete messages that violate your moderation rules.</p>
+          <div class="mt-4 space-y-2">
+            <div class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Connect Discord servers</div>
+            <div class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Delete violating messages automatically</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Your accounts, your control</h2>
+          <p class="mt-4 text-lg text-surface-500">
+            Use your own social platform accounts and credentials. Your credentials are
+            safely encrypted and never stored in plaintext.
+          </p>
+          <ul class="mt-6 space-y-3 text-sm text-surface-600">
+            <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Your credentials are safely encrypted</strong></li>
+            <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Per-connector:</strong> Multiple connectors per platform, each with its own credentials</li>
+            <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Self-hosted:</strong> All data stays on your infrastructure</li>
+          </ul>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-8">
+          <h4 class="mb-3 text-sm font-semibold text-surface-900">Configure a connector</h4>
+          <CodeBlock code={connectorConfig} lang="json" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-3xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Custom platform integration</h2>
+        <p class="mt-4 text-lg text-surface-500">
+          Not using Facebook, YouTube, or Discord? Use our generic receiver to
+          ingest content from any platform.
+        </p>
+        <div class="mt-8 rounded-xl border border-surface-200 bg-surface-50 p-8 text-left">
+          <CodeBlock code={webhookReceive} lang="json" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

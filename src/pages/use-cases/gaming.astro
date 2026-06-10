@@ -1,0 +1,69 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CTASection from '../../components/CTASection.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+
+const useCaseJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Game Chat Moderation &mdash; OpenModeration",
+  "description": "Moderate in-game chat, player messages, and user reports in real time. Multi-language, low-latency, and automated enforcement.",
+};
+
+const discordRuleExample = `{
+  "name": "Auto-delete hate speech",
+  "priority": 10,
+  "conditions": [{
+    "category": "hate",
+    "operator": "gte",
+    "score": 0.7
+  }],
+  "actions": [{
+    "type": "delete_message"
+  }, {
+    "type": "flag_for_review"
+  }]
+}`;
+---
+
+<BaseLayout title="Game Chat Moderation &mdash; Real-Time AI Moderation for Gaming" description="Moderate in-game chat, player messages, and user reports. Low-latency, multi-language, auto-enforcement with Discord connector." canonical="https://openmoderation.com/use-cases/gaming" jsonLd={useCaseJsonLd}>
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">Use Case</div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Gaming</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">Real-time chat moderation for multiplayer games. Keep your community safe and your players engaged.</p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Toxic players drive players away</h2>
+          <p class="mt-4 text-lg text-surface-500">A single toxic player can ruin the experience for an entire lobby. Studies show that toxic behavior is the #1 reason players quit multiplayer games.</p>
+          <p class="mt-4 text-lg text-surface-500">OpenModeration integrates directly with Discord and can be used via API for in-game chat. Low latency (sub-300ms) means moderation happens in real time, without disrupting gameplay.</p>
+          <div class="mt-8 space-y-3">
+            <div class="rounded-lg border border-surface-200 bg-surface-50 p-4">
+              <p class="text-sm font-semibold text-surface-900">Discord integration</p>
+              <p class="mt-1 text-xs text-surface-500">Connect your Discord server. Auto-delete messages that violate your community rules.</p>
+            </div>
+            <div class="rounded-lg border border-surface-200 bg-surface-50 p-4">
+              <p class="text-sm font-semibold text-surface-900">In-game chat API</p>
+              <p class="mt-1 text-xs text-surface-500">Send chat messages to POST /v1/moderations before displaying. Flag or block in real time.</p>
+            </div>
+            <div class="rounded-lg border border-surface-200 bg-surface-50 p-4">
+              <p class="text-sm font-semibold text-surface-900">Multi-language toxicity</p>
+              <p class="mt-1 text-xs text-surface-500">Route English chat to OpenAI, Korean to Azure, Spanish to Mistral. Every language covered.</p>
+            </div>
+          </div>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-8">
+          <h4 class="mb-3 text-sm font-semibold text-surface-900">Discord rule example</h4>
+          <CodeBlock code={discordRuleExample} lang="json" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

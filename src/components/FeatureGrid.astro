@@ -1,0 +1,31 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+  items: Array<{ icon: string; title: string; description: string }>;
+  columns?: 2 | 3;
+  light?: boolean;
+}
+
+const { title, description, items, columns = 3, light = false } = Astro.props;
+---
+
+<div class={`py-20 ${light ? 'bg-brand-900' : 'bg-white'}`}>
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto mb-16 max-w-2xl text-center">
+      <h2 class={`text-3xl font-bold tracking-tight sm:text-4xl ${light ? 'text-white' : 'text-surface-900'}`}>{title}</h2>
+      <p class={`mt-4 text-lg ${light ? 'text-surface-300' : 'text-surface-500'}`}>{description}</p>
+    </div>
+    <div class={`grid gap-8 ${columns === 2 ? 'md:grid-cols-2' : 'md:grid-cols-2 lg:grid-cols-3'}`}>
+      {items.map((item) => (
+        <div class={`rounded-xl border p-6 transition hover:shadow-md ${light ? 'border-surface-700 bg-surface-800' : 'border-surface-200 bg-white'}`}>
+          <div class="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
+            {item.icon}
+          </div>
+          <h3 class={`text-lg font-semibold ${light ? 'text-white' : 'text-surface-900'}`}>{item.title}</h3>
+          <p class={`mt-2 text-sm leading-relaxed ${light ? 'text-surface-400' : 'text-surface-500'}`}>{item.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>

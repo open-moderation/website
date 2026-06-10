@@ -1,0 +1,142 @@
+---
+export interface Props {
+  title?: string;
+}
+
+const { title = 'Try it yourself' } = Astro.props;
+---
+
+<div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+  <h3 class="mb-4 text-lg font-semibold text-surface-900">{title}</h3>
+  <p class="mb-4 text-sm text-surface-500">
+    Type a message below to see how OpenModeration would score it.
+    This is a simulation &mdash; deploy the real thing to test with actual providers.
+  </p>
+  <textarea id="playground-input" rows="3" class="w-full rounded-lg border border-surface-300 bg-white p-3 text-sm text-surface-900 placeholder-surface-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-200" placeholder="Type a message to moderate... e.g. 'You are terrible!'">You are terrible!</textarea>
+  <div class="mt-3 flex items-center gap-2">
+    <button id="playground-run" class="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-brand-700">
+      Moderate
+    </button>
+    <span id="playground-status" class="text-xs text-surface-400"></span>
+  </div>
+  <div id="playground-results" class="mt-4 hidden space-y-2">
+    <p class="text-xs font-semibold uppercase tracking-wider text-surface-400">Results</p>
+    <div id="playground-categories" class="space-y-2"></div>
+    <div id="playground-verdict" class="mt-3 rounded-lg border border-surface-200 bg-white p-3 text-sm font-medium"></div>
+  </div>
+</div>
+
+<script>
+  const simulations = {
+    hate: {
+      patterns: ['terrible', 'hate', 'stupid', 'idiot', 'dumb', 'moron', 'awful', 'disgusting'],
+      score: 0.85
+    },
+    harassment: {
+      patterns: ['harass', 'creep', 'weirdo', 'loser', 'pathetic'],
+      score: 0.72
+    },
+    sexual: {
+      patterns: ['sexy', 'hot', 'horny'],
+      score: 0.65
+    },
+    spam: {
+      patterns: ['buy now', 'click here', 'free money', 'earn', 'subscribe', 'check this out', 'limited offer'],
+      score: 0.78
+    },
+    violence: {
+      patterns: ['kill', 'die', 'attack', 'bomb', 'shoot'],
+      score: 0.82
+    },
+    selfHarm: {
+      patterns: ['suicide', 'self-harm', 'hurt myself', 'end it'],
+      score: 0.91
+    },
+    toxicity: {
+      patterns: ['shut up', 'go away', 'annoying', 'ugly', 'fat', 'stupid'],
+      score: 0.68
+    }
+  };
+
+  const categories = [
+    { id: 'hate', label: 'Hate Speech' },
+    { id: 'harassment', label: 'Harassment' },
+    { id: 'sexual', label: 'Sexual' },
+    { id: 'violence', label: 'Violence' },
+    { id: 'selfHarm', label: 'Self-harm' },
+    { id: 'spam', label: 'Spam' },
+    { id: 'toxicity', label: 'Toxicity' },
+  ];
+
+  function analyze(text) {
+    const lower = text.toLowerCase();
+    return categories.map(cat => {
+      const sim = simulations[cat.id];
+      const matched = sim.patterns.some(p => lower.includes(p));
+      const baseScore = matched ? sim.score : Math.random() * 0.08;
+      const noise = (Math.random() - 0.5) * 0.06;
+      const score = Math.max(0, Math.min(1, baseScore + noise));
+      return { id: cat.id, label: cat.label, score, flagged: score > 0.5 };
+    });
+  }
+
+  function getFlaggedCount(results) {
+    return results.filter(r => r.flagged).length;
+  }
+
+  function render() {
+    const input = document.getElementById('playground-input');
+    const resultsDiv = document.getElementById('playground-results');
+    const categoriesDiv = document.getElementById('playground-categories');
+    const verdictDiv = document.getElementById('playground-verdict');
+    const statusSpan = document.getElementById('playground-status');
+
+    if (!input || !resultsDiv || !categoriesDiv || !verdictDiv || !statusSpan) return;
+
+    statusSpan.textContent = 'Analyzing...';
+
+    setTimeout(() => {
+      const text = input.value.trim();
+      if (!text) {
+        statusSpan.textContent = 'Please enter some text.';
+        return;
+      }
+
+      const results = analyze(text);
+      const flaggedCount = getFlaggedCount(results);
+
+      categoriesDiv.innerHTML = results.map(r => {
+        const pct = Math.round(r.score * 100);
+        const color = r.score > 0.7 ? 'red' : r.score > 0.3 ? 'amber' : 'green';
+        const bgColor = color === 'red' ? 'bg-red-50' : color === 'amber' ? 'bg-amber-50' : 'bg-surface-50';
+        const textColor = color === 'red' ? 'text-red-700' : color === 'amber' ? 'text-amber-700' : 'text-green-700';
+        const barColor = color === 'red' ? 'bg-red-400' : color === 'amber' ? 'bg-amber-400' : 'bg-green-400';
+        return `<div class="flex items-center gap-3 ${bgColor} rounded-lg px-3 py-2">
+          <span class="w-24 text-xs font-medium ${textColor}">${r.label}</span>
+          <div class="flex-1 h-2 rounded-full bg-surface-200"><div class="h-2 rounded-full ${barColor}" style="width:${pct}%"></div></div>
+          <span class="w-12 text-right text-xs font-mono ${textColor}">${pct}%</span>
+          <span class="w-6 text-xs ${r.flagged ? 'text-red-600' : 'text-green-600'}">${r.flagged ? '!' : '--'}</span>
+        </div>`;
+      }).join('');
+
+      verdictDiv.innerHTML = flaggedCount > 0
+        ? `<span class="text-red-600">Flagged (${flaggedCount} categories above threshold)</span>
+           <span class="ml-2 text-xs text-surface-400">Action: hide or flag for review</span>`
+        : `<span class="text-green-600">Not flagged</span>
+           <span class="ml-2 text-xs text-surface-400">Action: allow</span>`;
+
+      resultsDiv.classList.remove('hidden');
+      statusSpan.textContent = `${text.length} chars analyzed`;
+    }, 300);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('playground-run');
+    const input = document.getElementById('playground-input');
+    if (btn) btn.addEventListener('click', render);
+    if (input) input.addEventListener('keydown', (e) => { if (e.key === 'Enter' && e.ctrlKey) render(); });
+    if (input && input.value.trim()) {
+      setTimeout(render, 500);
+    }
+  });
+</script>

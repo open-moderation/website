@@ -1,0 +1,53 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogImage?: string;
+  ogType?: string;
+  jsonLd?: Record<string, any>;
+}
+
+const { title, description, canonical, ogImage, ogType, jsonLd } = Astro.props;
+const site = 'https://openmoderation.com';
+const defaultImage = '/og-image.png';
+---
+
+<slot name="head-start" />
+<meta charset="UTF-8" />
+<title>{title} | OpenModeration</title>
+<meta name="description" content={description} />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" href="/favicon.ico" />
+<meta name="generator" content={Astro.generator} />
+
+<link rel="preconnect" href="https://fonts.cdnfonts.com" crossorigin />
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<!-- Canonical -->
+<link rel="canonical" href={canonical || `${site}${Astro.url.pathname}`} />
+
+<!-- Open Graph -->
+<meta property="og:title" content={`${title} | OpenModeration`} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={`${site}${ogImage || defaultImage}`} />
+<meta property="og:url" content={canonical || `${site}${Astro.url.pathname}`} />
+<meta property="og:type" content={ogType || 'website'} />
+<meta property="og:site_name" content="OpenModeration" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={`${title} | OpenModeration`} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={`${site}${ogImage || defaultImage}`} />
+
+<!-- JSON-LD -->
+{
+  jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+}
+
+<script defer src="https://cloud.umami.is/script.js" data-website-id="87e9077c-6f64-4eaf-a80f-20e28bbcefae"></script>
+
+<slot name="head-end" />

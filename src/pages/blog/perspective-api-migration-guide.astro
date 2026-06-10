@@ -1,0 +1,143 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CTASection from '../../components/CTASection.astro';
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Google Perspective API Sunset: Migration Guide for Forums",
+  "description": "Perspective API is sunsetting in late 2026. Learn what this means for your forum and how to migrate to OpenModeration before the deadline.",
+  "datePublished": "2026-06-12",
+  "author": { "@type": "Organization", "name": "Logora" }
+};
+---
+
+<BaseLayout title="Google Perspective API Sunset: Migration Guide for Forums" description="Perspective API is sunsetting in late 2026. Learn what this means for your forum and how to migrate to OpenModeration before the deadline." jsonLd={articleJsonLd}>
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-06-12">June 12, 2026</time>
+        <span>&middot;</span>
+        <span>7 min read</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Google Perspective API Sunset: Migration Guide for Forums</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        In March 2026, Google announced the sunset of Perspective API, set for late 2026.
+        For the thousands of forums, comment systems, and publishing platforms that rely on it,
+        this means finding a Perspective API alternative before the deadline.
+      </p>
+      <p>
+        This guide explains what's changing, why it matters, and how to migrate to
+        OpenModeration with minimal disruption.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">What's happening and when</h2>
+      <p>
+        Perspective API was one of the first widely available toxicity detection APIs. Launched
+        by Jigsaw (a Google incubator) in 2017, it powered moderation for platforms like The New
+        York Times, Disqus, and countless forum communities.
+      </p>
+      <p>
+        Google's sunset timeline has three phases:
+      </p>
+      <ul>
+        <li><strong>Mid 2026:</strong> No new API keys issued. Existing keys continue working.</li>
+        <li><strong>Late 2026:</strong> API becomes read-only. New moderation requests return errors.</li>
+        <li><strong>Early 2027:</strong> Complete shutdown. All endpoints return 410 Gone.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Why Perspective API is shutting down</h2>
+      <p>
+        Google cited two reasons in their announcement. First, the toxicity detection landscape
+        has matured significantly since 2017. There are now dozens of provider options ranging
+        from OpenAI to HuggingFace to Mistral. Second, Perspective API's attribute-based scoring
+        model is increasingly out of step with how modern moderation works &mdash; most platforms
+        now want more nuanced, context-aware decisions.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">What this means for your forum</h2>
+      <p>
+        If you're using Perspective API today, your moderation pipeline will break when the
+        shutdown happens. Comments and posts that rely on automated toxicity scoring will go
+        unmoderated. You'll see one of three outcomes depending on how deeply you've integrated:
+      </p>
+      <ul>
+        <li><strong>Direct integration:</strong> If your app calls Perspective API directly, requests will fail. Your moderation queue goes dark.</li>
+        <li><strong>Through a middleware:</strong> If you use a moderation platform that wraps Perspective, check if they have a migration path.</li>
+        <li><strong>Via a social connector:</strong> Some social management tools use Perspective for comment filtering. Verify their plan.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Evaluating Perspective API alternatives</h2>
+      <p>
+        Here's what to look for in a replacement:
+      </p>
+      <ul>
+        <li><strong>Category coverage:</strong> Perspective detects toxicity, severe toxicity, identity attack, insult, profanity, threat, and sexually explicit. Your replacement should cover these categories and more.</li>
+        <li><strong>Multi-provider support:</strong> Relying on a single provider means you repeat this migration next time they change strategy. A unified API lets you switch with zero code changes.</li>
+        <li><strong>Latency:</strong> Forum moderation needs to happen before content appears. Aim for sub-second response times.</li>
+        <li><strong>Data control:</strong> If you process EU user content, GDPR matters. Self-hosted options avoid sending data to third parties.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Migration checklist</h2>
+      <p>Follow these steps for a smooth Perspective API migration:</p>
+      <ol>
+        <li><strong>Audit your current usage.</strong> Count daily API calls, identify which categories you use, and measure your latency requirements. This gives you a baseline for the new setup.</li>
+        <li><strong>Choose a replacement architecture.</strong> A unified moderation platform like OpenModeration lets you keep your integration stable even if you change providers later.</li>
+        <li><strong>Map categories.</strong> Map your existing Perspective categories to the equivalent in your new provider. For example, Perspective's TOXICITY maps to categories like hate and harassment in most modern systems.</li>
+        <li><strong>Retune thresholds.</strong> Different providers score differently. Run both systems in parallel for a week to calibrate your thresholds.</li>
+        <li><strong>Update your integration.</strong> Replace your Perspective API call with the new API endpoint. With OpenModeration, this is a single POST /v1/moderations call.</li>
+        <li><strong>Cut over.</strong> Point production traffic to the new system. Keep Perspective as a fallback for the transition period.</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Migrating to OpenModeration</h2>
+      <p>
+        OpenModeration is the most straightforward Perspective API migration path. It provides
+        a single API that routes to the best provider for each request. You can start with
+        one provider and switch without changing code.
+      </p>
+      <p>
+        Here's what a migration looks like with OpenModeration:
+      </p>
+      <p>
+        <strong>Before (Perspective API):</strong> Your code makes a direct call to
+        commentanalyzer.googleapis.com with a specific API key. You get back attribute scores.
+        You hard-code thresholds. Changing providers means rewriting this integration.
+      </p>
+      <p>
+        <strong>After (OpenModeration):</strong> Your code calls POST /v1/moderations with
+        the content text. OpenModeration routes to the configured provider, normalizes the
+        response, and returns a consistent format. To change providers, you update a config
+        file. No code changes needed.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">What you gain beyond the migration</h2>
+      <p>
+        Migrating away from Perspective API is a forced upgrade. OpenModeration gives you
+        capabilities that Perspective never had:
+      </p>
+      <ul>
+        <li><strong>Action Engine:</strong> Define rules that take action automatically. "If hate score > 0.8, hide and flag for review." No custom code.</li>
+        <li><strong>Audit trail:</strong> Every moderation decision is logged with full context. Exportable for compliance reporting.</li>
+        <li><strong>Analytics:</strong> Dashboard showing moderation volume, flagged rates, provider performance, and category breakdowns.</li>
+        <li><strong>DSA readiness:</strong> The audit logs and transparency data you need for EU Digital Services Act compliance.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Timeline and next steps</h2>
+      <p>
+        Google's Perspective API sunset deadline is end of 2026. The earlier you start your
+        Perspective API migration, the more time you have to calibrate thresholds and test
+        in production. We recommend beginning the process at least 90 days before your target
+        cutover date.
+      </p>
+      <p>
+        For a complete guide to setting up OpenModeration, visit our documentation. Your
+        first provider integration takes about 30 minutes.
+      </p>
+    </div>
+  </article>
+
+  <CTASection />
+</BaseLayout>

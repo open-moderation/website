@@ -1,0 +1,33 @@
+---
+export interface Props {
+  items: Array<{ question: string; answer: string }>;
+}
+
+const { items } = Astro.props;
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": items.map(i => ({
+    "@type": "Question",
+    "name": i.question,
+    "acceptedAnswer": { "@type": "Answer", "text": i.answer }
+  }))
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+
+<div class="mx-auto max-w-3xl divide-y divide-surface-200">
+  {items.map((item) => (
+    <details class="group py-5">
+      <summary class="flex cursor-pointer items-center justify-between text-base font-medium text-surface-900">
+        {item.question}
+        <svg class="h-5 w-5 shrink-0 text-surface-400 transition duration-200 group-open:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+      </summary>
+      <p class="mt-3 text-sm leading-relaxed text-surface-500">{item.answer}</p>
+    </details>
+  ))}
+</div>

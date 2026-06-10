@@ -1,0 +1,96 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CTASection from '../../components/CTASection.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+
+const useCaseJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "AI Content Moderation for LLM Applications &mdash; OpenModeration",
+  "description": "Filter LLM inputs and outputs with multi-provider AI moderation. Protect your AI application from prompt injection, harmful content, and policy violations.",
+};
+
+const inputModerationExample = `User prompt -> {"input": prompt} -> POST /v1/moderations ->
+-> if not flagged -> forward to GPT-4, Claude...
+-> if flagged -> return "Content policy violation"`;
+
+const outputModerationExample = `LLM response -> {"input": response} -> POST /v1/moderations ->
+-> if not flagged -> display to user
+-> if flagged -> show fallback response`;
+---
+
+<BaseLayout title="AI Content Moderation for LLM Applications" description="Filter LLM inputs and outputs with multi-provider AI moderation. Protect your AI application from prompt injection, harmful content, and policy violations." canonical="https://openmoderation.com/use-cases/ai-applications" jsonLd={useCaseJsonLd}>
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">Use Case</div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">AI Applications</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">Filter LLM inputs and outputs. Protect users from harmful model responses and your model from malicious prompts.</p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">The fastest-growing moderation need</h2>
+          <p class="mt-4 text-lg text-surface-500">Every LLM-powered application needs content moderation on two fronts:</p>
+          <ul class="mt-6 space-y-3">
+            <li class="flex items-start gap-3"><svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><p class="text-sm text-surface-600"><strong>Input filtering:</strong> Block harmful, illegal, or manipulative user prompts before they reach the LLM.</p></li>
+            <li class="flex items-start gap-3"><svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><p class="text-sm text-surface-600"><strong>Output filtering:</strong> Catch dangerous or inappropriate model responses before users see them.</p></li>
+          </ul>
+          <p class="mt-4 text-lg text-surface-500">Using a single provider for both creates a single point of failure and blind spots. OpenModeration lets you layer multiple providers for defense in depth.</p>
+        </div>
+        <div class="space-y-4">
+          <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+            <h3 class="font-semibold text-surface-900">Input &rarr; Moderated &rarr; LLM</h3>
+<CodeBlock code={inputModerationExample} lang="text" />
+          </div>
+          <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+            <h3 class="font-semibold text-surface-900">LLM Output &rarr; Moderated &rarr; User</h3>
+<CodeBlock code={outputModerationExample} lang="text" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Defense in depth for AI safety</h2>
+      </div>
+      <div class="grid gap-6 grid-cols-2 lg:grid-cols-4">
+        <div class="rounded-xl border border-surface-200 bg-white p-6 text-center">
+          <div class="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+          </div>
+          <h3 class="font-semibold text-surface-900">Prompt injection</h3>
+          <p class="mt-1 text-xs text-surface-500">Detect jailbreak attempts and prompt manipulation.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6 text-center">
+          <div class="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
+          </div>
+          <h3 class="font-semibold text-surface-900">Harmful content</h3>
+          <p class="mt-1 text-xs text-surface-500">Block hate, violence, sexual content in inputs and outputs.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6 text-center">
+          <div class="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+          </div>
+          <h3 class="font-semibold text-surface-900">PII leakage</h3>
+          <p class="mt-1 text-xs text-surface-500">Prevent models from generating or exposing personally identifiable information.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6 text-center">
+          <div class="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+          </div>
+          <h3 class="font-semibold text-surface-900">Policy compliance</h3>
+          <p class="mt-1 text-xs text-surface-500">Enforce custom policies with LLM-as-classifier. Fully configurable categories.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

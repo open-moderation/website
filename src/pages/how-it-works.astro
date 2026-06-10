@@ -1,0 +1,237 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CTASection from '../components/CTASection.astro';
+import CodeBlock from '../components/CodeBlock.astro';
+
+const facebookWebhookExample = `// Facebook sends comment via webhook
+{
+  "source": "facebook",
+  "content_id": "comment_123",
+  "author_id": "user_456",
+  "text": "Comment text here...",
+  "metadata": {"post_url": "..."}
+}`;
+
+const moderationResponseExample = `{
+  "model": "openai/omni-moderation-latest",
+  "results": [{
+    "category": "hate",
+    "score": 0.02,
+    "flagged": false
+  }],
+  "flagged": false,
+  "usage": {
+    "latency_ms": 243,
+    "provider": "openai"
+  }
+}`;
+
+const ruleConfigExample = `{
+  "name": "Hide hate speech",
+  "priority": 10,
+  "conditions": [{
+    "category": "hate",
+    "operator": "gte",
+    "score": 0.8
+  }],
+  "actions": [{
+    "type": "hide"
+  }]
+}`;
+
+const auditTrailExample = `// Complete audit trail for every content item
+{
+  "content_id": "...",
+  "source": "webhook",
+  "platform": "facebook",
+  "status": "actioned",
+  "moderation": {
+    "provider": "openai",
+    "flagged": true,
+    "results": [...]
+  },
+  "actions": [{
+    "rule": "Hide hate speech",
+    "type": "hide",
+    "status": "executed"
+  }]
+}`;
+---
+
+<BaseLayout title="How It Works &mdash; OpenModeration Platform Pipeline" description="Understand the complete moderation pipeline: ingestion, multi-provider AI moderation, automated rules and actions, and manual review.">
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">How it works</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        From content ingestion to automated action in one pipeline.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <!-- Pipeline Overview -->
+      <div class="mb-20">
+        <div class="relative rounded-2xl border border-surface-200 bg-surface-50 p-8">
+          <div class="grid gap-6 grid-cols-2 lg:grid-cols-4">
+            <div class="rounded-xl border border-brand-200 bg-white p-6 text-center">
+              <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-100 text-brand-600">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              </div>
+              <h3 class="text-lg font-semibold text-surface-900">1. Ingestion</h3>
+              <p class="mt-2 text-sm text-surface-500">Content arrives via API, webhook, or social platform connector.</p>
+              <div class="mt-4 flex flex-wrap justify-center gap-2">
+                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">POST /v1/moderations</span>
+                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Webhooks</span>
+                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Facebook</span>
+                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">YouTube</span>
+                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Discord</span>
+              </div>
+            </div>
+            <div class="hidden lg:flex lg:items-center lg:justify-center">
+              <svg class="h-6 w-6 text-surface-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </div>
+            <div class="rounded-xl border border-brand-400 bg-white p-6 text-center shadow-md">
+              <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-600 text-white">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+              </div>
+              <h3 class="text-lg font-semibold text-surface-900">2. AI Moderation</h3>
+              <p class="mt-2 text-sm text-surface-500">Smart routing sends content to the best provider. Standardized result returned.</p>
+              <div class="mt-4 flex flex-wrap justify-center gap-2">
+                <span class="rounded-full bg-brand-100 px-2.5 py-0.5 text-xs text-brand-700">OpenAI</span>
+                <span class="rounded-full bg-brand-100 px-2.5 py-0.5 text-xs text-brand-700">Azure</span>
+                <span class="rounded-full bg-brand-100 px-2.5 py-0.5 text-xs text-brand-700">HuggingFace</span>
+                <span class="rounded-full bg-brand-100 px-2.5 py-0.5 text-xs text-brand-700">LLMs</span>
+              </div>
+            </div>
+            <div class="hidden lg:flex lg:items-center lg:justify-center">
+              <svg class="h-6 w-6 text-surface-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </div>
+            <div class="rounded-xl border border-surface-200 bg-white p-6 text-center">
+              <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-100 text-brand-600">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+              </div>
+              <h3 class="text-lg font-semibold text-surface-900">3. Rules & Actions</h3>
+              <p class="mt-2 text-sm text-surface-500">Rules engine evaluates results. Actions execute automatically.</p>
+              <div class="mt-4 flex flex-wrap justify-center gap-2">
+                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Hide</span>
+                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Delete</span>
+                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Flag</span>
+                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Webhook</span>
+              </div>
+            </div>
+            <div class="hidden lg:flex lg:items-center lg:justify-center">
+              <svg class="h-6 w-6 text-surface-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </div>
+            <div class="rounded-xl border border-surface-200 bg-white p-6 text-center">
+              <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-100 text-brand-600">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+              </div>
+              <h3 class="text-lg font-semibold text-surface-900">4. Manual Review</h3>
+              <p class="mt-2 text-sm text-surface-500">Edge cases flagged for human moderators to approve or reject.</p>
+              <div class="mt-4 flex flex-wrap justify-center gap-2">
+                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Review queue</span>
+                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Approve</span>
+                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Reject</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detailed Steps -->
+      <div class="space-y-16">
+        <div class="grid items-center gap-8 lg:grid-cols-2">
+          <div>
+            <span class="mb-2 inline-flex items-center rounded-full bg-brand-100 px-3 py-0.5 text-sm font-medium text-brand-700">Step 1</span>
+            <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">Content arrives from anywhere</h2>
+            <p class="mt-4 text-surface-500">
+              Submit content through any channel. Use the direct API for programmatic access,
+              configure webhooks to receive content from external platforms, or set up native
+              social media connectors that ingest comments and posts automatically.
+            </p>
+            <ul class="mt-6 space-y-2 text-sm text-surface-600">
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>API:</strong> POST /v1/moderations for single or batch moderation</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Webhooks:</strong> Generic endpoint receives and normalizes external payloads</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Connectors:</strong> Native Facebook, YouTube, Discord integration</li>
+            </ul>
+          </div>
+          <div class="rounded-xl border border-surface-200 bg-surface-50 p-8">
+            <h4 class="mb-3 text-sm font-semibold text-surface-900">Example: Facebook comment</h4>
+            <CodeBlock code={facebookWebhookExample} lang="json" />
+          </div>
+        </div>
+
+        <div class="grid items-center gap-8 lg:grid-cols-2">
+          <div class="lg:order-2">
+            <span class="mb-2 inline-flex items-center rounded-full bg-brand-100 px-3 py-0.5 text-sm font-medium text-brand-700">Step 2</span>
+            <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">AI moderates the content</h2>
+            <p class="mt-4 text-surface-500">
+              Content is routed to the best available provider based on language, content type,
+              category requirements, and cost. Each provider returns standardized results with
+              scores from 0.0 to 1.0 across 17 content categories.
+            </p>
+            <ul class="mt-6 space-y-2 text-sm text-surface-600">
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Smart routing:</strong> Picks the best provider if not specified</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>BYOK:</strong> Use your own provider API keys (or use platform keys)</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Standardized output:</strong> Same format regardless of provider behind the scenes</li>
+            </ul>
+          </div>
+          <div class="rounded-xl border border-surface-200 bg-surface-50 p-8 lg:order-1">
+            <h4 class="mb-3 text-sm font-semibold text-surface-900">Standardized response</h4>
+            <CodeBlock code={moderationResponseExample} lang="json" />
+          </div>
+        </div>
+
+        <div class="grid items-center gap-8 lg:grid-cols-2">
+          <div>
+            <span class="mb-2 inline-flex items-center rounded-full bg-brand-100 px-3 py-0.5 text-sm font-medium text-brand-700">Step 3</span>
+            <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">Rules enforce your policy</h2>
+            <p class="mt-4 text-surface-500">
+              Configure rules that trigger automatic actions based on moderation results.
+              Rules are evaluated by priority. The first matching rule executes its actions.
+            </p>
+            <div class="mt-6 space-y-3">
+              <div class="rounded-lg border border-surface-200 bg-white p-4">
+                <p class="font-mono text-sm text-surface-700"><span class="text-accent-600">if</span> hate <span class="text-accent-600">></span> 0.8 <span class="text-accent-600">&rarr;</span> hide + flag_for_review</p>
+              </div>
+              <div class="rounded-lg border border-surface-200 bg-white p-4">
+                <p class="font-mono text-sm text-surface-700"><span class="text-accent-600">if</span> sexual/minors <span class="text-accent-600">></span> 0.5 <span class="text-accent-600">&rarr;</span> delete + notify_webhook</p>
+              </div>
+              <div class="rounded-lg border border-surface-200 bg-white p-4">
+                <p class="font-mono text-sm text-surface-700"><span class="text-accent-600">if</span> spam <span class="text-accent-600">></span> 0.7 <span class="text-accent-600">&rarr;</span> mark_as_spam (YouTube)</p>
+              </div>
+            </div>
+          </div>
+          <div class="rounded-xl border border-surface-200 bg-surface-50 p-8">
+            <h4 class="mb-3 text-sm font-semibold text-surface-900">Rule configuration</h4>
+            <CodeBlock code={ruleConfigExample} lang="json" />
+          </div>
+        </div>
+
+        <div class="grid items-center gap-8 lg:grid-cols-2">
+          <div class="lg:order-2">
+            <span class="mb-2 inline-flex items-center rounded-full bg-brand-100 px-3 py-0.5 text-sm font-medium text-brand-700">Step 4</span>
+            <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">Review edge cases manually</h2>
+            <p class="mt-4 text-surface-500">
+              Content that doesn't trigger a definitive rule can be flagged for manual review.
+              Human moderators access the review queue, see the content and its moderation results,
+              and make final decisions.
+            </p>
+            <ul class="mt-6 space-y-2 text-sm text-surface-600">
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> GET /v1/reviews/items &mdash; browse flagged content</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> POST /v1/reviews/items/{'{'}id{'}'}/resolve &mdash; approve or reject</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Webhook notifications for new review items</li>
+            </ul>
+          </div>
+          <div class="rounded-xl border border-surface-200 bg-surface-50 p-8 lg:order-1">
+            <h4 class="mb-3 text-sm font-semibold text-surface-900">Everything is logged</h4>
+            <CodeBlock code={auditTrailExample} lang="json" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

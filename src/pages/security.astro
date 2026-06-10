@@ -1,0 +1,148 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CTASection from '../components/CTASection.astro';
+
+const securitySections = [
+  {
+    title: 'Encryption at Rest & In Transit',
+    icon: 'lock',
+    items: [
+      { label: 'At Rest', value: 'AES-256-GCM &mdash; all stored content, logs, and credentials encrypted before hitting disk.' },
+      { label: 'In Transit', value: 'TLS 1.3 enforced for every API request. No plaintext, no legacy ciphers.' },
+      { label: 'API Keys', value: 'Hashed with SHA-256 before storage. We never see your keys in plaintext.' },
+    ],
+  },
+  {
+    title: 'Data Sovereignty',
+    icon: 'server',
+    items: [
+      { label: 'Self-Hosted', value: 'Deploy on your own infrastructure. Zero data leaves your network.' },
+      { label: 'No Telemetry', value: 'No phone-home, no usage tracking, no analytics beacons.' },
+      { label: 'Air-Gapped', value: 'Fully air-gapped deployments supported. No external dependencies required.' },
+    ],
+  },
+  {
+    title: 'Access Control',
+    icon: 'key',
+    items: [
+      { label: 'API Key Auth', value: 'Every request authenticated via Bearer token. Scoped permissions per key.' },
+      { label: 'Rate Limits', value: 'Granular rate limits configurable per API key &mdash; requests/min, concurrency, daily cap.' },
+      { label: 'Instant Revocation', value: 'Rotate or revoke any key immediately. Changes propagate in seconds.' },
+    ],
+  },
+  {
+    title: 'Audit Trail',
+    icon: 'document',
+    items: [
+      { label: 'Immutable Logs', value: 'Every moderation action, config change, and API call is logged with timestamp, actor, and payload.' },
+      { label: 'Exportable', value: 'Export full audit trails as JSON or CSV. Ready for compliance reviews and regulator requests.' },
+      { label: 'Tamper-Proof', value: 'Logs are write-once. No modification, no deletion. Append-only storage.' },
+    ],
+  },
+  {
+    title: 'Compliance & Certifications',
+    icon: 'shield',
+    items: [
+      { label: 'GDPR', value: 'Data processing agreements, right to deletion, data portability. Self-hosting ensures full compliance.' },
+      { label: 'DSA-Ready', value: 'Meet EU Digital Services Act requirements. Complete audit trails and transparency reporting.' },
+      { label: 'SOC 2', value: 'SOC 2 Type II certification on our roadmap. Infrastructure follows SOC 2 controls today.' },
+    ],
+  },
+  {
+    title: 'Provider Key Security',
+    icon: 'key',
+    items: [
+      { label: 'Encrypted at Rest', value: 'OpenAI, Azure, HuggingFace &mdash; all provider API keys are AES-256-GCM encrypted in the database.' },
+      { label: 'BYOK', value: 'Bring Your Own Keys. You control which provider keys are configured and when they rotate.' },
+      { label: 'No Leakage', value: 'Keys are never logged, never returned in API responses, and never sent to third parties.' },
+    ],
+  },
+  {
+    title: 'Data Retention',
+    icon: 'clock',
+    items: [
+      { label: 'Configurable', value: 'Set retention from 0 to 90 days. 0 means content never stored &mdash; pass-through moderation only.' },
+      { label: 'Presets', value: 'Quick-select: 0 days (no storage), 7 days, 30 days, or 90 days. Custom durations also supported.' },
+      { label: 'Auto-Purge', value: 'Expired data is automatically and permanently deleted. No manual clean-up needed.' },
+    ],
+  },
+  {
+    title: 'Open Source Assurance',
+    icon: 'code',
+    items: [
+      { label: 'Auditable Code', value: 'Every line of OpenModeration is open for inspection. No black boxes, no proprietary binaries.' },
+      { label: 'AGPL v3', value: 'Licensed under the GNU Affero General Public License v3. Full source access guaranteed.' },
+      { label: 'Community Reviewed', value: 'Code is publicly developed, reviewed, and tested. Security vulnerabilities are transparently disclosed.' },
+    ],
+  },
+];
+
+const iconPaths: Record<string, string> = {
+  lock: 'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z',
+  server: 'M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01',
+  key: 'M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z',
+  document: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',
+  shield: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z',
+  clock: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z',
+  code: 'M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4',
+};
+---
+<BaseLayout title="Security & Compliance &mdash; OpenModeration" description="AES-256-GCM encryption, TLS 1.3, API key hashing, self-hosted deployment, and full audit trails. Built for security-conscious teams.">
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Security & Compliance</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Encryption, audit trails, and data sovereignty &mdash; built into every layer of OpenModeration.
+      </p>
+    </div>
+  </section>
+
+  {
+    securitySections.map((section) => (
+      <section class="scroll-mt-16 border-t border-surface-100 bg-white py-20">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div class="grid items-start gap-12 lg:grid-cols-3">
+            <div class="lg:col-span-1">
+              <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-100 text-brand-600">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={iconPaths[section.icon]} />
+                </svg>
+              </div>
+              <h2 class="mt-4 text-2xl font-bold tracking-tight text-surface-900">{section.title}</h2>
+            </div>
+            <div class="space-y-6 lg:col-span-2">
+              {
+                section.items.map((item) => (
+                  <div class="rounded-lg border border-surface-200 bg-surface-50 p-5">
+                    <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline">
+                      <span class="shrink-0 text-sm font-semibold text-surface-900 sm:w-36">{item.label}</span>
+                      <span class="text-sm text-surface-500">{item.value}</span>
+                    </div>
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+      </section>
+    ))
+  }
+
+  <section class="border-t border-surface-100 bg-surface-50 py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-white p-8">
+        <div class="flex items-center justify-center gap-2 text-brand-600">
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+          <span class="text-sm font-semibold">Trusted by security-conscious teams</span>
+        </div>
+        <p class="mt-4 text-lg text-surface-600">
+          OpenModeration is built with security as a first-class concern &mdash; not an afterthought. Every architectural decision is made with the assumption that attackers will probe every layer.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

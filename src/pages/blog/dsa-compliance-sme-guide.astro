@@ -1,0 +1,204 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CTASection from '../../components/CTASection.astro';
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "DSA Compliance for Small and Medium Platforms: A Practical Guide",
+  "description": "A practical guide to EU Digital Services Act compliance for smaller platforms. Learn about automated moderation, audit trails, and actionable steps.",
+  "datePublished": "2026-06-16",
+  "author": { "@type": "Organization", "name": "Logora" }
+};
+---
+
+<BaseLayout title="DSA Compliance for Small and Medium Platforms: A Practical Guide" description="A practical guide to EU Digital Services Act compliance for smaller platforms. Learn about automated moderation, audit trails, and actionable steps." jsonLd={articleJsonLd}>
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-06-16">June 16, 2026</time>
+        <span>&middot;</span>
+        <span>8 min read</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">DSA Compliance for Small and Medium Platforms: A Practical Guide</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        The EU Digital Services Act (DSA) applies to almost every platform that operates in
+        Europe &mdash; not just the giants. If your platform hosts user-generated content and
+        has users in the EU, you need to comply.
+      </p>
+      <p>
+        For small and medium platforms, DSA compliance can feel overwhelming. The regulation
+        is dense, the fines are severe (up to 6% of global revenue), and you likely don't
+        have a dedicated compliance team. This guide breaks down exactly what you need to do
+        and how to do it without breaking your budget.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Does the DSA apply to your platform?</h2>
+      <p>
+        The DSA applies to intermediary services that transmit or host user-generated content.
+        This covers forums, comment systems, social networks, marketplaces, review platforms,
+        and any site where users can post content visible to others.
+      </p>
+      <p>
+        There are three tiers based on platform size:
+      </p>
+      <ul>
+        <li><strong>Very Large Online Platforms (VLOPs):</strong> Over 45 million monthly active users in the EU. Full DSA requirements including systemic risk assessments.</li>
+        <li><strong>Large platforms:</strong> Between 10-45 million monthly active users. Most DSA obligations apply, with some simplified reporting.</li>
+        <li><strong>Small and medium platforms:</strong> Under 10 million monthly active users. Key obligations apply, but many requirements are proportional and manageable.</li>
+      </ul>
+      <p>
+        If you're in the third category, this guide is for you. The good news: the DSA was
+        designed with proportionality in mind. Smaller platforms have lighter requirements.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">What the DSA actually requires from SMEs</h2>
+      <p>
+        For small and medium platforms, here are the concrete requirements:
+      </p>
+      <p>
+        <strong>1. Notice and action mechanism (Article 14):</strong> Users must be able to
+        flag illegal content or terms-of-service violations. You must act on these notices
+        promptly and inform the user of your decision.
+      </p>
+      <p>
+        <strong>2. Transparency reporting (Article 15):</strong> You need to publish an annual
+        report with data on your content moderation activities &mdash; how many pieces of
+        content were moderated, how many user notices you received, and how you handled them.
+      </p>
+      <p>
+        <strong>3. Statement of reasons (Article 17):</strong> When you remove or restrict
+        content, you must explain why. This includes which specific term was violated and
+        whether automated tools were used.
+      </p>
+      <p>
+        <strong>4. Internal complaint-handling (Article 21):</strong> Users must be able to
+        appeal moderation decisions. You need a system to review appeals and inform users
+        of the outcome.
+      </p>
+      <p>
+        <strong>5. Single point of contact (Article 11-12):</strong> You need a designated
+        contact for EU regulators and users. A simple email address is sufficient for SMEs.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Step 1: Set up automated content moderation</h2>
+      <p>
+        The DSA doesn't mandate AI moderation, but manual review doesn't scale. For any
+        platform with meaningful UGC volume, automated moderation is the only practical path.
+      </p>
+      <p>
+        With OpenModeration, you can set this up in under an hour:
+      </p>
+      <ol>
+        <li>Deploy with Docker: docker run -p 3000:3000 OpenModeration/server</li>
+        <li>Choose a provider (OpenAI, Azure, HuggingFace, Mistral, or self-hosted LLM)</li>
+        <li>Configure thresholds in the dashboard: "if hate score > 0.8, auto-hide"</li>
+        <li>Set up manual review queue for borderline content</li>
+      </ol>
+      <p>
+        This gives you an Article 17-compliant system: every decision includes the provider,
+        the scores, the rule that triggered, and the action taken.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Step 2: Build your audit trail</h2>
+      <p>
+        Audit trails are the backbone of DSA compliance. When a regulator asks "show us how
+        you handle illegal content," your audit trail is your answer.
+      </p>
+      <p>
+        OpenModeration logs every moderation event with:
+      </p>
+      <ul>
+        <li>Content ID and text (hashed or stored per your retention policy)</li>
+        <li>Provider used and response time</li>
+        <li>Scores per category (hate, harassment, violence, etc.)</li>
+        <li>Rule matched and action taken (allow, hide, delete, flag)</li>
+        <li>Timestamp with UTC timezone</li>
+        <li>User flag if initiated by a user notice</li>
+        <li>Human reviewer and decision for manual reviews</li>
+      </ul>
+      <p>
+        These logs are stored in PostgreSQL and exportable via API. For DSA audits, you can
+        generate a full report with a single API call.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Step 3: Implement user notice and appeal systems</h2>
+      <p>
+        Article 14 (notice) and Article 21 (appeal) require user-facing features. Your
+        moderation platform needs to support them, but most of the logic is on your side:
+      </p>
+      <ul>
+        <li><strong>User notice endpoint:</strong> Expose an API or UI where users can flag content. Include content identifier, reason category, and optional explanation.</li>
+        <li><strong>Moderation re-evaluation:</strong> When a notice comes in, re-moderate the content and log the result linked to the notice.</li>
+        <li><strong>Appeal endpoint:</strong> Let users request a human review of automated decisions. Route these to your manual review queue.</li>
+        <li><strong>Notification:</strong> Inform users of decisions within the DSA's timeline (typically prompt, no defined hard deadline for SMEs but "without delay" is the standard).</li>
+      </ul>
+      <p>
+        OpenModeration's Action Engine supports this workflow natively. You can configure
+        rules that flag content for human review when user notices arrive, and the audit
+        trail tracks the full lifecycle from notice to decision.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Step 4: Generate transparency reports</h2>
+      <p>
+        Article 15 requires an annual transparency report covering:
+      </p>
+      <ul>
+        <li>Number of orders received from EU authorities</li>
+        <li>Number of user notices processed</li>
+        <li>Number of content removals or restrictions</li>
+        <li>Number of appeals filed and outcomes</li>
+        <li>Use of automated moderation tools</li>
+      </ul>
+      <p>
+        With OpenModeration's analytics API, you can generate these numbers on demand.
+        The dashboard provides breakdowns by time period, content category, and action taken.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Common DSA compliance pitfalls for SMEs</h2>
+      <p>
+        <strong>No audit trail:</strong> The most common gap. If you can't produce a log of
+        moderation decisions, you can't prove compliance. Fix this before anything else.
+      </p>
+      <p>
+        <strong>No human review option:</strong> Automated moderation is fine, but users must
+        be able to appeal to a human. Even a simple manual review queue meets this requirement.
+      </p>
+      <p>
+        <strong>No data retention policy:</strong> The DSA doesn't mandate specific retention
+        periods, but GDPR does. Have a policy, document it, and enforce it.
+      </p>
+      <p>
+        <strong>Reactive compliance:</strong> Don't wait for a regulator inquiry. Set up your
+        systems proactively and document everything. Proactive compliance is cheaper than
+        retroactive fixes.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">DSA compliance checklist for SMEs</h2>
+      <p>
+        Use this checklist to track your progress:
+      </p>
+      <ul>
+        <li>&#9744; Designated point of contact (email address for EU authorities)</li>
+        <li>&#9744; Terms of service that explain content moderation policies</li>
+        <li>&#9744; User notice mechanism (flag content)</li>
+        <li>&#9744; Automated moderation pipeline configured</li>
+        <li>&#9744; Audit trail logging all moderation decisions</li>
+        <li>&#9744; Statement of reasons generated for every content restriction</li>
+        <li>&#9744; User appeal mechanism (human review option)</li>
+        <li>&#9744; Annual transparency report template ready</li>
+      </ul>
+      <p>
+        The DSA is the most significant platform regulation in EU history, but it's not
+        designed to crush small platforms. The requirements are proportional, and the tools
+        to meet them are more accessible than ever. With OpenModeration, you can satisfy
+        the technical requirements in days, not months.
+      </p>
+    </div>
+  </article>
+
+  <CTASection />
+</BaseLayout>

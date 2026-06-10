@@ -1,0 +1,39 @@
+---
+export interface Props {
+  items: Array<{ name: string; subtitle?: string }>;
+  speed?: string;
+}
+
+const { items, speed = '40s' } = Astro.props;
+---
+
+<div class="relative overflow-hidden py-8">
+  <style>
+    @keyframes marquee-scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .marquee-track {
+      animation: marquee-scroll var(--speed, 40s) linear infinite;
+    }
+    .marquee-track:hover {
+      animation-play-state: paused;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .marquee-track { animation: none; }
+    }
+  </style>
+  <div class="marquee-track flex gap-12" style={`width: fit-content; --speed: ${speed};`}>
+    {items.concat(items).map((item) => (
+      <div class="flex shrink-0 items-center gap-3 rounded-lg border border-surface-200 bg-white px-5 py-3 shadow-sm">
+        <div class="flex h-9 w-9 items-center justify-center rounded-md bg-surface-100 font-mono text-xs font-bold text-surface-600">
+          {item.name.slice(0, 2).toUpperCase()}
+        </div>
+        <div class="text-left">
+          <p class="text-sm font-medium text-surface-900">{item.name}</p>
+          {item.subtitle && <p class="text-xs text-surface-400">{item.subtitle}</p>}
+        </div>
+      </div>
+    ))}
+  </div>
+</div>

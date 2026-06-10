@@ -1,0 +1,179 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CTASection from '../../components/CTASection.astro';
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Build vs Buy: Content Moderation Infrastructure Costs in 2026",
+  "description": "A detailed breakdown of the real costs of building your own content moderation system versus buying a solution like OpenModeration.",
+  "datePublished": "2026-06-14",
+  "author": { "@type": "Organization", "name": "Logora" }
+};
+---
+
+<BaseLayout title="Build vs Buy: Content Moderation Infrastructure Costs in 2026" description="A detailed breakdown of the real costs of building your own content moderation system versus buying a solution like OpenModeration." jsonLd={articleJsonLd}>
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-06-14">June 14, 2026</time>
+        <span>&middot;</span>
+        <span>9 min read</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Build vs Buy: Content Moderation Infrastructure Costs in 2026</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Every platform that hosts user-generated content eventually faces the same question:
+        should we build our own content moderation system, or buy an existing solution?
+        The build vs buy moderation decision isn't just about feature checkboxes &mdash; it's
+        about total cost of ownership over multiple years.
+      </p>
+      <p>
+        In 2026, with the DSA in full effect and AI models proliferating, the cost calculus
+        has shifted. This article breaks down the real costs of each approach.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">The case for building your own moderation</h2>
+      <p>
+        Building your own moderation pipeline sounds appealing. You have complete control over
+        the stack, no vendor dependency, and you can tailor the system to your exact use case.
+        The initial engineering investment feels like an asset rather than an expense.
+      </p>
+      <p>
+        A typical build-it-yourself moderation stack requires:
+      </p>
+      <ul>
+        <li>A moderation service that calls one or more AI provider APIs</li>
+        <li>An action engine to apply rules based on scores</li>
+        <li>An audit logging system with retention policies</li>
+        <li>A queue for human review of edge cases</li>
+        <li>A dashboard for monitoring and configuration</li>
+        <li>Connectors for social platforms (if you moderate Facebook, Discord, etc.)</li>
+        <li>Alerting and observability</li>
+        <li>CI/CD, testing, and staging environments</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">The real cost of building: engineering time</h2>
+      <p>
+        Let's estimate the engineering effort. A senior backend engineer costs $150-200k/year
+        (fully loaded). A competent moderation pipeline takes 3-6 months to build for a
+        single-provider setup. Multi-provider routing adds another 2-3 months. The dashboard
+        is 2-4 months. Connectors are 1-2 months each.
+      </p>
+      <p>
+        <strong>Conservative estimate: 6-8 engineer-months.</strong>
+        That's $75k-$130k in engineering salary alone to build a basic, single-provider
+        moderation system. Multi-provider with a dashboard and connectors easily doubles that.
+      </p>
+      <p>
+        And that's just year one. Year two brings maintenance, provider API changes, scaling
+        challenges, and feature requests.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Hidden costs of the build approach</h2>
+      <p>
+        The initial build cost is just the beginning. Here are the costs that teams often miss:
+      </p>
+      <p>
+        <strong>Ongoing maintenance (~$30k-$60k/year):</strong> Provider APIs change. OpenAI
+        deprecates models. Azure updates endpoints. Your integration breaks, and someone has
+        to fix it. Each provider update costs 2-5 days of engineering time.
+      </p>
+      <p>
+        <strong>Provider switching costs:</strong> When you decide to add or switch providers,
+        you rebuild the integration. With a homegrown system, this means new code, testing,
+        and migration. This cost recurs every time you add a provider.
+      </p>
+      <p>
+        <strong>Opportunity cost:</strong> Every hour your team spends on moderation infrastructure
+        is an hour not spent on your core product. For a startup, this is the most expensive
+        line item on the ledger.
+      </p>
+      <p>
+        <strong>Compliance risk:</strong> If your audit trail doesn't meet DSA requirements,
+        you risk fines up to 6% of global revenue. Getting compliance right requires legal
+        review and specialized engineering.
+      </p>
+      <p>
+        <strong>Scaling costs:</strong> Your homegrown system worked at 10k requests/day. At
+        100k requests/day, you need queue management, rate limiting, and performance
+        optimization. At 1M requests/day, you need distributed processing and possibly a
+        dedicated SRE.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">The case for buying moderation</h2>
+      <p>
+        Buying a moderation solution means paying for a product that has already solved these
+        problems. With OpenModeration, you get:
+      </p>
+      <ul>
+        <li><strong>Unified API:</strong> One integration that works across every major provider. Switch providers with a config change, not a code rewrite.</li>
+        <li><strong>Smart routing:</strong> Automatic provider selection by language, content type, latency, or cost.</li>
+        <li><strong>Action Engine:</strong> Declarative rules with no code required.</li>
+        <li><strong>Built-in audit trail:</strong> DSA-compliant logging out of the box.</li>
+        <li><strong>Social connectors:</strong> Pre-built integrations for Facebook, YouTube, Discord.</li>
+        <li><strong>Dashboard:</strong> Admin panel for monitoring, analytics, and configuration.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Cost comparison: build vs buy moderation</h2>
+      <p>
+        Let's compare total cost of ownership over 3 years for a platform doing
+        100k moderation requests/day:
+      </p>
+      <p>
+        <strong>Build approach (3-year TCO):</strong>
+      </p>
+      <ul>
+        <li>Year 1 build: $100k-$250k engineering</li>
+        <li>Year 1-3 maintenance: $90k-$180k</li>
+        <li>Provider API costs: $50k-$150k/year depending on providers</li>
+        <li>Infrastructure (servers, DB, monitoring): $20k-$50k/year</li>
+        <li><strong>Total: $350k-$780k over 3 years</strong></li>
+      </ul>
+      <p>
+        <strong>Buy approach (OpenModeration, 3-year TCO):</strong>
+      </p>
+      <ul>
+        <li>Integration: 1-2 days of engineering (free for self-hosted)</li>
+        <li>Provider API costs: same as above</li>
+        <li>Self-hosted infrastructure: $500-$5000/month (Docker)</li>
+        <li>Hosted SaaS: per-request pricing, no infrastructure cost</li>
+        <li><strong>Total: $18k-$180k over 3 years (self-hosted)</strong></li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">The verdict: when to build, when to buy</h2>
+      <p>
+        <strong>Build if:</strong> You have a dedicated infrastructure team, moderation is your
+        core differentiator, and you need capabilities that no existing product provides.
+        Even then, consider using OpenModeration as a foundation and extending it.
+      </p>
+      <p>
+        <strong>Buy if:</strong> You need moderation to work reliably while your team focuses
+        on your product. This covers 95% of platforms. The savings aren't just financial &mdash;
+        they're about speed, focus, and risk reduction.
+      </p>
+      <p>
+        The build vs buy moderation decision has a clear winner for most organizations.
+        In 2026, building your own moderation infrastructure is like building your own
+        database or your own load balancer. It's technically possible, but it's not a good
+        use of your engineering resources.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Getting started with OpenModeration</h2>
+      <p>
+        OpenModeration is free and open-source. Deploy with a single Docker command, or
+        try our managed SaaS. You can be fully set up in under an hour, and switching
+        providers takes a config file change.
+      </p>
+      <p>
+        We've seen teams migrate from homegrown systems to OpenModeration in a single sprint.
+        The ROI is immediate: no more provider API maintenance, no more audit trail bugs, no
+        more dashboard feature requests from the product team.
+      </p>
+    </div>
+  </article>
+
+  <CTASection />
+</BaseLayout>

@@ -1,0 +1,210 @@
+<style>
+  .om-nav { transition: box-shadow 0.2s ease; }
+  .om-nav.scrolled { box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  .om-mega {
+    opacity: 0; visibility: hidden;
+    transform: translateY(-4px);
+    transition: opacity 0.18s ease, visibility 0.18s ease, transform 0.18s ease;
+    position: absolute; top: calc(100% + 4px); left: 50%; translate: -50% 0;
+    z-index: 10; background: white;
+    border: 1px solid #e2e8f0; border-radius: 12px;
+    box-shadow: 0 24px 48px rgba(7,42,68,0.16), 0 4px 12px rgba(7,42,68,0.06);
+    padding: 20px; min-width: 520px;
+  }
+  .om-mega-3col { min-width: 700px; }
+  .om-item:hover > .om-mega,
+  .om-item:focus-within > .om-mega { opacity: 1; visibility: visible; transform: translateY(0); }
+  .om-item:hover > .om-trigger .om-caret,
+  .om-item:focus-within > .om-trigger .om-caret { transform: rotate(180deg); }
+  .om-mega-link {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 10px 12px; border-radius: 8px;
+    text-decoration: none; transition: background 0.15s ease;
+  }
+  .om-mega-link:hover { background: #f1f5f9; }
+  .om-mega-eyebrow {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: #94a3b8;
+    margin: 0 0 8px; padding-left: 4px;
+  }
+
+  #om-menu { display: none; }
+  #om-menu.open { display: flex; }
+  .om-hamburger span { transition: all 0.2s ease; }
+  .om-hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+  .om-hamburger.open span:nth-child(2) { opacity: 0; }
+  .om-hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+  @media (max-width: 1100px) {
+    .om-desktop { display: none; }
+    .om-hamburger { display: flex !important; }
+    #om-menu {
+      position: absolute; top: 64px; left: 0; right: 0;
+      background: white; border-bottom: 1px solid #e2e8f0;
+      padding: 16px; flex-direction: column; gap: 4px;
+      max-height: calc(100vh - 64px); overflow-y: auto;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+    }
+    #om-menu > a { padding: 12px 8px; border-radius: 8px; font-size: 14px; font-weight: 500; color: #334155; text-decoration: none; }
+    #om-menu > a:hover { background: #f1f5f9; }
+    #om-menu > hr { margin: 4px 0; border-color: #e2e8f0; }
+    .om-actions-mobile { display: flex !important; flex-direction: column; gap: 8px; padding-top: 12px; border-top: 1px solid #e2e8f0; }
+    .om-actions-mobile a { text-align: center; padding: 10px; border-radius: 8px; font-size: 14px; font-weight: 500; }
+  }
+</style>
+
+<nav class="om-nav glass sticky top-0 z-50 border-b border-surface-200/80 bg-white/92">
+  <div class="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8" style="height: 64px;">
+    <a href="/" class="flex items-center gap-2 text-lg font-semibold text-surface-900 shrink-0">
+      <img src="/logo.svg" alt="OpenModeration" class="h-[2.5rem] w-auto" />
+    </a>
+
+    <!-- Desktop -->
+    <div class="om-desktop flex items-center gap-1">
+
+      <!-- Product -->
+      <div class="om-item relative">
+        <button class="om-trigger flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-surface-600 transition hover:bg-surface-100 hover:text-surface-900" aria-haspopup="true">
+          Product <svg class="om-caret h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div class="om-mega" role="menu">
+          <div class="grid grid-cols-2 gap-6">
+            <div>
+              <p class="om-mega-eyebrow">Platform Modules</p>
+              <a href="/features" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Single Integration</strong><br /><span class="text-xs text-surface-500">Connect once, reach every provider</span></div></a>
+              <a href="/dashboard" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Moderation Console</strong><br /><span class="text-xs text-surface-500">Review, manage, and track decisions</span></div></a>
+              <a href="/action-engine" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Automated Policies</strong><br /><span class="text-xs text-surface-500">Auto-hide, delete, or flag content</span></div></a>
+              <a href="/connectors" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Platform Integrations</strong><br /><span class="text-xs text-surface-500">Facebook, YouTube, Discord</span></div></a>
+            </div>
+            <div>
+              <p class="om-mega-eyebrow">Documentation &amp; Resources</p>
+              <a href="https://docs.openmoderation.com" class="om-mega-link" target="_blank"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Documentation</strong><br /><span class="text-xs text-surface-500">Setup guides, API reference</span></div></a>
+              <a href="/features" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Self-Deployment</strong><br /><span class="text-xs text-surface-500">Deploy on your infrastructure</span></div></a>
+              <a href="https://github.com/open-moderation/open-moderation" class="om-mega-link" target="_blank"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-surface-100 text-surface-600"><svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Open Source</strong><br /><span class="text-xs text-surface-500">AGPL v3, community on GitHub</span></div></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Why -->
+      <div class="om-item relative">
+        <button class="om-trigger flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-surface-600 transition hover:bg-surface-100 hover:text-surface-900" aria-haspopup="true">
+          Why <svg class="om-caret h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div class="om-mega om-mega-3col" role="menu">
+          <div class="grid grid-cols-3 gap-6">
+            <div>
+              <p class="om-mega-eyebrow">By Use Case</p>
+              <a href="/use-cases/social-platforms" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Social Platforms</strong><br /><span class="text-xs text-surface-500">Forums, communities, UGC</span></div></a>
+              <a href="/use-cases/ai-applications" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">AI Applications</strong><br /><span class="text-xs text-surface-500">LLM input/output filtering</span></div></a>
+              <a href="/use-cases/marketplaces" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Marketplaces</strong><br /><span class="text-xs text-surface-500">Listings, reviews, classifieds</span></div></a>
+              <a href="/use-cases/gaming" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Gaming</strong><br /><span class="text-xs text-surface-500">Chat, Discord, MMOs</span></div></a>
+              <a href="/use-cases/enterprise-saas" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Enterprise SaaS</strong><br /><span class="text-xs text-surface-500">Compliance, SOC 2, audit</span></div></a>
+            </div>
+            <div>
+              <p class="om-mega-eyebrow">Why OpenModeration</p>
+              <a href="/features" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">All Features</strong><br /><span class="text-xs text-surface-500">Complete platform overview</span></div></a>
+              <a href="/how-it-works" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">How It Works</strong><br /><span class="text-xs text-surface-500">Full pipeline explained</span></div></a>
+              <a href="/build-vs-buy" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Build vs Buy</strong><br /><span class="text-xs text-surface-500">$1-2M saved by not building</span></div></a>
+              <a href="/alternatives/perspective-api" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Perspective API Alt</strong><br /><span class="text-xs text-surface-500">Sunset 2026 migration</span></div></a>
+            </div>
+            <div>
+              <p class="om-mega-eyebrow">Compliance</p>
+              <a href="/dsa-compliance" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">DSA Compliance</strong><br /><span class="text-xs text-surface-500">Audit trails, data sovereignty</span></div></a>
+              <a href="/security" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Security</strong><br /><span class="text-xs text-surface-500">AES-256, encryption, audit</span></div></a>
+              <a href="/faq" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">FAQ</strong><br /><span class="text-xs text-surface-500">Common questions answered</span></div></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resources -->
+      <div class="om-item relative">
+        <button class="om-trigger flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-surface-600 transition hover:bg-surface-100 hover:text-surface-900" aria-haspopup="true">
+          Resources <svg class="om-caret h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div class="om-mega" role="menu">
+          <div class="grid grid-cols-2 gap-6">
+            <div>
+              <p class="om-mega-eyebrow">Learn</p>
+              <a href="/blog" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Blog</strong><br /><span class="text-xs text-surface-500">Articles, comparisons, guides</span></div></a>
+              <a href="/newsletter" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Newsletter</strong><br /><span class="text-xs text-surface-500">Monthly updates &amp; insights</span></div></a>
+              <a href="/faq" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">FAQ</strong><br /><span class="text-xs text-surface-500">Common questions answered</span></div></a>
+              <a href="/pricing-calculator" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Cost Calculator</strong><br /><span class="text-xs text-surface-500">Compare pricing scenarios</span></div></a>
+            </div>
+            <div>
+              <p class="om-mega-eyebrow">Company</p>
+              <a href="/about" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">About</strong><br /><span class="text-xs text-surface-500">Mission, team, open source</span></div></a>
+              <a href="/dsa-compliance" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">DSA Compliance</strong><br /><span class="text-xs text-surface-500">Regulatory requirements</span></div></a>
+              <a href="/legal" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Legal</strong><br /><span class="text-xs text-surface-500">Privacy, terms, security</span></div></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <a href="/pricing" class="rounded-lg px-3 py-2 text-sm font-medium text-surface-600 transition hover:bg-surface-100 hover:text-surface-900">Pricing</a>
+    </div>
+
+    <!-- Desktop actions -->
+    <div class="om-desktop flex items-center gap-2 ml-auto">
+      <a href="https://github.com/open-moderation" class="hidden rounded-lg p-2 text-surface-400 transition hover:text-surface-600 lg:block" title="GitHub">
+        <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+      </a>
+      <a href="https://app.openmoderation.com/login" class="hidden whitespace-nowrap rounded-lg border border-surface-300 px-4 py-2 text-sm font-medium text-surface-700 transition hover:border-surface-900 hover:text-surface-900 sm:inline-block">Log in</a>
+      <a href="https://app.openmoderation.com" class="inline-flex items-center gap-2 whitespace-nowrap rounded-lg bg-brand-900 px-5 py-2 text-sm font-medium text-white shadow-sm hover:bg-brand-800">Start free trial</a>
+    </div>
+
+    <!-- Mobile hamburger -->
+    <button class="om-hamburger hidden h-10 w-10 flex-col items-center justify-center gap-1.5 rounded-lg" onclick="document.getElementById('om-menu').classList.toggle('open');this.classList.toggle('open')">
+      <span class="block h-0.5 w-5 rounded-full bg-surface-600"></span>
+      <span class="block h-0.5 w-5 rounded-full bg-surface-600"></span>
+      <span class="block h-0.5 w-5 rounded-full bg-surface-600"></span>
+    </button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="om-menu">
+    <div class="om-actions-mobile">
+      <a href="https://app.openmoderation.com" style="background:#1e3a8a;color:white">Start free trial</a>
+      <a href="https://app.openmoderation.com/login" style="color:#334155;border:1px solid #cbd5e1">Log in</a>
+    </div>
+    <hr style="margin: 0; border-color: #e2e8f0;" />
+    <p style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94a3b8;padding:8px 8px 0;">Product</p>
+    <a href="/features">Features</a>
+    <a href="/dashboard">Moderation Console</a>
+    <a href="/action-engine">Automated Policies</a>
+    <a href="/connectors">Platform Integrations</a>
+    <a href="https://docs.openmoderation.com" target="_blank">Documentation</a>
+    <hr />
+    <p style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94a3b8;padding:8px 8px 0;">Use Cases</p>
+    <a href="/use-cases/social-platforms">Social Platforms</a>
+    <a href="/use-cases/ai-applications">AI Applications</a>
+    <a href="/use-cases/marketplaces">Marketplaces</a>
+    <a href="/use-cases/gaming">Gaming</a>
+    <a href="/use-cases/enterprise-saas">Enterprise SaaS</a>
+    <hr />
+    <a href="/how-it-works">How it Works</a>
+    <a href="/build-vs-buy">Build vs Buy</a>
+    <a href="/alternatives/perspective-api">Perspective API Alternative</a>
+    <a href="/dsa-compliance">DSA Compliance</a>
+    <a href="/security">Security</a>
+    <a href="/pricing">Pricing</a>
+    <hr />
+    <a href="/blog">Blog</a>
+    <a href="/newsletter">Newsletter</a>
+    <a href="/faq">FAQ</a>
+    <a href="/pricing-calculator">Cost Calculator</a>
+    <a href="/about">About</a>
+    <a href="/legal">Legal</a>
+    <hr />
+  </div>
+</nav>
+
+<script>
+  document.getElementById('om-menu').querySelectorAll('a').forEach(function(a) {
+    a.addEventListener('click', function() {
+      document.getElementById('om-menu').classList.remove('open');
+      document.querySelector('.om-hamburger').classList.remove('open');
+    });
+  });
+</script>

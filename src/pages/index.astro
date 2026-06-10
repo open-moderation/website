@@ -1,0 +1,413 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CTASection from '../components/CTASection.astro';
+import CodeBlock from '../components/CodeBlock.astro';
+import KpiBand from '../components/KpiBand.astro';
+import LogoMarquee from '../components/LogoMarquee.astro';
+import TestimonialCard from '../components/TestimonialCard.astro';
+import WaveDecoration from '../components/WaveDecoration.astro';
+
+const orgJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "OpenModeration",
+  "applicationCategory": "SecurityApplication",
+  "operatingSystem": "Linux, Docker",
+  "description": "Open-source unified moderation platform. One API for every moderation provider, with automated workflows and DSA-compliant audit trails.",
+  "url": "https://openmoderation.com",
+  "license": "https://github.com/open-moderation/OpenModeration/blob/main/LICENSE",
+  "offers": {
+    "@type": "Offer", "price": "0", "priceCurrency": "USD",
+    "priceValidUntil": "2027-12-31", "availability": "https://schema.org/InStock"
+  },
+  "author": { "@type": "Organization", "name": "Logora" }
+};
+
+const kpiItems = [
+  { label: "Supported providers", value: "8+" },
+  { label: "Avg. latency", value: "300ms", prefix: "<" },
+  { label: "Hosted in", value: "EU" },
+  { label: "Deploy time", value: "5 min" },
+];
+
+const providerItems = [
+  { name: 'OpenAI', subtitle: 'Moderation API' },
+  { name: 'Azure', subtitle: 'AI Content Safety' },
+  { name: 'HuggingFace', subtitle: 'Llama Guard' },
+  { name: 'Mistral', subtitle: 'Moderation' },
+  { name: 'Google', subtitle: 'Perspective API' },
+  { name: 'Cohere', subtitle: 'Classify' },
+  { name: 'OpenAI', subtitle: 'LLM (GPT-4o)' },
+  { name: 'Anthropic', subtitle: 'LLM (Claude)' },
+];
+
+const testimonialItems = [
+  { quote: "We were maintaining separate integrations for OpenAI, Azure, and HuggingFace. OpenModeration unified everything into one API call. Our team stopped maintaining moderation code and started building product features.", author: "Alex Chen", role: "CTO", company: "Social Platform (anonymous)" },
+  { quote: "The BYOK model sealed it for us. We bring our own OpenAI and Azure keys, deploy with Docker, and have full control. No vendor lock-in, no surprise bills.", author: "Sarah Mitchell", role: "Head of Trust & Safety", company: "Gaming Platform (anonymous)" },
+  { quote: "DSA compliance was our #1 concern. OpenModeration's audit trail and configurable data retention let us prove to regulators exactly how we moderate. And it's open source &mdash; no black box.", author: "Marcus Weber", role: "VP Engineering", company: "Marketplace (anonymous)" },
+];
+
+const features = [
+  { title: 'Single Integration', description: 'Connect once to moderate content through OpenAI, Azure, HuggingFace, Mistral, and more. One connection, one format, all providers.' },
+  { title: 'Smart Provider Selection', description: 'Each piece of content is automatically routed to the best moderation provider based on language, type, and cost.' },
+  { title: 'Use Your Own Accounts', description: 'Bring your existing provider subscriptions. No markup, no hidden fees, full control over your costs.' },
+  { title: 'Moderation Dashboard', description: 'Full interface to manage your moderation queue, review flagged content, monitor decisions, and track team performance.' },
+  { title: 'Automated Moderation Rules', description: 'Define moderation policies that execute automatically. Flag, hide, or delete content based on your community guidelines.' },
+  { title: 'Social Platform Integrations', description: 'Connect Facebook, YouTube, and Discord to moderate comments and messages directly on each platform.' },
+  { title: 'Compliance Dashboard', description: 'Every decision logged with full details. Generate reports for DSA and regulatory audits with one click.' },
+  { title: 'Bulk Moderation', description: 'Review and moderate thousands of existing content items at once. Perfect for cleaning up old content or onboarding.' },
+  { title: 'On-Premise or Cloud', description: 'Deploy on your own infrastructure for full data control, or use our managed cloud for zero maintenance.' },
+];
+
+const exampleCode = `# Before: 3 integrations, 3 formats
+const openai = await moderateWithOpenAI(text);
+const azure = await moderateWithAzure(text);
+const result = normalize({ openai, azure });
+
+# After: One call, one format
+const result = await fetch('https://api.openmoderation.com/v1/moderations', {
+  method: 'POST',
+  headers: { 'Authorization': 'Bearer om_key_...' },
+  body: JSON.stringify({ input: text })
+});`;
+---
+
+<BaseLayout
+  title="Open-Source Moderation Platform &mdash; Unified API and Automated Workflows"
+  description="OpenModeration is the open-source moderation platform. One API for OpenAI, Azure, HuggingFace, and more. Self-host or cloud. DSA-compliant."
+  jsonLd={orgJsonLd}
+>
+  <!-- Hero -->
+  <section class="relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-brand-50 via-white to-surface-50" />
+    <WaveDecoration variant="flow" />
+    <div class="relative mx-auto max-w-7xl px-4 pb-12 pt-8 sm:px-6 lg:px-8 lg:pt-12">
+      <div class="mx-auto max-w-3xl text-center">
+        <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600 shadow-sm">
+          <span class="flex h-2 w-2 animate-pulse-dot rounded-full bg-accent-500" />
+          Unified API . Multi-provider
+        </div>
+        <h1 class="animate-fade-in-up text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl lg:text-6xl">
+          The unified moderation platform
+        </h1>
+        <p class="animate-fade-in-up delay-1 mt-6 text-lg leading-relaxed text-surface-500 sm:text-xl">
+          One API for OpenAI, Azure, HuggingFace, Mistral, and more.
+          Route, moderate, and manage &mdash; all from a single platform.
+        </p>
+        <div class="animate-fade-in-up delay-2 mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <a href="https://app.openmoderation.com" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm">
+            Start free trial
+          </a>
+          <a href="/features" class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">
+            See all features
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+        <div class="mt-6 flex items-center justify-center gap-6 text-xs text-surface-400">
+          <span class="flex items-center gap-1.5">
+            &#x1F1EA;&#x1F1FA;
+            Made and hosted in the EU
+          </span>
+          <span class="flex items-center gap-1.5">
+            <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            GDPR-compliant
+          </span>
+          <span class="flex items-center gap-1.5">
+            <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/></svg>
+            AGPL v3
+          </span>
+        </div>
+      </div>
+    </div>
+    <!-- KPI Band -->
+    <div class="animate-fade-in-up delay-3 pb-12">
+      <KpiBand items={kpiItems} />
+    </div>
+  </section>
+
+  <!-- Logo Marquee -->
+  <section class="border-t border-surface-100 bg-white py-8">
+    <p class="mb-4 text-center text-xs font-medium uppercase tracking-wider text-surface-400">Integrated Providers</p>
+    <LogoMarquee items={providerItems} speed="45s" />
+  </section>
+
+  <!-- Problem / Solution -->
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700">
+            <span class="flex h-1.5 w-1.5 animate-pulse-dot rounded-full bg-brand-500" />
+            The problem
+          </div>
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">
+            One platform. Every moderation provider.
+          </h2>
+          <p class="mt-4 text-lg text-surface-500">
+            The moderation market is fragmented. OpenAI, Azure, HuggingFace, Mistral, Cohere &mdash;
+            each has its own API format, category schema, and pricing. Integrating two providers
+            means building and maintaining two separate integrations.
+          </p>
+          <p class="mt-4 text-lg text-surface-500">
+            OpenModeration abstracts all of it. One API key, one format, one dashboard.
+            Change providers with zero code changes.
+          </p>
+          <div class="mt-8 space-y-4">
+            <div class="flex items-start gap-3">
+              <svg class="mt-0.5 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600"><strong>Before:</strong> Build separate code for each provider. Maintain N integrations.</p>
+            </div>
+            <div class="flex items-start gap-3">
+              <svg class="mt-0.5 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600"><strong>After:</strong> One API call. One normalized response. Switch providers in your config file.</p>
+            </div>
+          </div>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6 shadow-sm">
+          <CodeBlock code={exampleCode} lang="bash" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-3 py-1 text-xs font-medium text-surface-500">
+          <span class="flex h-1.5 w-1.5 animate-pulse-dot rounded-full bg-brand-500" />
+          Trusted by teams like yours
+        </div>
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">
+          What teams are saying
+        </h2>
+      </div>
+      <div class="grid gap-6 md:grid-cols-3">
+        {testimonialItems.map((t) => (
+          <TestimonialCard quote={t.quote} author={t.author} role={t.role} company={t.company} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Full Pipeline -->
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-16 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">
+          The complete moderation pipeline
+        </h2>
+        <p class="mt-4 text-lg text-surface-500">
+          From ingestion to action, OpenModeration handles every step.
+        </p>
+      </div>
+      <div class="grid gap-4 grid-cols-2 md:grid-cols-4">
+        <div class="rounded-xl border border-surface-200 bg-white p-5 text-center transition hover:shadow-md">
+          <div class="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <h3 class="font-semibold text-surface-900">1. Collect</h3>
+          <p class="mt-1 text-xs text-surface-500">Content arrives via API, social platforms, or webhooks</p>
+        </div>
+        <div class="rounded-xl border border-brand-200 bg-brand-50 p-5 text-center shadow-sm transition hover:shadow-md">
+          <div class="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-600 text-white">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          </div>
+          <h3 class="font-semibold text-surface-900">2. Analyze</h3>
+          <p class="mt-1 text-xs text-surface-500">AI reviews content across multiple providers</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-5 text-center transition hover:shadow-md">
+          <div class="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          </div>
+          <h3 class="font-semibold text-surface-900">3. Decide</h3>
+          <p class="mt-1 text-xs text-surface-500">Policies automatically enforce your guidelines</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-5 text-center transition hover:shadow-md">
+          <div class="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+          </div>
+          <h3 class="font-semibold text-surface-900">4. Review</h3>
+          <p class="mt-1 text-xs text-surface-500">Edge cases flagged for your team</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Grid -->
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-16 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">
+          Everything you need to moderate at scale
+        </h2>
+        <p class="mt-4 text-lg text-surface-500">
+          Not just an API &mdash; a complete moderation platform.
+        </p>
+      </div>
+      <div class="stagger-fade-in grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        {features.map((f) => (
+          <div class="rounded-xl border border-surface-200 bg-white p-6 transition hover:-translate-y-0.5 hover:shadow-md">
+            <h3 class="text-lg font-semibold text-surface-900">{f.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-surface-500">{f.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Dark Contrast Section: DSA Compliance -->
+  <section class="relative overflow-hidden bg-ink-900 py-20">
+    <WaveDecoration variant="corner" />
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-3xl text-center">
+        <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-ink-700 bg-ink-800 px-4 py-1.5 text-sm text-surface-300">
+          <svg class="h-4 w-4 text-turquoise" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          DSA-ready
+        </div>
+        <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+          Built for regulatory compliance
+        </h2>
+        <p class="mx-auto mt-4 max-w-xl text-surface-400">
+          Every moderation logged with full audit trail. Configurable data retention.
+          Exportable transparency reports. Self-hosted for complete data sovereignty.
+        </p>
+        <div class="mt-8">
+          <a href="/dsa-compliance" class="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 text-sm font-semibold text-surface-900 shadow-sm">
+            Learn about DSA compliance
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison Table -->
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">
+          How we compare
+        </h2>
+        <p class="mt-4 text-lg text-surface-500">
+          See how OpenModeration compares to other moderation platforms.
+        </p>
+      </div>
+      <div class="overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Feature</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Nima</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Checkstep</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Bodyguard</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            <tr><td class="px-6 py-4 text-surface-600">Auditable code</td><td class="px-6 py-4"><span class="text-accent-600">Yes (AGPL v3)</span></td><td class="px-6 py-4 text-surface-400">No</td><td class="px-6 py-4 text-surface-400">No</td><td class="px-6 py-4 text-surface-400">No</td></tr>
+            <tr><td class="px-6 py-4 text-surface-600">On-premise deployment</td><td class="px-6 py-4"><span class="text-accent-600">Yes (Docker)</span></td><td class="px-6 py-4 text-surface-400">Limited</td><td class="px-6 py-4 text-surface-400">No</td><td class="px-6 py-4 text-surface-400">No</td></tr>
+            <tr><td class="px-6 py-4 text-surface-600">Multi-provider support</td><td class="px-6 py-4"><span class="text-accent-600">Yes</span></td><td class="px-6 py-4 text-surface-500">Yes</td><td class="px-6 py-4 text-surface-500">Yes</td><td class="px-6 py-4 text-surface-400">No</td></tr>
+            <tr><td class="px-6 py-4 text-surface-600">Use your own accounts</td><td class="px-6 py-4"><span class="text-accent-600">Yes</span></td><td class="px-6 py-4 text-surface-400">No</td><td class="px-6 py-4 text-surface-400">No</td><td class="px-6 py-4 text-surface-400">No</td></tr>
+            <tr><td class="px-6 py-4 text-surface-600">Automated policies</td><td class="px-6 py-4"><span class="text-accent-600">Yes</span></td><td class="px-6 py-4 text-surface-500">Yes</td><td class="px-6 py-4 text-surface-500">Yes</td><td class="px-6 py-4 text-surface-400">No</td></tr>
+            <tr><td class="px-6 py-4 text-surface-600">Compliance reporting</td><td class="px-6 py-4"><span class="text-accent-600">Yes</span></td><td class="px-6 py-4 text-surface-500">Yes</td><td class="px-6 py-4 text-surface-500">Yes</td><td class="px-6 py-4 text-surface-400">Partial</td></tr>
+            <tr><td class="px-6 py-4 text-surface-600">Starting price</td><td class="px-6 py-4"><span class="text-accent-600">Free</span></td><td class="px-6 py-4 text-surface-500">Custom quote</td><td class="px-6 py-4 text-surface-500">Custom quote</td><td class="px-6 py-4 text-surface-500">Custom quote</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="mt-6 text-center">
+        <a href="/build-vs-buy" class="text-sm font-medium text-brand-600 hover:text-brand-500">
+          See detailed Build vs Buy comparison &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust & Open Source -->
+  <section class="border-t border-surface-100 bg-white py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid items-center gap-8 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="flex items-center gap-2 text-lg font-semibold text-surface-900">
+            <svg class="h-5 w-5 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            No vendor lock-in
+          </h3>
+          <p class="mt-2 text-sm text-surface-500">Switch providers with zero code changes. Use BYOK to keep your direct relationships with OpenAI, Azure, and HuggingFace.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="flex items-center gap-2 text-lg font-semibold text-surface-900">
+            <svg class="h-5 w-5 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
+            Data sovereignty
+          </h3>
+          <p class="mt-2 text-sm text-surface-500">Self-host with Docker. All data stays on your infrastructure. No third-party processing. Essential for DSA and GDPR compliance.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="flex items-center gap-2 text-lg font-semibold text-surface-900">
+            <svg class="h-5 w-5 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            Fully auditable
+          </h3>
+          <p class="mt-2 text-sm text-surface-500">AGPL v3 open source. Every line of code is public and auditable. No black boxes, no hidden logic. Deploy with docker-compose up.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="flex items-center gap-2 text-lg font-semibold text-surface-900">
+            <svg class="h-5 w-5 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Developer-friendly
+          </h3>
+          <p class="mt-2 text-sm text-surface-500">Clean REST API, standardized responses, typed SDKs, auto-generated docs. Built by developers, for developers.</p>
+        </div>
+      </div>
+      <div class="mt-8 text-center">
+        <a href="https://github.com/open-moderation/OpenModeration" class="text-sm font-medium text-surface-500 hover:text-surface-700">
+          View on GitHub &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Preview -->
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">
+          Simple, transparent pricing
+        </h2>
+        <p class="mt-4 text-lg text-surface-500">
+          Start free, scale as you grow. No sales call required.
+        </p>
+      </div>
+      <div class="grid gap-8 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-white p-8 shadow-sm">
+          <h3 class="text-lg font-semibold text-surface-900">Self-Hosted (Open Source)</h3>
+          <p class="mt-2 text-4xl font-bold text-surface-900">Free</p>
+          <p class="mt-1 text-sm text-surface-500">AGPL v3 . Unlimited usage</p>
+          <ul class="mt-6 space-y-3">
+            <li class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> All providers and features</li>
+            <li class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Admin dashboard</li>
+            <li class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> BYOK (bring your own keys)</li>
+            <li class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Action Engine and Connectors</li>
+            <li class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Community support</li>
+          </ul>
+        </div>
+        <div class="relative rounded-xl border-2 border-brand-500 bg-white p-8 shadow-md">
+          <div class="absolute -top-3 right-6 rounded-full bg-brand-600 px-3 py-1 text-xs font-semibold text-white">Coming soon</div>
+          <h3 class="text-lg font-semibold text-surface-900">Cloud (Managed SaaS)</h3>
+           <p class="mt-2 text-4xl font-bold text-surface-900">From $49<span class="text-lg font-medium text-surface-400">/mo</span></p>
+          <p class="mt-1 text-sm text-surface-500">Managed hosting . Priority support</p>
+          <ul class="mt-6 space-y-3">
+            <li class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Everything in self-hosted</li>
+            <li class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Zero infrastructure management</li>
+            <li class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Platform-managed provider keys</li>
+            <li class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> SLA guarantees</li>
+            <li class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Priority support</li>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-8 text-center">
+        <a href="/pricing" class="text-sm font-medium text-brand-600 hover:text-brand-500">
+          View full pricing details &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

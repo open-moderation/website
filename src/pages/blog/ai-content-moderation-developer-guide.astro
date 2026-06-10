@@ -1,0 +1,104 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CTASection from '../../components/CTASection.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Content Moderation for AI Applications: A Developer's Guide",
+  "description": "How to implement input and output filtering for LLM-powered applications.",
+  "datePublished": "2026-06-05",
+  "author": { "@type": "Organization", "name": "Logora" }
+};
+
+const pattern1 = `User Input -> Input Moderation -> { if flagged -> reject } -> LLM
+LLM Output -> Output Moderation -> { if flagged -> fallback response } -> User`;
+
+const pattern2 = `User Input -> Input Moderation + LLM (in parallel)
+-> Wait for moderation result
+-> If flagged -> discard LLM response & show error
+-> If not flagged -> show LLM response after output moderation`;
+---
+
+<BaseLayout title="Content Moderation for AI Applications: A Developer's Guide" description="How to implement input and output filtering for LLM-powered applications. Best practices for prompt injection prevention and content safety." jsonLd={articleJsonLd}>
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-06-05">June 5, 2026</time>
+        <span>&middot;</span>
+        <span>10 min read</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Content Moderation for AI Applications: A Developer's Guide</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Every LLM-powered application needs content moderation. Not just for compliance &mdash;
+        for safety, for user trust, and for protecting your model from adversarial inputs.
+      </p>
+      <p>
+        In this guide, we'll cover the two sides of AI content moderation: filtering what users
+        send to your LLM, and filtering what your LLM sends back to users.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">The two filters every AI app needs</h2>
+
+      <h3 class="text-lg font-semibold text-surface-900">1. Input filtering</h3>
+      <p>
+        Before user input reaches your LLM, you need to check for:
+      </p>
+      <ul>
+        <li><strong>Harmful content:</strong> Hate speech, harassment, threats, sexual content</li>
+        <li><strong>Prompt injection:</strong> Attempts to override system prompts or jailbreak the model</li>
+        <li><strong>Illicit requests:</strong> Instructions for illegal activities, drug manufacturing, etc.</li>
+        <li><strong>PII leakage:</strong> Users accidentally sharing personal information</li>
+      </ul>
+
+      <h3 class="text-lg font-semibold text-surface-900">2. Output filtering</h3>
+      <p>
+        Before model output reaches your users, you need to check for:
+      </p>
+      <ul>
+        <li><strong>Harmful generated content:</strong> The model producing hate speech, violence, etc.</li>
+        <li><strong>PII generation:</strong> The model accidentally generating real or fabricated personal data</li>
+        <li><strong>Hallucinated dangerous information:</strong> Medical advice, legal counsel, financial recommendations</li>
+        <li><strong>Policy violations:</strong> Content that violates your application's terms of service</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Implementation patterns</h2>
+
+<p><strong>Pattern 1: Sequential filtering (recommended for most apps)</strong></p>
+<CodeBlock code={pattern1} lang="text" />
+
+<p><strong>Pattern 2: Parallel filtering (for low-latency requirements)</strong></p>
+<CodeBlock code={pattern2} lang="text" />
+
+      <h2 class="text-xl font-bold text-surface-900">Defense in depth with multiple providers</h2>
+      <p>
+        Relying on a single moderation provider creates a single point of failure and blind spots.
+        A layered approach is more robust:
+      </p>
+      <ul>
+        <li>Use <strong>OpenAI Moderation</strong> for general harmful content detection</li>
+        <li>Use <strong>Llama Guard</strong> (self-hosted) for zero-cost, zero-data-leakage filtering of sensitive inputs</li>
+        <li>Use <strong>LLM-as-classifier</strong> with GPT-4o or Claude for custom policy enforcement with rich context understanding</li>
+      </ul>
+      <p>
+        With OpenModeration, this layered approach is a single API call. Set up rules that
+        route content through multiple providers and aggregate results for a final decision.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Best practices</h2>
+      <ol>
+        <li><strong>Always moderate both input and output</strong> &mdash; they catch different types of risk</li>
+        <li><strong>Use context for better accuracy</strong> &mdash; pass conversation history and author info to improve moderation decisions</li>
+        <li><strong>Set appropriate thresholds</strong> &mdash; lower thresholds for high-risk categories (minors, self-harm), higher for low-risk (spam)</li>
+        <li><strong>Log everything for audit</strong> &mdash; you need to prove your moderation works, especially for regulated industries</li>
+        <li><strong>Test with adversarial inputs</strong> &mdash; regularly test your moderation pipeline with known jailbreak prompts</li>
+      </ol>
+    </div>
+  </article>
+
+  <CTASection />
+</BaseLayout>

@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CTASection from '../../components/CTASection.astro';
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "DSA Compliance Made Simple with Open-Source Moderation",
+  "description": "How to meet EU Digital Services Act requirements using open-source tools. Audit trails, transparency reporting, and data sovereignty.",
+  "datePublished": "2026-06-08",
+  "author": { "@type": "Organization", "name": "Logora" }
+};
+---
+
+<BaseLayout title="DSA Compliance Made Simple with Open-Source Moderation" description="How to meet EU Digital Services Act requirements using open-source tools. Audit trails, transparency reporting, and data sovereignty." jsonLd={articleJsonLd}>
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-06-08">June 8, 2026</time>
+        <span>&middot;</span>
+        <span>6 min read</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">DSA Compliance Made Simple with Open-Source Moderation</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        The EU Digital Services Act (DSA) came into full effect in 2024, and its impact is
+        still reverberating through the tech industry. Any platform operating in the EU &mdash;
+        regardless of where it's headquartered &mdash; must detect, report, and remove illegal
+        content. Fines can reach 6% of global annual turnover.
+      </p>
+      <p>
+        For many platforms, the DSA creates a fundamental challenge: how do you prove to regulators
+        that your moderation system works? The answer requires three things: an automated moderation
+        pipeline, a complete audit trail, and the ability to generate transparency reports.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">The DSA requirements, simplified</h2>
+      <p>The DSA doesn't prescribe a specific technology. It requires outcomes:</p>
+      <ul>
+        <li><strong>Notice and action (Art. 14):</strong> Users must be able to flag content. Platforms must act on notices.</li>
+        <li><strong>Transparency reporting (Art. 15):</strong> Platforms must publish reports on content moderation activities.</li>
+        <li><strong>Illegal content (Art. 16):</strong> Platforms must have systems to detect and remove illegal content.</li>
+        <li><strong>Complaint system (Art. 21):</strong> Users must be able to appeal moderation decisions.</li>
+        <li><strong>Risk assessment (Art. 23):</strong> Very large platforms must assess systemic risks.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Why open source matters for compliance</h2>
+      <p>
+        Here's a question that DSA compliance officers should be asking: if your moderation
+        platform is a proprietary black box, how can you prove to a regulator what it does?
+      </p>
+      <p>
+        Proprietary platforms can claim to moderate content, but you can't inspect their logic.
+        You can't verify that they handle content correctly. You can't audit their decision-making.
+        You're trusting their claims &mdash; and that trust might not satisfy a regulator.
+      </p>
+      <p>
+        Open-source moderation solves this. Every line of code is auditable. Every decision
+        can be traced. Your compliance team can verify exactly how content is moderated,
+        what criteria are applied, and where the results go.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Building a DSA-compliant moderation pipeline</h2>
+      <p>Here's what a DSA-compliant setup looks like with OpenModeration:</p>
+      <ol>
+        <li><strong>Content ingestion:</strong> Receive content via API, webhook, or social connectors. Every item gets a unique ID and is stored encrypted.</li>
+        <li><strong>AI moderation:</strong> Route to the best provider. Results include scores per category and a flagged/not-flagged decision.</li>
+        <li><strong>Rule evaluation:</strong> If scores exceed thresholds, auto-actions trigger (hide, delete, flag for review).</li>
+        <li><strong>Audit logging:</strong> Every step is logged: content, provider, scores, rule matched, action taken, timestamp.</li>
+        <li><strong>Transparency export:</strong> GET /v1/analytics/usage provides the data needed for DSA transparency reports.</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Meeting specific DSA requirements</h2>
+      <p>
+        <strong>Audit trail:</strong> OpenModeration logs every moderation with provider, latency, scores, and decision.
+        Data is retained per your configured policy (default 7 days for input text, 90 days for logs).
+        All exportable for regulatory audits.
+      </p>
+      <p>
+        <strong>Transparency reporting:</strong> The analytics API provides usage data by period, provider, and category.
+        Total requests, flagged rates, provider performance &mdash; exactly what DSA transparency reports require.
+      </p>
+      <p>
+        <strong>Data sovereignty:</strong> Self-host on your infrastructure. All data stays within your control.
+        No third-party data processing. Essential for GDPR compliance and DSA risk assessments.
+      </p>
+      <p>
+        <strong>Human review:</strong> The manual review queue allows human moderators to handle edge cases,
+        meeting DSA requirements for complaint handling and appeals.
+      </p>
+    </div>
+  </article>
+
+  <CTASection />
+</BaseLayout>

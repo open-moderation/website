@@ -1,0 +1,137 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CTASection from '../../components/CTASection.astro';
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "OpenAI Moderation vs Azure vs Llama Guard: A 2026 Comparison",
+  "description": "An objective comparison of the leading AI moderation providers. Performance, pricing, language coverage.",
+  "datePublished": "2026-06-10",
+  "author": { "@type": "Organization", "name": "Logora" }
+};
+---
+
+<BaseLayout title="OpenAI Moderation vs Azure vs Llama Guard: A 2026 Comparison" description="Compare OpenAI Moderation API, Azure AI Content Safety, and Llama Guard head-to-head. Performance, pricing, language support, and when to use each." jsonLd={articleJsonLd}>
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-06-10">June 10, 2026</time>
+        <span>&middot;</span>
+        <span>8 min read</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">OpenAI Moderation vs Azure vs Llama Guard: A 2026 Comparison</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Choosing the right moderation provider is one of the most important decisions for any
+        platform that hosts user-generated content. But comparing providers is difficult &mdash;
+        each has different APIs, different category schemas, different pricing, and different
+        language coverage.
+      </p>
+      <p>
+        In this post, we compare the three most popular options: <strong>OpenAI Moderation API</strong>,
+        <strong>Azure AI Content Safety</strong>, and <strong>Meta's Llama Guard</strong>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">OpenAI Moderation API</h2>
+      <p>
+        OpenAI's Moderation API is the most widely used AI moderation service. It's tightly
+        integrated with the OpenAI ecosystem and requires no additional infrastructure.
+      </p>
+      <p><strong>Strengths:</strong></p>
+      <ul>
+        <li>Excellent accuracy for English content &mdash; consistently the best in class</li>
+        <li>Rich category taxonomy including hate, harassment, sexual, violence, self-harm, illicit, and more</li>
+        <li>Simple API &mdash; just send text and get scores back</li>
+        <li>Low latency &mdash; typically 200-300ms</li>
+      </ul>
+      <p><strong>Limitations:</strong></p>
+      <ul>
+        <li>Vendor lock-in &mdash; switching means rewriting your integration</li>
+        <li>32K character input limit</li>
+        <li>Limited non-English performance &mdash; good for major European languages, weaker for others</li>
+        <li>No image or video moderation</li>
+        <li>Pricing: $0.0001/1K tokens (roughly $0.10 per 1K short texts)</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Azure AI Content Safety</h2>
+      <p>
+        Microsoft's Azure AI Content Safety is the enterprise choice. Built into the Azure ecosystem,
+        it offers strong compliance features and multimodal support.
+      </p>
+      <p><strong>Strengths:</strong></p>
+      <ul>
+        <li>Enterprise-grade compliance &mdash; SOC 2, ISO 27001, HIPAA</li>
+        <li>Supports both text and image moderation</li>
+        <li>Custom severity thresholds and blocklists</li>
+        <li>Good integration with other Azure services</li>
+      </ul>
+      <p><strong>Limitations:</strong></p>
+      <ul>
+        <li>Requires Azure subscription &mdash; can be a blocker for smaller teams</li>
+        <li>Vendor lock-in to the Microsoft ecosystem</li>
+        <li>More complex authentication and API structure</li>
+        <li>Pricing: $0.50-$1.00 per 1K text records, higher than OpenAI</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Llama Guard (HuggingFace)</h2>
+      <p>
+        Meta's Llama Guard is a purpose-built safety classification model available on HuggingFace.
+        It's open source, free to use, and can run on your own hardware.
+      </p>
+      <p><strong>Strengths:</strong></p>
+      <ul>
+        <li>100% free &mdash; no API costs, no usage limits</li>
+        <li>Runs locally &mdash; zero data leaves your infrastructure</li>
+        <li>Open source &mdash; auditable, customizable</li>
+        <li>No vendor lock-in</li>
+      </ul>
+      <p><strong>Limitations:</strong></p>
+      <ul>
+        <li>Requires GPU hardware for reasonable latency</li>
+        <li>1-2 second latency on GPU, much slower on CPU</li>
+        <li>English-only in practice</li>
+        <li>No managed API &mdash; you need to host it yourself or use HF Inference API</li>
+        <li>Less rich category taxonomy compared to OpenAI</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Head-to-head comparison</h2>
+      <div class="overflow-hidden rounded-xl border border-surface-200">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-4 py-3 text-left font-semibold text-surface-900">Criterion</th>
+              <th class="px-4 py-3 text-left font-semibold text-surface-900">OpenAI</th>
+              <th class="px-4 py-3 text-left font-semibold text-surface-900">Azure</th>
+              <th class="px-4 py-3 text-left font-semibold text-surface-900">Llama Guard</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200">
+            <tr><td class="px-4 py-3">English accuracy</td><td class="px-4 py-3 text-accent-600">Best</td><td class="px-4 py-3">Good</td><td class="px-4 py-3">Good</td></tr>
+            <tr><td class="px-4 py-3">Non-English support</td><td class="px-4 py-3">Good (major langs)</td><td class="px-4 py-3">Good</td><td class="px-4 py-3">Limited</td></tr>
+            <tr><td class="px-4 py-3">Latency</td><td class="px-4 py-3">~250ms</td><td class="px-4 py-3">~300ms</td><td class="px-4 py-3">~1.5s (GPU)</td></tr>
+            <tr><td class="px-4 py-3">Cost per 1K requests</td><td class="px-4 py-3">~$0.10</td><td class="px-4 py-3">$0.50-$1.00</td><td class="px-4 py-3">$0 (self-hosted)</td></tr>
+            <tr><td class="px-4 py-3">Self-hostable</td><td class="px-4 py-3">No</td><td class="px-4 py-3">No</td><td class="px-4 py-3">Yes</td></tr>
+            <tr><td class="px-4 py-3">Open source</td><td class="px-4 py-3">No</td><td class="px-4 py-3">No</td><td class="px-4 py-3">Yes</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="text-xl font-bold text-surface-900">The smart approach: use all three</h2>
+      <p>
+        The best moderation strategy isn't picking one provider &mdash; it's using multiple
+        providers together. Use OpenAI for English content with rich categories. Use Azure
+        for enterprise compliance requirements. Use Llama Guard for zero-cost, zero-data-leakage
+        moderation of sensitive content.
+        </p>
+      <p>
+        This is exactly what OpenModeration enables. One API, all providers, smart routing that picks
+        the best option for each request. Change your provider strategy without changing your code.
+      </p>
+    </div>
+  </article>
+
+  <CTASection />
+</BaseLayout>
