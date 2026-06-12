@@ -7,20 +7,42 @@ import LogoMarquee from '../components/LogoMarquee.astro';
 import TestimonialCard from '../components/TestimonialCard.astro';
 import WaveDecoration from '../components/WaveDecoration.astro';
 
-const orgJsonLd = {
+const homeJsonLd = {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "OpenModeration",
-  "applicationCategory": "SecurityApplication",
-  "operatingSystem": "Linux, Docker",
-  "description": "Open-source unified moderation platform. One API for every moderation provider, with automated workflows and DSA-compliant audit trails.",
-  "url": "https://openmoderation.com",
-  "license": "https://github.com/open-moderation/OpenModeration/blob/main/LICENSE",
-  "offers": {
-    "@type": "Offer", "price": "0", "priceCurrency": "USD",
-    "priceValidUntil": "2027-12-31", "availability": "https://schema.org/InStock"
-  },
-  "author": { "@type": "Organization", "name": "Logora" }
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://openmoderation.com/#organization",
+      "name": "OpenModeration",
+      "url": "https://openmoderation.com",
+      "logo": "https://openmoderation.com/logo.svg",
+      "sameAs": [
+        "https://github.com/open-moderation/OpenModeration"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://openmoderation.com/#website",
+      "url": "https://openmoderation.com",
+      "name": "OpenModeration",
+      "publisher": { "@id": "https://openmoderation.com/#organization" }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://openmoderation.com/#software",
+      "name": "OpenModeration",
+      "applicationCategory": "SecurityApplication",
+      "operatingSystem": "Linux, Docker",
+      "description": "Open-source unified moderation platform. One API for every moderation provider, with automated workflows and DSA-compliant audit trails.",
+      "url": "https://openmoderation.com",
+      "license": "https://github.com/open-moderation/OpenModeration/blob/main/LICENSE",
+      "offers": {
+        "@type": "Offer", "price": "0", "priceCurrency": "USD",
+        "priceValidUntil": "2027-12-31", "availability": "https://schema.org/InStock"
+      },
+      "author": { "@id": "https://openmoderation.com/#organization" }
+    }
+  ]
 };
 
 const kpiItems = [
@@ -73,9 +95,9 @@ const result = await fetch('https://api.openmoderation.com/v1/moderations', {
 ---
 
 <BaseLayout
-  title="Open-Source Moderation Platform &mdash; Unified API and Automated Workflows"
+  title="Open-Source Moderation Platform — Unified API and Automated Workflows"
   description="OpenModeration is the open-source moderation platform. One API for OpenAI, Azure, HuggingFace, and more. Self-host or cloud. DSA-compliant."
-  jsonLd={orgJsonLd}
+  jsonLd={homeJsonLd}
 >
   <!-- Hero -->
   <section class="relative overflow-hidden">

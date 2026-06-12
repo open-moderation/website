@@ -14,7 +14,7 @@ const faqItems = [
   },
   {
     question: "How is this different from Nima (Tremau)?",
-    answer: "Nima (Tremau) is a proprietary, closed-source platform that requires sharing your content data with their infrastructure. OpenModeration is open source, lets you bring your own API keys, and can be self-hosted with a single docker-compose command &mdash; your data stays on your infrastructure.",
+    answer: "Nima (Tremau) is a proprietary, closed-source platform that requires sharing your content data with their infrastructure. OpenModeration is open source, lets you bring your own API keys, and can be self-hosted with a single docker-compose command — your data stays on your infrastructure.",
   },
   {
     question: "How is this different from Checkstep?",
@@ -22,7 +22,7 @@ const faqItems = [
   },
   {
     question: "What does DSA-compliant mean?",
-    answer: "OpenModeration provides a complete audit trail of all moderation decisions, configurable data retention policies, and exportable reports &mdash; helping platforms meet the transparency and accountability requirements of the EU Digital Services Act (DSA).",
+    answer: "OpenModeration provides a complete audit trail of all moderation decisions, configurable data retention policies, and exportable reports — helping platforms meet the transparency and accountability requirements of the EU Digital Services Act (DSA).",
   },
   {
     question: "Can I use my own API keys?",
@@ -53,11 +53,25 @@ const faqItems = [
     answer: "The current release focuses on text moderation. Image and video moderation is on the roadmap and will leverage multi-modal LLM providers as they become available.",
   },
 ];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqItems.map(item => ({
+    "@type": "Question",
+    "name": item.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": item.answer.replace(/&mdash;/g, '—')
+    }
+  }))
+};
 ---
 
 <BaseLayout
-  title="Frequently Asked Questions &mdash; OpenModeration"
+  title="Frequently Asked Questions — OpenModeration"
   description="Find answers to common questions about OpenModeration: pricing, self-hosting, BYOK, DSA compliance, supported providers, and integration."
+  jsonLd={faqJsonLd}
 >
   <section class="bg-gradient-to-b from-brand-50 to-white py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
