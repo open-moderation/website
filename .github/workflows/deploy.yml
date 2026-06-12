@@ -1,0 +1,47 @@
+name: Deployment
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build bundle
+        run: pnpm run build
+
+      - name: Deploy to BunnyCDN
+        uses: ayeressian/bunnycdn-storage-deploy@v2.4.0
+        with:
+          source: "dist"
+          destination: "/"
+          storageZoneName: "openmoderation-vitrine"
+          storagePassword: "${{ secrets.OPENMODERATION_STORAGE_PASSWORD }}"
+          accessKey: "${{ secrets.BUNNY_API_KEY }}"
+          pullZoneId: "${{ secrets.OPENMODERATION_ZONE_ID }}"
+          upload: "true"
+          remove: "true"
+          purgePullZone: "true"
+          purgePullZoneDelay: "5"
+          maxRetries: "5"
+
+      - name: Attendre la propagation CDN
+        run: sleep 30
