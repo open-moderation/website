@@ -3,7 +3,7 @@ import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://openmoderation.com',
+  site: 'https://www.openmoderation.com',
   vite: {
     plugins: [tailwindcss()]
   },
