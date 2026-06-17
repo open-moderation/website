@@ -1,0 +1,99 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CTASection from '../../components/CTASection.astro';
+
+const comparisonJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "OpenModeration vs Azure Content Safety — AI Moderation Comparison",
+  "description": "Compare OpenModeration and Azure Content Safety. Discover why OpenModeration offers a complete moderation harness with multi-provider support, no-code rules, and a human review dashboard."
+};
+
+const comparisonPoints = [
+  { feature: "Moderation Scope", azure: "Single provider (Azure only)", openmod: "Multi-provider (Azure, OpenAI, Mistral, LLMs) + unified dashboard" },
+  { feature: "Operational Interface", azure: "API only. Requires building your own review UI", openmod: "Complete Trust & Safety dashboard with manual review queue included" },
+  { feature: "Rule Engine", azure: "Custom logic must be built and maintained in-house", openmod: "No-code, context-aware rule builder out of the box" },
+  { feature: "Vendor Lock-in", azure: "High (tied to Microsoft ecosystem)", openmod: "Zero (Bring Your Own Keys, switch providers instantly)" },
+  { feature: "Data Sovereignty", azure: "Data processed on Microsoft infrastructure", openmod: "Self-hostable on your own EU infrastructure for full GDPR/DSA compliance" },
+  { feature: "Pricing Model", azure: "Per-request API billing", openmod: "Free open-source core. Predictable managed cloud pricing available." }
+];
+---
+
+<BaseLayout 
+  title="OpenModeration vs Azure Content Safety" 
+  description="Compare OpenModeration and Azure Content Safety. Discover why OpenModeration offers a complete moderation harness with multi-provider support, no-code rules, and a human review dashboard." 
+  canonical="https://openmoderation.com/alternatives/azure-content-safety" 
+  jsonLd={comparisonJsonLd}
+>
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">Alternative Comparison</div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">OpenModeration vs Azure Content Safety</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Azure Content Safety provides powerful AI moderation APIs, but building a complete moderation workflow requires significant engineering effort. OpenModeration gives you the API <strong>and</strong> the complete operational harness.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-4xl">
+        <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">Head-to-Head Comparison</h2>
+        <div class="mt-8 overflow-hidden rounded-xl border border-surface-200">
+          <table class="w-full text-left text-sm">
+            <thead>
+              <tr class="bg-surface-50">
+                <th class="px-6 py-4 font-semibold text-surface-900">Feature</th>
+                <th class="px-6 py-4 font-semibold text-surface-500">Azure Content Safety</th>
+                <th class="px-6 py-4 font-semibold text-brand-700">OpenModeration</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-surface-200 bg-white">
+              {comparisonPoints.map((row) => (
+                <tr>
+                  <td class="px-6 py-4 font-medium text-surface-900">{row.feature}</td>
+                  <td class="px-6 py-4 text-surface-600">{row.azure}</td>
+                  <td class="px-6 py-4 font-medium text-accent-600">{row.openmod}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="mt-16 grid gap-8 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-8">
+          <h3 class="text-xl font-bold text-surface-900">The hidden cost of "API-only" moderation</h3>
+          <p class="mt-4 text-surface-600">
+            Integrating Azure Content Safety is just the first step. To make it operational, your engineering team must still build:
+          </p>
+          <ul class="mt-4 space-y-3 text-sm text-surface-600">
+            <li class="flex items-start gap-2"><span class="text-red-500">✕</span> A dashboard for human moderators to review edge cases</li>
+            <li class="flex items-start gap-2"><span class="text-red-500">✕</span> A rule engine to translate AI scores into automated actions (hide, delete, flag)</li>
+            <li class="flex items-start gap-2"><span class="text-red-500">✕</span> Audit logging systems to prove DSA compliance to regulators</li>
+            <li class="flex items-start gap-2"><span class="text-red-500">✕</span> Fallback logic in case Azure APIs experience downtime</li>
+          </ul>
+        </div>
+        <div class="rounded-xl border border-brand-200 bg-brand-50 p-8 shadow-sm">
+          <h3 class="text-xl font-bold text-brand-700">The OpenModeration advantage</h3>
+          <p class="mt-4 text-surface-700">
+            OpenModeration can use Azure Content Safety as one of its backend providers, but it wraps it in a complete operational layer:
+          </p>
+          <ul class="mt-4 space-y-3 text-sm text-surface-700">
+            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> <strong>Ready-to-use Dashboard:</strong> Your Trust & Safety team can start reviewing content immediately.</li>
+            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> <strong>No-Code Rules:</strong> Set up "if score > 0.8, hide and flag" policies in minutes, not months.</li>
+            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> <strong>Multi-Provider Fallback:</strong> If Azure is slow or fails, seamlessly route to OpenAI or Mistral.</li>
+            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> <strong>Built-in Compliance:</strong> Every AI and human decision is logged with a full audit trail.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTASection 
+    title="Stop building internal moderation tools."
+    subtitle="Get a complete AI moderation platform with Azure integration, no-code rules, and a human review dashboard. Try it today."
+    buttonText="Try it for free"
+    buttonHref="https://app.openmoderation.com"
+  />
+</BaseLayout>
