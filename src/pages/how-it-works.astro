@@ -26,17 +26,21 @@ const moderationResponseExample = `{
   }
 }`;
 
-const ruleConfigExample = `{
-  "name": "Hide hate speech",
-  "priority": 10,
-  "conditions": [{
-    "category": "hate",
-    "operator": "gte",
-    "score": 0.8
-  }],
-  "actions": [{
-    "type": "hide"
-  }]
+const ruleConfigExample = `// Configure your moderation thresholds
+PUT /v1/admin/settings
+
+{
+  "thresholds": {
+    "hate":       { "accepted": 0.3, "rejected": 0.7 },
+    "harassment": { "accepted": 0.3, "rejected": 0.7 },
+    "sexual":     { "accepted": 0.2, "rejected": 0.8 },
+    "violence":   { "accepted": 0.3, "rejected": 0.7 },
+    "self-harm":  { "accepted": 0.2, "rejected": 0.8 },
+    "spam":       { "accepted": 0.4, "rejected": 0.8 }
+  },
+  "actions": {
+    "on_reject": ["hide", "flag_for_review"]
+  }
 }`;
 
 const auditTrailExample = `// Complete audit trail for every content item
@@ -188,18 +192,17 @@ const auditTrailExample = `// Complete audit trail for every content item
             <span class="mb-2 inline-flex items-center rounded-full bg-brand-100 px-3 py-0.5 text-sm font-medium text-brand-700">Step 3</span>
             <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">Rules enforce your policy</h2>
             <p class="mt-4 text-surface-500">
-              Configure intelligent, context-aware policies. Combine AI confidence scores with dynamic thresholds, moving beyond fragile keyword logic.
-              Rules are evaluated by priority. The first matching rule executes its actions.
+              Define your moderation rules with three simple tools: <strong>forbidden words</strong> for instant blocking, <strong>category thresholds</strong> for automated decisions, and your <strong>community charter</strong> written in plain language for context-aware AI moderation.
             </p>
             <div class="mt-6 space-y-3">
               <div class="rounded-lg border border-surface-200 bg-white p-4">
-                <p class="font-mono text-sm text-surface-700"><span class="text-accent-600">if</span> hate <span class="text-accent-600">></span> 0.8 <span class="text-accent-600">&rarr;</span> hide + flag_for_review</p>
+                <p class="text-sm text-surface-700"><strong>Forbidden words</strong> block content instantly, before any AI call — zero cost</p>
               </div>
               <div class="rounded-lg border border-surface-200 bg-white p-4">
-                <p class="font-mono text-sm text-surface-700"><span class="text-accent-600">if</span> sexual/minors <span class="text-accent-600">></span> 0.5 <span class="text-accent-600">&rarr;</span> delete + notify_webhook</p>
+                <p class="text-sm text-surface-700"><strong>Category thresholds</strong> trigger automatic actions when scores exceed your limits</p>
               </div>
               <div class="rounded-lg border border-surface-200 bg-white p-4">
-                <p class="font-mono text-sm text-surface-700"><span class="text-accent-600">if</span> spam <span class="text-accent-600">></span> 0.7 <span class="text-accent-600">&rarr;</span> mark_as_spam (YouTube)</p>
+                <p class="text-sm text-surface-700">Your <strong>community charter</strong> guides context-aware AI decisions and sets the tone for your platform</p>
               </div>
             </div>
           </div>
@@ -227,6 +230,60 @@ const auditTrailExample = `// Complete audit trail for every content item
             <h4 class="mb-3 text-sm font-semibold text-surface-900">Everything is logged</h4>
             <CodeBlock code={auditTrailExample} lang="json" />
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Action Engine -->
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Action Engine</h2>
+        <p class="mt-4 text-lg text-surface-500">When content exceeds your thresholds, the Action Engine executes the right response automatically — on the platform itself.</p>
+      </div>
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-red-100 text-red-600">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+          </div>
+          <h3 class="font-semibold text-surface-900">Delete</h3>
+          <p class="mt-1 text-sm text-surface-500">Permanently remove violating content from your community. Carried out through the native platform API (Facebook, YouTube, Discord).</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-amber-100 text-amber-600">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>
+          </div>
+          <h3 class="font-semibold text-surface-900">Hide</h3>
+          <p class="mt-1 text-sm text-surface-500">Make violating content invisible to your users. Preserved for review and audit, but end users won't see it.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+          </div>
+          <h3 class="font-semibold text-surface-900">Flag for Review</h3>
+          <p class="mt-1 text-sm text-surface-500">Send borderline content to your team's manual review queue. Moderators approve or reject.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-green-100 text-green-600">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <h3 class="font-semibold text-surface-900">Allow</h3>
+          <p class="mt-1 text-sm text-surface-500">Whitelist specific content, authors, or channels so they are never flagged or removed.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100 text-purple-600">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <h3 class="font-semibold text-surface-900">Notify Webhook</h3>
+          <p class="mt-1 text-sm text-surface-500">Send real-time alerts to your team via webhook, enabling custom workflows or integrations.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-surface-100 text-surface-600">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+          </div>
+          <h3 class="font-semibold text-surface-900">Mark as Spam</h3>
+          <p class="mt-1 text-sm text-surface-500">Platform-specific spam classification. On YouTube, comments are flagged as spam to reduce visibility.</p>
         </div>
       </div>
     </div>
