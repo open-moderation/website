@@ -1,0 +1,191 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CTASection from '../../components/CTASection.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+
+const migrationCode = `# Before: Mistral Moderation (direct)
+import { Mistral } from '@mistralai/mistralai';
+const mistral = new Mistral({ apiKey: '...' });
+const result = await mistral.moderations.create({ input: text });
+
+# After: OpenModeration with Mistral
+const result = await fetch('https://api.openmoderation.com/v1/moderations', {
+  method: 'POST',
+  headers: { 'Authorization': 'Bearer om_key_...' },
+  body: JSON.stringify({ input: text, model: 'mistral/mistral-moderation-latest' })
+});
+// Or let the smart router decide — add Azure/OpenAI/HuggingFace as fallback`;
+
+const comparisonJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Mistral Moderation Alternative — OpenModeration",
+  "description": "Mistral Moderation is a strong multilingual API, but it's one provider. OpenModeration lets you use Mistral alongside 9 others through one unified API, with pre-filtering, automated rules, and DSA-ready audit trails.",
+};
+
+const comparisonPoints = [
+  { feature: "Providers", mistral: "Mistral only", openmod: "10 providers including Mistral, OpenAI, Azure, HuggingFace, LLMs (GPT-4o, Claude), Cohere" },
+  { feature: "Categories", mistral: "7 categories: hate, sexual, violence, self-harm, illicit, spam, PII", openmod: "17+ standardized categories, fully customizable with LLM-based moderation" },
+  { feature: "Languages", mistral: "Strong multilingual (French, German, Spanish, Italian, Portuguese, etc.)", openmod: "Route by language — use Mistral for FR/DE/ES, OpenAI for EN, LLMs for everything else" },
+  { feature: "Pre-filtering", mistral: "Not available", openmod: "Built-in word filter blocks obvious content before any API call" },
+  { feature: "Decision engine", mistral: "Raw scores only", openmod: "Dual threshold: auto-approve / grey zone → human review / auto-reject" },
+  { feature: "Max input", mistral: "32,000 characters", openmod: "Up to 32,000 chars + batch processing for larger volumes" },
+  { feature: "Dashboard", mistral: "API only. No review UI.", openmod: "Full moderation console with review queue, analytics, team roles" },
+  { feature: "Vendor lock-in", mistral: "Locked to Mistral", openmod: "Zero. Switch between Mistral, OpenAI, Azure with config change. BYOK supported." },
+  { feature: "Self-hosted", mistral: "Cloud API only", openmod: "Docker self-hosted (free) or EU-managed cloud" },
+  { feature: "Compliance", mistral: "Basic API logs", openmod: "Full DSA audit trail with exportable reports" },
+  { feature: "Pricing", mistral: "€0.24/1K requests", openmod: "Free self-hosted. Managed cloud from €99/mo (100K req included)." },
+];
+
+const reasons = [
+  {
+    title: "Mistral is great for EU languages, less so for English",
+    description: "Mistral's moderation API excels at French, German, Spanish, and Italian content. But for English toxicity detection, OpenAI's omni-moderation model is often more accurate. OpenModeration routes English to OpenAI, European languages to Mistral — automatically."
+  },
+  {
+    title: "7 categories vs configurable categories",
+    description: "Mistral covers 7 fixed categories. What if your community needs to detect misinformation, grooming, or custom policy violations? OpenModeration adds LLM-based moderation with fully configurable categories — define them in plain language and let GPT-4o or Claude classify."
+  },
+  {
+    title: "An API needs an operational layer",
+    description: "Mistral gives you scores. Your team still needs: a review dashboard, an action engine (hide/delete/flag), role-based access, audit trails for DSA, and cost analytics. OpenModeration ships all of this — Mistral becomes one of 10 backend engines."
+  },
+  {
+    title: "No pre-filter means paying for obvious spam",
+    description: "Every call to Mistral's moderation endpoint costs money. With OpenModeration's pre-filter, obvious spam, forbidden words, and regex patterns are blocked before any provider sees them — saving 10-30% on API costs across Mistral and all your providers."
+  },
+];
+---
+
+<BaseLayout 
+  title="Mistral Moderation Alternative — Multi-Provider Moderation Platform" 
+  description="Mistral Moderation is excellent for EU languages, but it's one provider. OpenModeration combines Mistral with OpenAI, Azure, HuggingFace, and more through one API, with automated workflows and DSA compliance built in."
+  canonical="https://www.openmoderation.com/alternatives/mistral-moderation"
+  jsonLd={comparisonJsonLd}
+>
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-sm font-medium text-blue-700">
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        Mistral Moderation Alternative
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">
+        Mistral is excellent for EU moderation.<br/>Add 9 more providers for the same effort.
+      </h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Mistral's moderation API handles European languages beautifully. But why limit yourself to one provider?
+        OpenModeration uses Mistral <strong>plus</strong> OpenAI, Azure, HuggingFace, and 7 others through the same
+        API call — with automated rules, human review, and DSA-compliant audit trails.
+      </p>
+      <div class="mt-8 flex items-center justify-center gap-4">
+        <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm">Try OpenModeration free</a>
+        <a href="#comparison" class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700">See comparison</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why switch -->
+  <section class="border-t border-surface-100 bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Why go beyond Mistral alone</h2>
+        <p class="mt-4 text-lg text-surface-500">Mistral is one of the best EU-focused moderation APIs. But moderation is about the workflow — not just the API.</p>
+      </div>
+      <div class="grid gap-8 md:grid-cols-2">
+        {reasons.map((r) => (
+          <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+            <h3 class="font-semibold text-surface-900">{r.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-surface-500">{r.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Code comparison -->
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700">
+            <span class="flex h-1.5 w-1.5 animate-pulse-dot rounded-full bg-brand-500" />
+            Keep Mistral, gain everything else
+          </div>
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Use Mistral through OpenModeration. Get the full platform.</h2>
+          <p class="mt-4 text-lg text-surface-500">
+            You can keep using Mistral as your primary provider. OpenModeration wraps it with pre-filtering, 
+            double thresholds, automated actions, and a complete audit trail — all through the same API call.
+          </p>
+          <div class="mt-6 space-y-3">
+            <div class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600"><strong>Route by language:</strong> Mistral for FR/DE/ES/IT, OpenAI for EN, LLMs for custom categories.</p>
+            </div>
+            <div class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600"><strong>Bring your own Mistral key</strong> (BYOK) and add other providers for redundancy.</p>
+            </div>
+            <div class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600"><strong>DevX elite</strong> — both Mistral and OpenModeration are built by European teams, for developers.</p>
+            </div>
+          </div>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-4 shadow-sm">
+          <CodeBlock code={migrationCode} lang="javascript" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison table -->
+  <section id="comparison" class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Mistral Moderation vs OpenModeration</h2>
+        <p class="mt-4 text-lg text-surface-500">Mistral's API is excellent. OpenModeration turns it into a complete platform.</p>
+      </div>
+      <div class="overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-50">
+              <th class="px-6 py-4 font-semibold text-surface-900">Feature</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Mistral Moderation</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200">
+            {comparisonPoints.map((row) => (
+              <tr class="even:bg-surface-50">
+                <td class="px-6 py-4 font-medium text-surface-900">{row.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{row.mistral}</td>
+                <td class="px-6 py-4 text-surface-900">{row.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Other alternatives -->
+  <section class="border-t border-surface-100 bg-surface-50 py-16">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold text-surface-900">Compare other providers</h2>
+      <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+        <a href="/alternatives/openai-moderation" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">OpenAI Moderation</a>
+        <a href="/alternatives/azure-content-safety" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Azure Content Safety</a>
+        <a href="/alternatives/perspective-api" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Perspective API</a>
+        <a href="/alternatives/hive-moderation" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Hive Moderation</a>
+        <a href="/alternatives/checkstep" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Checkstep</a>
+      </div>
+    </div>
+  </section>
+
+  <CTASection 
+    title="Mistral + 9 providers through one API."
+    subtitle="Keep your Mistral integration, add redundancy with OpenAI/Azure/HuggingFace, and get automated rules and a human review dashboard — all open source."
+    buttonText="Try OpenModeration free"
+    buttonHref="https://app.openmoderation.com/signup"
+  />
+</BaseLayout>

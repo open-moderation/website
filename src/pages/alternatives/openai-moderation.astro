@@ -1,0 +1,273 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CTASection from '../../components/CTASection.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+
+const migrationCode = `# OpenAI Moderation API (direct)
+const openai = new OpenAI({ apiKey: 'sk-...' });
+const mod = await openai.moderations.create({ input: text });
+// Result: OpenAI-specific format, 11 categories, no thresholds
+
+# OpenModeration (unified)
+const result = await fetch('https://api.openmoderation.com/v1/moderations', {
+  method: 'POST',
+  headers: { 'Authorization': 'Bearer om_key_...' },
+  body: JSON.stringify({
+    input: text,
+    categories: ['hate', 'harassment', 'sexual', 'violence', 'self-harm', 'spam'],
+    threshold: 0.5
+  })
+});
+// Plus: pre-filter, double threshold, auto-actions, audit trail, team dashboard`;
+
+const comparisonJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "OpenAI Moderation API Alternative — OpenModeration",
+  "description": "Looking for an OpenAI Moderation API alternative? OpenModeration gives you multi-provider moderation through a single API, plus a complete operational harness with no-code rules, human review, and DSA audit trails.",
+};
+
+const comparisonPoints = [
+  { feature: "Providers", openai: "OpenAI only (single provider)", openmod: "10 providers: OpenAI, Azure, Mistral, HuggingFace, LLMs (GPT-4o, Claude), Cohere, and more" },
+  { feature: "API format", openai: "Proprietary OpenAI format", openmod: "Standardized format across all providers. Switch providers with zero code changes." },
+  { feature: "Pre-filtering", openai: "Not available — every request hits the API", openmod: "Built-in word filter blocks obvious content before any API call, saving costs" },
+  { feature: "Decision logic", openai: "Binary flagged/not flagged per category", openmod: "Dual threshold: auto-approve / grey zone → human review / auto-reject" },
+  { feature: "Moderation Console", openai: "API only. No dashboard, no review UI.", openmod: "Full dashboard: moderation queue, team roles, analytics, provider health" },
+  { feature: "Automated rules", openai: "Must build your own rule engine", openmod: "No-code rule builder: if hate > 0.8 → hide + flag_for_review" },
+  { feature: "Human review", openai: "Must build your own review UI", openmod: "Built-in review queue with context, assignation, approve/reject" },
+  { feature: "Audit trail", openai: "Limited to API logs", openmod: "Full audit trail: every AI and human decision logged, exportable for DSA" },
+  { feature: "Vendor lock-in", openai: "Full lock-in to OpenAI ecosystem", openmod: "Zero. BYOK, self-hostable, AGPL v3 open source" },
+  { feature: "Data sovereignty", openai: "Data processed on OpenAI servers", openmod: "Self-host on your infrastructure. EU cloud option available." },
+  { feature: "Pricing", openai: "$0.0001/1K tokens (pay-per-use)", openmod: "Free self-hosted. Managed cloud from €99/mo (100K req included)." },
+  { feature: "Max input length", openai: "32,000 characters", openmod: "Up to 32,000 chars (provider-dependent) + batch processing for larger volumes" },
+];
+
+const reasons = [
+  {
+    title: "You're locked into one provider's accuracy",
+    icon: "lock",
+    description: "OpenAI Moderation is excellent for English content, but it's suboptimal for non-English languages, niche categories, or when you need redundancy. With OpenModeration, you route to the best provider per request — OpenAI for English toxicity, Mistral for multilingual spam, LLMs for custom categories."
+  },
+  {
+    title: "An API call is not a moderation workflow",
+    icon: "api",
+    description: "Getting a toxicity score back from OpenAI is just the start. You still need to: decide what score triggers what action, build a review UI for grey-area cases, log every decision for audits, manage your team's access. OpenModeration ships all of this out of the box."
+  },
+  {
+    title: "Costs add up without pre-filtering",
+    icon: "cost",
+    description: "Every call to the OpenAI Moderation API costs money — even for obvious spam or forbidden words. OpenModeration's pre-filter blocks these before they reach any provider, potentially saving 10-30% on API costs."
+  },
+  {
+    title: "DSA compliance requires more than an API",
+    icon: "compliance",
+    description: "The EU Digital Services Act requires documented moderation decisions, appeal mechanisms, and transparency reports. A raw API response is not enough. OpenModeration provides the full compliance layer: audit logs, review trails, and exportable reports."
+  },
+];
+
+const verticals = [
+  { name: "Social Platforms", desc: "Moderate user comments and posts with context-aware AI and community-specific policies." },
+  { name: "AI Applications", desc: "Filter both user inputs and LLM outputs. Use LLM-based moderation for custom, evolving categories." },
+  { name: "Gaming", desc: "Real-time chat moderation across multiple languages with sub-250ms latency and automated actions." },
+  { name: "Marketplaces", desc: "Flag spam listings, hate speech in reviews, and PII leaks before they go live." },
+];
+---
+
+<BaseLayout 
+  title="OpenAI Moderation API Alternative — Complete Moderation Platform" 
+  description="OpenAI Moderation API is powerful, but it's just one provider. OpenModeration gives you 10 providers through one API, plus pre-filtering, double thresholds, no-code rules, human review, and DSA audit trails — all open source."
+  canonical="https://www.openmoderation.com/alternatives/openai-moderation"
+  jsonLd={comparisonJsonLd}
+>
+  <!-- Hero -->
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-green-200 bg-green-50 px-4 py-1.5 text-sm font-medium text-green-700">
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        OpenAI Moderation API Alternative
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">
+        OpenAI Moderation is one provider.<br/>OpenModeration is the platform.
+      </h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        OpenAI's Moderation API gives you toxicity scores. OpenModeration gives you a complete 
+        Trust & Safety operation — 10 providers through one API, pre-filtering, automated rules, 
+        human review, and DSA-compliant audit trails. Open source. Self-hostable. No lock-in.
+      </p>
+      <div class="mt-8 flex items-center justify-center gap-4">
+        <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm">Try OpenModeration free</a>
+        <a href="#comparison" class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700">See full comparison</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why switch section -->
+  <section class="border-t border-surface-100 bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Why teams switch from OpenAI Moderation</h2>
+        <p class="mt-4 text-lg text-surface-500">OpenAI's API is a great moderation engine. But an engine needs a car.</p>
+      </div>
+      <div class="grid gap-8 md:grid-cols-2">
+        {reasons.map((r) => (
+          <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+            <div class="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
+              {r.icon === 'lock' && <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>}
+              {r.icon === 'api' && <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>}
+              {r.icon === 'cost' && <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>}
+              {r.icon === 'compliance' && <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>}
+            </div>
+            <h3 class="font-semibold text-surface-900">{r.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-surface-500">{r.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Code comparison -->
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700">
+            <span class="flex h-1.5 w-1.5 animate-pulse-dot rounded-full bg-brand-500" />
+            One integration, infinite providers
+          </div>
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">
+            Same text moderation, more control
+          </h2>
+          <p class="mt-4 text-lg text-surface-500">
+            With OpenAI's API, you get scores. With OpenModeration, you get scores 
+            <strong>plus</strong> pre-filtering, configurable thresholds, automated actions, 
+            and a complete audit trail — all through the same single API call.
+          </p>
+          <div class="mt-6 space-y-3">
+            <div class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600"><strong>Keep using OpenAI</strong> as a provider through OpenModeration with your own API keys (BYOK).</p>
+            </div>
+            <div class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600"><strong>Add redundancy</strong> by routing to Mistral, Azure, or HuggingFace when OpenAI is slow or down.</p>
+            </div>
+            <div class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600"><strong>Compare providers</strong> objectively with unified analytics across all your moderation traffic.</p>
+            </div>
+          </div>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-4 shadow-sm">
+          <CodeBlock code={migrationCode} lang="javascript" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison table -->
+  <section id="comparison" class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">OpenAI Moderation API vs OpenModeration</h2>
+        <p class="mt-4 text-lg text-surface-500">Head-to-head across the features that matter for production moderation.</p>
+      </div>
+      <div class="overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-50">
+              <th class="px-6 py-4 font-semibold text-surface-900">Feature</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">OpenAI Moderation API</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200">
+            {comparisonPoints.map((row) => (
+              <tr class="even:bg-surface-50">
+                <td class="px-6 py-4 font-medium text-surface-900">{row.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{row.openai}</td>
+                <td class="px-6 py-4 text-surface-900">{row.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hidden cost vs advantage -->
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-8 md:grid-cols-2">
+        <div class="rounded-xl border border-red-100 bg-red-50/50 p-8">
+          <h3 class="flex items-center gap-2 text-xl font-semibold text-red-700">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            Using OpenAI Moderation API alone
+          </h3>
+          <ul class="mt-6 space-y-3 text-sm text-surface-600">
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Pay for every API call — even obvious spam or forbidden words</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Binary flagged/not flagged — no grey zone for nuanced content</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Build your own dashboard for human moderators to review edge cases</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Build your own rule engine to translate scores into actions</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Build your own audit logging system for DSA compliance</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> No fallback if OpenAI is slow or unavailable</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Vendor lock-in to OpenAI ecosystem</li>
+          </ul>
+        </div>
+        <div class="rounded-xl border border-brand-200 bg-brand-50 p-8 shadow-sm">
+          <h3 class="flex items-center gap-2 text-xl font-semibold text-brand-700">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            OpenModeration (with OpenAI as a provider)
+          </h3>
+          <ul class="mt-6 space-y-3 text-sm text-surface-700">
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> <strong>Pre-filter:</strong> Block obvious spam and forbidden words before any API call — save 10-30% on costs</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> <strong>Double threshold:</strong> Auto-approve, auto-reject, or route to human review based on configurable thresholds</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> <strong>Ready-to-use Dashboard:</strong> Your Trust & Safety team can start reviewing content immediately</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> <strong>No-Code Rules:</strong> Set up "if hate > 0.8, hide and flag" in minutes, not months</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> <strong>Built-in Compliance:</strong> Full audit trail, exportable reports, configurable data retention</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> <strong>Multi-Provider Fallback:</strong> If OpenAI is slow, seamlessly route to Mistral, Azure, or HuggingFace</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> <strong>Zero lock-in:</strong> Open source (AGPL v3), self-hostable, BYOK. Your data, your rules.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Use cases -->
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Built for every content moderation use case</h2>
+        <p class="mt-4 text-lg text-surface-500">Whether you're replacing OpenAI's API or augmenting it, OpenModeration fits your stack.</p>
+      </div>
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {verticals.map((v) => (
+          <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+            <h3 class="font-semibold text-surface-900">{v.name}</h3>
+            <p class="mt-2 text-sm text-surface-500">{v.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Other alternatives -->
+  <section class="border-t border-surface-100 bg-surface-50 py-16">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold text-surface-900">Compare other providers</h2>
+      <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+        <a href="/alternatives/azure-content-safety" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Azure Content Safety</a>
+        <a href="/alternatives/mistral-moderation" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Mistral Moderation</a>
+        <a href="/alternatives/perspective-api" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Perspective API</a>
+        <a href="/alternatives/hive-moderation" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Hive Moderation</a>
+        <a href="/alternatives/checkstep" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Checkstep</a>
+      </div>
+    </div>
+  </section>
+
+  <CTASection 
+    title="Ready to go beyond a single moderation API?"
+    subtitle="Get 10 providers, pre-filtering, automated rules, and a human review dashboard — all open source. Keep using OpenAI with BYOK, or add more providers."
+    buttonText="Try it for free"
+    buttonHref="https://app.openmoderation.com/signup"
+  />
+</BaseLayout>
