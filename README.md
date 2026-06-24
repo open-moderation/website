@@ -6,7 +6,7 @@
 
 <p align="center">
   <a href="https://www.openmoderation.com">Website</a> |
-  <a href="https://docs.openmoderation.com">Docs</a> |
+  <a href="https://api.openmoderation.com/docsm">Docs</a> |
   <a href="https://github.com/open-moderation/open-moderation">GitHub</a>
 </p>
 
@@ -44,7 +44,7 @@ OpenModeration abstracts all of it. One API key, one format, one dashboard. Conn
 ## Quick Links
 
 - **[Website](https://www.openmoderation.com)** — Features, pricing, use cases
-- **[Documentation](https://docs.openmoderation.com)** — Setup guides, API reference
+- **[Documentation](https://api.openmoderation.com/docs)** — API reference
 - **[GitHub](https://github.com/open-moderation/open-moderation)** — Source code, issues, discussions
 
 ## Getting Started
