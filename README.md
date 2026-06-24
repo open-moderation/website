@@ -6,7 +6,7 @@
 
 <p align="center">
   <a href="https://www.openmoderation.com">Website</a> |
-  <a href="https://api.openmoderation.com/docsm">Docs</a> |
+  <a href="https://api.openmoderation.com/docs">Docs</a> |
   <a href="https://github.com/open-moderation/open-moderation">GitHub</a>
 </p>
 
@@ -18,7 +18,7 @@
 
 # OpenModeration
 
-The open-source moderation platform. One API for every AI moderation provider, with automated workflows and DSA-compliant audit trails.
+The unified AI moderation platform. One API for every provider — OpenAI, Azure, Mistral, and more. Self-host or cloud, with automated workflows and DSA-compliant audit trails.
 
 <p align="center">
   <strong>🔐 Self-host or cloud</strong> &nbsp;&nbsp;
@@ -46,17 +46,6 @@ OpenModeration abstracts all of it. One API key, one format, one dashboard. Conn
 - **[Website](https://www.openmoderation.com)** — Features, pricing, use cases
 - **[Documentation](https://api.openmoderation.com/docs)** — API reference
 - **[GitHub](https://github.com/open-moderation/open-moderation)** — Source code, issues, discussions
-
-## Getting Started
-
-```sh
-git clone https://github.com/open-moderation/open-moderation.git
-cd open-moderation/website
-
-pnpm install
-pnpm dev       # → http://localhost:4321
-pnpm build     # production build
-```
 
 ## License
 
