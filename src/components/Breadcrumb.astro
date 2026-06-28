@@ -1,0 +1,46 @@
+---
+export interface BreadcrumbItem {
+  label: string;
+  href?: string;
+}
+
+export interface Props {
+  items: BreadcrumbItem[];
+}
+
+const { items } = Astro.props;
+
+const site = 'https://www.openmoderation.com';
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": items.map((item, i) => ({
+    "@type": "ListItem",
+    "position": i + 1,
+    "name": item.label,
+    ...(item.href ? { "item": `${site}${item.href}` } : {})
+  }))
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
+
+<nav aria-label="Breadcrumb" class="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
+  <ol class="flex items-center gap-2 text-xs text-surface-400">
+    {items.map((item, i) => (
+      <li class="flex items-center gap-2">
+        {i > 0 && (
+          <svg class="h-3 w-3 shrink-0 text-surface-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        )}
+        {item.href ? (
+          <a href={item.href} class="text-surface-400 transition hover:text-surface-600">{item.label}</a>
+        ) : (
+          <span class="text-surface-600">{item.label}</span>
+        )}
+      </li>
+    ))}
+  </ol>
+</nav>
