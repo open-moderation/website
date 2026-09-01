@@ -1,0 +1,29 @@
+---
+export interface Props {
+  src: string;
+  alt: string;
+  caption?: string;
+}
+
+const { src, alt, caption } = Astro.props;
+---
+
+<figure>
+  <div class="overflow-hidden rounded-xl border border-surface-200 bg-white shadow-[0_24px_48px_-12px_rgba(30,58,138,0.18)]">
+    <div class="flex items-center gap-2 border-b border-surface-100 bg-surface-50 px-4 py-3">
+      <span class="h-3 w-3 rounded-full bg-red-400"></span>
+      <span class="h-3 w-3 rounded-full bg-amber-400"></span>
+      <span class="h-3 w-3 rounded-full bg-accent-400"></span>
+      <span class="ml-3 hidden rounded-md border border-surface-200 bg-white px-3 py-1 text-xs text-surface-400 sm:block">
+        app.openmoderation.com
+      </span>
+    </div>
+    <div class="relative">
+      <img src={src} alt={alt} loading="lazy" class="w-full" />
+      <slot name="annotation" />
+    </div>
+  </div>
+  {caption && (
+    <figcaption class="mt-4 text-center text-xs text-surface-400">{caption}</figcaption>
+  )}
+</figure>
