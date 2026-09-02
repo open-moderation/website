@@ -2,7 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import CTASection from '../../components/CTASection.astro';
-import CodeBlock from '../../components/CodeBlock.astro';
+import BrowserFrame from '../../components/BrowserFrame.astro';
 
 const useCaseJsonLd = {
   "@context": "https://schema.org",
@@ -10,30 +10,6 @@ const useCaseJsonLd = {
   "name": "AI Content Moderation for Marketplaces & E-Commerce — OpenModeration",
   "description": "Moderate product listings, reviews, and seller messages on e-commerce and classifieds platforms with AI. DSA-compliant, open-source moderation platform."
 };
-
-const batchModerationExample = `POST /v1/contents/batch
-
-{
-  "items": [{
-    "input": "Listing description...",
-    "custom_id": "listing_1"
-  }, {
-    "input": "Another listing...",
-    "custom_id": "listing_2"
-  }],
-  "webhook_url": "https://myapp.com/webhook/batch"
-}`;
-
-const listingRuleExample = `{
-  "name": "Auto-hide suspicious listings",
-  "priority": 10,
-  "conditions": [{
-    "category": "scam_or_spam",
-    "operator": "gte",
-    "score": 0.8
-  }],
-  "actions": ["hide", "queue_for_review"]
-}`;
 ---
 
 <BaseLayout title="Content Moderation for Marketplaces & E-Commerce" description="Moderate product listings, reviews, and seller messages with AI. Keep your marketplace safe, compliant, and trustworthy." canonical="https://www.openmoderation.com/use-cases/marketplaces" jsonLd={useCaseJsonLd}>
@@ -84,8 +60,7 @@ const listingRuleExample = `{
         </div>
         <div class="rounded-xl border border-surface-200 bg-surface-50 p-8">
           <h4 class="mb-3 text-sm font-semibold text-surface-900">Batch back-moderation for existing content</h4>
-          <CodeBlock code={batchModerationExample} lang="json" />
-          <p class="mt-3 text-xs text-surface-500">Process up to 10,000 existing listings asynchronously. Results and automated actions are delivered via webhook.</p>
+          <p class="text-sm text-surface-500">Cleaning up months of history doesn't have to be a manual project. Submit up to 10,000 existing listings in one batch &mdash; reviews, messages, descriptions &mdash; and let OpenModeration flag scams, prohibited items and fake reviews. Results land directly in your review dashboard.</p>
         </div>
       </div>
     </div>
@@ -120,7 +95,10 @@ const listingRuleExample = `{
         </div>
         <div class="rounded-xl border border-surface-200 bg-white p-6 shadow-sm">
           <h3 class="text-lg font-semibold text-surface-900">Auto-enforce your marketplace policy</h3>
-          <CodeBlock code={listingRuleExample} lang="json" />
+          <BrowserFrame
+            src="/images/rules.png"
+            alt="open-moderation dashboard: rules configuration with category thresholds and automated actions"
+          />
           <p class="mt-4 text-sm text-surface-500">High-confidence scams are hidden instantly; borderline cases land in the review queue for your Trust &amp; Safety team. Every decision is logged for DSA compliance.</p>
         </div>
       </div>

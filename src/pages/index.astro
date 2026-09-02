@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CTASection from '../components/CTASection.astro';
-import CodeBlock from '../components/CodeBlock.astro';
+import BrowserFrame from '../components/BrowserFrame.astro';
 import KpiBand from '../components/KpiBand.astro';
 import LogoMarquee from '../components/LogoMarquee.astro';
 import WaveDecoration from '../components/WaveDecoration.astro';
@@ -75,17 +75,6 @@ const features = [
   { title: 'On-Premise or Cloud', description: 'Deploy on your own infrastructure for full data control, or use our managed cloud for zero maintenance.' },
 ];
 
-const exampleCode = `# Before: 3 integrations, 3 formats
-const openai = await moderateWithOpenAI(text);
-const azure = await moderateWithAzure(text);
-const result = normalize({ openai, azure });
-
-# After: One call, one format
-const result = await fetch('https://api.openmoderation.com/v1/moderation', {
-  method: 'POST',
-  headers: { 'Authorization': 'Bearer om_key_...' },
-  body: JSON.stringify({ input: text })
-});`;
 ---
 
 <BaseLayout
@@ -173,17 +162,23 @@ const result = await fetch('https://api.openmoderation.com/v1/moderation', {
           <div class="mt-8 space-y-4">
             <div class="flex items-start gap-3">
               <svg class="mt-0.5 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <p class="text-sm text-surface-600"><strong>Before:</strong> Build separate code for each provider. Maintain N integrations.</p>
+              <p class="text-sm text-surface-600"><strong>Before:</strong> Read, sort and delete hateful comments by hand &mdash; on every platform, every day.</p>
             </div>
             <div class="flex items-start gap-3">
               <svg class="mt-0.5 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <p class="text-sm text-surface-600"><strong>After:</strong> One API call. One normalized response. Switch providers in your config file.</p>
+              <p class="text-sm text-surface-600"><strong>After:</strong> Your rules enforced automatically on Facebook, Instagram and YouTube. Every hidden comment comes with a written reason.</p>
             </div>
           </div>
         </div>
-        <div class="rounded-xl border border-surface-200 bg-white p-6 shadow-sm">
-          <CodeBlock code={exampleCode} lang="bash" />
-        </div>
+        <BrowserFrame
+          src="/images/reason.png"
+          alt="open-moderation console: a spam comment rejected with the written reason &quot;The comment promotes a scam contest and contains an external phishing or promo link&quot;"
+          caption="A hidden comment, the rule it broke, and the written reason &mdash; visible to your team, defensible in front of anyone."
+        >
+          <div slot="annotation" class="absolute bottom-3 right-3 rounded-full border border-brand-200 bg-white/95 px-3 py-1 text-xs font-semibold text-brand-800 shadow-sm">
+            &#x270D; The written reason
+          </div>
+        </BrowserFrame>
       </div>
     </div>
   </section>
