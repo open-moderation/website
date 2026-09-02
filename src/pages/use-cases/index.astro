@@ -1,0 +1,162 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import CTASection from '../../components/CTASection.astro';
+import KpiBand from '../../components/KpiBand.astro';
+
+const useCasesJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Content Moderation Use Cases — OpenModeration",
+  "description": "How platforms of every kind use OpenModeration: social platforms, AI applications, marketplaces, gaming, and enterprise SaaS."
+};
+
+const kpis = [
+  { value: "10", label: "AI providers behind one API" },
+  { value: "300ms", prefix: "<", label: "P50 median latency" },
+  { value: "10K", label: "Items per batch request" },
+  { value: "100%", label: "Open source (AGPL v3)" },
+];
+
+const useCases = [
+  {
+    title: "Social Platforms",
+    tagline: "Forums, communities, UGC",
+    description: "Protect your community from hate speech, spam, and scams. Automate enforcement and keep human moderators focused on edge cases.",
+    href: "/use-cases/social-platforms",
+    iconPath: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z",
+  },
+  {
+    title: "AI Applications",
+    tagline: "LLM input/output filtering",
+    description: "Filter prompts and model responses in one harness. Layer multiple providers for defense in depth against injection and harmful outputs.",
+    href: "/use-cases/ai-applications",
+    iconPath: "M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z",
+  },
+  {
+    title: "Marketplaces",
+    tagline: "Listings, reviews, classifieds",
+    description: "Moderate product listings, reviews, and seller messages at scale. Catch scams and prohibited items before they go live.",
+    href: "/use-cases/marketplaces",
+    iconPath: "M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z",
+  },
+  {
+    title: "Gaming",
+    tagline: "Chat, MMOs, live ops",
+    description: "Real-time, multi-language chat moderation under 500ms. Auto-delete violations before other players ever see them.",
+    href: "/use-cases/gaming",
+    iconPath: "M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+  },
+  {
+    title: "Enterprise SaaS",
+    tagline: "Compliance, SOC 2, audit",
+    description: "Self-host on your own infrastructure with full audit trails, data retention controls, and provable DSA and SOC 2 readiness.",
+    href: "/use-cases/enterprise-saas",
+    iconPath: "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4",
+  },
+];
+---
+
+<BaseLayout title="Content Moderation Use Cases — Social, AI, Gaming & More" description="See how social platforms, AI applications, marketplaces, games, and enterprises use OpenModeration for open-source, DSA-compliant content moderation." canonical="https://www.openmoderation.com/use-cases" jsonLd={useCasesJsonLd}>
+  <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Use Cases" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700">
+        <span class="flex h-1.5 w-1.5 rounded-full bg-brand-500"></span>
+        Use Cases
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">One moderation platform, every kind of platform</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Whether you run a forum, an LLM app, a marketplace, or a game, OpenModeration adapts to your content, your policies, and your infrastructure.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <KpiBand items={kpis} />
+  </section>
+
+  <section class="bg-white pb-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {useCases.map((useCase) => (
+          <a href={useCase.href} class="group rounded-xl border border-surface-200 bg-surface-50 p-8 transition hover:border-brand-300 hover:shadow-md">
+            <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-100 text-brand-600">
+              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={useCase.iconPath}/></svg>
+            </div>
+            <h2 class="text-xl font-semibold text-surface-900 group-hover:text-brand-600">{useCase.title}</h2>
+            <p class="mt-1 text-xs font-medium uppercase tracking-wide text-surface-400">{useCase.tagline}</p>
+            <p class="mt-3 text-sm text-surface-500">{useCase.description}</p>
+            <span class="mt-4 inline-flex items-center gap-1 text-sm font-medium text-brand-600 group-hover:text-brand-700">
+              Learn more
+              <svg class="h-3.5 w-3.5 transition group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </span>
+          </a>
+        ))}
+        <a href="/features" class="group rounded-xl border-2 border-dashed border-surface-300 bg-white p-8 transition hover:border-brand-400">
+          <div class="flex h-full flex-col items-start justify-center">
+            <h2 class="text-xl font-semibold text-surface-900 group-hover:text-brand-600">Explore all features</h2>
+            <p class="mt-3 text-sm text-surface-500">Unified API, Action Engine, review dashboard, connectors, and DSA audit trails.</p>
+            <span class="mt-4 inline-flex items-center gap-1 text-sm font-medium text-brand-600 group-hover:text-brand-700">
+              See the platform
+              <svg class="h-3.5 w-3.5 transition group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Same platform, different enforcement</h2>
+        <p class="mt-4 text-lg text-surface-500">Every use case gets the same building blocks &mdash; only the rules change.</p>
+      </div>
+      <div class="grid gap-4 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">1. Ingest content</h3>
+          <p class="mt-2 text-sm text-surface-500">REST API, batch endpoint for backlogs, webhooks, or native connectors for Facebook, Instagram, and YouTube.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">2. Moderate with AI</h3>
+          <p class="mt-2 text-sm text-surface-500">Route each request to the best provider for its language, content type, and budget. Same response schema, every time.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">3. Enforce automatically</h3>
+          <p class="mt-2 text-sm text-surface-500">Forbidden words, category thresholds, and your community charter drive hide, delete, flag, and review actions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8 text-2xl font-bold text-surface-900 sm:text-3xl">Related resources</h2>
+      <div class="grid gap-6 md:grid-cols-3">
+        <a href="/blog/dsa-compliance-sme-guide" class="group rounded-xl border border-surface-200 bg-surface-50 p-6 transition hover:shadow-md">
+          <div class="mb-2 text-xs font-medium text-brand-600">Guide</div>
+          <h3 class="text-lg font-semibold text-surface-900 group-hover:text-brand-600">DSA Compliance for Small and Medium Platforms</h3>
+          <p class="mt-2 text-sm text-surface-500">Practical steps to meet 2026 DSA requirements with open-source tools.</p>
+        </a>
+        <a href="/blog/ai-content-moderation-developer-guide" class="group rounded-xl border border-surface-200 bg-surface-50 p-6 transition hover:shadow-md">
+          <div class="mb-2 text-xs font-medium text-brand-600">Guide</div>
+          <h3 class="text-lg font-semibold text-surface-900 group-hover:text-brand-600">Content Moderation for AI Applications</h3>
+          <p class="mt-2 text-sm text-surface-500">Best practices for filtering inputs and outputs in LLM-powered apps.</p>
+        </a>
+        <a href="/dashboard" class="group rounded-xl border border-surface-200 bg-surface-50 p-6 transition hover:shadow-md">
+          <div class="mb-2 text-xs font-medium text-brand-600">Product</div>
+          <h3 class="text-lg font-semibold text-surface-900 group-hover:text-brand-600">The Moderation Console</h3>
+          <p class="mt-2 text-sm text-surface-500">Review queues, audit trails, provider health, and usage analytics.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <CTASection
+    title="Find your fit in minutes."
+    subtitle="Pick a use case, deploy with Docker or use the managed cloud, and moderate your first content today."
+    buttonText="Try it for free"
+    buttonHref="https://app.openmoderation.com/signup"
+  />
+</BaseLayout>
