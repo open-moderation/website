@@ -1,0 +1,72 @@
+---
+export interface Props {
+  ariaLabel?: string;
+}
+
+const {
+  ariaLabel = 'OpenModeration review queue showing a hidden spam comment with its written reason and activity history',
+} = Astro.props;
+---
+
+<style>
+  @keyframes om-pill-on {
+    0%, 42% { opacity: 1; }
+    50%, 92% { opacity: 0.35; }
+    100% { opacity: 1; }
+  }
+  @keyframes om-pill-off {
+    0%, 42% { opacity: 0.35; }
+    50%, 92% { opacity: 1; }
+    100% { opacity: 0.35; }
+  }
+  @keyframes om-dot-ping {
+    0%, 42% { opacity: 1; transform: scale(1); }
+    50%, 92% { opacity: 0.25; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  .om-verdict-phase-a { animation: om-pill-on 4s ease-in-out infinite; }
+  .om-verdict-phase-b { animation: om-pill-off 4s ease-in-out infinite; }
+  .om-verdict-dot { animation: om-dot-ping 4s ease-in-out infinite; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .om-verdict-phase-a { animation: none; opacity: 0.35; }
+    .om-verdict-phase-b { animation: none; opacity: 1; }
+    .om-verdict-dot { animation: none; opacity: 0.25; }
+  }
+</style>
+
+<div role="img" aria-label={ariaLabel} class="bg-white p-4 text-left sm:p-5">
+  <p class="text-xs font-medium text-surface-400">Content text</p>
+  <div class="mt-2 rounded-lg bg-surface-100 p-3 text-sm leading-relaxed text-surface-700">
+    Congratulations! You are our winner of the day; claim your prize by
+    clicking here &rarr; cadeau-info.xyz
+  </div>
+
+  <p class="mt-4 flex items-center gap-1.5 text-sm font-bold text-surface-900">
+    <svg class="h-4 w-4 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h4l3 8 4-16 3 8h4"/></svg>
+    Activity history
+  </p>
+  <div class="mt-2 rounded-xl border border-surface-200 bg-white p-3 sm:p-4">
+    <div class="flex flex-wrap items-center justify-between gap-2">
+      <time class="text-xs tabular-nums text-surface-400">21/08/2026 15:44:48</time>
+      <div class="flex items-center gap-1.5">
+        <span class="om-verdict-phase-a inline-flex items-center gap-1.5 rounded-full border border-amber-200 bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-800">
+          <span class="om-verdict-dot flex h-1.5 w-1.5 rounded-full bg-amber-500"></span>
+          Processing
+        </span>
+        <svg class="h-3.5 w-3.5 text-surface-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <span class="om-verdict-phase-b inline-flex items-center rounded-full bg-red-500 px-2.5 py-0.5 text-xs font-semibold text-white">
+          Rejected
+        </span>
+      </div>
+    </div>
+    <div class="mt-2.5 flex flex-wrap gap-1.5">
+      <span class="rounded-md border border-surface-200 bg-white px-2 py-0.5 text-xs font-medium text-surface-500">AI Model</span>
+      <span class="rounded-md border border-surface-200 bg-white px-2 py-0.5 text-xs font-medium text-surface-500">Rules v2</span>
+    </div>
+    <p class="mt-2.5 text-sm leading-relaxed text-surface-600">
+      The comment promotes a scam contest and contains an external
+      phishing or promo link.
+    </p>
+  </div>
+</div>

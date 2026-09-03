@@ -3,6 +3,16 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import CTASection from '../../components/CTASection.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 
+const blogJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "@id": "https://www.openmoderation.com/blog",
+  "url": "https://www.openmoderation.com/blog",
+  "name": "Content Moderation Blog — DSA, AI Safety & Dev Guides",
+  "description": "Articles about content moderation, DSA compliance, AI safety, and open-source infrastructure.",
+  "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
+};
+
 const posts = [
   {
     title: "DSA Compliance for Small and Medium Platforms: A Practical Guide",
@@ -63,7 +73,7 @@ const posts = [
 ];
 ---
 
-<BaseLayout title="Content Moderation Blog — DSA, AI Safety & Dev Guides" description="Articles about content moderation, DSA compliance, AI safety, and open-source infrastructure.">
+<BaseLayout title="Content Moderation Blog — DSA, AI Safety & Dev Guides" description="Articles about content moderation, DSA compliance, AI safety, and open-source infrastructure." jsonLd={blogJsonLd}>
 <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Blog" }]} />
   <section class="bg-gradient-to-b from-brand-50 to-white py-20">
     <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
@@ -80,7 +90,7 @@ const posts = [
         {posts.map((post) => (
           <a href={`/blog/${post.slug}`} class="group rounded-xl border border-surface-200 bg-white p-6 transition hover:shadow-md">
             <div class="flex items-center gap-3 text-xs text-surface-400">
-              <time datetime={post.date}>{post.date}</time>
+              <time datetime={post.date}>{new Date(post.date + "T00:00:00").toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</time>
               <span>&middot;</span>
               <span>{post.readTime} read</span>
               <span>&middot;</span>

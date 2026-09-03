@@ -2,9 +2,10 @@
 export interface Props {
   items: Array<{ question: string; answer: string }>;
   title?: string;
+  disableJsonLd?: boolean;
 }
 
-const { items, title } = Astro.props;
+const { items, title, disableJsonLd = false } = Astro.props;
 
 const faqJsonLd = {
   "@context": "https://schema.org",
@@ -17,7 +18,7 @@ const faqJsonLd = {
 };
 ---
 
-<script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+{!disableJsonLd && <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />}
 
 {title && <h2 class="mb-8 text-center text-2xl font-bold tracking-tight text-surface-900">{title}</h2>}
 <div class="mx-auto max-w-3xl divide-y divide-surface-200">

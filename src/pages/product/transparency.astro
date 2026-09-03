@@ -2,18 +2,10 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import BrowserFrame from '../../components/BrowserFrame.astro';
+import ModerationVerdict from '../../components/ModerationVerdict.astro';
 import FAQ from '../../components/FAQ.astro';
 import SectionTitle from '../../components/SectionTitle.astro';
 import WaveDecoration from '../../components/WaveDecoration.astro';
-
-const pageJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  "name": "Transparency — See exactly why every comment was hidden",
-  "url": "https://www.openmoderation.com/product/transparency",
-  "description": "Every moderation decision comes with a written reason, a complete AI and human audit log, open-source code and EU hosting. No black boxes.",
-  "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
-};
 
 const faqItems = [
   {
@@ -33,6 +25,29 @@ const faqItems = [
     answer: "In the European Union, under GDPR rules. No tracking cookies on this site, no data resale. If you self-host, your data never leaves your own infrastructure.",
   },
 ];
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://www.openmoderation.com/product/transparency",
+      "url": "https://www.openmoderation.com/product/transparency",
+      "name": "Transparency — See exactly why every comment was hidden",
+      "description": "Every moderation decision comes with a written reason, a complete AI and human audit log, open-source code and EU hosting. No black boxes.",
+      "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://www.openmoderation.com/product/transparency#faq",
+      "mainEntity": faqItems.map((item) => ({
+        "@type": "Question",
+        "name": item.question,
+        "acceptedAnswer": { "@type": "Answer", "text": item.answer }
+      }))
+    }
+  ]
+};
 
 const steps = [
   {
@@ -84,7 +99,7 @@ const proofs = [
 <BaseLayout
   title="Transparency — See exactly why every comment was hidden | OpenModeration"
   description="Every moderation decision comes with a written reason, a complete AI and human audit log, open-source code and EU hosting. No black boxes, ever."
-  canonical="/product/transparency"
+  canonical="https://www.openmoderation.com/product/transparency"
   jsonLd={pageJsonLd}
 >
   <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Product' }, { label: 'Transparency' }]} />
@@ -125,10 +140,9 @@ const proofs = [
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="mx-auto max-w-xl">
         <BrowserFrame
-          src="/images/reason.png"
-          alt="open-moderation console: a spam comment rejected with the written reason &quot;The comment promotes a scam contest and contains an external phishing or promo link&quot;"
           caption="Demo workspace — a rejected scam comment, its written reason and the full activity history."
         >
+          <ModerationVerdict slot="content" />
           <div slot="annotation" class="absolute bottom-3 right-3 rounded-full border border-brand-200 bg-white/95 px-3 py-1 text-xs font-semibold text-brand-800 shadow-sm">
             &#x270D; The written reason
           </div>
@@ -242,7 +256,7 @@ const proofs = [
   <section class="border-t border-surface-100 bg-surface-50 py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <SectionTitle title="Frequently asked questions" />
-      <FAQ items={faqItems} />
+      <FAQ items={faqItems} disableJsonLd />
     </div>
   </section>
 

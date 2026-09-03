@@ -1,11 +1,12 @@
 ---
 export interface Props {
-  src: string;
-  alt: string;
+  src?: string;
+  alt?: string;
   caption?: string;
+  eager?: boolean;
 }
 
-const { src, alt, caption } = Astro.props;
+const { src, alt = '', caption, eager = false } = Astro.props;
 ---
 
 <figure>
@@ -19,7 +20,11 @@ const { src, alt, caption } = Astro.props;
       </span>
     </div>
     <div class="relative">
-      <img src={src} alt={alt} loading="lazy" class="w-full" />
+      {Astro.slots.has('content') ? (
+        <slot name="content" />
+      ) : (
+        src && <img src={src} alt={alt} loading={eager ? "eager" : "lazy"} fetchpriority={eager ? "high" : "auto"} decoding="async" class="h-auto w-full" />
+      )}
       <slot name="annotation" />
     </div>
   </div>

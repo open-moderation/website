@@ -6,9 +6,10 @@ export interface Props {
   ogImage?: string;
   ogType?: string;
   jsonLd?: Record<string, any>;
+  robots?: string;
 }
 
-const { title, description, canonical, ogImage, ogType, jsonLd } = Astro.props;
+const { title, description, canonical, ogImage, ogType, jsonLd, robots } = Astro.props;
 const site = 'https://www.openmoderation.com';
 const defaultImage = '/og-image.jpg';
 ---
@@ -18,9 +19,10 @@ const defaultImage = '/og-image.jpg';
 <title>{title}</title>
 <meta name="description" content={description} />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="robots" content={robots || "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"} />
 <meta name="theme-color" content="#0f172a" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="apple-touch-icon" href="/favicon.svg" />
 <meta name="generator" content={Astro.generator} />
 
 <link rel="preconnect" href="https://fonts.cdnfonts.com" crossorigin />
@@ -34,6 +36,9 @@ const defaultImage = '/og-image.jpg';
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={`${site}${ogImage || defaultImage}`} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={title} />
 <meta property="og:url" content={canonical || `${site}${Astro.url.pathname}`} />
 <meta property="og:type" content={ogType || 'website'} />
 <meta property="og:site_name" content="OpenModeration" />
