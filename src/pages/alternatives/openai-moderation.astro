@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import CTASection from '../../components/CTASection.astro';
 import CodeBlock from '../../components/CodeBlock.astro';
+import FAQ from '../../components/FAQ.astro';
 
 const migrationCode = `# OpenAI Moderation API (direct)
 const openai = new OpenAI({ apiKey: 'sk-...' });
@@ -72,11 +73,34 @@ const verticals = [
   { name: "Gaming", desc: "Real-time chat moderation across multiple languages with sub-250ms latency and automated actions." },
   { name: "Marketplaces", desc: "Flag spam listings, hate speech in reviews, and PII leaks before they go live." },
 ];
+
+const faqItems = [
+  {
+    question: "How much does OpenAI Moderation API cost vs OpenModeration?",
+    answer: "OpenAI charges ~$0.10 per 1K short texts, per call, with no dashboard or rules included. OpenModeration is free to self-host; managed cloud starts at €99/month for 10K requests. Pre-filtering blocks obvious spam before any provider call, saving 10-30%."
+  },
+  {
+    question: "Can I keep using OpenAI as a provider?",
+    answer: "Yes. Bring your own OpenAI key (BYOK) and keep omni-moderation-latest. Add Mistral, Azure or Llama Guard as fallback with a config change — no code rewrite."
+  },
+  {
+    question: "How long does migration take?",
+    answer: "Under an hour: one POST /v1/moderation call replaces openai.moderations.create. Scores map to a standardized format, thresholds and rules apply immediately."
+  },
+  {
+    question: "What do I gain beyond raw scores?",
+    answer: "A full platform: pre-filter, dual thresholds (auto-approve / human review / auto-reject), moderation dashboard, team roles, and a DSA-ready audit trail with exportable reports."
+  },
+  {
+    question: "Is it open source?",
+    answer: "Yes, AGPL v3. Self-host with Docker, keep all data on your infrastructure, or use the EU-hosted managed cloud."
+  },
+];
 ---
 
 <BaseLayout 
-  title="OpenAI Moderation API Alternative — 10 Providers, One API" 
-  description="OpenAI Moderation is one provider. OpenModeration adds 10 providers via one API, automated rules, human review and DSA audit trails — all open source."
+  title="OpenAI Moderation API Alternative — Pricing, Comparison (2026)" 
+  description="OpenAI Moderation API charges per call for scores only. OpenModeration adds 10 providers via one API, pre-filtering (save 10-30%), human review and DSA audit trails. Free to start."
   canonical="https://www.openmoderation.com/alternatives/openai-moderation"
   jsonLd={comparisonJsonLd}
 >
@@ -249,6 +273,13 @@ const verticals = [
           </div>
         ))}
       </div>
+    </div>
+  </section>
+
+  <!-- Other alternatives -->
+  <section class="border-t border-surface-100 bg-surface-50 py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ items={faqItems} title="OpenAI Moderation alternative — FAQ" />
     </div>
   </section>
 

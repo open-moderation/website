@@ -7,6 +7,11 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()]
   },
-  integrations: [sitemap()],
+  integrations: [sitemap({
+    serialize(item) {
+      item.lastmod = new Date().toISOString().split('T')[0];
+      return item;
+    },
+  })],
   trailingSlash: 'never'
 });

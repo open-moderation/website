@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import CTASection from '../../components/CTASection.astro';
 import CodeBlock from '../../components/CodeBlock.astro';
+import FAQ from '../../components/FAQ.astro';
 
 const migrationCode = `# Before: Mistral Moderation (direct)
 import { Mistral } from '@mistralai/mistralai';
@@ -56,11 +57,34 @@ const reasons = [
     description: "Every call to Mistral's moderation endpoint costs money. With OpenModeration's pre-filter, obvious spam, forbidden words, and regex patterns are blocked before any provider sees them — saving 10-30% on API costs across Mistral and all your providers."
   },
 ];
+
+const faqItems = [
+  {
+    question: "How much does Mistral Moderation cost vs OpenModeration?",
+    answer: "Mistral charges €0.24 per 1K moderation requests. OpenModeration is free to self-host — you only pay your provider calls. Managed cloud starts at €99/month for 10K requests, with pre-filtering that cuts 10-30% of billable calls."
+  },
+  {
+    question: "Can I keep using Mistral with OpenModeration?",
+    answer: "Yes. Bring your own Mistral key (BYOK) and keep mistral-moderation-latest as your primary model. Add OpenAI, Azure or HuggingFace as fallback with a config change — zero code rewrite."
+  },
+  {
+    question: "How long does migration take?",
+    answer: "Under an hour for the API swap: one POST /v1/moderation call replaces the Mistral client. Dashboard, rules and audit trails work immediately after."
+  },
+  {
+    question: "Does it support French and other EU languages?",
+    answer: "Yes. Smart routing sends French, German, Spanish and Italian to Mistral, English to OpenAI, and custom categories to LLMs — 120+ languages covered."
+  },
+  {
+    question: "Is every decision logged for DSA audits?",
+    answer: "Yes. Every AI and human decision keeps provider scores, thresholds, reviewer and timestamp. Export the full audit trail in one click for DSA transparency reports."
+  },
+];
 ---
 
 <BaseLayout 
-  title="Mistral Moderation Alternative — One API, 10 Providers" 
-  description="Mistral Moderation is one provider. OpenModeration combines Mistral with OpenAI, Azure and more via one API, with automated workflows and DSA compliance."
+  title="Mistral Moderation Alternative — Pricing, Comparison & Migration (2026)" 
+  description="Mistral Moderation costs €0.24/1K requests for one provider. OpenModeration combines Mistral + OpenAI, Azure and 7 more via one API, with auto-rules and DSA audit trails. Free to start."
   canonical="https://www.openmoderation.com/alternatives/mistral-moderation"
   jsonLd={comparisonJsonLd}
 >
@@ -167,6 +191,13 @@ const reasons = [
           </tbody>
         </table>
       </div>
+    </div>
+  </section>
+
+  <!-- Other alternatives -->
+  <section class="border-t border-surface-100 bg-surface-50 py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ items={faqItems} title="Mistral Moderation alternative — FAQ" />
     </div>
   </section>
 
