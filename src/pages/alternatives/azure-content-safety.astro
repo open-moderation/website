@@ -2,13 +2,59 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import CTASection from '../../components/CTASection.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+import FAQ from '../../components/FAQ.astro';
+
+const migrationCode = `# Azure Content Safety (direct)
+const endpoint = "https://<resource>.cognitiveservices.azure.com/";
+const res = await fetch(endpoint + "/contentsafety/text:analyze?api-version=2024-02-01", {
+  method: 'POST',
+  headers: { 'Ocp-Apim-Subscription-Key': '...' },
+  body: JSON.stringify({ text, categories: ['Hate','SelfHarm','Sexual','Violence'] })
+});
+// Result: Azure-specific format, 4 categories, per-region deployment
+
+# OpenModeration (unified)
+const result = await fetch('https://api.openmoderation.com/v1/moderation', {
+  method: 'POST',
+  headers: { 'Authorization': 'Bearer om_key_...' },
+  body: JSON.stringify({
+    input: text,
+    categories: ['hate', 'harassment', 'sexual', 'violence', 'self-harm', 'spam'],
+    threshold: 0.5
+  })
+});
+// Plus: pre-filter, dual threshold, auto-actions, audit trail, team dashboard`;
 
 const comparisonJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "name": "OpenModeration vs Azure Content Safety — AI Moderation Comparison",
+  "name": "Azure Moderation API Alternative — OpenModeration",
   "description": "Compare OpenModeration vs Azure Content Safety for AI moderation. Azure locks you into Microsoft's ecosystem with API-only moderation. OpenModeration lets you use Azure alongside 9 other providers through one API, with a built-in review dashboard, no-code rules, and on-premise deployment for data sovereignty."
 };
+
+const faqItems = [
+  {
+    question: "How much does Azure Content Safety cost vs OpenModeration?",
+    answer: "Azure Content Safety charges $0.50-$1.00 per 1K text records. OpenModeration is free to self-host — you only pay your provider calls. Managed cloud starts at €99/month for 10K requests, and pre-filtering cuts 10-30% of billable calls before they reach Azure."
+  },
+  {
+    question: "Can I keep using Azure Content Safety with OpenModeration?",
+    answer: "Yes. Bring your own Azure key (BYOK) and route requests to Azure Content Safety as your primary provider. Add OpenAI or Mistral as fallback with a config change — no code rewrite, no retraining."
+  },
+  {
+    question: "Does OpenModeration support Azure OpenAI moderation models?",
+    answer: "Yes. Both the Azure AI Content Safety endpoint and Azure OpenAI moderation models are supported as providers. Responses are standardized into one format across all 10 providers."
+  },
+  {
+    question: "What do I gain beyond Azure's raw scores?",
+    answer: "A full platform: pre-filter, dual thresholds (auto-approve / human review / auto-reject), no-code rules, a moderation dashboard with team roles, and a DSA-ready audit trail with exportable reports."
+  },
+  {
+    question: "Can I self-host instead of using Microsoft's cloud?",
+    answer: "Yes. OpenModeration is AGPL v3 open source — deploy with Docker on your own EU infrastructure for full GDPR/DSA data sovereignty, with Azure still available as one provider."
+  },
+];
 
 const comparisonPoints = [
   { feature: "Moderation Scope", azure: "Single provider (Azure only)", openmod: "Multi-provider (Azure, OpenAI, Mistral, LLMs) + unified dashboard" },
@@ -21,23 +67,58 @@ const comparisonPoints = [
 ---
 
 <BaseLayout 
-  title="OpenModeration vs Azure Content Safety" 
-  description="Azure Content Safety is API-only and locks you into Microsoft. OpenModeration adds Azure + 9 providers, a review dashboard and on-premise deployment." 
+  title="Azure Moderation API Alternative — Pricing & Comparison" 
+  description="Azure Content Safety is API-only and locks you into Microsoft. OpenModeration adds Azure + 9 providers via one API, pre-filtering, no-code rules, human review and DSA audit trails. Free to start." 
   canonical="https://www.openmoderation.com/alternatives/azure-content-safety" 
   jsonLd={comparisonJsonLd}
 >
-  <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Alternatives", href: "/alternatives" }, { label: "OpenModeration vs Azure Content Safety" }]} />
+  <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Alternatives", href: "/alternatives" }, { label: "Azure Content Safety Alternative" }]} />
   <section class="bg-gradient-to-b from-brand-50 to-white py-20">
     <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">Alternative Comparison</div>
-      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">OpenModeration vs Azure Content Safety</h1>
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">Azure Moderation API Alternative</div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Azure Content Safety is one API.<br/>OpenModeration is the platform.</h1>
       <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
         Azure Content Safety provides powerful AI moderation APIs, but building a complete moderation workflow requires significant engineering effort. OpenModeration gives you the API <strong>and</strong> the complete operational harness.
       </p>
+      <div class="mt-8 flex items-center justify-center gap-4">
+        <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm">Try OpenModeration free</a>
+        <a href="#comparison" class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700">See full comparison</a>
+      </div>
     </div>
   </section>
 
-  <section class="bg-white py-20">
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Migrate from Azure in under an hour</h2>
+          <p class="mt-4 text-lg text-surface-500">
+            Keep your Azure key (BYOK) as the primary provider. One standardized call replaces the
+            Content Safety endpoint — scores come back in one format, with thresholds you control.
+          </p>
+          <ul class="mt-6 space-y-3">
+            <li class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600"><strong>Keep Azure</strong> as primary provider, add OpenAI or Mistral as fallback when Azure is slow or down.</p>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600"><strong>Pre-filter</strong> blocks obvious spam before any billable Azure call — save 10-30% on API costs.</p>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600"><strong>Self-host</strong> on your own EU infrastructure with Docker — Azure stays available as one provider.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-4 shadow-sm">
+          <CodeBlock code={migrationCode} lang="javascript" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="comparison" class="bg-white py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="mx-auto mb-12 max-w-4xl">
         <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">Head-to-Head Comparison</h2>
@@ -92,6 +173,12 @@ const comparisonPoints = [
     </div>
   </section>
 
+  <section class="border-t border-surface-100 bg-surface-50 py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ items={faqItems} title="Azure Content Safety alternative — FAQ" />
+    </div>
+  </section>
+
   <CTASection 
     title="Stop building internal moderation tools."
     subtitle="Get a complete AI moderation platform with Azure integration, automated rules, and a human review dashboard. Try it today."
@@ -105,6 +192,7 @@ const comparisonPoints = [
       <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
         <a href="/alternatives/openai-moderation" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">OpenAI Moderation</a>
         <a href="/alternatives/mistral-moderation" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Mistral Moderation</a>
+        <a href="/text-moderation-api" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Text Moderation API</a>
         <a href="/alternatives/perspective-api" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Perspective API</a>
         <a href="/alternatives/hive-moderation" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Hive Moderation</a>
         <a href="/alternatives/checkstep" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Checkstep</a>
