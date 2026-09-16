@@ -9,21 +9,22 @@ const pageJsonLd = {
   "@type": "WebPage",
   "@id": "https://www.openmoderation.com/connectors",
   "url": "https://www.openmoderation.com/connectors",
-  "name": "Moderate Facebook, Instagram & YouTube — One Platform",
-  "description": "Connect Facebook, Instagram, and YouTube. Ingest content and moderate comments across all your platforms using your own credentials.",
+  "name": "Moderate Facebook, Instagram, YouTube & WordPress — One Platform",
+  "description": "Connect Facebook, Instagram, YouTube, and WordPress. Ingest content and moderate comments across all your platforms using your own credentials.",
   "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
 };
 
-const connectorConfig = `POST /v1/sources
+const wordpressConfig = `POST /v1/sources
 
 {
-  "name": "Facebook Page Pro",
-  "platform": "facebook",
+  "name": "My WordPress Blog",
+  "platform": "wordpress",
   "credentials": {
-    "page_access_token": "EAA...",
-    "page_id": "12345"
+    "siteUrl": "https://myblog.com",
+    "username": "wp-admin",
+    "appPassword": "xxxx xxxx xxxx xxxx"
   },
-  "features": ["receive_webhooks", "execute_actions"]
+  "features": ["execute_actions"]
 }`;
 
 const webhookReceive = `POST /v1/webhooks/receive
@@ -39,7 +40,7 @@ const webhookReceive = `POST /v1/webhooks/receive
 }`;
 ---
 
-<BaseLayout title="Moderate Facebook, Instagram & YouTube — One Platform" description="Connect Facebook, Instagram, and YouTube. Ingest content and moderate comments across all your platforms using your own credentials." jsonLd={pageJsonLd}>
+<BaseLayout title="Moderate Facebook, Instagram, YouTube & WordPress — One Platform" description="Connect Facebook, Instagram, YouTube, and WordPress. Ingest content and moderate comments across all your platforms using your own credentials." jsonLd={pageJsonLd}>
 <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Platform Integrations" }]} />
   <section class="bg-gradient-to-b from-brand-50 to-white py-20">
     <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
@@ -52,7 +53,7 @@ const webhookReceive = `POST /v1/webhooks/receive
 
   <section class="bg-white py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="grid gap-8 md:grid-cols-3">
+      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
         <div class="rounded-xl border border-surface-200 bg-surface-50 p-8">
           <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 text-blue-600">
             <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
@@ -91,6 +92,19 @@ const webhookReceive = `POST /v1/webhooks/receive
           </div>
           <a href="/integrations/youtube" class="mt-4 inline-flex items-center gap-1 text-sm font-medium text-brand-600 hover:text-brand-700">Learn more <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></a>
         </div>
+
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-8">
+          <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-sky-100 text-sky-700">
+            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M21.469 6.825c.84 1.537 1.318 3.3 1.318 5.175 0 3.979-2.156 7.456-5.363 9.325l3.295-9.527c.615-1.54.82-2.771.82-3.864 0-.405-.026-.78-.07-1.11m-7.981.105c.647-.03 1.232-.105 1.232-.105.582-.075.514-.93-.067-.899 0 0-1.755.135-2.88.135-1.064 0-2.85-.15-2.85-.15-.585-.03-.661.855-.075.885 0 0 .54.061 1.125.09l1.68 4.605-2.37 7.08L5.354 6.9c.649-.03 1.234-.1 1.234-.1.585-.075.516-.93-.065-.896 0 0-1.746.138-2.874.138-.2 0-.438-.008-.69-.015C4.911 3.15 8.235 1.215 12 1.215c2.809 0 5.365 1.072 7.286 2.833-.046-.003-.091-.009-.141-.009-1.06 0-1.812.923-1.812 1.914 0 .89.513 1.643 1.06 2.531.411.72.89 1.643.89 2.977 0 .915-.354 1.994-.821 3.479l-1.075 3.585-3.9-11.61.001.014zM12 22.784c-1.059 0-2.081-.153-3.048-.437l3.237-9.406 3.315 9.087c.024.053.05.101.078.149-1.12.393-2.325.609-3.582.609M1.211 12c0-1.564.336-3.05.935-4.39L7.29 21.709C3.694 19.96 1.212 16.271 1.211 12M12 0C5.385 0 0 5.385 0 12s5.385 12 12 12 12-5.385 12-12S18.615 0 12 0"/></svg>
+          </div>
+          <h3 class="text-xl font-semibold text-surface-900">WordPress</h3>
+          <p class="mt-2 text-sm text-surface-500">Moderate comments on your WordPress site. Connect with an Application Password — no plugin development required.</p>
+          <div class="mt-4 space-y-2">
+            <div class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Ingest posts and comments automatically</div>
+            <div class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Approve, hold for review, or mark as spam</div>
+          </div>
+          <a href="/integrations/wordpress" class="mt-4 inline-flex items-center gap-1 text-sm font-medium text-brand-600 hover:text-brand-700">Learn more <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></a>
+        </div>
       </div>
     </div>
   </section>
@@ -111,8 +125,8 @@ const webhookReceive = `POST /v1/webhooks/receive
           </ul>
         </div>
         <div class="rounded-xl border border-surface-200 bg-white p-8">
-          <h4 class="mb-3 text-sm font-semibold text-surface-900">Configure a connector</h4>
-          <CodeBlock code={connectorConfig} lang="json" />
+          <h4 class="mb-3 text-sm font-semibold text-surface-900">Configure a WordPress connector</h4>
+          <CodeBlock code={wordpressConfig} lang="json" />
         </div>
       </div>
     </div>
@@ -123,8 +137,8 @@ const webhookReceive = `POST /v1/webhooks/receive
       <div class="mx-auto max-w-3xl text-center">
         <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Custom platform integration</h2>
         <p class="mt-4 text-lg text-surface-500">
-          Not using Facebook, Instagram, or YouTube? Use our generic receiver to
-          ingest content from any platform.
+          Not on Facebook, Instagram, YouTube, or WordPress? Use our generic
+          receiver to ingest content from any platform.
         </p>
         <div class="mt-8 rounded-xl border border-surface-200 bg-surface-50 p-8 text-left">
           <CodeBlock code={webhookReceive} lang="json" />
