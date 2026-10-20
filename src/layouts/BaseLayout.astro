@@ -3,6 +3,7 @@ import '../styles/global.css';
 import SEOHead from '../components/SEOHead.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
+import { getLocale } from '../i18n/routes';
 
 export interface Props {
   title: string;
@@ -15,10 +16,11 @@ export interface Props {
 }
 
 const { title, description, canonical, ogImage, ogType, jsonLd, robots } = Astro.props;
+const locale = getLocale(Astro.url.pathname);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={locale}>
   <head>
     <SEOHead {title} {description} {canonical} {ogImage} {ogType} {jsonLd} {robots} />
     <slot name="head" />

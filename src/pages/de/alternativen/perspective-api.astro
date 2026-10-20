@@ -1,0 +1,201 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import CodeBlock from '../../../components/CodeBlock.astro';
+
+const migrationCode = `# Vorher: Perspective API
+const result = await fetch('https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze', ...)
+
+# Nachher: OpenModeration
+const result = await fetch('https://api.openmoderation.com/v1/moderation', {
+  method: 'POST',
+  headers: { 'Authorization': 'Bearer om_key_...' },
+  body: JSON.stringify({ input: text })
+})`;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Alternative zur Perspective API vor der Abschaltung 2026",
+  "description": "Die Perspective API von Google wird Ende 2026 eingestellt. Migrieren Sie zu OpenModeration, der Open-Source-Moderationsplattform mit mehreren Anbietern.",
+  "inLanguage": "de",
+  "about": {
+    "@type": "SoftwareApplication",
+    "name": "OpenModeration",
+    "applicationCategory": "ContentModeration",
+    "operatingSystem": "Cross-platform"
+  }
+};
+---
+
+<BaseLayout title="Alternative zur Perspective API vor der Abschaltung 2026" description="Die Perspective API von Google wird Ende 2026 eingestellt. Migrieren Sie zu OpenModeration: Open Source, mehrere Anbieter, Self-Hosting oder Cloud." {jsonLd}>
+  <Breadcrumb items={[{ label: "Startseite", href: "/de" }, { label: "Alternativen", href: "/de/alternativen" }, { label: "Alternative zur Perspective API" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-red-200 bg-red-50 px-4 py-1.5 text-sm font-medium text-red-700">
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        Perspective API wird Ende 2026 eingestellt
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Die Perspective API von Google wird 2026 eingestellt. OpenModeration ist eine Open-Source-Alternative.</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Google hat das Ende der Perspective API für Ende 2026 angekündigt. Tausende Foren und Communitys brauchen Ersatz.
+        OpenModeration ist die Open-Source-Alternative, die sich direkt einsetzen lässt, ganz ohne Anbieterbindung.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Warum das wichtig ist</h2>
+          <p class="mt-4 text-lg text-surface-500">
+            Die Perspective API hat bei Tausenden von Verlagen, Foren und Kommentarbereichen von Nachrichtenseiten toxische Inhalte erkannt.
+            Seit Google das Ende für Ende 2026 angekündigt hat, muss jede Plattform, die Perspective nutzt, Ersatz finden.
+          </p>
+          <div class="mt-6 space-y-4">
+            <div class="flex items-start gap-3">
+              <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-600">
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+              </div>
+              <div>
+                <h3 class="font-semibold text-surface-900">Foren, die auf Perspective setzen, müssen migrieren</h3>
+                <p class="mt-1 text-sm text-surface-500">Nach 2026 sind keine Aufrufe der Perspective API mehr möglich. Ohne Ersatz läuft Ihre Moderation dann nicht mehr.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-600">
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <div>
+                <h3 class="font-semibold text-surface-900">Der DSA erhöht die Dringlichkeit</h3>
+                <p class="mt-1 text-sm text-surface-500">Der Digital Services Act der EU verlangt, dass Sie jede Moderationsentscheidung begründen und Beschwerden bearbeiten. Mit der Migration bis Ende 2026 zu warten, ist deshalb riskant.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h4 class="mb-2 text-sm font-semibold text-surface-900">Schnelle Migration: vorher und nachher</h4>
+          <CodeBlock code={migrationCode} lang="bash" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Wie OpenModeration die Perspective API ersetzen kann</h2>
+        <p class="mt-4 text-lg text-surface-500">Eine einheitliche API verbindet mehrere Anbieter. Sie können jederzeit wechseln, ohne Ihre Integration zu ändern.</p>
+      </div>
+      <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <h3 class="mt-4 font-semibold text-surface-900">OpenAI Moderation API</h3>
+          <p class="mt-2 text-sm text-surface-500">Der Moderations-Endpunkt von OpenAI erkennt toxische Inhalte ebenso gut. Er unterstützt die Kategorien Hass, Belästigung, Selbstverletzung, sexuelle Inhalte und Gewalt.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-accent-100 text-accent-600">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+          </div>
+          <h3 class="mt-4 font-semibold text-surface-900">HuggingFace Llama Guard</h3>
+          <p class="mt-2 text-sm text-surface-500">Llama Guard von Meta moderiert kostenlos und läuft vollständig auf Ihrer eigenen Infrastruktur, ohne Gebühren pro Anfrage.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100 text-purple-600">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          </div>
+          <h3 class="mt-4 font-semibold text-surface-900">LLM-basierte Moderation</h3>
+          <p class="mt-2 text-sm text-surface-500">Nutzen Sie ein beliebiges LLM mit eigenen Moderationskategorien. Definieren Sie Ihre Richtlinien und Schwellenwerte per Prompt.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-cyan-100 text-cyan-600">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+          </div>
+          <h3 class="mt-4 font-semibold text-surface-900">Einheitliche API, jeder Anbieter</h3>
+          <p class="mt-2 text-sm text-surface-500">Sie rufen immer denselben Endpunkt POST /v1/moderation auf, egal welcher Anbieter dahinter arbeitet. Der Anbieter wechselt per Konfiguration, der Code bleibt gleich.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Perspective API vs. OpenModeration</h2>
+        <p class="mt-4 text-lg text-surface-500">So schneidet OpenModeration bei den wichtigsten Funktionen ab.</p>
+      </div>
+      <div class="overflow-hidden rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-50">
+              <th class="px-6 py-4 font-semibold text-surface-900">Funktion</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Perspective API</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200">
+            <tr class="even:bg-surface-50">
+              <td class="px-6 py-4 font-medium text-surface-900">Preise</td>
+              <td class="px-6 py-4 text-surface-500">Kostenlos, mit Anfragekontingenten</td>
+              <td class="px-6 py-4 text-surface-900">Self-Hosting kostenlos oder SaaS mit nutzungsbasierter Abrechnung</td>
+            </tr>
+            <tr class="even:bg-surface-50">
+              <td class="px-6 py-4 font-medium text-surface-900">Open Source</td>
+              <td class="px-6 py-4 text-surface-500">Proprietär, Blackbox</td>
+              <td class="px-6 py-4 text-surface-900">Vollständig Open Source (AGPL v3)</td>
+            </tr>
+            <tr class="even:bg-surface-50">
+              <td class="px-6 py-4 font-medium text-surface-900">Self-Hosting</td>
+              <td class="px-6 py-4 text-surface-500">Nicht verfügbar</td>
+              <td class="px-6 py-4 text-surface-900">Deployment mit Docker, volle Datensouveränität</td>
+            </tr>
+            <tr class="even:bg-surface-50">
+              <td class="px-6 py-4 font-medium text-surface-900">Sprachen</td>
+              <td class="px-6 py-4 text-surface-500">Rund 20 Sprachen mit unterschiedlicher Genauigkeit</td>
+              <td class="px-6 py-4 text-surface-900">Jede Sprache (je nach Anbieter), Routing über mehrere Anbieter</td>
+            </tr>
+            <tr class="even:bg-surface-50">
+              <td class="px-6 py-4 font-medium text-surface-900">Moderationskategorien</td>
+              <td class="px-6 py-4 text-surface-500">9 feste Kategorien</td>
+              <td class="px-6 py-4 text-surface-900">10 Kategorien, vollständig anpassbar</td>
+            </tr>
+            <tr class="even:bg-surface-50">
+              <td class="px-6 py-4 font-medium text-surface-900">Anbieterbindung</td>
+              <td class="px-6 py-4 text-surface-500">Hoch (abhängig von Google)</td>
+              <td class="px-6 py-4 text-surface-900">Keine (Anbieterwechsel per Konfiguration)</td>
+            </tr>
+            <tr class="even:bg-surface-50">
+              <td class="px-6 py-4 font-medium text-surface-900">DSA-Audit-Trail</td>
+              <td class="px-6 py-4 text-surface-500">Nicht verfügbar</td>
+              <td class="px-6 py-4 text-surface-900">Integrierte Protokollierung und Export</td>
+            </tr>
+            <tr class="even:bg-surface-50">
+              <td class="px-6 py-4 font-medium text-surface-900">Status</td>
+              <td class="px-6 py-4 text-surface-500">Wird Ende 2026 eingestellt</td>
+              <td class="px-6 py-4 text-surface-900">Aktiv gepflegt, wachsende Community</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <CTASection title="Warten Sie nicht bis zur Abschaltung" subtitle="Migrieren Sie jetzt von der Perspective API: selbst gehostet mit Docker oder mit dem kostenlosen Tarif." buttonText="Kostenlos testen" buttonHref="https://app.openmoderation.com/signup" />
+
+  <section class="border-t border-surface-100 bg-surface-50 py-16">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold text-surface-900">Weitere Anbieter vergleichen</h2>
+      <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+        <a href="/de/alternativen/openai-moderation" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">OpenAI Moderation</a>
+        <a href="/de/alternativen/azure-content-safety" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Azure Content Safety</a>
+        <a href="/de/alternativen/mistral-moderation" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Mistral Moderation</a>
+        <a href="/de/alternativen/hive-moderation" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Hive Moderation</a>
+        <a href="/de/alternativen/checkstep" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Checkstep</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

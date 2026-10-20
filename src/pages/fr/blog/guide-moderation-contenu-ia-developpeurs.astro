@@ -1,0 +1,126 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import CodeBlock from '../../../components/CodeBlock.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Modération de contenu pour les applications d'IA : le guide du développeur",
+  "description": "Comment filtrer les entrées et les sorties d'une application basée sur un LLM.",
+  "inLanguage": "fr",
+  "datePublished": "2026-06-05",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/fr/blog/guide-moderation-contenu-ia-developpeurs" },
+  "dateModified": "2026-06-05"
+};
+
+const pattern1 = `Entrée utilisateur -> Modération de l'entrée -> { si signalée -> rejet } -> LLM
+Sortie du LLM -> Modération de la sortie -> { si signalée -> réponse de repli } -> Utilisateur`;
+
+const pattern2 = `Entrée utilisateur -> Modération de l'entrée + LLM (en parallèle)
+-> Attente du résultat de la modération
+-> Si signalée -> abandon de la réponse du LLM et affichage d'une erreur
+-> Si non signalée -> affichage de la réponse du LLM après modération de la sortie`;
+---
+
+<BaseLayout title="Modération de contenu pour applications d'IA | Guide développeur" description="Comment filtrer les entrées et sorties d'une application basée sur un LLM : bonnes pratiques contre l'injection de prompt et pour la sécurité des contenus." jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Accueil", href: "/fr" }, { label: "Blog", href: "/fr/blog" }, { label: "Modération de contenu pour les applications d'IA" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-06-05">5 juin 2026</time>
+        <span>&middot;</span>
+        <span>10 min de lecture</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Modération de contenu pour les applications d'IA : le guide du développeur</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Toute application qui s'appuie sur un LLM a besoin de modération de contenu, pour la conformité
+        mais aussi pour la sécurité, pour la confiance des utilisateurs et pour protéger votre modèle des entrées malveillantes.
+      </p>
+      <p>
+        Ce guide couvre les deux versants de la modération de contenu par IA : filtrer ce que les utilisateurs
+        envoient à votre LLM, et filtrer ce que votre LLM renvoie aux utilisateurs.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Les deux filtres indispensables à toute application d'IA</h2>
+
+      <h3 class="text-lg font-semibold text-surface-900">1. Le filtrage des entrées</h3>
+      <p>
+        Avant que l'entrée de l'utilisateur n'atteigne votre LLM, vous devez détecter :
+      </p>
+      <ul>
+        <li><strong>Les contenus nuisibles :</strong> discours de haine, harcèlement, menaces, contenus sexuels</li>
+        <li><strong>L'injection de prompt :</strong> les tentatives de contourner le prompt système ou de jailbreaker le modèle</li>
+        <li><strong>Les demandes illicites :</strong> instructions pour des activités illégales, fabrication de drogues, etc.</li>
+        <li><strong>Les fuites de données personnelles :</strong> des utilisateurs qui partagent par mégarde des informations personnelles</li>
+      </ul>
+
+      <h3 class="text-lg font-semibold text-surface-900">2. Le filtrage des sorties</h3>
+      <p>
+        Avant que la réponse du modèle n'atteigne vos utilisateurs, vous devez détecter :
+      </p>
+      <ul>
+        <li><strong>Les contenus nuisibles générés :</strong> un modèle qui produit des discours de haine, de la violence, etc.</li>
+        <li><strong>La génération de données personnelles :</strong> un modèle qui génère par accident des données personnelles réelles ou inventées</li>
+        <li><strong>Les informations dangereuses hallucinées :</strong> conseils médicaux, juridiques ou recommandations financières</li>
+        <li><strong>Les violations de vos règles :</strong> des contenus contraires aux conditions d'utilisation de votre application</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Schémas d'implémentation</h2>
+
+<p><strong>Schéma 1 : filtrage séquentiel (recommandé pour la plupart des applications)</strong></p>
+<CodeBlock code={pattern1} lang="text" />
+
+<p><strong>Schéma 2 : filtrage parallèle (quand la latence doit rester faible)</strong></p>
+<CodeBlock code={pattern2} lang="text" />
+
+      <h2 class="text-xl font-bold text-surface-900">Une défense en profondeur avec plusieurs fournisseurs</h2>
+      <p>
+        S'appuyer sur un seul fournisseur de modération crée un point de défaillance unique et des angles morts.
+        Une approche en couches tient mieux :
+      </p>
+      <ul>
+        <li>Utilisez <strong>OpenAI Moderation</strong> pour la détection généraliste des contenus nuisibles</li>
+        <li>Utilisez <strong>Llama Guard</strong> (auto-hébergé) pour filtrer les entrées sensibles sans coût et sans aucune fuite de données</li>
+        <li>Utilisez un <strong>LLM comme classifieur</strong>, avec GPT-4o ou Claude, pour appliquer des règles sur mesure grâce à une compréhension fine du contexte</li>
+      </ul>
+      <p>
+        Avec OpenModeration, cette approche en couches tient en un seul appel d'API. Définissez des règles qui
+        font passer le contenu par plusieurs fournisseurs et agrègent leurs résultats pour aboutir à une décision finale.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Bonnes pratiques</h2>
+      <ol>
+        <li><strong>Modérez toujours l'entrée et la sortie</strong> : elles ne révèlent pas les mêmes risques</li>
+        <li><strong>Exploitez le contexte pour gagner en précision</strong> : transmettez l'historique de la conversation et les informations sur l'auteur pour améliorer les décisions de modération</li>
+        <li><strong>Fixez des seuils adaptés</strong> : des seuils plus bas pour les catégories à haut risque (mineurs, automutilation), plus élevés pour les risques faibles (spam)</li>
+        <li><strong>Journalisez tout pour l'audit</strong> : vous devez pouvoir prouver que votre modération fonctionne, surtout dans les secteurs réglementés</li>
+        <li><strong>Testez avec des entrées malveillantes</strong> : éprouvez régulièrement votre pipeline de modération avec des prompts de jailbreak connus</li>
+      </ol>
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Pour aller plus loin</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/fr/cas-usage/applications-ia" class="font-medium text-brand-600 hover:text-brand-500">La modération pour les applications d'IA &rarr;</a></li>
+        <li><a href="/fr/comment-ca-marche" class="font-medium text-brand-600 hover:text-brand-500">Comment fonctionne le pipeline de modération &rarr;</a></li>
+        <li><a href="/fr/fonctionnalites" class="font-medium text-brand-600 hover:text-brand-500">Une seule intégration, tous les fournisseurs &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

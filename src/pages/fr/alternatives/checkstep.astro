@@ -1,0 +1,114 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+
+const comparisonJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "OpenModeration ou Checkstep : comparatif de modération par IA",
+  "description": "Comparez OpenModeration et Checkstep pour la modération de contenu par IA. Checkstep propose une modération mono-fournisseur avec une interface basique. OpenModeration vous offre le routage multi-fournisseurs, une console Trust & Safety complète, un moteur de règles automatiques et la conformité DSA en auto-hébergement, le tout open source et déployable sur site.",
+  "inLanguage": "fr"
+};
+
+const comparisonPoints = [
+  { feature: "Périmètre de modération", checkstep: "Un seul fournisseur (propriétaire)", openmod: "Multi-fournisseurs (OpenAI, Azure, Mistral, LLM) + console unifiée" },
+  { feature: "Interface opérationnelle", checkstep: "API + interface basique", openmod: "Console Trust & Safety complète, file de modération manuelle incluse" },
+  { feature: "Moteur de règles", checkstep: "Logique propriétaire", openmod: "Trois niveaux intégrés : filtres de mots, seuils de score et charte de la communauté en langage courant" },
+  { feature: "Dépendance fournisseur", checkstep: "Forte (SaaS propriétaire)", openmod: "Aucune (vos propres clés, changement de fournisseur instantané)" },
+  { feature: "Souveraineté des données", checkstep: "SaaS uniquement dans le cloud", openmod: "Auto-hébergeable sur votre propre infrastructure européenne, pour une conformité totale au RGPD et au DSA" },
+  { feature: "Modèle de prix", checkstep: "Facturation SaaS à la requête", openmod: "Cœur open source gratuit. Offre cloud managée au tarif prévisible." }
+];
+---
+
+<BaseLayout
+  title="OpenModeration ou Checkstep : le comparatif"
+  description="Checkstep repose sur un seul fournisseur. OpenModeration ajoute le multi-fournisseurs, une console Trust &amp; Safety et la conformité DSA auto-hébergée."
+  jsonLd={comparisonJsonLd}
+>
+  <Breadcrumb items={[{ label: "Accueil", href: "/fr" }, { label: "Alternatives", href: "/fr/alternatives" }, { label: "OpenModeration ou Checkstep" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">Comparatif d'alternative</div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">OpenModeration ou Checkstep</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Checkstep propose des API de modération par IA performantes, mais bâtir un workflow de modération complet autour d'elles demande un gros effort d'ingénierie. OpenModeration vous apporte l'API <strong>et</strong> tout le dispositif opérationnel.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-4xl">
+        <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">Comparatif point par point</h2>
+        <div class="mt-8 overflow-hidden rounded-xl border border-surface-200">
+          <table class="w-full text-left text-sm">
+            <thead>
+              <tr class="bg-surface-50">
+                <th class="px-6 py-4 font-semibold text-surface-900">Fonctionnalité</th>
+                <th class="px-6 py-4 font-semibold text-surface-500">Checkstep</th>
+                <th class="px-6 py-4 font-semibold text-brand-700">OpenModeration</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-surface-200 bg-white">
+              {comparisonPoints.map((row) => (
+                <tr>
+                  <td class="px-6 py-4 font-medium text-surface-900">{row.feature}</td>
+                  <td class="px-6 py-4 text-surface-600">{row.checkstep}</td>
+                  <td class="px-6 py-4 font-medium text-accent-600">{row.openmod}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="mt-16 grid gap-8 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-8">
+          <h3 class="text-xl font-bold text-surface-900">Le coût caché d'une modération « API seule »</h3>
+          <p class="mt-4 text-surface-600">
+            Intégrer Checkstep n'est que la première étape. Pour le rendre opérationnel, votre équipe technique doit encore développer :
+          </p>
+          <ul class="mt-4 space-y-3 text-sm text-surface-600">
+            <li class="flex items-start gap-2"><span class="text-red-500">✕</span> Une console pour que les modérateurs humains examinent les cas limites</li>
+            <li class="flex items-start gap-2"><span class="text-red-500">✕</span> Un moteur de règles qui traduit les scores de l'IA en actions automatiques (masquer, supprimer, signaler)</li>
+            <li class="flex items-start gap-2"><span class="text-red-500">✕</span> Des journaux d'audit pour prouver la conformité DSA aux régulateurs</li>
+            <li class="flex items-start gap-2"><span class="text-red-500">✕</span> Une logique de secours en cas d'indisponibilité des API Checkstep</li>
+          </ul>
+        </div>
+        <div class="rounded-xl border border-brand-200 bg-brand-50 p-8 shadow-sm">
+          <h3 class="text-xl font-bold text-brand-700">L'avantage OpenModeration</h3>
+          <p class="mt-4 text-surface-700">
+            OpenModeration ajoute aux fournisseurs d'IA de votre choix tout ce qu'il faut pour modérer au quotidien :
+          </p>
+          <ul class="mt-4 space-y-3 text-sm text-surface-700">
+            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> Votre équipe Trust &amp; Safety examine les contenus dès le premier jour, dans une console déjà prête.</li>
+            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> Vos règles tiennent en trois outils (mots interdits, seuils par catégorie et charte de votre communauté) et se règlent sans code.</li>
+            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> Si Checkstep ralentit ou tombe en panne, les requêtes partent automatiquement vers OpenAI ou Mistral.</li>
+            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> Chaque décision, de l'IA comme d'un modérateur, est consignée dans un journal d'audit complet.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTASection
+    title="Cessez de développer vos outils de modération en interne."
+    subtitle="Passez à une plateforme de modération par IA complète, avec fournisseurs intégrés, règles automatiques et console de revue humaine. Vous pouvez l'essayer gratuitement."
+    buttonText="Essayer gratuitement"
+    buttonHref="https://app.openmoderation.com/signup"
+  />
+
+  <section class="border-t border-surface-100 bg-surface-50 py-16">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold text-surface-900">Comparer d'autres fournisseurs</h2>
+      <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+        <a href="/fr/alternatives/openai-moderation" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">OpenAI Moderation</a>
+        <a href="/fr/alternatives/azure-content-safety" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Azure Content Safety</a>
+        <a href="/fr/alternatives/mistral-moderation" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Mistral Moderation</a>
+        <a href="/fr/alternatives/perspective-api" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Perspective API</a>
+        <a href="/fr/alternatives/hive-moderation" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Hive Moderation</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

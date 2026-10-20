@@ -1,0 +1,225 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+
+const alternativesJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Alternativen für Content Moderation | OpenModeration",
+  "description": "Vergleichen Sie OpenModeration mit OpenAI, Azure Content Safety, Mistral, Perspective API, Hive und Checkstep.",
+  "inLanguage": "de"
+};
+
+const comparisons = [
+  {
+    title: "OpenAI Moderation",
+    tagline: "Plattform statt einzelner API",
+    description: "OpenAI Moderation ist ein einzelner Anbieter. OpenModeration bündelt 10 Anbieter hinter einer API und ergänzt automatische Regeln, manuelle Prüfung und einen DSA-Audit-Trail.",
+    href: "/de/alternativen/openai-moderation",
+    iconPath: "M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4",
+  },
+  {
+    title: "Azure Content Safety",
+    tagline: "Nur Cloud oder Self-Hosting",
+    description: "Azure Content Safety ist eine reine API und bindet Sie an Microsoft. OpenModeration bietet Azure plus 9 weitere Anbieter, ein Prüf-Dashboard und Deployment on-premise.",
+    href: "/de/alternativen/azure-content-safety",
+    iconPath: "M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z",
+  },
+  {
+    title: "Mistral Moderation",
+    tagline: "Ein Anbieter, eine API",
+    description: "Mistral Moderation ist ein einzelner Anbieter. OpenModeration kombiniert Mistral mit OpenAI, Azure und weiteren Anbietern hinter einer API, mit automatisierten Workflows und DSA-Konformität.",
+    href: "/de/alternativen/mistral-moderation",
+    iconPath: "M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z",
+  },
+  {
+    title: "Perspective API",
+    tagline: "Migration vor der Abschaltung 2026",
+    description: "Googles Perspective API wird Ende 2026 eingestellt. Migrieren Sie Ihr Forum oder Ihre Community vor der Abschaltung auf eine Open-Source-Plattform mit mehreren Anbietern.",
+    href: "/de/alternativen/perspective-api",
+    iconPath: "M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15",
+  },
+  {
+    title: "Hive Moderation",
+    tagline: "Fokus Bild oder Fokus Text",
+    description: "Hive ist stark bei der Moderation von Bildern. OpenModeration kombiniert Hive mit 9 weiteren Textanbietern und ergänzt automatische Regeln, manuelle Prüfung und einen DSA-Audit-Trail.",
+    href: "/de/alternativen/hive-moderation",
+    iconPath: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
+  },
+  {
+    title: "Checkstep",
+    tagline: "SaaS-Preise oder Open Core",
+    description: "Checkstep ist eine proprietäre SaaS-Lösung. OpenModeration ist vollständig Open Source unter AGPL v3, mit einer Managed Cloud zu planbaren Preisen.",
+    href: "/de/alternativen/checkstep",
+    iconPath: "M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M9 7l3 1m-3-1l-3 9a5.002 5.002 0 006.001 0M18 6l3 1m-3-1l-3 9a5.002 5.002 0 006.001 0M15 7l3 1m-3-1l-3 9a5.002 5.002 0 006.001 0",
+  },
+  {
+    title: "Bodyguard",
+    tagline: "Open Source, kostenlos starten",
+    description: "Bodyguard ist ein französischer Anbieter für KI-Moderation, dessen Einstiegspaket bei 1.000 € pro Monat beginnt. OpenModeration ist Open Source, veröffentlicht seine Preise, hostet Ihre Daten in der EU und begründet jede Entscheidung schriftlich.",
+    href: "/de/alternativen/bodyguard",
+    iconPath: "M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4",
+  },
+  {
+    title: "Conversario",
+    tagline: "Etabliert bei deutschen Verlagen",
+    description: "Dialogmanagement von ferret go, genutzt von SPIEGEL, RTL und NZZ. Keine öffentlichen Preise, Begründung der Entscheidungen nicht angegeben. Vergleich zu Kanälen, Preisen, Hosting und DSA.",
+    href: "/de/alternativen/conversario",
+    iconPath: "M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4",
+  },
+  {
+    title: "Utopia AI Moderator",
+    tagline: "Modell aus früheren Entscheidungen",
+    description: "Finnischer KI-Moderator, trainiert auf früheren Entscheidungen jedes Kunden, genutzt von Krone und 20 Minuten. Nur API, keine öffentlichen Preise. Vergleich zu Einrichtung, Konnektoren und DSA.",
+    href: "/de/alternativen/utopia",
+    iconPath: "M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4",
+  },
+  {
+    title: "Viafoura",
+    tagline: "Kommentar-Suite für Medien",
+    description: "Eine komplette Kommentar- und Engagement-Suite für Medienhäuser, mit KI- und menschlicher Moderation. Keine öffentlichen Preise. OpenModeration moderiert das Kommentarsystem, das Sie schon haben.",
+    href: "/de/alternativen/viafoura",
+    iconPath: "M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4",
+  },
+  {
+    title: "NapoleonCat",
+    tagline: "Social-Suite mit Auto-Moderation",
+    description: "Eine Social-Media-Management-Suite. Automatisches Ausblenden gibt es ab dem Expert-Plan für 139 € im Monat. Keine Begründungen, kein DSA-Protokoll und keine Website-Kommentare angegeben.",
+    href: "/de/alternativen/napoleoncat",
+    iconPath: "M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4",
+  },
+  {
+    title: "Lasso Moderation",
+    tagline: "Nächster EU-Wettbewerber",
+    description: "Wie OpenModeration hostet Lasso in der EU und begründet Entscheidungen nach DSA. Unterschiede: Konnektoren für Facebook, Instagram, YouTube und WordPress, Open Source, Gratis-Angebot, Richtlinien-Einrichtung.",
+    href: "/de/alternativen/lasso-moderation",
+    iconPath: "M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4",
+  },
+  {
+    title: "Coral",
+    tagline: "Open-Source-Kommentarsystem",
+    description: "Coral by Vox Media ist ein Open-Source-Kommentarsystem (Apache 2.0), das Redaktionen selbst betreiben. OpenModeration ist eine AGPL-Moderationsschicht für Website, Facebook, Instagram und YouTube.",
+    href: "/de/alternativen/coral",
+    iconPath: "M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4",
+  },
+  {
+    title: "OpenWeb",
+    tagline: "Werbefinanzierte Verlags-Communitys",
+    description: "OpenWeb betreibt gehostete Kommentare und Foren für Verlage, mit KI-Moderation und Werbegeschäft. Preise, Datenhosting und DSGVO sind auf der Website nicht angegeben.",
+    href: "/de/alternativen/openweb",
+    iconPath: "M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4",
+  },
+  {
+    title: "TrollWall AI",
+    tagline: "Schutz nur für Social Media",
+    description: "TrollWall AI blendet Hasskommentare auf Facebook, Instagram, TikTok und YouTube aus, Preis pro Konto. OpenModeration moderiert auch die Website, mit öffentlichen Preisen und EU-Hosting.",
+    href: "/de/alternativen/trollwall",
+    iconPath: "M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4",
+  },
+  {
+    title: "Swat.io",
+    tagline: "Suite mit Inbox-Moderation",
+    description: "Swat.io ist eine Social-Media-Suite aus Wien mit KI-Ausblenden in der Inbox. OpenModeration ist ein spezialisiertes Moderationstool, auch für Leserkommentare, mit DSA-Protokoll.",
+    href: "/de/alternativen/swat-io",
+    iconPath: "M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4",
+  },
+  {
+    title: "Fanpage Karma",
+    tagline: "Suite mit Hassfilter",
+    description: "Fanpage Karma ist eine Social-Media-Suite, der Hate Speech Detector ist in jedem Abo enthalten. OpenModeration moderiert nach Ihrer eigenen Richtlinie, auf Social Media und der Website.",
+    href: "/de/alternativen/fanpage-karma",
+    iconPath: "M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4",
+  },
+];
+
+const tableRows = [
+  { feature: "Anbieter hinter einer API", them: "Einer (der eigene)", openmod: "10 Anbieter + BYOK + eigene LLMs" },
+  { feature: "Deployment", them: "Nur Cloud-SaaS", openmod: "Self-Hosting mit Docker oder Managed Cloud" },
+  { feature: "Automatische Durchsetzung", them: "Nur Scores, die Logik bauen Sie selbst", openmod: "Action Engine: Wörter, Schwellenwerte, Community-Richtlinien" },
+  { feature: "Manuelle Prüfung", them: "Eigene Warteschlange bauen", openmod: "Prüf-Dashboard inklusive" },
+  { feature: "DSA-Audit-Trail", them: "Eingeschränkt oder nicht vorhanden", openmod: "Jede Entscheidung protokolliert und exportierbar" },
+];
+---
+
+<BaseLayout title="Alternativen für Content Moderation: Anbieter im Vergleich" description="OpenModeration im Vergleich mit OpenAI Moderation, Azure Content Safety, Mistral, Perspective API, Hive und Checkstep. Eine API, 10 Anbieter, selbst gehostet oder Cloud." jsonLd={alternativesJsonLd}>
+  <Breadcrumb items={[{ label: "Startseite", href: "/de" }, { label: "Alternativen" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">Alternativen im Vergleich</div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">OpenModeration im Vergleich mit den Alternativen</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Die meisten Moderationstools bieten Ihnen eine API oder ein Dashboard. OpenModeration ist das vollständige System: KI mehrerer Anbieter, automatische Regeln, manuelle Prüfung und ein Audit-Trail, der den Anforderungen des DSA genügt.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {comparisons.map((comparison) => (
+          <a href={comparison.href} class="group rounded-xl border border-surface-200 bg-surface-50 p-8 transition hover:border-brand-300 hover:shadow-md">
+            <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-100 text-brand-600">
+              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={comparison.iconPath}/></svg>
+            </div>
+            <h2 class="text-xl font-semibold text-surface-900 group-hover:text-brand-600">{comparison.title}</h2>
+            <p class="mt-1 text-xs font-medium uppercase tracking-wide text-surface-400">{comparison.tagline}</p>
+            <p class="mt-3 text-sm text-surface-500">{comparison.description}</p>
+            <span class="mt-4 inline-flex items-center gap-1 text-sm font-medium text-brand-600 group-hover:text-brand-700">
+              Zum Vergleich
+              <svg class="h-3.5 w-3.5 transition group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-4xl">
+        <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">Warum Teams zu OpenModeration wechseln</h2>
+        <p class="mt-3 text-lg text-surface-500">Das Muster wiederholt sich in jedem Vergleich: Mit einer API, die nur einen Anbieter abdeckt, müssen Sie die operative Ebene selbst bauen.</p>
+        <div class="mt-8 overflow-hidden rounded-xl border border-surface-200">
+          <table class="w-full text-left text-sm">
+            <thead>
+              <tr class="bg-white">
+                <th class="px-6 py-4 font-semibold text-surface-900">Funktion</th>
+                <th class="px-6 py-4 font-semibold text-surface-500">Typische API eines einzelnen Anbieters</th>
+                <th class="px-6 py-4 font-semibold text-brand-700">OpenModeration</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-surface-200 bg-white">
+              {tableRows.map((row) => (
+                <tr>
+                  <td class="px-6 py-4 font-medium text-surface-900" set:html={row.feature} />
+                  <td class="px-6 py-4 text-surface-600" set:html={row.them} />
+                  <td class="px-6 py-4 font-medium text-accent-600" set:html={row.openmod} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTASection
+    title="Schluss mit dem Bau eigener Moderationstools."
+    subtitle="Nutzen Sie eine vollständige KI-Moderationsplattform mit integrierten Anbietern, automatischen Regeln und einem Dashboard für die manuelle Prüfung."
+    buttonText="Kostenlos testen"
+    buttonHref="https://app.openmoderation.com/signup"
+  />
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold text-surface-900">Weiter entdecken</h2>
+      <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+        <a href="/de/funktionen" class="rounded-full border border-surface-200 bg-surface-50 px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Funktionen</a>
+        <a href="/de/so-funktioniert-es" class="rounded-full border border-surface-200 bg-surface-50 px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">So funktioniert es</a>
+        <a href="/de/preise" class="rounded-full border border-surface-200 bg-surface-50 px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Preise</a>
+        <a href="/de/blog/vergleich-openai-azure-llama-guard" class="rounded-full border border-surface-200 bg-surface-50 px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Anbieter-Benchmark 2026</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

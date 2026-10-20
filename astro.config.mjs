@@ -7,6 +7,11 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()]
   },
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'fr', 'es', 'de', 'it'],
+    routing: { prefixDefaultLocale: false },
+  },
   integrations: [sitemap({
     serialize(item) {
       item.lastmod = new Date().toISOString().split('T')[0];

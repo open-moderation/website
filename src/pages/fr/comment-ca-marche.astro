@@ -1,0 +1,316 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CTASection from '../../components/CTASection.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+import BrowserFrame from '../../components/BrowserFrame.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/fr/comment-ca-marche",
+  "url": "https://www.openmoderation.com/fr/comment-ca-marche",
+  "name": "Comment fonctionne la modération de contenu par IA",
+  "description": "Découvrez toute la chaîne de modération : collecte des contenus, modération par IA multi-fournisseurs, règles et actions automatiques, revue manuelle.",
+  "inLanguage": "fr",
+  "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
+};
+
+const facebookWebhookExample = `// Facebook envoie le commentaire par webhook
+{
+  "source": "facebook",
+  "content_id": "comment_123",
+  "author_id": "user_456",
+  "text": "Comment text here...",
+  "metadata": {"post_url": "..."}
+}`;
+
+const moderationResponseExample = `{
+  "model": "openai/omni-moderation-latest",
+  "results": [{
+    "category": "hate",
+    "score": 0.02,
+    "flagged": false
+  }],
+  "flagged": false,
+  "usage": {
+    "latency_ms": 243,
+    "provider": "openai"
+  }
+}`;
+
+const ruleConfigExample = `// Configurez vos seuils de modération
+PUT /v1/settings
+
+{
+  "thresholds": {
+    "hate":       { "accepted": 0.3, "rejected": 0.7 },
+    "harassment": { "accepted": 0.3, "rejected": 0.7 },
+    "sexual":     { "accepted": 0.2, "rejected": 0.8 },
+    "violence":   { "accepted": 0.3, "rejected": 0.7 },
+    "self-harm":  { "accepted": 0.2, "rejected": 0.8 },
+    "spam":       { "accepted": 0.4, "rejected": 0.8 }
+  },
+  "actions": {
+    "on_reject": ["hide", "flag_for_review"]
+  }
+}`;
+
+const auditTrailExample = `// Journal d'audit complet pour chaque contenu
+{
+  "content_id": "...",
+  "source": "webhook",
+  "platform": "facebook",
+  "status": "actioned",
+  "moderation": {
+    "provider": "openai",
+    "flagged": true,
+    "results": [...]
+  },
+  "actions": [{
+    "rule": "Hide hate speech",
+    "type": "hide",
+    "status": "executed"
+  }]
+}`;
+---
+
+<BaseLayout title="Comment fonctionne la modération par IA : la chaîne complète" description="Découvrez toute la chaîne de modération : collecte des contenus, modération par IA multi-fournisseurs, règles et actions automatiques, et revue manuelle." jsonLd={pageJsonLd}>
+<Breadcrumb items={[{ label: "Accueil", href: "/fr" }, { label: "Comment ça marche" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Comment ça marche</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        De la collecte des contenus jusqu'à l'action automatique, tout passe par une seule chaîne.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <!-- Pipeline Overview -->
+      <div class="mb-20">
+        <div class="relative rounded-2xl border border-surface-200 bg-surface-50 p-8">
+          <div class="grid gap-6 grid-cols-2 lg:grid-cols-4">
+            <div class="rounded-xl border border-brand-200 bg-white p-6 text-center">
+              <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-100 text-brand-600">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              </div>
+              <h3 class="text-lg font-semibold text-surface-900">1. Collecte</h3>
+              <p class="mt-2 text-sm text-surface-500">Les contenus arrivent par l'API, un webhook ou un connecteur de réseau social.</p>
+              <div class="mt-4 flex flex-wrap justify-center gap-2">
+                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">POST /v1/moderation</span>
+                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Webhooks</span>
+                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Facebook</span>
+                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Instagram</span>
+                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">YouTube</span>
+              </div>
+            </div>
+            <div class="hidden lg:flex lg:items-center lg:justify-center">
+              <svg class="h-6 w-6 text-surface-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </div>
+            <div class="rounded-xl border border-brand-400 bg-white p-6 text-center shadow-md">
+              <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-600 text-white">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+              </div>
+              <h3 class="text-lg font-semibold text-surface-900">2. Modération par IA</h3>
+              <p class="mt-2 text-sm text-surface-500">Le routage intelligent envoie le contenu au meilleur fournisseur et renvoie un résultat standardisé.</p>
+              <div class="mt-4 flex flex-wrap justify-center gap-2">
+                <span class="rounded-full bg-brand-100 px-2.5 py-0.5 text-xs text-brand-700">OpenAI</span>
+                <span class="rounded-full bg-brand-100 px-2.5 py-0.5 text-xs text-brand-700">Azure</span>
+                <span class="rounded-full bg-brand-100 px-2.5 py-0.5 text-xs text-brand-700">HuggingFace</span>
+                <span class="rounded-full bg-brand-100 px-2.5 py-0.5 text-xs text-brand-700">LLM</span>
+              </div>
+            </div>
+            <div class="hidden lg:flex lg:items-center lg:justify-center">
+              <svg class="h-6 w-6 text-surface-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </div>
+            <div class="rounded-xl border border-surface-200 bg-white p-6 text-center">
+              <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-100 text-brand-600">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+              </div>
+              <h3 class="text-lg font-semibold text-surface-900">3. Règles et actions</h3>
+              <p class="mt-2 text-sm text-surface-500">Le moteur de règles évalue les résultats, puis les actions s'exécutent automatiquement.</p>
+              <div class="mt-4 flex flex-wrap justify-center gap-2">
+                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Masquer</span>
+                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Retenir</span>
+                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Publier</span>
+                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Webhook</span>
+              </div>
+            </div>
+            <div class="hidden lg:flex lg:items-center lg:justify-center">
+              <svg class="h-6 w-6 text-surface-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </div>
+            <div class="rounded-xl border border-surface-200 bg-white p-6 text-center">
+              <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-100 text-brand-600">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+              </div>
+              <h3 class="text-lg font-semibold text-surface-900">4. Revue manuelle</h3>
+              <p class="mt-2 text-sm text-surface-500">Les cas limites sont transmis à vos modérateurs, qui les approuvent ou les rejettent.</p>
+              <div class="mt-4 flex flex-wrap justify-center gap-2">
+                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">File de modération</span>
+                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Approuver</span>
+                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Rejeter</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detailed Steps -->
+      <div class="space-y-16">
+        <div class="grid items-center gap-8 lg:grid-cols-2">
+          <div>
+            <span class="mb-2 inline-flex items-center rounded-full bg-brand-100 px-3 py-0.5 text-sm font-medium text-brand-700">Étape 1</span>
+            <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">Les contenus arrivent de partout</h2>
+            <p class="mt-4 text-surface-500">
+              Envoyez vos contenus par le canal de votre choix. Utilisez l'API directe pour un accès programmatique,
+              configurez des webhooks pour recevoir les contenus de plateformes externes, ou activez les connecteurs
+              natifs aux réseaux sociaux, qui récupèrent automatiquement commentaires et publications.
+            </p>
+            <ul class="mt-6 space-y-2 text-sm text-surface-600">
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>API :</strong> POST /v1/moderation pour une modération unitaire ou par lots</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Webhooks :</strong> un point d'entrée générique reçoit et normalise les données externes</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Connecteurs :</strong> intégration native avec Facebook, Instagram, YouTube et WordPress</li>
+            </ul>
+          </div>
+          <div class="rounded-xl border border-surface-200 bg-surface-50 p-8">
+            <h4 class="mb-3 text-sm font-semibold text-surface-900">Exemple : un commentaire Facebook</h4>
+            <CodeBlock code={facebookWebhookExample} lang="json" />
+          </div>
+        </div>
+
+        <div class="grid items-center gap-8 lg:grid-cols-2">
+          <div class="lg:order-2">
+            <span class="mb-2 inline-flex items-center rounded-full bg-brand-100 px-3 py-0.5 text-sm font-medium text-brand-700">Étape 2</span>
+            <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">L'IA modère le contenu</h2>
+            <p class="mt-4 text-surface-500">
+              Chaque contenu est envoyé au meilleur fournisseur disponible selon la langue, le type de contenu,
+              les catégories à couvrir et le coût. Chaque fournisseur renvoie des résultats standardisés, avec
+               des scores de 0,0 à 1,0 sur 10 catégories de contenus.
+            </p>
+            <ul class="mt-6 space-y-2 text-sm text-surface-600">
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Si vous ne précisez pas de fournisseur, le routage choisit le plus adapté</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Vous utilisez vos propres clés d'API (BYOK) ou celles de la plateforme</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> La réponse garde le même format, quel que soit le fournisseur utilisé</li>
+            </ul>
+          </div>
+          <div class="rounded-xl border border-surface-200 bg-surface-50 p-8 lg:order-1">
+            <h4 class="mb-3 text-sm font-semibold text-surface-900">Réponse standardisée</h4>
+            <CodeBlock code={moderationResponseExample} lang="json" />
+          </div>
+        </div>
+
+        <div class="grid items-center gap-8 lg:grid-cols-2">
+          <div>
+            <span class="mb-2 inline-flex items-center rounded-full bg-brand-100 px-3 py-0.5 text-sm font-medium text-brand-700">Étape 3</span>
+            <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">Vos règles s'appliquent automatiquement</h2>
+            <p class="mt-4 text-surface-500">
+              Définissez vos règles de modération avec trois outils simples : les <strong>mots interdits</strong> pour un blocage immédiat, les <strong>seuils par catégorie</strong> pour des décisions automatiques, et votre <strong>charte de communauté</strong>, rédigée en langage courant, pour une modération par IA qui tient compte du contexte.
+            </p>
+            <div class="mt-6 space-y-3">
+              <div class="rounded-lg border border-surface-200 bg-white p-4">
+                <p class="text-sm text-surface-700">Les <strong>mots interdits</strong> bloquent un contenu immédiatement, avant tout appel à l'IA, sans aucun coût</p>
+              </div>
+              <div class="rounded-lg border border-surface-200 bg-white p-4">
+                <p class="text-sm text-surface-700">Les <strong>seuils par catégorie</strong> déclenchent des actions automatiques dès que les scores dépassent vos limites</p>
+              </div>
+              <div class="rounded-lg border border-surface-200 bg-white p-4">
+                <p class="text-sm text-surface-700">Votre <strong>charte de communauté</strong> guide les décisions de l'IA en fonction du contexte et donne le ton de votre plateforme</p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <BrowserFrame
+              src="/images/rules.png"
+              alt="Réglages des règles d'OpenModeration : mots interdits, seuils par catégorie et charte de communauté en langage courant"
+              caption="Vos seuils, réglés une fois, appliqués partout."
+              eager={false}
+            />
+            <details class="mt-4 rounded-xl border border-surface-200 bg-surface-50 p-4">
+              <summary class="cursor-pointer text-sm font-semibold text-surface-700">Pour les développeurs : configuration par l'API</summary>
+              <div class="mt-3">
+                <CodeBlock code={ruleConfigExample} lang="json" />
+              </div>
+            </details>
+          </div>
+        </div>
+
+        <div class="grid items-center gap-8 lg:grid-cols-2">
+          <div class="lg:order-2">
+            <span class="mb-2 inline-flex items-center rounded-full bg-brand-100 px-3 py-0.5 text-sm font-medium text-brand-700">Étape 4</span>
+            <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">Les cas limites passent en revue manuelle</h2>
+            <p class="mt-4 text-surface-500">
+              Vos équipes Trust & Safety disposent d'un espace de travail dédié.
+              Elles examinent les contenus signalés, traitent les signalements des utilisateurs et corrigent les décisions de l'IA. Tout reste tracé.
+            </p>
+            <ul class="mt-6 space-y-2 text-sm text-surface-600">
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Chaque correction est enregistrée</strong> avec son auteur et sa justification</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Approuvez ou rejetez les contenus signalés depuis la console de modération</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Notifications par webhook pour chaque nouveau contenu à examiner</li>
+            </ul>
+          </div>
+          <div class="rounded-xl border border-surface-200 bg-surface-50 p-8 lg:order-1">
+            <h4 class="mb-3 text-sm font-semibold text-surface-900">Tout est enregistré</h4>
+            <CodeBlock code={auditTrailExample} lang="json" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Action Engine -->
+  <section id="action-engine" class="scroll-mt-24 bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Moteur d'actions</h2>
+        <p class="mt-4 text-lg text-surface-500">Quand vos règles se déclenchent, le moteur d'actions applique automatiquement votre décision sur la plateforme elle-même. Chaque action est enregistrée.</p>
+      </div>
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-red-100 text-red-600">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>
+          </div>
+          <h3 class="font-semibold text-surface-900">Masquer automatiquement</h3>
+          <p class="mt-1 text-sm text-surface-500">Les contenus refusés sont masqués sur Facebook et Instagram, et rejetés sur YouTube. Votre communauté ne les voit jamais.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-amber-100 text-amber-600">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <h3 class="font-semibold text-surface-900">Retenir pour examen</h3>
+          <p class="mt-1 text-sm text-surface-500">Les contenus en zone grise sont retenus et attendent dans votre file de modération : rien n'est publié, rien n'est perdu.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-green-100 text-green-600">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <h3 class="font-semibold text-surface-900">Publier et rétablir</h3>
+          <p class="mt-1 text-sm text-surface-500">Les contenus sains sont publiés normalement. Quand un modérateur approuve un commentaire retenu, il est publié.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <h3 class="font-semibold text-surface-900">Prévenir vos outils</h3>
+          <p class="mt-1 text-sm text-surface-500">Chaque décision peut être transmise à vos propres outils par webhook, pour vos workflows et intégrations sur mesure.</p>
+        </div>
+      </div>
+      <div class="mx-auto mt-12 max-w-xl">
+        <BrowserFrame
+          src="/images/rules.png"
+          alt="Console open-moderation : configuration des règles avec seuils par catégorie et actions automatiques"
+          caption="Vos seuils, réglés une fois, appliqués sur chaque plateforme connectée."
+        />
+      </div>
+      <div class="mt-10 text-center">
+        <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">
+          Essayer gratuitement
+        </a>
+        <p class="mt-3 text-sm text-surface-400">Sans carte bancaire</p>
+      </div>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

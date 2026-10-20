@@ -1,0 +1,153 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import CodeBlock from '../../../components/CodeBlock.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/it/integrazioni",
+  "url": "https://www.openmoderation.com/it/integrazioni",
+  "name": "Modera Facebook, Instagram, YouTube e WordPress da un'unica piattaforma",
+  "description": "Collega Facebook, Instagram, YouTube e WordPress. Acquisisci i contenuti e modera i commenti su tutte le tue piattaforme con le tue credenziali.",
+  "inLanguage": "it",
+  "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
+};
+
+const wordpressConfig = `POST /v1/sources
+
+{
+  "name": "My WordPress Blog",
+  "platform": "wordpress",
+  "credentials": {
+    "siteUrl": "https://myblog.com",
+    "username": "wp-admin",
+    "appPassword": "xxxx xxxx xxxx xxxx"
+  },
+  "features": ["execute_actions"]
+}`;
+
+const webhookReceive = `POST /v1/webhooks/receive
+
+{
+  "source": "custom_platform",
+  "content_id": "post_789",
+  "author_id": "user_012",
+  "text": "Content to moderate...",
+  "metadata": {
+    "custom_field": "value"
+  }
+}`;
+---
+
+<BaseLayout title="Moderazione di Facebook, Instagram, YouTube e WordPress" description="Collega Facebook, Instagram, YouTube e WordPress: acquisisci i contenuti e modera i commenti di tutte le tue piattaforme con le tue credenziali." jsonLd={pageJsonLd}>
+<Breadcrumb items={[{ label: "Home", href: "/it" }, { label: "Integrazioni con le piattaforme" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Integrazioni con le piattaforme</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Porta le tue policy di moderazione sulle piattaforme che la tua community usa già.
+      </p>
+      <p class="mt-4 text-sm"><a href="/it/moderazione-social" class="font-medium text-brand-600 hover:text-brand-500">Tutto sulla moderazione dei social con OpenModeration &rarr;</a></p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-8">
+          <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 text-blue-600">
+            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </div>
+          <h3 class="text-xl font-semibold text-surface-900">Facebook</h3>
+          <p class="mt-2 text-sm text-surface-500">Acquisisci commenti e post. Nascondi o elimina automaticamente i contenuti che violano le regole, direttamente tramite la Facebook Graph API.</p>
+          <div class="mt-4 space-y-2">
+            <div class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Collegati per ricevere i contenuti in automatico</div>
+            <div class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Nascondi o elimina in automatico i contenuti non conformi</div>
+          </div>
+          <a href="/it/integrazioni/moderazione-facebook" class="mt-4 inline-flex items-center gap-1 text-sm font-medium text-brand-600 hover:text-brand-700">Scopri di più <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></a>
+        </div>
+
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-8">
+          <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-pink-100 text-pink-600">
+            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          </div>
+          <h3 class="text-xl font-semibold text-surface-900">Instagram</h3>
+          <p class="mt-2 text-sm text-surface-500">Modera commenti e messaggi su Instagram e proteggi il tuo profilo da contenuti tossici, spam o inappropriati.</p>
+          <div class="mt-4 space-y-2">
+            <div class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Acquisisci commenti e risposte</div>
+            <div class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Nascondi o elimina in automatico i contenuti non conformi</div>
+          </div>
+          <a href="/it/integrazioni/moderazione-instagram" class="mt-4 inline-flex items-center gap-1 text-sm font-medium text-brand-600 hover:text-brand-700">Scopri di più <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></a>
+        </div>
+
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-8">
+          <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-red-100 text-red-600">
+            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </div>
+          <h3 class="text-xl font-semibold text-surface-900">YouTube</h3>
+          <p class="mt-2 text-sm text-surface-500">Modera su larga scala i commenti ai video. Marcali come spam o trattienili per la revisione tramite la YouTube Data API.</p>
+          <div class="mt-4 space-y-2">
+            <div class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Acquisisci i commenti ai video</div>
+            <div class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Marca come spam o trattieni per la revisione</div>
+          </div>
+          <a href="/it/integrazioni/moderazione-youtube" class="mt-4 inline-flex items-center gap-1 text-sm font-medium text-brand-600 hover:text-brand-700">Scopri di più <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></a>
+        </div>
+
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-8">
+          <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-sky-100 text-sky-700">
+            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M21.469 6.825c.84 1.537 1.318 3.3 1.318 5.175 0 3.979-2.156 7.456-5.363 9.325l3.295-9.527c.615-1.54.82-2.771.82-3.864 0-.405-.026-.78-.07-1.11m-7.981.105c.647-.03 1.232-.105 1.232-.105.582-.075.514-.93-.067-.899 0 0-1.755.135-2.88.135-1.064 0-2.85-.15-2.85-.15-.585-.03-.661.855-.075.885 0 0 .54.061 1.125.09l1.68 4.605-2.37 7.08L5.354 6.9c.649-.03 1.234-.1 1.234-.1.585-.075.516-.93-.065-.896 0 0-1.746.138-2.874.138-.2 0-.438-.008-.69-.015C4.911 3.15 8.235 1.215 12 1.215c2.809 0 5.365 1.072 7.286 2.833-.046-.003-.091-.009-.141-.009-1.06 0-1.812.923-1.812 1.914 0 .89.513 1.643 1.06 2.531.411.72.89 1.643.89 2.977 0 .915-.354 1.994-.821 3.479l-1.075 3.585-3.9-11.61.001.014zM12 22.784c-1.059 0-2.081-.153-3.048-.437l3.237-9.406 3.315 9.087c.024.053.05.101.078.149-1.12.393-2.325.609-3.582.609M1.211 12c0-1.564.336-3.05.935-4.39L7.29 21.709C3.694 19.96 1.212 16.271 1.211 12M12 0C5.385 0 0 5.385 0 12s5.385 12 12 12 12-5.385 12-12S18.615 0 12 0"/></svg>
+          </div>
+          <h3 class="text-xl font-semibold text-surface-900">WordPress</h3>
+          <p class="mt-2 text-sm text-surface-500">Modera i commenti del tuo sito WordPress. Ti colleghi con una password per le applicazioni, senza sviluppare alcun plugin.</p>
+          <div class="mt-4 space-y-2">
+            <div class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Acquisisci automaticamente post e commenti</div>
+            <div class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Approva, trattieni per la revisione o marca come spam</div>
+          </div>
+          <a href="/it/integrazioni/moderazione-wordpress" class="mt-4 inline-flex items-center gap-1 text-sm font-medium text-brand-600 hover:text-brand-700">Scopri di più <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">I tuoi account, sotto il tuo controllo</h2>
+          <p class="mt-4 text-lg text-surface-500">
+            Usi i tuoi account e le tue credenziali delle piattaforme social. Le credenziali
+            vengono cifrate in modo sicuro e non sono mai conservate in chiaro.
+          </p>
+          <ul class="mt-6 space-y-3 text-sm text-surface-600">
+            <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Le tue credenziali sono cifrate in modo sicuro</strong></li>
+            <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Per connettore:</strong> più connettori per piattaforma, ognuno con le proprie credenziali</li>
+            <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Self-hosting:</strong> tutti i dati restano sulla tua infrastruttura</li>
+          </ul>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-8">
+          <h4 class="mb-3 text-sm font-semibold text-surface-900">Configurare un connettore WordPress</h4>
+          <CodeBlock code={wordpressConfig} lang="json" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-3xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Integrazione con piattaforme personalizzate</h2>
+        <p class="mt-4 text-lg text-surface-500">
+          Non sei su Facebook, Instagram, YouTube o WordPress? Usa il nostro ricevitore
+          generico per acquisire contenuti da qualsiasi piattaforma.
+        </p>
+        <div class="mt-8 rounded-xl border border-surface-200 bg-surface-50 p-8 text-left">
+          <CodeBlock code={webhookReceive} lang="json" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

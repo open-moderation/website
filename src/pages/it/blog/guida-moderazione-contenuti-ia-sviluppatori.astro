@@ -1,0 +1,128 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import CodeBlock from '../../../components/CodeBlock.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Moderazione dei contenuti per applicazioni di IA: guida per sviluppatori",
+  "description": "Come filtrare input e output nelle applicazioni basate su LLM.",
+  "inLanguage": "it",
+  "datePublished": "2026-06-05",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/it/blog/guida-moderazione-contenuti-ia-sviluppatori" },
+  "dateModified": "2026-06-05"
+};
+
+const pattern1 = `Input utente -> Moderazione input -> { se segnalato -> rifiuta } -> LLM
+Output LLM -> Moderazione output -> { se segnalato -> risposta di ripiego } -> Utente`;
+
+const pattern2 = `Input utente -> Moderazione input + LLM (in parallelo)
+-> Attendi il risultato della moderazione
+-> Se segnalato -> scarta la risposta dell'LLM e mostra un errore
+-> Se non segnalato -> mostra la risposta dell'LLM dopo la moderazione dell'output`;
+---
+
+<BaseLayout title="Moderazione con IA per app LLM: guida per sviluppatori" description="Come filtrare input e output nelle applicazioni basate su LLM: buone pratiche contro la prompt injection e per la sicurezza dei contenuti." jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Home", href: "/it" }, { label: "Blog", href: "/it/blog" }, { label: "Moderazione dei contenuti per applicazioni di IA" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-06-05">5 giugno 2026</time>
+        <span>&middot;</span>
+        <span>10 min di lettura</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Moderazione dei contenuti per applicazioni di IA: guida per sviluppatori</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Ogni applicazione basata su LLM ha bisogno di moderazione dei contenuti. Non solo per
+        conformità, ma anche per la sicurezza, per la fiducia degli utenti e per proteggere il
+        modello dagli input malevoli.
+      </p>
+      <p>
+        In questa guida affrontiamo i due versanti della moderazione con IA: filtrare ciò che gli
+        utenti inviano al tuo LLM e filtrare ciò che il tuo LLM restituisce agli utenti.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">I due filtri di cui ogni app di IA ha bisogno</h2>
+
+      <h3 class="text-lg font-semibold text-surface-900">1. Filtro sugli input</h3>
+      <p>
+        Prima che l'input dell'utente raggiunga il tuo LLM, devi verificare la presenza di:
+      </p>
+      <ul>
+        <li><strong>Contenuti dannosi:</strong> incitamento all'odio, molestie, minacce, contenuti sessuali</li>
+        <li><strong>Prompt injection:</strong> tentativi di scavalcare il prompt di sistema o di fare il jailbreak del modello</li>
+        <li><strong>Richieste illecite:</strong> istruzioni per attività illegali, produzione di droghe e simili</li>
+        <li><strong>Fuga di dati personali:</strong> utenti che condividono per errore informazioni personali</li>
+      </ul>
+
+      <h3 class="text-lg font-semibold text-surface-900">2. Filtro sugli output</h3>
+      <p>
+        Prima che l'output del modello raggiunga i tuoi utenti, devi verificare la presenza di:
+      </p>
+      <ul>
+        <li><strong>Contenuti dannosi generati:</strong> il modello che produce incitamento all'odio, violenza e simili</li>
+        <li><strong>Generazione di dati personali:</strong> il modello che genera per errore dati personali reali o inventati</li>
+        <li><strong>Informazioni pericolose frutto di allucinazioni:</strong> consigli medici, pareri legali, raccomandazioni finanziarie</li>
+        <li><strong>Violazioni delle policy:</strong> contenuti che violano i termini di servizio della tua applicazione</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Schemi di implementazione</h2>
+
+<p><strong>Schema 1: filtro sequenziale (consigliato per la maggior parte delle app)</strong></p>
+<CodeBlock code={pattern1} lang="text" />
+
+<p><strong>Schema 2: filtro parallelo (quando la latenza deve essere minima)</strong></p>
+<CodeBlock code={pattern2} lang="text" />
+
+      <h2 class="text-xl font-bold text-surface-900">Difesa in profondità con più fornitori</h2>
+      <p>
+        Affidarsi a un solo fornitore di moderazione crea un singolo punto di guasto e zone
+        d'ombra. Un approccio a più livelli è più robusto:
+      </p>
+      <ul>
+        <li>Usa <strong>OpenAI Moderation</strong> per il rilevamento generale dei contenuti dannosi</li>
+        <li>Usa <strong>Llama Guard</strong> (in self-hosting) per filtrare gli input sensibili a costo zero e senza alcuna fuga di dati</li>
+        <li>Usa un <strong>LLM come classificatore</strong>, con GPT-4o o Claude, per applicare policy personalizzate con una comprensione approfondita del contesto</li>
+      </ul>
+      <p>
+        Con OpenModeration questo approccio a più livelli si riduce a una sola chiamata API.
+        Imposta regole che fanno passare i contenuti attraverso più fornitori e aggregano i
+        risultati per arrivare a una decisione finale.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Buone pratiche</h2>
+      <ol>
+        <li><strong>Modera sempre sia l'input sia l'output</strong>: intercettano tipi di rischio diversi</li>
+        <li><strong>Usa il contesto per una maggiore precisione</strong>: passa la cronologia della conversazione e le informazioni sull'autore per migliorare le decisioni di moderazione</li>
+        <li><strong>Imposta soglie adeguate</strong>: più basse per le categorie ad alto rischio (minori, autolesionismo), più alte per quelle a basso rischio (spam)</li>
+        <li><strong>Registra tutto per l'audit</strong>: devi poter dimostrare che la tua moderazione funziona, soprattutto nei settori regolamentati</li>
+        <li><strong>Fai test con input malevoli</strong>: verifica regolarmente la tua pipeline di moderazione con prompt di jailbreak noti</li>
+      </ol>
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Per approfondire</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/it/casi-d-uso/applicazioni-ia" class="font-medium text-brand-600 hover:text-brand-500">La moderazione per le applicazioni di IA &rarr;</a></li>
+        <li><a href="/it/come-funziona" class="font-medium text-brand-600 hover:text-brand-500">Come funziona la pipeline di moderazione &rarr;</a></li>
+        <li><a href="/it/funzionalita" class="font-medium text-brand-600 hover:text-brand-500">Un'unica integrazione, tutti i fornitori &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

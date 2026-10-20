@@ -1,0 +1,126 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import CodeBlock from '../../../components/CodeBlock.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Content Moderation für KI-Anwendungen: ein Leitfaden für Entwickler",
+  "description": "So filtern Sie Ein- und Ausgaben in LLM-basierten Anwendungen.",
+  "inLanguage": "de",
+  "datePublished": "2026-06-05",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/de/blog/ki-content-moderation-leitfaden-entwickler" },
+  "dateModified": "2026-06-05"
+};
+
+const pattern1 = `Nutzereingabe -> Eingabe-Moderation -> { wenn markiert -> ablehnen } -> LLM
+LLM-Ausgabe -> Ausgabe-Moderation -> { wenn markiert -> Ersatzantwort } -> Nutzer`;
+
+const pattern2 = `Nutzereingabe -> Eingabe-Moderation + LLM (parallel)
+-> Auf Moderationsergebnis warten
+-> Wenn markiert -> LLM-Antwort verwerfen & Fehler anzeigen
+-> Wenn nicht markiert -> LLM-Antwort nach Ausgabe-Moderation anzeigen`;
+---
+
+<BaseLayout title="KI-Content-Moderation: Leitfaden für Entwickler" description="So filtern Sie Ein- und Ausgaben in LLM-Anwendungen: Best Practices gegen Prompt Injection und für sichere Inhalte mit einer Moderations-API." jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Startseite", href: "/de" }, { label: "Blog", href: "/de/blog" }, { label: "Content Moderation für KI-Anwendungen" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-06-05">5. Juni 2026</time>
+        <span>&middot;</span>
+        <span>10 Min. Lesezeit</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Content Moderation für KI-Anwendungen: ein Leitfaden für Entwickler</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Jede LLM-basierte Anwendung braucht Content Moderation. Es geht um Compliance,
+        aber auch um Sicherheit, um das Vertrauen der Nutzer und um den Schutz Ihres Modells vor bösartigen Eingaben.
+      </p>
+      <p>
+        In diesem Leitfaden behandeln wir beide Seiten der KI-Moderation: das Filtern dessen, was Nutzer
+        an Ihr LLM senden, und das Filtern dessen, was Ihr LLM an die Nutzer zurückgibt.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Die zwei Filter, die jede KI-Anwendung braucht</h2>
+
+      <h3 class="text-lg font-semibold text-surface-900">1. Eingabefilterung</h3>
+      <p>
+        Bevor eine Nutzereingabe Ihr LLM erreicht, sollten Sie Folgendes prüfen:
+      </p>
+      <ul>
+        <li><strong>Schädliche Inhalte:</strong> Hassrede, Belästigung, Drohungen, sexuelle Inhalte</li>
+        <li><strong>Prompt Injection:</strong> Versuche, den System-Prompt auszuhebeln oder das Modell per Jailbreak zu manipulieren</li>
+        <li><strong>Unzulässige Anfragen:</strong> Anleitungen zu illegalen Aktivitäten, zur Herstellung von Drogen usw.</li>
+        <li><strong>Preisgabe personenbezogener Daten:</strong> Nutzer, die versehentlich persönliche Informationen teilen</li>
+      </ul>
+
+      <h3 class="text-lg font-semibold text-surface-900">2. Ausgabefilterung</h3>
+      <p>
+        Bevor eine Modellausgabe Ihre Nutzer erreicht, sollten Sie Folgendes prüfen:
+      </p>
+      <ul>
+        <li><strong>Schädliche generierte Inhalte:</strong> Das Modell erzeugt Hassrede, Gewaltdarstellungen usw.</li>
+        <li><strong>Generierte personenbezogene Daten:</strong> Das Modell erzeugt versehentlich echte oder erfundene persönliche Daten</li>
+        <li><strong>Halluzinierte gefährliche Informationen:</strong> medizinische Ratschläge, Rechtsberatung, Finanzempfehlungen</li>
+        <li><strong>Richtlinienverstöße:</strong> Inhalte, die gegen die Nutzungsbedingungen Ihrer Anwendung verstoßen</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Implementierungsmuster</h2>
+
+<p><strong>Muster 1: Sequenzielle Filterung (für die meisten Anwendungen empfohlen)</strong></p>
+<CodeBlock code={pattern1} lang="text" />
+
+<p><strong>Muster 2: Parallele Filterung (bei hohen Latenzanforderungen)</strong></p>
+<CodeBlock code={pattern2} lang="text" />
+
+      <h2 class="text-xl font-bold text-surface-900">Mehrschichtige Absicherung mit mehreren Anbietern</h2>
+      <p>
+        Wer sich auf einen einzigen Moderationsanbieter verlässt, schafft einen Single Point of Failure und blinde Flecken.
+        Ein mehrschichtiger Ansatz ist robuster:
+      </p>
+      <ul>
+        <li>Nutzen Sie <strong>OpenAI Moderation</strong> zur allgemeinen Erkennung schädlicher Inhalte</li>
+        <li>Nutzen Sie <strong>Llama Guard</strong> (selbst gehostet), um sensible Eingaben ohne Kosten und ohne Datenabfluss zu filtern</li>
+        <li>Nutzen Sie ein <strong>LLM als Klassifikator</strong> mit GPT-4o oder Claude, um eigene Richtlinien mit tiefem Kontextverständnis durchzusetzen</li>
+      </ul>
+      <p>
+        Mit OpenModeration ist dieser mehrschichtige Ansatz ein einziger API-Aufruf. Legen Sie Regeln fest, die
+        Inhalte durch mehrere Anbieter leiten und die Ergebnisse zu einer finalen Entscheidung zusammenführen.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Best Practices</h2>
+      <ol>
+        <li><strong>Moderieren Sie immer Eingabe und Ausgabe:</strong> Beide Filter erkennen unterschiedliche Risiken.</li>
+        <li><strong>Nutzen Sie Kontext für mehr Genauigkeit:</strong> Übergeben Sie Gesprächsverlauf und Autoreninformationen, um bessere Moderationsentscheidungen zu erhalten.</li>
+        <li><strong>Wählen Sie passende Schwellenwerte:</strong> niedrigere Schwellen für Hochrisikokategorien (Minderjährige, Selbstverletzung), höhere für geringe Risiken (Spam).</li>
+        <li><strong>Protokollieren Sie alles für Audits:</strong> Sie müssen nachweisen können, dass Ihre Moderation funktioniert, vor allem in regulierten Branchen.</li>
+        <li><strong>Testen Sie mit bösartigen Eingaben:</strong> Prüfen Sie Ihre Moderationspipeline regelmäßig mit bekannten Jailbreak-Prompts.</li>
+      </ol>
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Weiterlesen</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/de/anwendungsfaelle/ki-anwendungen" class="font-medium text-brand-600 hover:text-brand-500">Moderation für KI-Anwendungen &rarr;</a></li>
+        <li><a href="/de/so-funktioniert-es" class="font-medium text-brand-600 hover:text-brand-500">So funktioniert die Moderationspipeline &rarr;</a></li>
+        <li><a href="/de/funktionen" class="font-medium text-brand-600 hover:text-brand-500">Eine Integration, alle Anbieter &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

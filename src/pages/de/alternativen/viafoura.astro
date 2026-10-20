@@ -1,0 +1,169 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import FAQ from '../../../components/FAQ.astro';
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/de/alternativen/viafoura",
+  "name": "Viafoura-Alternative: OpenModeration im Vergleich",
+  "description": "Viafoura oder OpenModeration? Ein Vergleich mit Quellen für Verlage: eine komplette Kommentarplattform gegenüber einem Moderationstool, das Ihr bestehendes System ergänzt.",
+  "inLanguage": "de",
+  "about": { "@id": "https://www.openmoderation.com/#software" }
+};
+
+const rows = [
+  { feature: "Was es ist", viafoura: "Eine Kommentar- und Engagement-Suite für Medienmarken: Engagement Engine, Personalization Suite, Moderation Intelligence, Community Data Layer", openmod: "Ausschließlich ein Moderationstool. Es liefert keinen Kommentarbereich, sondern moderiert den, den Sie bereits nutzen" },
+  { feature: "Wo moderiert wird", viafoura: "Kommentare, Liveblogs und Community auf der Website des Verlags", openmod: "Ihre Website (WordPress nativ, jedes Kommentarsystem über REST-API und Webhooks) sowie Facebook, Instagram und YouTube" },
+  { feature: "Soziale Netzwerke", viafoura: "Auf der Website nicht angegeben", openmod: "Facebook, Instagram und YouTube nativ. Kein TikTok, X oder LinkedIn" },
+  { feature: "Preise", viafoura: "Keine Zahlen auf der Website, Kontakt zum Vertrieb", openmod: "Öffentlich: kostenlos bis 1.000 Anfragen pro Monat, Pro für 99 € pro Monat bei 10.000, Self-Hosting kostenlos" },
+  { feature: "So wird moderiert", viafoura: "KI und menschliche Moderatoren arbeiten rund um die Uhr zusammen, angepasst an die Richtlinien jedes Kunden", openmod: "Die KI wendet Ihre in Alltagssprache formulierten Regeln an; eine Grauzone geht an Ihre eigenen Moderatoren. Kein externes Moderationsteam" },
+  { feature: "Schriftliche Begründung jeder Entscheidung", viafoura: "Nicht erwähnt", openmod: "Ja, in der Sprache Ihrer Wahl, von der API zurückgegeben" },
+  { feature: "DSGVO und DSA", viafoura: "Auf den abgerufenen Seiten nicht angegeben", openmod: "In der EU entwickelt und gehostet; ein Aktivitätsprotokoll zeigt, ob eine Entscheidung automatisch fiel oder welcher Moderator sie traf" },
+  { feature: "Quellcode und Self-Hosting", viafoura: "Nicht Open Source; Self-Hosting nicht angegeben", openmod: "Open Source unter AGPL v3; Self-Hosting mit Docker" },
+  { feature: "Zertifizierung", viafoura: "SOC 2 Type 2, laut einer Meldung von Viafoura", openmod: "Kein SOC 2; Code, den jeder prüfen kann" },
+  { feature: "KI-Modelle", viafoura: "Nicht angegeben", openmod: "Frei wählbar hinter einer API: OpenAI, Azure, Mistral, Llama Guard, Perspective, LLMs" },
+  { feature: "Referenzen bei Medien", viafoura: "„1,000+ media brands“ laut Website; genannt werden u. a. Ringier, Le Soleil, GEDI, Grupo Clarín", openmod: "L'Équipe, Challenges, Sud Ouest, actu.fr, Estadão, Südkurier, Egora" },
+];
+
+const faqItems = [
+  {
+    question: "Was ist die beste Alternative zu Viafoura?",
+    answer: "Das hängt davon ab, was Sie ersetzen wollen. Suchen Sie ein neues Kommentarsystem mit Leserregistrierung, Liveblogs und Personalisierung, sollten Sie sich andere Suiten ansehen: OpenModeration bietet das nicht. Passt Ihr Kommentarsystem und wünschen Sie Kommentarmoderation mit öffentlichen Preisen, EU-Hosting, einer schriftlichen Begründung jeder Entscheidung und denselben Regeln auf Facebook, Instagram und YouTube, dann passt OpenModeration.",
+  },
+  {
+    question: "Was kostet Viafoura?",
+    answer: "Viafoura veröffentlicht keine Preise auf seiner Website und verweist auf den Vertrieb. OpenModeration nennt seine Preise offen: kostenlos bis 1.000 Anfragen pro Monat, Pro für 99 € pro Monat bei 10.000 Anfragen, individuelle Angebote für große Volumen und kostenloses Self-Hosting.",
+  },
+  {
+    question: "Kann ich OpenModeration testen, ohne Viafoura abzuschalten?",
+    answer: "Ja. Im Sandbox-Modus analysiert OpenModeration echte Kommentare, ohne etwas auszublenden. Sie schicken eine Kopie Ihrer Kommentare an die API oder verbinden Ihre Facebook-, Instagram- und YouTube-Seiten und vergleichen einige Wochen lang die Entscheidungen mit Ihren bisherigen. Viafoura moderiert in dieser Zeit weiter.",
+  },
+  {
+    question: "Ersetzt OpenModeration mein Kommentarsystem?",
+    answer: "Nein. OpenModeration übernimmt nur die Moderation. Bei WordPress dockt es an die nativen Kommentare an; bei jedem anderen System rufen Ihre Entwickler bei jedem neuen Kommentar die REST-API auf und setzen die Entscheidung um. Ihre Leserinnen und Leser behalten den Kommentarbereich, den sie kennen.",
+  },
+  {
+    question: "Kann OpenModeration Hasskommentare automatisch ausblenden?",
+    answer: "Ja. Sie legen pro Kategorie einen Schwellenwert fest: Eindeutige Hasskommentare werden automatisch ausgeblendet, Grenzfälle landen bei Ihrem Team. Die KI liest jeden Kommentar zusammen mit dem Titel des Beitrags und dem Diskussionsverlauf. Für jede Entscheidung bleibt eine Begründung im Protokoll, die Sie für den DSA brauchen.",
+  },
+];
+---
+
+<BaseLayout title="Viafoura-Alternative: Vergleich mit OpenModeration (2026)" description="Viafoura oder OpenModeration? Vergleich für Verlage: Kommentarplattform oder Moderationstool, öffentliche Preise, EU-Hosting, Begründungen." jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Startseite", href: "/de" }, { label: "Alternativen", href: "/de/alternativen" }, { label: "Viafoura" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Vergleich
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Viafoura-Alternative: OpenModeration im Vergleich</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Viafoura verkauft Medienhäusern eine komplette Kommentar- und Engagement-Suite, die Moderation inklusive. OpenModeration macht eine einzige Sache: Es moderiert Kommentare, auf Ihrer Website über WordPress oder die API sowie auf Facebook, Instagram und YouTube. Die beiden Tools decken also nicht dasselbe ab. Hier sind die Unterschiede, mit Quellen.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Wählen Sie OpenModeration, wenn …</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>Sie Ihr Kommentarsystem behalten und nur die Moderation wechseln wollen;</li>
+          <li>auf Ihrer Website und auf Ihren Facebook-, Instagram- und YouTube-Seiten dieselben Regeln gelten sollen;</li>
+          <li>Sie den Preis kennen wollen, bevor Sie mit dem Vertrieb sprechen;</li>
+          <li>Sie jede Entscheidung schriftlich begründen und protokollieren müssen, wie es der DSA verlangt;</li>
+          <li>Ihre Daten in der EU bleiben sollen oder Sie den Code selbst hosten wollen.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">Viafoura passt womöglich besser, wenn …</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>Sie das Kommentarsystem selbst brauchen, mit Registrierung, Liveblogs und Personalisierung;</li>
+          <li>Sie ein menschliches Moderationsteam des Anbieters rund um die Uhr wünschen;</li>
+          <li>Ihr Einkauf eine SOC-2-Type-2-Zertifizierung verlangt.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Viafoura und OpenModeration im Detail</h2>
+      <p class="mt-4 text-surface-500">Angaben zu Viafoura von der eigenen Website, viafoura.com, abgerufen am 20. Oktober 2026.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Kriterium</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Viafoura</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.viafoura}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Was sich im Alltag wirklich ändert</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Ihr Kommentarbereich bleibt, wie er ist</h3>
+          <p class="mt-2 text-sm text-surface-600">Ihre Leser nutzen weiter das System, das sie kennen. OpenModeration dockt an die WordPress-Kommentare an oder erhält jeden neuen Kommentar über die API und gibt seine Entscheidung zurück. Kein Modul zu migrieren, keine Leserkonten neu anzulegen.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Dieselben Regeln für Website und Social Media</h3>
+          <p class="mt-2 text-sm text-surface-600">Kommentare unter Ihren Artikeln und unter Ihren Beiträgen auf Facebook, Instagram und YouTube folgen denselben Richtlinien. Ihre Community-Moderation arbeitet an einem Ort, egal woher der Kommentar kommt.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Eine Begründung, die Sie dem Leser zeigen können</h3>
+          <p class="mt-2 text-sm text-surface-600">Jede Entscheidung kommt mit einer schriftlichen Begründung, und das Aktivitätsprotokoll zeigt, ob sie automatisch fiel oder welcher Moderator sie traf. Beschwert sich ein Leser oder fragt eine Behörde nach dem DSA, liegt die Antwort schon vor.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Ein Preis, den Sie vor dem ersten Termin kennen</h3>
+          <p class="mt-2 text-sm text-surface-600">Die Preise sind öffentlich, und der kostenlose Tarif braucht keine Kreditkarte. Der Code ist Open Source unter AGPL v3: Sie können OpenModeration auch auf eigenen Servern betreiben, ohne Lizenzkosten.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Häufige Fragen" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        Viafoura ist eine Marke ihres Inhabers. Die Angaben dazu stammen von <a href="https://viafoura.com/solutions/moderation/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">viafoura.com</a> (abgerufen am 20. Oktober 2026). Ein Fehler? Schreiben Sie uns an <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Weiterlesen</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/de/anwendungsfaelle/medien" class="font-medium text-brand-600 hover:text-brand-500">Kommentarmoderation für Verlage und Redaktionen &rarr;</a></li>
+        <li><a href="/de/integrationen/wordpress-moderation" class="font-medium text-brand-600 hover:text-brand-500">WordPress-Kommentare moderieren &rarr;</a></li>
+        <li><a href="/de/dsa-konformitaet/begruendung" class="font-medium text-brand-600 hover:text-brand-500">Die vom DSA verlangte Begründung &rarr;</a></li>
+        <li><a href="/de/alternativen" class="font-medium text-brand-600 hover:text-brand-500">Alle Vergleiche &rarr;</a></li>
+        <li><a href="/de/preise" class="font-medium text-brand-600 hover:text-brand-500">Die Preise von OpenModeration &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <CTASection title="Behalten Sie Ihre Kommentare. Wechseln Sie die Moderation." subtitle="Lassen Sie OpenModeration im Sandbox-Modus neben Ihrem aktuellen Tool laufen und vergleichen Sie die Entscheidungen an Ihren eigenen Kommentaren. Kostenlos starten." />
+</BaseLayout>
