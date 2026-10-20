@@ -1,0 +1,201 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Construire ou acheter : le coût d'une infrastructure de modération de contenu en 2026",
+  "description": "Le détail des coûts réels d'un système de modération de contenu développé en interne, comparé à l'achat d'une solution comme OpenModeration.",
+  "inLanguage": "fr",
+  "datePublished": "2026-06-14",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/fr/blog/moderation-construire-ou-acheter" },
+  "dateModified": "2026-06-14"
+};
+---
+
+<BaseLayout title="Construire ou acheter sa modération : les coûts en 2026" description="Le détail des coûts réels d'un système de modération de contenu développé en interne, comparé à l'achat d'une solution comme OpenModeration." jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Accueil", href: "/fr" }, { label: "Blog", href: "/fr/blog" }, { label: "Construire ou acheter" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-06-14">14 juin 2026</time>
+        <span>&middot;</span>
+        <span>9 min de lecture</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Construire ou acheter : le coût d'une infrastructure de modération de contenu en 2026</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Toute plateforme qui héberge des contenus générés par ses utilisateurs finit par se poser la même question :
+        faut-il construire son propre système de modération de contenu, ou acheter une solution existante ?
+        Le choix entre construire et acheter ne se résume pas à cocher des fonctionnalités. Il
+        porte sur le coût total de possession sur plusieurs années.
+      </p>
+      <p>
+        En 2026, avec le DSA pleinement en vigueur et la multiplication des modèles d'IA, l'équation économique
+        a changé. Cet article détaille les coûts réels de chaque approche.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Les arguments en faveur d'une modération maison</h2>
+      <p>
+        Construire son propre pipeline de modération a de quoi séduire. Vous maîtrisez toute
+        la stack, vous ne dépendez d'aucun éditeur et vous pouvez adapter le système exactement à votre cas d'usage.
+        L'investissement initial en ingénierie ressemble davantage à un actif qu'à une dépense.
+      </p>
+      <p>
+        Une stack de modération développée en interne nécessite généralement :
+      </p>
+      <ul>
+        <li>Un service de modération qui appelle l'API d'un ou plusieurs fournisseurs d'IA</li>
+        <li>Un moteur d'actions avec trois outils simples : mots interdits, seuils et charte de la communauté</li>
+        <li>Un système de journal d'audit avec des politiques de conservation</li>
+        <li>Une file de modération pour la revue humaine des cas limites</li>
+        <li>Un tableau de bord pour le suivi et la configuration</li>
+        <li>Des connecteurs pour les réseaux sociaux et les blogs (si vous modérez Facebook, Instagram, WordPress, etc.)</li>
+        <li>Des alertes et de l'observabilité</li>
+        <li>De la CI/CD, des tests et des environnements de préproduction</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Le vrai coût de la construction : le temps d'ingénierie</h2>
+      <p>
+        Estimons l'effort d'ingénierie. Un ingénieur backend senior coûte entre 150 000 et 200 000 $ par an
+        (charges comprises). Un pipeline de modération solide demande 3 à 6 mois de développement avec
+        un seul fournisseur. Le routage multi-fournisseurs ajoute encore 2 à 3 mois. Le tableau de bord
+        représente 2 à 4 mois. Chaque connecteur prend 1 à 2 mois.
+      </p>
+      <p>
+        <strong>Estimation prudente : 6 à 8 mois-ingénieur.</strong>
+        Cela représente 75 000 à 130 000 $ de salaires d'ingénierie, rien que pour construire un système de modération
+        basique avec un seul fournisseur. Une version multi-fournisseurs avec tableau de bord et connecteurs double facilement ce montant.
+      </p>
+      <p>
+        Et ce n'est que la première année. La deuxième apporte la maintenance, les changements d'API des fournisseurs, les défis
+        de montée en charge et les demandes de nouvelles fonctionnalités.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Les coûts cachés de la construction</h2>
+      <p>
+        Le coût de développement initial n'est qu'un début. Voici les coûts que les équipes oublient souvent :
+      </p>
+      <p>
+        <strong>La maintenance continue (environ 30 000 à 60 000 $ par an) :</strong> les API des fournisseurs évoluent. OpenAI
+        retire des modèles. Azure met à jour ses endpoints. Votre intégration casse, et quelqu'un doit
+        la réparer. Chaque mise à jour d'un fournisseur coûte 2 à 5 jours d'ingénierie.
+      </p>
+      <p>
+        <strong>Le coût d'un changement de fournisseur :</strong> lorsque vous décidez d'ajouter ou de remplacer un fournisseur,
+        vous reconstruisez l'intégration. Avec un système maison, cela signifie du nouveau code, des tests
+        et une migration. Ce coût revient à chaque nouveau fournisseur.
+      </p>
+      <p>
+        <strong>Le coût d'opportunité :</strong> chaque heure que votre équipe consacre à l'infrastructure de modération
+        est une heure de moins pour votre produit principal. Pour une startup, c'est le poste le plus
+        coûteux du budget.
+      </p>
+      <p>
+        <strong>Le risque de non-conformité :</strong> si votre journal d'audit ne répond pas aux exigences du DSA,
+        vous vous exposez à des amendes pouvant atteindre 6 % du chiffre d'affaires mondial. Une conformité solide exige une revue
+        juridique et une ingénierie spécialisée.
+      </p>
+      <p>
+        <strong>Les coûts de montée en charge :</strong> votre système maison fonctionnait à 10 000 requêtes par jour. À
+        100 000 requêtes par jour, il vous faut de la gestion de files, de la limitation de débit et de l'optimisation
+        des performances. À 1 million de requêtes par jour, il vous faut un traitement distribué et peut-être un
+        SRE dédié.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Les arguments en faveur de l'achat</h2>
+      <p>
+        Acheter une solution de modération, c'est payer pour un produit qui a déjà résolu ces
+        problèmes. Avec OpenModeration, vous bénéficiez de :
+      </p>
+      <ul>
+        <li><strong>Une API unifiée :</strong> une seule intégration compatible avec tous les grands fournisseurs. Vous changez de fournisseur en modifiant la configuration, pas en réécrivant du code.</li>
+        <li><strong>Un routage intelligent :</strong> la sélection automatique du fournisseur selon la langue, le type de contenu, la latence ou le coût.</li>
+        <li><strong>Un moteur d'actions :</strong> trois outils simples (mots interdits, seuils par catégorie et charte de la communauté rédigée en langage courant). Aucun code n'est nécessaire.</li>
+        <li><strong>Un journal d'audit intégré :</strong> une journalisation conforme au DSA, prête à l'emploi.</li>
+        <li><strong>Des connecteurs pour les réseaux sociaux :</strong> des intégrations prêtes à l'emploi pour Facebook, Instagram, YouTube et WordPress.</li>
+        <li><strong>Un tableau de bord :</strong> une console d'administration pour le suivi, l'analyse et la configuration.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Comparatif des coûts : construire ou acheter sa modération</h2>
+      <p>
+        Comparons le coût total de possession sur 3 ans pour une plateforme qui traite
+        100 000 requêtes de modération par jour :
+      </p>
+      <p>
+        <strong>Construire (coût total sur 3 ans) :</strong>
+      </p>
+      <ul>
+        <li>Développement la première année : 100 000 à 250 000 $ d'ingénierie</li>
+        <li>Maintenance des années 1 à 3 : 90 000 à 180 000 $</li>
+        <li>Coûts d'API des fournisseurs : 50 000 à 150 000 $ par an selon les fournisseurs</li>
+        <li>Infrastructure (serveurs, base de données, supervision) : 20 000 à 50 000 $ par an</li>
+        <li><strong>Total : 350 000 à 780 000 $ sur 3 ans</strong></li>
+      </ul>
+      <p>
+        <strong>Acheter (OpenModeration, coût total sur 3 ans) :</strong>
+      </p>
+      <ul>
+        <li>Intégration : 1 à 2 jours d'ingénierie (gratuit en auto-hébergement)</li>
+        <li>Coûts d'API des fournisseurs : identiques</li>
+        <li>Infrastructure auto-hébergée : 500 à 5 000 $ par mois (Docker)</li>
+        <li>SaaS hébergé : tarification à la requête, aucun coût d'infrastructure</li>
+        <li><strong>Total : 18 000 à 180 000 $ sur 3 ans (auto-hébergé)</strong></li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Le verdict : quand construire, quand acheter</h2>
+      <p>
+        <strong>Construisez si :</strong> vous disposez d'une équipe d'infrastructure dédiée, la modération est votre
+        principal facteur de différenciation et vous avez besoin de capacités qu'aucun produit existant n'offre.
+        Même dans ce cas, envisagez de partir d'OpenModeration et de l'étendre.
+      </p>
+      <p>
+        <strong>Achetez si :</strong> vous avez besoin d'une modération fiable pendant que votre équipe se concentre
+        sur votre produit. C'est le cas de 95 % des plateformes. Les économies sont financières, mais
+        vous gagnez aussi en rapidité, en concentration et en maîtrise des risques.
+      </p>
+      <p>
+        Pour la plupart des organisations, le choix entre construire et acheter sa modération ne fait guère de doute.
+        En 2026, développer sa propre infrastructure de modération revient à développer sa propre
+        base de données ou son propre répartiteur de charge. C'est techniquement possible, mais ce n'est pas un bon
+        usage de vos ressources d'ingénierie.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Démarrer avec OpenModeration</h2>
+      <p>
+        OpenModeration est gratuit et open source. Déployez-le avec une seule commande Docker, ou
+        essayez notre SaaS géré. Vous pouvez être entièrement opérationnel en moins d'une heure, et changer
+        de fournisseur se résume à modifier un fichier de configuration.
+      </p>
+      <p>
+        Nous avons vu des équipes migrer d'un système maison vers OpenModeration en un seul sprint.
+        Le retour sur investissement est immédiat : plus de maintenance d'API fournisseurs, plus de bugs dans le journal d'audit, plus
+        de demandes de fonctionnalités pour le tableau de bord de la part de l'équipe produit.
+      </p>
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Pour aller plus loin</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/fr/construire-ou-acheter" class="font-medium text-brand-600 hover:text-brand-500">Construire ou acheter : le vrai coût d'une infrastructure de modération &rarr;</a></li>
+        <li><a href="/fr/tarifs" class="font-medium text-brand-600 hover:text-brand-500">Des tarifs simples et transparents &rarr;</a></li>
+        <li><a href="/fr/fonctionnalites" class="font-medium text-brand-600 hover:text-brand-500">Tout ce que la plateforme fait pour vous &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

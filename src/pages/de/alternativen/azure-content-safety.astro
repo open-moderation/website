@@ -1,0 +1,202 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import CodeBlock from '../../../components/CodeBlock.astro';
+import FAQ from '../../../components/FAQ.astro';
+
+const migrationCode = `# Azure Content Safety (direkt)
+const endpoint = "https://<resource>.cognitiveservices.azure.com/";
+const res = await fetch(endpoint + "/contentsafety/text:analyze?api-version=2024-02-01", {
+  method: 'POST',
+  headers: { 'Ocp-Apim-Subscription-Key': '...' },
+  body: JSON.stringify({ text, categories: ['Hate','SelfHarm','Sexual','Violence'] })
+});
+// Ergebnis: Azure-spezifisches Format, 4 Kategorien, Deployment pro Region
+
+# OpenModeration (einheitlich)
+const result = await fetch('https://api.openmoderation.com/v1/moderation', {
+  method: 'POST',
+  headers: { 'Authorization': 'Bearer om_key_...' },
+  body: JSON.stringify({
+    input: text,
+    categories: ['hate', 'harassment', 'sexual', 'violence', 'self-harm', 'spam'],
+    threshold: 0.5
+  })
+});
+// Dazu: Vorfilter, doppelter Schwellenwert, automatische Aktionen, Audit-Trail, Team-Dashboard`;
+
+const comparisonJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Alternative zur Azure Moderation API | OpenModeration",
+  "description": "OpenModeration und Azure Content Safety im Vergleich für die KI-Moderation. Azure bindet Sie mit einer reinen API-Moderation an das Microsoft-Ökosystem. Mit OpenModeration nutzen Sie Azure neben 9 weiteren Anbietern über eine einzige API, mit integriertem Prüf-Dashboard, Regeln ohne Code und Deployment on-premise für volle Datensouveränität.",
+  "inLanguage": "de"
+};
+
+const faqItems = [
+  {
+    question: "Was kostet Azure Content Safety im Vergleich zu OpenModeration?",
+    answer: "Azure AI Content Safety rechnet nach einem kostenlosen Kontingent von 5.000 Datensätzen pro Monat je 1.000 Textdatensätze ab (ein Datensatz umfasst bis zu 1.000 Zeichen), zu einem Tarif, der von Ihrer Azure-Region abhängt. OpenModeration ist im Self-Hosting kostenlos, Sie zahlen nur die Aufrufe bei Ihren Anbietern. Die Managed Cloud beginnt bei 99 €/Monat für 10K Anfragen, und der Vorfilter spart 10 bis 30 % der abrechenbaren Aufrufe ein, bevor sie Azure erreichen."
+  },
+  {
+    question: "Kann ich Azure Content Safety mit OpenModeration weiter nutzen?",
+    answer: "Ja. Hinterlegen Sie Ihren eigenen Azure-Schlüssel (BYOK) und leiten Sie Anfragen an Azure Content Safety als primären Anbieter. OpenAI oder Mistral fügen Sie per Konfigurationsänderung als Fallback hinzu, ohne Code neu zu schreiben und ohne neues Training."
+  },
+  {
+    question: "Unterstützt OpenModeration die Moderationsmodelle von Azure OpenAI?",
+    answer: "Ja. Sowohl der Endpunkt von Azure AI Content Safety als auch die Moderationsmodelle von Azure OpenAI werden als Anbieter unterstützt. Die Antworten werden über alle 10 Anbieter hinweg in ein einheitliches Format gebracht."
+  },
+  {
+    question: "Was bekomme ich über die reinen Scores von Azure hinaus?",
+    answer: "Eine komplette Plattform: Vorfilter, doppelte Schwellenwerte (automatisch freigeben, manuell prüfen, automatisch ablehnen), Regeln ohne Code, eine Moderationskonsole mit Teamrollen und einen DSA-fähigen Audit-Trail mit exportierbaren Berichten."
+  },
+  {
+    question: "Kann ich selbst hosten, statt die Microsoft-Cloud zu nutzen?",
+    answer: "Ja. OpenModeration ist Open Source unter AGPL v3. Deployen Sie es mit Docker auf Ihrer eigenen EU-Infrastruktur für volle Datensouveränität im Sinne von DSGVO und DSA, und Azure bleibt weiterhin als einer der Anbieter verfügbar."
+  },
+];
+
+const comparisonPoints = [
+  { feature: "Umfang der Moderation", azure: "Ein einziger Anbieter (nur Azure)", openmod: "Mehrere Anbieter (Azure, OpenAI, Mistral, LLMs) + zentrales Dashboard" },
+  { feature: "Operative Oberfläche", azure: "Nur API. Eine eigene Prüfoberfläche müssen Sie selbst bauen", openmod: "Vollständiges Trust-&-Safety-Dashboard mit Warteschlange für die manuelle Prüfung inklusive" },
+  { feature: "Regel-Engine", azure: "Eigene Logik muss intern gebaut und gepflegt werden", openmod: "Drei integrierte Ebenen: Wortfilter, Score-Schwellenwerte und Community-Richtlinien in natürlicher Sprache" },
+  { feature: "Anbieterbindung", azure: "Hoch (an das Microsoft-Ökosystem gebunden)", openmod: "Keine (eigene API-Schlüssel, Anbieter sofort wechselbar)" },
+  { feature: "Datensouveränität", azure: "Datenverarbeitung auf Microsoft-Infrastruktur", openmod: "Self-Hosting auf Ihrer eigenen EU-Infrastruktur für volle DSGVO- und DSA-Konformität" },
+  { feature: "Preismodell", azure: "API-Abrechnung pro Anfrage", openmod: "Kostenloser Open-Source-Kern. Managed Cloud zu planbaren Preisen verfügbar." }
+];
+---
+
+<BaseLayout
+  title="Alternative zur Azure Moderation API: Preise & Vergleich"
+  description="Azure Content Safety ist eine reine API mit Microsoft-Bindung. OpenModeration: Azure + 9 Anbieter, Vorfilter, Regeln ohne Code, Prüfung und DSA-Audit-Trail."
+  jsonLd={comparisonJsonLd}
+>
+  <Breadcrumb items={[{ label: "Startseite", href: "/de" }, { label: "Alternativen", href: "/de/alternativen" }, { label: "Alternative zu Azure Content Safety" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">Alternative zur Azure Moderation API</div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Azure Content Safety behalten<br/>und den Rest nicht selbst bauen</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Azure Content Safety bietet gute KI-Moderations-APIs. Für einen vollständigen Moderations-Workflow müssen Sie aber noch viel selbst entwickeln. OpenModeration liefert die API <strong>und</strong> alles, was im Betrieb dazugehört.
+      </p>
+      <div class="mt-8 flex items-center justify-center gap-4">
+        <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm">OpenModeration kostenlos testen</a>
+        <a href="#comparison" class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700">Zum vollständigen Vergleich</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">In weniger als einer Stunde von Azure migrieren</h2>
+          <p class="mt-4 text-lg text-surface-500">
+            Behalten Sie Ihren Azure-Schlüssel (BYOK) als primären Anbieter. Ein einziger standardisierter Aufruf ersetzt den
+            Content-Safety-Endpunkt: Die Scores kommen in einem einheitlichen Format zurück, mit Schwellenwerten, die Sie selbst festlegen.
+          </p>
+          <ul class="mt-6 space-y-3">
+            <li class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600"><strong>Azure behalten</strong> als primären Anbieter und OpenAI oder Mistral als Fallback hinzufügen, falls Azure langsam oder nicht erreichbar ist.</p>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600"><strong>Der Vorfilter</strong> blockiert offensichtlichen Spam vor jedem abrechenbaren Azure-Aufruf und spart so 10 bis 30 % der API-Kosten.</p>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600"><strong>Selbst hosten</strong> auf Ihrer eigenen EU-Infrastruktur mit Docker, wobei Azure als einer der Anbieter verfügbar bleibt.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-4 shadow-sm">
+          <CodeBlock code={migrationCode} lang="javascript" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="comparison" class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-4xl">
+        <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">Der direkte Vergleich</h2>
+        <div class="mt-8 overflow-hidden rounded-xl border border-surface-200">
+          <table class="w-full text-left text-sm">
+            <thead>
+              <tr class="bg-surface-50">
+                <th class="px-6 py-4 font-semibold text-surface-900">Funktion</th>
+                <th class="px-6 py-4 font-semibold text-surface-500">Azure Content Safety</th>
+                <th class="px-6 py-4 font-semibold text-brand-700">OpenModeration</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-surface-200 bg-white">
+              {comparisonPoints.map((row) => (
+                <tr>
+                  <td class="px-6 py-4 font-medium text-surface-900">{row.feature}</td>
+                  <td class="px-6 py-4 text-surface-600">{row.azure}</td>
+                  <td class="px-6 py-4 font-medium text-accent-600">{row.openmod}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="mt-16 grid gap-8 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-8">
+          <h3 class="text-xl font-bold text-surface-900">Die versteckten Kosten einer reinen API-Moderation</h3>
+          <p class="mt-4 text-surface-600">
+            Die Integration von Azure Content Safety ist nur der erste Schritt. Damit sie im Alltag funktioniert, muss Ihr Entwicklungsteam noch Folgendes bauen:
+          </p>
+          <ul class="mt-4 space-y-3 text-sm text-surface-600">
+            <li class="flex items-start gap-2"><span class="text-red-500">✕</span> Ein Dashboard, in dem menschliche Moderatoren Grenzfälle prüfen</li>
+            <li class="flex items-start gap-2"><span class="text-red-500">✕</span> Eine Regel-Engine, die KI-Scores in automatische Aktionen übersetzt (ausblenden, löschen, markieren)</li>
+            <li class="flex items-start gap-2"><span class="text-red-500">✕</span> Audit-Logging, um den Behörden die DSA-Konformität nachzuweisen</li>
+            <li class="flex items-start gap-2"><span class="text-red-500">✕</span> Fallback-Logik für den Fall, dass die Azure-APIs ausfallen</li>
+          </ul>
+        </div>
+        <div class="rounded-xl border border-brand-200 bg-brand-50 p-8 shadow-sm">
+          <h3 class="text-xl font-bold text-brand-700">Der Vorteil von OpenModeration</h3>
+          <p class="mt-4 text-surface-700">
+            OpenModeration kann Azure Content Safety als einen seiner Backend-Anbieter nutzen und ergänzt ihn um eine vollständige operative Ebene:
+          </p>
+          <ul class="mt-4 space-y-3 text-sm text-surface-700">
+            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> Im <strong>Dashboard</strong> kann Ihr Trust-&-Safety-Team sofort mit der Prüfung beginnen.</li>
+            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> Die <strong>Regeln</strong> stellen Sie ohne Code mit drei Werkzeugen ein: verbotene Wörter, Schwellenwerte pro Kategorie und Ihre Community-Richtlinien.</li>
+            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> Ist Azure langsam oder fällt aus, geht die Anfrage per <strong>Fallback</strong> an OpenAI oder Mistral.</li>
+            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> Jede Entscheidung von KI und Mensch wird mit vollständigem <strong>Audit-Trail</strong> protokolliert.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ items={faqItems} title="Alternative zu Azure Content Safety: FAQ" />
+    </div>
+  </section>
+
+  <CTASection
+    title="Schluss mit dem Bau eigener Moderationstools."
+    subtitle="Nutzen Sie eine vollständige KI-Moderationsplattform mit Azure-Integration, automatischen Regeln und einem Dashboard für die manuelle Prüfung."
+    buttonText="Kostenlos testen"
+    buttonHref="https://app.openmoderation.com/signup"
+  />
+
+  <section class="border-t border-surface-100 bg-surface-50 py-16">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold text-surface-900">Weitere Anbieter vergleichen</h2>
+      <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+        <a href="/de/alternativen/openai-moderation" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">OpenAI Moderation</a>
+        <a href="/de/alternativen/mistral-moderation" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Mistral Moderation</a>
+        <a href="/de/text-moderation-api" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Text-Moderation-API</a>
+        <a href="/de/alternativen/perspective-api" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Perspective API</a>
+        <a href="/de/alternativen/hive-moderation" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Hive Moderation</a>
+        <a href="/de/alternativen/checkstep" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Checkstep</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
