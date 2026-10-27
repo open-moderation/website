@@ -1,0 +1,386 @@
+---
+import { getLocale } from '../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const copy = {
+  en: {
+    lang: 'en-US',
+    commentLabel: 'Comment to moderate',
+    batchHint: 'Several comments? Put one per line (up to 10).',
+    placeholder: 'Paste or write a comment…',
+    examples: 'Try an example',
+    exampleList: [
+      { label: 'Hateful insinuation', text: 'Them again... we all know where those people come from, they should be sent back home.' },
+      { label: 'Insult', text: 'Only an idiot could write something this stupid. Go back to school.' },
+      { label: 'Scam', text: 'Congratulations, you won an iPhone! Claim it now at free-gift-winner.xyz' },
+      { label: 'Harsh but fair', text: 'This article is one-sided. The journalist ignores every figure that contradicts the government.' },
+    ],
+    langLabel: "Language of the comment",
+    postLabel: 'Title of the post or article (optional)',
+    postPlaceholder: 'e.g. City council approves new bike lanes',
+    charterLabel: 'Your moderation charter (editable)',
+    charter: "Comment policy of a news website. Reject: insults and personal attacks against another reader or a person, including through irony, sarcasm or a mocking nickname; hateful or discriminatory remarks, including insinuations and generalisations targeting a group for its origin, religion, gender or sexual orientation; threats and intimidation; spam, advertising, scams and suspicious links; disclosure of personal data. Accept: disagreement and criticism, even harsh, of an idea, an article, a journalist, a government or a public figure, as long as there is no insult or hatred; short comments, thanks and questions. When genuinely in doubt, send to human review.",
+    submit: 'Moderate this comment',
+    loading: 'Analysing…',
+    accepted: 'Accepted',
+    rejected: 'Rejected',
+    pending: 'Sent to human review',
+    category: 'Category',
+    reason: 'Written reason',
+    noReason: 'No rule broken: the comment would be published.',
+    time: 'Answered in',
+    empty: 'Write or pick a comment first.',
+    error: 'The demo did not answer. Please try again in a moment.',
+    note: 'Live demo powered by the moderation engine of Logora, the company behind OpenModeration. In OpenModeration, your full charter, several AI models and your team review apply to every comment.',
+    cta: 'Test it on your own comments in sandbox mode',
+    signup: 'https://app.openmoderation.com/signup',
+  },
+  fr: {
+    lang: 'fr-FR',
+    commentLabel: 'Commentaire à modérer',
+    batchHint: 'Plusieurs commentaires ? Un par ligne (10 maximum).',
+    placeholder: 'Collez ou écrivez un commentaire…',
+    examples: 'Essayez un exemple',
+    exampleList: [
+      { label: 'Sous-entendu haineux', text: "Encore eux... on sait tous d'où ils viennent ceux-là, faudrait les renvoyer chez eux." },
+      { label: 'Insulte', text: "Faut vraiment être un abruti pour écrire un truc pareil. Retourne à l'école." },
+      { label: 'Arnaque', text: 'Félicitations, vous avez gagné un iPhone ! Réclamez-le vite sur cadeau-gagnant.xyz' },
+      { label: 'Critique dure mais légitime', text: "Article complètement partial. Le journaliste oublie tous les chiffres qui contredisent le gouvernement." },
+    ],
+    langLabel: "Langue du commentaire",
+    postLabel: "Titre de la publication ou de l'article (facultatif)",
+    postPlaceholder: 'Ex. : Le conseil municipal vote de nouvelles pistes cyclables',
+    charterLabel: 'Votre charte de modération (modifiable)',
+    charter: "Charte des commentaires d'un site d'information. Refuser : les insultes et attaques personnelles envers un autre lecteur ou une personne, y compris par l'ironie, le sarcasme ou un surnom moqueur ; les propos haineux ou discriminatoires, y compris les sous-entendus et généralisations visant un groupe pour son origine, sa religion, son genre ou son orientation ; les menaces et l'intimidation ; le spam, la publicité, les arnaques et les liens suspects ; la divulgation de données personnelles. Accepter : le désaccord et la critique, même vive, d'une idée, d'un article, d'un journaliste, d'un gouvernement ou d'une personnalité publique, tant qu'il n'y a ni insulte ni haine ; les commentaires courts, les remerciements et les questions. En cas de doute réel, envoyer en relecture humaine.",
+    submit: 'Modérer ce commentaire',
+    loading: 'Analyse en cours…',
+    accepted: 'Accepté',
+    rejected: 'Rejeté',
+    pending: 'Envoyé en relecture humaine',
+    category: 'Catégorie',
+    reason: 'Explication écrite',
+    noReason: 'Aucune règle enfreinte : le commentaire serait publié.',
+    time: 'Réponse en',
+    empty: "Écrivez ou choisissez d'abord un commentaire.",
+    error: "La démo n'a pas répondu. Réessayez dans un instant.",
+    note: "Démo en direct, propulsée par le moteur de modération de Logora, l'éditeur d'OpenModeration. Dans OpenModeration, votre charte complète, plusieurs modèles d'IA et la relecture de votre équipe s'appliquent à chaque commentaire.",
+    cta: 'Testez-le sur vos propres commentaires en mode bac à sable',
+    signup: 'https://app.openmoderation.com/signup',
+  },
+  es: {
+    lang: 'es-ES',
+    commentLabel: 'Comentario que moderar',
+    batchHint: '¿Varios comentarios? Uno por línea (10 como máximo).',
+    placeholder: 'Pega o escribe un comentario…',
+    examples: 'Prueba un ejemplo',
+    exampleList: [
+      { label: 'Insinuación de odio', text: 'Otra vez ellos... todos sabemos de dónde vienen esos, habría que mandarlos de vuelta a su país.' },
+      { label: 'Insulto', text: 'Hay que ser idiota para escribir semejante tontería. Vuelve al colegio.' },
+      { label: 'Estafa', text: '¡Enhorabuena, has ganado un iPhone! Reclámalo ya en regalo-ganador.xyz' },
+      { label: 'Crítica dura pero legítima', text: 'Artículo totalmente parcial. El periodista ignora todas las cifras que contradicen al Gobierno.' },
+    ],
+    langLabel: "Idioma del comentario",
+    postLabel: 'Título de la publicación o del artículo (opcional)',
+    postPlaceholder: 'Ej.: El ayuntamiento aprueba nuevos carriles bici',
+    charterLabel: 'Tus normas de moderación (editables)',
+    charter: "Normas de los comentarios de un medio de información. Rechazar: insultos y ataques personales contra otro lector o una persona, también mediante ironía, sarcasmo o apodos burlones; mensajes de odio o discriminatorios, también insinuaciones y generalizaciones contra un grupo por su origen, religión, género u orientación; amenazas e intimidación; spam, publicidad, estafas y enlaces sospechosos; difusión de datos personales. Aceptar: el desacuerdo y la crítica, aunque sea dura, a una idea, un artículo, un periodista, un gobierno o un personaje público, siempre que no haya insultos ni odio; comentarios breves, agradecimientos y preguntas. Ante una duda real, enviar a revisión humana.",
+    submit: 'Moderar este comentario',
+    loading: 'Analizando…',
+    accepted: 'Aceptado',
+    rejected: 'Rechazado',
+    pending: 'Enviado a revisión humana',
+    category: 'Categoría',
+    reason: 'Explicación por escrito',
+    noReason: 'No incumple ninguna regla: el comentario se publicaría.',
+    time: 'Respuesta en',
+    empty: 'Escribe o elige primero un comentario.',
+    error: 'La demo no ha respondido. Vuelve a intentarlo en un momento.',
+    note: 'Demo en directo con el motor de moderación de Logora, la empresa que desarrolla OpenModeration. En OpenModeration se aplican a cada comentario tus normas completas, varios modelos de IA y la revisión de tu equipo.',
+    cta: 'Pruébalo con tus propios comentarios en modo sandbox',
+    signup: 'https://app.openmoderation.com/signup',
+  },
+  de: {
+    lang: 'de-DE',
+    commentLabel: 'Zu moderierender Kommentar',
+    batchHint: 'Mehrere Kommentare? Einen pro Zeile (höchstens 10).',
+    placeholder: 'Kommentar einfügen oder schreiben…',
+    examples: 'Beispiel ausprobieren',
+    exampleList: [
+      { label: 'Versteckter Hass', text: 'Schon wieder die... wir wissen doch alle, wo die herkommen, die sollte man zurückschicken.' },
+      { label: 'Beleidigung', text: 'Nur ein Idiot kann so einen Unsinn schreiben. Geh zurück in die Schule.' },
+      { label: 'Betrug', text: 'Glückwunsch, Sie haben ein iPhone gewonnen! Jetzt abholen auf gewinner-geschenk.xyz' },
+      { label: 'Harte, aber legitime Kritik', text: 'Völlig einseitiger Artikel. Der Journalist ignoriert alle Zahlen, die der Regierung widersprechen.' },
+    ],
+    langLabel: "Sprache des Kommentars",
+    postLabel: 'Titel des Beitrags oder Artikels (optional)',
+    postPlaceholder: 'z. B. Stadtrat beschließt neue Radwege',
+    charterLabel: 'Ihre Moderationsrichtlinien (bearbeitbar)',
+    charter: "Kommentarrichtlinien einer Nachrichtenseite. Ablehnen: Beleidigungen und persönliche Angriffe gegen andere Leser oder Personen, auch durch Ironie, Sarkasmus oder spöttische Spitznamen; hasserfüllte oder diskriminierende Äußerungen, auch Andeutungen und Verallgemeinerungen gegen eine Gruppe wegen Herkunft, Religion, Geschlecht oder sexueller Orientierung; Drohungen und Einschüchterung; Spam, Werbung, Betrug und verdächtige Links; Veröffentlichung personenbezogener Daten. Zulassen: Widerspruch und auch scharfe Kritik an einer Idee, einem Artikel, einem Journalisten, einer Regierung oder einer Person des öffentlichen Lebens, solange es weder Beleidigung noch Hass gibt; kurze Kommentare, Dank und Fragen. Bei echtem Zweifel an die menschliche Prüfung senden.",
+    submit: 'Kommentar moderieren',
+    loading: 'Wird analysiert…',
+    accepted: 'Freigegeben',
+    rejected: 'Abgelehnt',
+    pending: 'Zur Prüfung an Ihr Team',
+    category: 'Kategorie',
+    reason: 'Schriftliche Begründung',
+    noReason: 'Keine Regel verletzt: Der Kommentar würde veröffentlicht.',
+    time: 'Antwort in',
+    empty: 'Schreiben oder wählen Sie zuerst einen Kommentar.',
+    error: 'Die Demo hat nicht geantwortet. Bitte versuchen Sie es gleich noch einmal.',
+    note: 'Live-Demo mit der Moderations-Engine von Logora, dem Unternehmen hinter OpenModeration. In OpenModeration gelten für jeden Kommentar Ihre vollständigen Richtlinien, mehrere KI-Modelle und die Prüfung durch Ihr Team.',
+    cta: 'Mit Ihren eigenen Kommentaren im Sandbox-Modus testen',
+    signup: 'https://app.openmoderation.com/signup',
+  },
+  it: {
+    lang: 'it-IT',
+    commentLabel: 'Commento da moderare',
+    batchHint: 'Più commenti? Uno per riga (massimo 10).',
+    placeholder: 'Incolla o scrivi un commento…',
+    examples: 'Prova un esempio',
+    exampleList: [
+      { label: 'Allusione d’odio', text: 'Sempre loro... sappiamo tutti da dove vengono quelli, bisognerebbe rimandarli a casa loro.' },
+      { label: 'Insulto', text: 'Bisogna essere proprio idioti per scrivere una cosa del genere. Torna a scuola.' },
+      { label: 'Truffa', text: 'Complimenti, hai vinto un iPhone! Ritiralo subito su regalo-vincitore.xyz' },
+      { label: 'Critica dura ma legittima', text: "Articolo del tutto di parte. Il giornalista ignora tutti i dati che smentiscono il governo." },
+    ],
+    langLabel: "Lingua del commento",
+    postLabel: "Titolo del post o dell'articolo (facoltativo)",
+    postPlaceholder: 'Es.: Il consiglio comunale approva nuove piste ciclabili',
+    charterLabel: 'La tua policy di moderazione (modificabile)',
+    charter: "Policy dei commenti di un sito di informazione. Rifiutare: insulti e attacchi personali contro un altro lettore o una persona, anche tramite ironia, sarcasmo o soprannomi derisori; contenuti d'odio o discriminatori, anche allusioni e generalizzazioni contro un gruppo per origine, religione, genere o orientamento; minacce e intimidazioni; spam, pubblicità, truffe e link sospetti; diffusione di dati personali. Accettare: il disaccordo e la critica, anche dura, a un'idea, un articolo, un giornalista, un governo o un personaggio pubblico, purché senza insulti né odio; commenti brevi, ringraziamenti e domande. In caso di dubbio reale, inviare alla revisione umana.",
+    submit: 'Modera questo commento',
+    loading: 'Analisi in corso…',
+    accepted: 'Accettato',
+    rejected: 'Rifiutato',
+    pending: 'Inviato alla revisione umana',
+    category: 'Categoria',
+    reason: 'Motivazione scritta',
+    noReason: 'Nessuna regola violata: il commento verrebbe pubblicato.',
+    time: 'Risposta in',
+    empty: 'Scrivi o scegli prima un commento.',
+    error: 'La demo non ha risposto. Riprova tra un momento.',
+    note: "Demo dal vivo con il motore di moderazione di Logora, l'azienda che sviluppa OpenModeration. In OpenModeration a ogni commento si applicano la tua policy completa, più modelli di IA e la revisione del tuo team.",
+    cta: 'Provalo sui tuoi commenti in modalità sandbox',
+    signup: 'https://app.openmoderation.com/signup',
+  },
+}[locale];
+
+const languages = [
+  { code: 'fr-FR', name: 'Français' },
+  { code: 'en-US', name: 'English' },
+  { code: 'es-ES', name: 'Español' },
+  { code: 'de-DE', name: 'Deutsch' },
+  { code: 'it-IT', name: 'Italiano' },
+  { code: 'pt-BR', name: 'Português' },
+];
+
+const config = JSON.stringify({
+  lang: copy.lang,
+  charter: copy.charter,
+  labels: { accepted: copy.accepted, rejected: copy.rejected, pending: copy.pending, loading: copy.loading, submit: copy.submit, noReason: copy.noReason, empty: copy.empty, error: copy.error, time: copy.time },
+});
+---
+
+<div class="om-demo rounded-xl border border-surface-200 bg-white p-6 shadow-md sm:p-8" data-config={config}>
+  <div class="grid gap-8 lg:grid-cols-2">
+    <form class="om-demo-form space-y-5">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-wider text-surface-400">{copy.examples}</p>
+        <div class="mt-2 flex flex-wrap gap-2">
+          {copy.exampleList.map((ex) => (
+            <button type="button" class="om-demo-example rounded-full border border-surface-200 px-3 py-1 text-sm text-surface-600 transition hover:border-brand-400 hover:text-brand-700" data-text={ex.text}>{ex.label}</button>
+          ))}
+        </div>
+      </div>
+      <label class="block">
+        <span class="text-sm font-semibold text-surface-900">{copy.commentLabel}</span>
+        <textarea name="text" rows="4" maxlength="6000" class="mt-2 w-full rounded-lg border border-surface-300 bg-white p-3 text-sm text-surface-900 placeholder-surface-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100" placeholder={copy.placeholder}></textarea>
+        <span class="mt-1 block text-xs text-surface-400">{copy.batchHint}</span>
+      </label>
+      <label class="block">
+        <span class="text-sm font-semibold text-surface-900">{copy.langLabel}</span>
+        <select name="language" class="mt-2 w-full rounded-lg border border-surface-300 bg-white p-3 text-sm text-surface-900 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 sm:w-auto">
+          {languages.map((l) => <option value={l.code} selected={l.code === copy.lang}>{l.name}</option>)}
+        </select>
+      </label>
+      <label class="block">
+        <span class="text-sm font-semibold text-surface-900">{copy.postLabel}</span>
+        <input name="post" type="text" maxlength="300" class="mt-2 w-full rounded-lg border border-surface-300 bg-white p-3 text-sm text-surface-900 placeholder-surface-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100" placeholder={copy.postPlaceholder} />
+      </label>
+      <details class="group">
+        <summary class="cursor-pointer text-sm font-semibold text-surface-900">{copy.charterLabel}</summary>
+        <textarea name="policy" rows="4" maxlength="3000" class="mt-2 w-full rounded-lg border border-surface-300 bg-surface-50 p-3 text-sm text-surface-700 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100">{copy.charter}</textarea>
+      </details>
+      <button type="submit" class="om-demo-submit inline-flex w-full items-center justify-center rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-800 disabled:opacity-60 sm:w-auto">{copy.submit}</button>
+    </form>
+
+    <div class="flex flex-col">
+      <div class="om-demo-result flex min-h-[220px] flex-1 flex-col justify-center rounded-lg border border-dashed border-surface-300 bg-surface-50 p-6" aria-live="polite">
+        <p class="om-demo-idle text-center text-sm text-surface-400">{copy.empty}</p>
+        <div class="om-demo-output hidden">
+          <span class="om-demo-badge inline-flex items-center rounded-full px-3 py-1 text-sm font-semibold"></span>
+          <dl class="mt-5 space-y-4 text-sm">
+            <div class="om-demo-category-row">
+              <dt class="text-xs font-semibold uppercase tracking-wider text-surface-400">{copy.category}</dt>
+              <dd class="om-demo-category mt-1 font-medium text-surface-900"></dd>
+            </div>
+            <div>
+              <dt class="text-xs font-semibold uppercase tracking-wider text-surface-400">{copy.reason}</dt>
+              <dd class="om-demo-reason mt-1 leading-relaxed text-surface-700"></dd>
+            </div>
+          </dl>
+          <p class="om-demo-time mt-5 text-xs text-surface-400"></p>
+        </div>
+        <ul class="om-demo-batch hidden w-full space-y-3 text-sm"></ul>
+      </div>
+      <p class="mt-4 text-xs leading-relaxed text-surface-400">{copy.note}</p>
+      <a href={copy.signup} class="mt-3 text-sm font-semibold text-brand-700 hover:text-brand-600">{copy.cta} &rarr;</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  const API = 'https://moderation.logora.fr/predict_llm';
+
+  document.querySelectorAll<HTMLElement>('.om-demo').forEach((root) => {
+    const config = JSON.parse(root.dataset.config || '{}');
+    const form = root.querySelector<HTMLFormElement>('.om-demo-form')!;
+    const text = form.querySelector<HTMLTextAreaElement>('textarea[name="text"]')!;
+    const post = form.querySelector<HTMLInputElement>('input[name="post"]')!;
+    const policy = form.querySelector<HTMLTextAreaElement>('textarea[name="policy"]')!;
+    const language = form.querySelector<HTMLSelectElement>('select[name="language"]')!;
+    let languageTouched = false;
+    language.addEventListener('change', () => { languageTouched = true; });
+
+    const stopwords: Record<string, string[]> = {
+      'fr-FR': ['le', 'la', 'les', 'des', 'est', 'et', 'pour', 'pas', 'que', 'qui', 'une', 'un', 'vous', 'dans', 'sur', 'ce', 'avec', 'tout', 'encore', 'cet', 'être', 'faut', 'ça', 'très', 'je', 'tu', 'du', 'au', 'merci', 'mais', 'aussi'],
+      'en-US': ['the', 'and', 'is', 'you', 'this', 'that', 'for', 'not', 'with', 'are', 'they', 'of', 'to', 'it', 'your', 'what', 'again', 'only', 'an', 'thanks', 'who', 'my', 'he', 'she'],
+      'es-ES': ['el', 'la', 'los', 'las', 'que', 'es', 'por', 'para', 'con', 'una', 'del', 'pero', 'como', 'este', 'muy', 'otra', 'todos', 'hay', 'ser', 'y', 'su', 'está', 'esto', 'eso', 'gracias'],
+      'de-DE': ['der', 'die', 'das', 'und', 'ist', 'nicht', 'ein', 'eine', 'mit', 'sie', 'zu', 'den', 'wir', 'auch', 'schon', 'doch', 'man'],
+      'it-IT': ['il', 'lo', 'gli', 'che', 'è', 'per', 'non', 'una', 'con', 'del', 'della', 'sono', 'questo', 'loro', 'tutti', 'sempre', 'anche'],
+      'pt-BR': ['o', 'os', 'que', 'não', 'uma', 'com', 'para', 'por', 'mais', 'você', 'isso', 'muito', 'são', 'esse', 'eles', 'todos', 'também'],
+    };
+    const detect = (value: string) => {
+      const words = value.toLowerCase().split(/[^a-zà-ÿßœæ']+/).filter(Boolean);
+      const scores = Object.entries(stopwords).map(([code, list]) => [code, words.filter((w) => list.includes(w)).length] as const);
+      scores.sort((a, b) => b[1] - a[1]);
+      const [first, second] = scores;
+      return first[1] > 0 && first[1] > second[1] ? first[0] : '';
+    };
+    const syncLanguage = () => {
+      if (languageTouched) return;
+      const detected = detect(text.value);
+      if (detected) language.value = detected;
+    };
+    text.addEventListener('input', syncLanguage);
+    const submit = form.querySelector<HTMLButtonElement>('.om-demo-submit')!;
+    const idle = root.querySelector<HTMLElement>('.om-demo-idle')!;
+    const output = root.querySelector<HTMLElement>('.om-demo-output')!;
+    const badge = root.querySelector<HTMLElement>('.om-demo-badge')!;
+    const categoryRow = root.querySelector<HTMLElement>('.om-demo-category-row')!;
+    const category = root.querySelector<HTMLElement>('.om-demo-category')!;
+    const reason = root.querySelector<HTMLElement>('.om-demo-reason')!;
+    const time = root.querySelector<HTMLElement>('.om-demo-time')!;
+    const batch = root.querySelector<HTMLElement>('.om-demo-batch')!;
+
+    const badgeStyles: Record<string, string> = {
+      accepted: 'bg-accent-100 text-accent-800',
+      rejected: 'bg-red-100 text-red-700',
+      pending: 'bg-amber-100 text-amber-800',
+    };
+
+    const showMessage = (message: string) => {
+      output.classList.add('hidden');
+      batch.classList.add('hidden');
+      idle.classList.remove('hidden');
+      idle.textContent = message;
+    };
+
+    root.querySelectorAll<HTMLButtonElement>('.om-demo-example').forEach((button) => {
+      button.addEventListener('click', () => {
+        text.value = button.dataset.text || '';
+        syncLanguage();
+        form.requestSubmit();
+      });
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const content = text.value.trim();
+      if (!content) {
+        showMessage(config.labels.empty);
+        return;
+      }
+      submit.disabled = true;
+      submit.textContent = config.labels.loading;
+      const lines = content.split('\n').map((line) => line.trim()).filter(Boolean).slice(0, 10);
+      const context = post.value.trim() ? { post: post.value.trim() } : undefined;
+      const moderate = async (comment: string) => {
+        const body: Record<string, unknown> = { text: comment, language: language.value, policy: policy.value.trim() || config.charter };
+        if (context) body.context = context;
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 20000);
+        const response = await fetch(API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+          signal: controller.signal,
+        });
+        clearTimeout(timer);
+        if (!response.ok) throw new Error(String(response.status));
+        const { prediction } = await response.json();
+        const decision = ['accepted', 'rejected', 'pending'].includes(prediction?.decision) ? prediction.decision : 'pending';
+        return { decision, category: prediction?.category as string | null, reason: prediction?.reason as string | null };
+      };
+      const started = performance.now();
+      const elapsed = () => {
+        const ms = performance.now() - started;
+        return `${config.labels.time} ${ms < 1000 ? Math.round(ms) + ' ms' : (ms / 1000).toFixed(1) + ' s'}`;
+      };
+      try {
+        if (lines.length === 1) {
+          const result = await moderate(lines[0]);
+          badge.className = `om-demo-badge inline-flex items-center rounded-full px-3 py-1 text-sm font-semibold ${badgeStyles[result.decision]}`;
+          badge.textContent = config.labels[result.decision];
+          categoryRow.classList.toggle('hidden', !result.category);
+          category.textContent = result.category ? String(result.category).replace(/_/g, ' ').toLowerCase() : '';
+          reason.textContent = result.reason || config.labels.noReason;
+          time.textContent = elapsed();
+          idle.classList.add('hidden');
+          batch.classList.add('hidden');
+          output.classList.remove('hidden');
+        } else {
+          const results = await Promise.all(lines.map((line) => moderate(line).catch(() => null)));
+          if (results.every((r) => r === null)) throw new Error('all failed');
+          batch.replaceChildren(
+            ...results.map((result, i) => {
+              const item = document.createElement('li');
+              item.className = 'rounded-lg border border-surface-200 bg-white p-3';
+              const quote = document.createElement('p');
+              quote.className = 'text-surface-700';
+              quote.textContent = lines[i];
+              const verdict = document.createElement('span');
+              const decision = result ? result.decision : 'pending';
+              verdict.className = `mt-2 inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${badgeStyles[decision]}`;
+              verdict.textContent = result ? config.labels[decision] : config.labels.error;
+              const why = document.createElement('p');
+              why.className = 'mt-1 text-xs text-surface-500';
+              why.textContent = result ? result.reason || config.labels.noReason : '';
+              item.append(quote, verdict, why);
+              return item;
+            }),
+          );
+          idle.classList.add('hidden');
+          output.classList.add('hidden');
+          batch.classList.remove('hidden');
+        }
+      } catch {
+        showMessage(config.labels.error);
+      } finally {
+        submit.disabled = false;
+        submit.textContent = config.labels.submit;
+      }
+    });
+  });
+</script>

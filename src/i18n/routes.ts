@@ -21,6 +21,7 @@ type Route = Partial<Record<Locale, string>>;
 
 export const routes: Route[] = [
   { en: '/', fr: '/fr', es: '/es', de: '/de', it: '/it' },
+  { en: '/demo', fr: '/fr/tester-la-moderation', es: '/es/probar-moderacion', de: '/de/moderation-testen', it: '/it/prova-moderazione' },
   { en: '/about', fr: '/fr/a-propos', es: '/es/sobre-nosotros', de: '/de/ueber-uns', it: '/it/chi-siamo' },
   { en: '/alternatives', fr: '/fr/alternatives', es: '/es/alternativas', de: '/de/alternativen', it: '/it/alternative' },
   { en: '/alternatives/azure-content-safety', fr: '/fr/alternatives/azure-content-safety', es: '/es/alternativas/azure-content-safety', de: '/de/alternativen/azure-content-safety', it: '/it/alternative/azure-content-safety' },
