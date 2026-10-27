@@ -1,4 +1,9 @@
 ---
+import { getLocale } from '../i18n/routes';
+import { useTranslations } from '../i18n/ui';
+
+const t = useTranslations(getLocale(Astro.url.pathname));
+
 export interface BreadcrumbItem {
   label: string;
   href?: string;
@@ -26,7 +31,7 @@ const breadcrumbJsonLd = {
 
 <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
 
-<nav aria-label="Breadcrumb" class="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
+<nav aria-label={t('breadcrumb.label')} class="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
   <ol class="flex items-center gap-2 text-xs text-surface-400">
     {items.map((item, i) => (
       <li class="flex items-center gap-2">
