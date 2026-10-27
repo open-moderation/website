@@ -1,0 +1,161 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CTASection from '../../components/CTASection.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/es/funcionalidades",
+  "url": "https://www.openmoderation.com/es/funcionalidades",
+  "name": "Funcionalidades de moderación de contenido: API unificada y motor de reglas",
+  "description": "Descubre todas las funcionalidades de OpenModeration: API unificada, consola de administración, motor de acciones, conectores nativos, BYOK, procesamiento por lotes y registros de auditoría conformes con la DSA.",
+  "inLanguage": "es",
+  "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
+};
+
+const curlExample = `# Funciona igual con todos los proveedores
+curl -X POST https://api.openmoderation.com/v1/moderation \\
+  -H "Authorization: Bearer om_key_..." \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "input": "Your text to moderate here",
+    "model": "openai/omni-moderation-latest",
+    "language": "en"
+  }'
+
+# Respuesta (siempre con el mismo formato)
+{
+  "id": "modr_01JXK...",
+  "model": "openai/omni-moderation-latest",
+  "results": [{
+    "category": "hate",
+    "score": 0.02,
+    "flagged": false
+  }],
+  "flagged": false,
+  "usage": {
+    "latency_ms": 243,
+    "provider": "openai"
+  }
+}`;
+
+const featureCategories = [
+  {
+    title: 'Una sola integración',
+    description: 'Un único endpoint de API que funciona igual sea cual sea el proveedor que elijas. Los resultados llegan siempre con el mismo formato.',
+    items: [
+      { title: 'Una conexión con todos los proveedores de moderación', desc: 'Envía el contenido una vez y recibe un veredicto claro (aprobado o rechazado) junto con las puntuaciones por categoría, tanto si usas OpenAI como Azure o un LLM.' },
+      { title: 'Categorías de contenido predefinidas', desc: 'Categorías listas para usar que cubren odio, acoso, contenido sexual, violencia, autolesiones, spam, desinformación, datos personales y otras.' },
+      { title: 'Selección automática del proveedor', desc: 'Indícanos tu idioma, tu tipo de contenido y tu presupuesto. Enviamos cada solicitud automáticamente al proveedor más adecuado.' },
+      { title: 'Decisiones de moderación más acertadas', desc: 'Ten en cuenta el contexto de la conversación, el historial del autor, el tipo de canal y tus propias políticas para decidir con más precisión.' },
+      { title: 'Revisión masiva de contenido', desc: 'Envía hasta 10.000 elementos de una vez para procesarlos de forma asíncrona. Los resultados llegan a tu sistema en cuanto están listos.' },
+      { title: 'Políticas de moderación personalizadas', desc: 'Define tus propias categorías con cualquier LLM. Aporta ejemplos y deja que el modelo clasifique el contenido a tu manera.' },
+    ],
+  },
+  {
+    title: 'Consola de moderación',
+    description: 'Una interfaz web completa para gestionar todas tus operaciones de moderación de contenido.',
+    items: [
+      { title: 'Gestión de accesos', desc: 'Crea y gestiona claves de acceso. Fija límites de uso por clave y configura las credenciales de cada proveedor.' },
+      { title: 'Gestión de equipos y roles', desc: 'Añade a tus moderadores, asigna roles y define permisos sin pasar por tu departamento de TI.' },
+      { title: 'Gestión de denuncias', desc: 'Las denuncias de los usuarios llegan a una sola cola, donde sigues cada una hasta su resolución.' },
+      { title: 'Historial de actividad', desc: 'Cada solicitud de moderación queda registrada con su veredicto, el proveedor, el tiempo de respuesta y las puntuaciones por categoría.' },
+      { title: 'Supervisión del estado de los proveedores', desc: 'Consulta en tiempo real el estado de todos tus proveedores: disponibilidad, tiempos de respuesta y tasas de error.' },
+      { title: 'Informes de rendimiento', desc: 'Sigue el volumen de moderación y la tasa de contenido señalado, compara el rendimiento de los proveedores y analiza la evolución de los costes.' },
+      { title: 'Gestión de conectores', desc: 'Conecta tus cuentas de redes sociales con tus propias credenciales.' },
+      { title: 'Configuración de reglas', desc: 'Define palabras prohibidas, fija umbrales por categoría y redacta las normas de tu comunidad: tres herramientas sencillas, sin necesidad de programar.' },
+    ],
+  },
+  {
+    title: 'Moderación automática',
+    description: 'Define tus reglas de moderación con tres herramientas sencillas: palabras prohibidas, umbrales por categoría y las normas de tu comunidad escritas en lenguaje natural.',
+    items: [
+      { title: 'Reglas de IA que entienden el contexto', desc: 'Combina las puntuaciones de confianza de la IA con las normas de tu comunidad, en lugar de depender solo de listas de palabras clave.' },
+      { title: 'Acciones automáticas', desc: 'Cuando se supera un umbral, entra en juego el motor de acciones: ocultar, eliminar, señalar, notificar o marcar como spam.' },
+      { title: 'Supervisión humana', desc: 'Los casos dudosos van a tus moderadores, que toman la decisión final.' },
+      { title: 'Cola de revisión manual', desc: 'El contenido señalado pasa a una cola donde tus moderadores lo aprueban o lo rechazan.' },
+      { title: 'Notificaciones por webhook', desc: 'Recibe alertas en tiempo real sobre contenido señalado, lotes finalizados, errores de proveedores y otros eventos.' },
+      { title: 'Registro de auditoría completo', desc: 'Cada acción queda registrada: qué regla se activó, qué acción se tomó y cuál fue el resultado.' },
+    ],
+  },
+  {
+    title: 'Integraciones con plataformas',
+    description: 'Conéctate directamente a las redes sociales y a tu blog para recoger y moderar el contenido de forma automática.',
+    items: [
+      { title: 'Facebook', desc: 'Recibe comentarios y publicaciones. Oculta o elimina automáticamente el contenido que incumple tus reglas.' },
+      { title: 'Instagram', desc: 'Modera los comentarios y mensajes de Instagram para que el odio y el spam no se queden en tu perfil.' },
+      { title: 'YouTube', desc: 'Recoge los comentarios de tus vídeos. Márcalos como spam o envíalos a tu cola de revisión.' },
+      { title: 'WordPress', desc: 'Modera los comentarios de tu blog. Apruébalos, retenlos para revisión o márcalos como spam automáticamente.' },
+      { title: 'Usa tus propios accesos a las plataformas', desc: 'Aporta tus propios tokens de cada plataforma. Nunca los almacenamos en texto plano.' },
+      { title: 'Receptor de webhooks genérico', desc: 'Recoge contenido de cualquier plataforma que admita webhooks salientes.' },
+      { title: 'Callback de webhook genérico', desc: 'Envía los resultados de moderación a tu propio webhook para integraciones a medida.' },
+    ],
+  },
+];
+---
+
+<BaseLayout title="Funcionalidades de moderación: API unificada y reglas" description="Todas las funcionalidades de OpenModeration: API unificada, consola, motor de acciones, conectores nativos, BYOK, lotes y registro de auditoría DSA." jsonLd={pageJsonLd}>
+<Breadcrumb items={[{ label: "Inicio", href: "/es" }, { label: "Funcionalidades" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Funcionalidades</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        OpenModeration cubre todo el proceso de moderación, desde que llega el comentario hasta la acción que se toma.
+      </p>
+    </div>
+  </section>
+
+  {featureCategories.map((cat) => (
+    <section class="scroll-mt-16 border-t border-surface-100 bg-white py-20">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="mx-auto mb-12 max-w-2xl text-center">
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">{cat.title}</h2>
+          <p class="mt-4 text-lg text-surface-500">{cat.description}</p>
+        </div>
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {cat.items.map((item) => (
+            <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+              <h3 class="font-semibold text-surface-900">{item.title}</h3>
+              <p class="mt-2 text-sm text-surface-500">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <!-- API Reference Snippet -->
+  <section class="border-t border-surface-100 bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Una API predecible</h2>
+          <p class="mt-4 text-lg text-surface-500">
+            Todos los proveedores responden con el mismo formato, así que solo integras una vez.
+          </p>
+          <div class="mt-6 space-y-4">
+            <div class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600"><strong>El mismo formato</strong> para OpenAI, Azure, HuggingFace, Mistral o cualquier LLM, sin código adicional que escribir.</p>
+            </div>
+            <div class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600"><strong>Claves de acceso seguras</strong> con permisos acotados y límites de uso por clave.</p>
+            </div>
+            <div class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600"><strong>Documentación interactiva de la API</strong> generada automáticamente. Prueba las solicitudes directamente desde tu navegador.</p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <CodeBlock code={curlExample} lang="bash" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

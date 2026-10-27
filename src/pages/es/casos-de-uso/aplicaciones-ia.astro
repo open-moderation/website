@@ -1,0 +1,174 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import CodeBlock from '../../../components/CodeBlock.astro';
+
+const useCaseJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Moderación de contenido con IA para aplicaciones LLM | OpenModeration",
+  "description": "Filtra las entradas y salidas de tu LLM con moderación multiproveedor. Protege tu aplicación de IA frente a la inyección de prompts, el contenido dañino y las infracciones de tus políticas con un sistema de moderación completo.",
+  "inLanguage": "es"
+};
+
+const inputModerationExample = `User prompt -> {"input": prompt} -> POST /v1/moderation ->
+-> if not flagged -> forward to GPT-4, Claude...
+-> if flagged -> return "Content policy violation"`;
+
+const outputModerationExample = `LLM response -> {"input": response} -> POST /v1/moderation ->
+-> if not flagged -> display to user
+-> if flagged -> show fallback response`;
+---
+
+<BaseLayout title="Moderación con IA para aplicaciones LLM | OpenModeration" description="Filtra las entradas y salidas de tu LLM con moderación multiproveedor y protege tu app de IA de la inyección de prompts y el contenido dañino." jsonLd={useCaseJsonLd}>
+  <Breadcrumb items={[{ label: "Inicio", href: "/es" }, { label: "Casos de uso", href: "/es/casos-de-uso" }, { label: "Aplicaciones de IA" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">Caso de uso</div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Moderación de contenido con IA para aplicaciones LLM</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">Filtra las entradas y salidas de tu LLM para proteger a tus usuarios de las respuestas dañinas del modelo, y a tu modelo de los prompts maliciosos.</p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mb-16 grid gap-8 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="text-lg font-semibold text-surface-900">El reto</h3>
+          <p class="mt-2 text-sm text-surface-600">Las aplicaciones basadas en LLM son vulnerables a la inyección de prompts, a los jailbreaks y a la generación de contenido dañino. Depender solo de los filtros integrados de un único proveedor crea un punto único de fallo.</p>
+        </div>
+        <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+          <h3 class="text-lg font-semibold text-brand-700">La solución OpenModeration</h3>
+          <p class="mt-2 text-sm text-surface-700">Combina varios proveedores de IA para filtrar tanto las entradas como las salidas, con varias capas de defensa. El motor de acciones aplica tus propias políticas de seguridad sin que tengas que programar la lógica de moderación.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="text-lg font-semibold text-surface-900">El resultado</h3>
+          <p class="mt-2 text-sm text-surface-600">Lanzas tu aplicación de IA con más tranquilidad. Tus políticas se cumplen, evitas las respuestas que dañan tu marca y tu equipo de desarrollo se dedica al producto en lugar de mantener infraestructura de moderación.</p>
+        </div>
+      </div>
+
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Moderar los dos lados de la conversación</h2>
+          <p class="mt-4 text-lg text-surface-500">Toda aplicación basada en LLM necesita moderar el contenido en dos frentes:</p>
+          <ul class="mt-6 space-y-3">
+            <li class="flex items-start gap-3"><svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><p class="text-sm text-surface-600"><strong>Filtrado de entradas:</strong> bloquea los prompts dañinos, ilegales o manipuladores antes de que lleguen al LLM.</p></li>
+            <li class="flex items-start gap-3"><svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><p class="text-sm text-surface-600"><strong>Filtrado de salidas:</strong> intercepta las respuestas peligrosas o inapropiadas del modelo antes de que las vean tus usuarios.</p></li>
+          </ul>
+          <p class="mt-4 text-lg text-surface-500">OpenModeration combina varios proveedores en capas de defensa sucesivas, y todo se gestiona desde una única consola.</p>
+        </div>
+        <div class="space-y-4">
+          <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+            <h3 class="font-semibold text-surface-900">Entrada &rarr; Moderación &rarr; LLM</h3>
+            <CodeBlock code={inputModerationExample} lang="text" />
+          </div>
+          <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+            <h3 class="font-semibold text-surface-900">Salida del LLM &rarr; Moderación &rarr; Usuario</h3>
+            <CodeBlock code={outputModerationExample} lang="text" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Pensado para aplicaciones de IA</h2>
+        <p class="mt-4 text-lg text-surface-500">Todo lo que necesita un producto basado en LLM para moderar los dos lados de la conversación.</p>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          </div>
+          <h3 class="font-semibold">Filtrado de entradas</h3>
+          <p class="mt-1 text-xs text-surface-500">Bloquea la inyección de prompts, los jailbreaks y los prompts dañinos antes de que lleguen a tu modelo.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          </div>
+          <h3 class="font-semibold">Filtrado de salidas</h3>
+          <p class="mt-1 text-xs text-surface-500">Intercepta las respuestas peligrosas o contrarias a tus políticas antes de que las vean tus usuarios. Cambia de proveedor sin tocar el código.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+          </div>
+          <h3 class="font-semibold">Defensa en profundidad</h3>
+          <p class="mt-1 text-xs text-surface-500">Combina un clasificador rápido con una verificación por LLM en la misma petición. Si un proveedor falla o se retrasa, el enrutamiento pasa automáticamente a otro.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+          </div>
+          <h3 class="font-semibold">Categorías personalizadas</h3>
+          <p class="mt-1 text-xs text-surface-500">Define cualquier política de seguridad mediante prompts en lenguaje natural con el LLM que prefieras, sin reentrenar ningún clasificador.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-3xl">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 text-center">Preguntas frecuentes sobre la moderación de LLM</h2>
+        <div class="mt-8 divide-y divide-surface-200">
+          <details class="group py-5">
+            <summary class="flex cursor-pointer items-center justify-between text-base font-medium text-surface-900">
+              ¿Puedo moderar los prompts y las respuestas del modelo con la misma integración?
+              <svg class="h-5 w-5 shrink-0 text-surface-400 transition duration-200 group-open:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+            </summary>
+            <p class="mt-3 text-sm text-surface-500">Sí. Llama a POST /v1/moderation con el prompt del usuario antes de enviarlo a tu LLM y vuelve a llamarlo con la respuesta del modelo antes de mostrarla. El endpoint y el esquema de respuesta son los mismos.</p>
+          </details>
+          <details class="group py-5">
+            <summary class="flex cursor-pointer items-center justify-between text-base font-medium text-surface-900">
+              ¿La moderación añadirá una latencia apreciable a mi aplicación de IA?
+              <svg class="h-5 w-5 shrink-0 text-surface-400 transition duration-200 group-open:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+            </summary>
+            <p class="mt-3 text-sm text-surface-500">Los proveedores basados en clasificadores responden en unos pocos cientos de milisegundos, muy por debajo del tiempo de respuesta habitual de un LLM. También puedes moderar la salida de forma asíncrona: muestras primero un aviso en streaming y retiras el contenido si se marca.</p>
+          </details>
+          <details class="group py-5">
+            <summary class="flex cursor-pointer items-center justify-between text-base font-medium text-surface-900">
+              ¿Puedo definir políticas propias de mi producto?
+              <svg class="h-5 w-5 shrink-0 text-surface-400 transition duration-200 group-open:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+            </summary>
+            <p class="mt-3 text-sm text-surface-500">Sí. Además de las categorías integradas, puedes usar la moderación basada en LLM con prompts personalizados para aplicar tus propias reglas: límites en los consejos médicos, menciones a la competencia, contenido no apto para menores, entre otras.</p>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8 text-2xl font-bold text-surface-900 sm:text-3xl">Recursos relacionados</h2>
+      <div class="grid gap-6 md:grid-cols-3">
+        <a href="/es/blog/guia-moderacion-contenido-ia-desarrolladores" class="group rounded-xl border border-surface-200 bg-white p-6 transition hover:shadow-md">
+          <div class="mb-2 text-xs font-medium text-brand-600">Guía</div>
+          <h3 class="text-lg font-semibold text-surface-900 group-hover:text-brand-600">Moderación de contenido para aplicaciones de IA</h3>
+          <p class="mt-2 text-sm text-surface-500">Buenas prácticas para filtrar entradas y salidas en apps basadas en LLM.</p>
+        </a>
+        <a href="/es/alternativas/azure-content-safety" class="group rounded-xl border border-surface-200 bg-white p-6 transition hover:shadow-md">
+          <div class="mb-2 text-xs font-medium text-brand-600">Comparativa</div>
+          <h3 class="text-lg font-semibold text-surface-900 group-hover:text-brand-600">OpenModeration vs Azure Content Safety</h3>
+          <p class="mt-2 text-sm text-surface-500">Qué aporta un sistema de moderación completo frente a una API aislada en la seguridad de la IA.</p>
+        </a>
+        <a href="/es/funcionalidades" class="group rounded-xl border border-surface-200 bg-white p-6 transition hover:shadow-md">
+          <div class="mb-2 text-xs font-medium text-brand-600">Plataforma</div>
+          <h3 class="text-lg font-semibold text-surface-900 group-hover:text-brand-600">Descubre todas las funcionalidades</h3>
+          <p class="mt-2 text-sm text-surface-500">Conoce el motor de acciones, la gestión de equipos y los flujos de trabajo automatizados.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <CTASection
+    title="Lanza tu app de IA con una red de seguridad."
+    subtitle="Filtra entradas y salidas a través de una sola API, con conmutación entre proveedores y registros de auditoría completos. Autoalójalo o usa la nube gestionada."
+    buttonText="Pruébalo gratis"
+    buttonHref="https://app.openmoderation.com/signup"
+  />
+</BaseLayout>
