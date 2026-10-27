@@ -1,0 +1,164 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CharterSupport from '../components/CharterSupport.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import CTASection from '../components/CTASection.astro';
+import BrowserFrame from '../components/BrowserFrame.astro';
+import ModerationVerdict from '../components/ModerationVerdict.astro';
+import ClientLogos from '../components/ClientLogos.astro';
+import FAQ from '../components/FAQ.astro';
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/social-media-moderation",
+  "name": "AI social media moderation: Facebook, Instagram, YouTube",
+  "description": "A social media moderation tool that automatically hides hateful comments, spam and scams on Facebook, Instagram and YouTube, following your rules, with a written reason for every decision.",
+  "inLanguage": "en",
+  "about": { "@id": "https://www.openmoderation.com/#software" }
+};
+
+const platforms = [
+  { name: "Facebook", href: "/integrations/facebook", text: "Comments on your Page posts are analysed as soon as they arrive. Those that break your rules are hidden automatically." },
+  { name: "Instagram", href: "/integrations/instagram", text: "Comments on your Instagram posts are analysed the same way and hidden when they break your rules." },
+  { name: "YouTube", href: "/integrations/youtube", text: "Every comment on your videos is published, held for review or rejected, directly through the YouTube API." },
+  { name: "WordPress", href: "/integrations/wordpress", text: "Comments on your site are approved, held for moderation or marked as spam, with no plugin to build." },
+];
+
+const steps = [
+  { title: "Connect your accounts", text: "Facebook, Instagram, YouTube or WordPress connect in a few clicks, with no developer needed." },
+  { title: "Write your rules", text: "Your moderation policy in plain language, banned words and a threshold for each category. A balanced preset lets you start right away." },
+  { title: "The AI applies your rules", text: "Anything that clearly breaks your rules is hidden, acceptable comments stay online, and borderline cases go to your team's queue." },
+  { title: "Every decision is explained", text: "A written reason accompanies every decision, automated or human, and stays in the audit trail." },
+];
+
+const faqItems = [
+  {
+    question: "Which social networks can OpenModeration moderate?",
+    answer: "Facebook, Instagram and YouTube, as well as WordPress sites, through native connectors. For other sources, you can send content through the REST API or webhooks. TikTok, X and LinkedIn do not have a native connector today.",
+  },
+  {
+    question: "Do I need to code to moderate my social media with OpenModeration?",
+    answer: "No. You connect your accounts, write your rules in plain language and settle borderline cases in one click in the console. The API is only useful if you want to plug in an in-house platform.",
+  },
+  {
+    question: "Are comments deleted or hidden?",
+    answer: "On Facebook and Instagram, comments that break your rules are hidden. On YouTube, they are rejected or held for review. On WordPress, they are held for moderation or marked as spam. In every case, the decision and its reason stay in the audit trail.",
+  },
+  {
+    question: "How much does a social media moderation tool like OpenModeration cost?",
+    answer: "The free plan covers up to 1,000 requests per month, roughly 30 comments a day. The Pro plan costs €99 per month for 10,000 requests. You can also host OpenModeration yourself for free, since the code is open source.",
+  },
+  {
+    question: "Where is the data hosted?",
+    answer: "OpenModeration is built and hosted in the European Union and complies with the GDPR. You can also install it on your own infrastructure.",
+  },
+];
+---
+
+<BaseLayout title="AI Social Media Moderation Tool, No Code Required" description="Automatically hide hateful comments, spam and scams on Facebook, Instagram and YouTube, following your rules. Every decision is explained. Free to start." jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Social media moderation" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Facebook • Instagram • YouTube • WordPress
+      </div>
+      <h1 class="mx-auto max-w-4xl text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Social media moderation, automated and explained</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Insults, spam and scams pile up under your posts, at every hour of the day. OpenModeration hides them automatically according to your rules, across all your accounts at once, and states in writing why each comment was removed.
+      </p>
+      <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">Try it free</a>
+        <a href="/how-it-works" class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">See how it works</a>
+      </div>
+      <p class="mt-4 text-sm text-surface-400">No credit card required</p>
+      <div class="mt-10">
+        <ClientLogos />
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-3xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">What OpenModeration does on each network</h2>
+        <p class="mt-4 text-lg text-surface-500">One console and the same rules for all your accounts. The action taken depends on what each platform allows.</p>
+      </div>
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        {platforms.map((p) => (
+          <a href={p.href} class="block rounded-xl border border-surface-200 bg-white p-6 transition hover:-translate-y-0.5 hover:shadow-md">
+            <h3 class="text-lg font-semibold text-surface-900">{p.name}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-surface-500">{p.text}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Four steps, zero lines of code</h2>
+          <ol class="mt-8 space-y-4">
+            {steps.map((s, i) => (
+              <li class="flex items-start gap-4 rounded-lg border border-surface-200 bg-white p-4">
+                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-100 text-sm font-semibold text-brand-700">{i + 1}</span>
+                <div>
+                  <p class="text-sm font-medium text-surface-900">{s.title}</p>
+                  <p class="mt-1 text-sm text-surface-500">{s.text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+        <BrowserFrame caption="A hidden comment, the rule it broke and the written reason, visible to your whole team.">
+          <ModerationVerdict slot="content" />
+        </BrowserFrame>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Why a dedicated tool beats native filters</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Context, not just keywords</h3>
+          <p class="mt-2 text-sm text-surface-500">A blocked-words list misses sarcasm, disguised insults and well-crafted scams. AI models read the whole sentence and judge it against your moderation policy.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">One console for all your accounts</h3>
+          <p class="mt-2 text-sm text-surface-500">No more jumping from one network to another: borderline cases from Facebook, Instagram, YouTube and your website all arrive in the same review queue.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Decisions you can justify</h3>
+          <p class="mt-2 text-sm text-surface-500">Every removed comment keeps its rule and its written reason. If a follower disputes it, you know what to tell them, and the audit trail is ready for the DSA.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Social media moderation: frequently asked questions" items={faqItems} />
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Further reading</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/content-moderation-policy" class="font-medium text-brand-600 hover:text-brand-500">Content moderation policy: guide and template &rarr;</a></li>
+        <li><a href="/use-cases/news-publishers" class="font-medium text-brand-600 hover:text-brand-500">Comment moderation for news publishers &rarr;</a></li>
+        <li><a href="/alternatives/bodyguard" class="font-medium text-brand-600 hover:text-brand-500">OpenModeration vs Bodyguard: the comparison &rarr;</a></li>
+        <li><a href="/dsa-compliance/statement-of-reasons" class="font-medium text-brand-600 hover:text-brand-500">The statement of reasons required by the DSA &rarr;</a></li>
+        <li><a href="/pricing" class="font-medium text-brand-600 hover:text-brand-500">Pricing &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <CTASection title="Protect your social media in 5 minutes." subtitle="Connect your accounts and write your rules in plain language: every hidden comment comes with a written reason." />
+</BaseLayout>
