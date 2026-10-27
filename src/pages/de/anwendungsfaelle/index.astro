@@ -1,0 +1,170 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import KpiBand from '../../../components/KpiBand.astro';
+
+const useCasesJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Anwendungsfälle für Content Moderation | OpenModeration",
+  "description": "Wie Plattformen aller Art OpenModeration einsetzen: soziale Plattformen, KI-Anwendungen, Marktplätze, Gaming und Enterprise-SaaS.",
+  "inLanguage": "de"
+};
+
+const kpis = [
+  { value: "10", label: "KI-Anbieter hinter einer einzigen API" },
+  { value: "300 ms", prefix: "<", label: "Median-Latenz (P50)" },
+  { value: "10K", label: "Inhalte pro Batch-Anfrage" },
+  { value: "100 %", label: "Open Source (AGPL v3)" },
+];
+
+const useCases = [
+  {
+    title: "Medienhäuser",
+    tagline: "Artikelkommentare, Redaktionen",
+    description: "Wenden Sie Ihre redaktionellen Richtlinien auf jeden Leserkommentar an, begründen Sie jede Löschung schriftlich und überlassen Sie Grenzfälle Ihrer Redaktion.",
+    href: "/de/anwendungsfaelle/medien",
+    iconPath: "M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z",
+  },
+  {
+    title: "Soziale Plattformen",
+    tagline: "Foren, Communitys, UGC",
+    description: "Schützen Sie Ihre Community vor Hassrede, Spam und Betrug. Automatisieren Sie die Durchsetzung Ihrer Regeln, damit sich Ihre Moderatoren auf die Grenzfälle konzentrieren können.",
+    href: "/de/anwendungsfaelle/soziale-plattformen",
+    iconPath: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z",
+  },
+  {
+    title: "KI-Anwendungen",
+    tagline: "Filterung von LLM-Ein- und -Ausgaben",
+    description: "Filtern Sie Prompts und Modellantworten in einem einzigen Schutzsystem. Kombinieren Sie mehrere Anbieter für mehrstufigen Schutz gegen Prompt Injection und schädliche Ausgaben.",
+    href: "/de/anwendungsfaelle/ki-anwendungen",
+    iconPath: "M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z",
+  },
+  {
+    title: "Marktplätze",
+    tagline: "Angebote, Bewertungen, Kleinanzeigen",
+    description: "Moderieren Sie Produktangebote, Bewertungen und Verkäufernachrichten in großem Maßstab. Erkennen Sie Betrug und verbotene Artikel, bevor sie online gehen.",
+    href: "/de/anwendungsfaelle/marktplaetze",
+    iconPath: "M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z",
+  },
+  {
+    title: "Gaming",
+    tagline: "Chat, MMOs, Live-Ops",
+    description: "Mehrsprachige Chat-Moderation in Echtzeit unter 500 ms. Verstöße werden automatisch gelöscht, bevor andere Spieler sie überhaupt zu sehen bekommen.",
+    href: "/de/anwendungsfaelle/gaming",
+    iconPath: "M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+  },
+  {
+    title: "Enterprise-SaaS",
+    tagline: "Compliance, SOC 2, Audit",
+    description: "Hosten Sie selbst auf Ihrer eigenen Infrastruktur, mit vollständigem Audit-Trail, Kontrolle über die Datenaufbewahrung und nachweisbarer Bereitschaft für DSA und SOC 2.",
+    href: "/de/anwendungsfaelle/enterprise-saas",
+    iconPath: "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4",
+  },
+];
+---
+
+<BaseLayout title="Content Moderation: Anwendungsfälle für Social, KI, Gaming" description="So nutzen soziale Plattformen, KI-Anwendungen, Marktplätze, Games und Unternehmen OpenModeration für Open-Source-Moderation, DSA-konform." jsonLd={useCasesJsonLd}>
+  <Breadcrumb items={[{ label: "Startseite", href: "/de" }, { label: "Anwendungsfälle" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700">
+        <span class="flex h-1.5 w-1.5 rounded-full bg-brand-500"></span>
+        Anwendungsfälle
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Eine Moderationsplattform für jede Art von Plattform</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Ein Forum moderiert anders als eine LLM-App, ein Marktplatz oder ein Spiel. OpenModeration passt sich Ihren Inhalten, Ihren Richtlinien und Ihrer Infrastruktur an.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <KpiBand items={kpis} />
+  </section>
+
+  <section class="bg-white pb-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {useCases.map((useCase) => (
+          <a href={useCase.href} class="group rounded-xl border border-surface-200 bg-surface-50 p-8 transition hover:border-brand-300 hover:shadow-md">
+            <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-100 text-brand-600">
+              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={useCase.iconPath}/></svg>
+            </div>
+            <h2 class="text-xl font-semibold text-surface-900 group-hover:text-brand-600">{useCase.title}</h2>
+            <p class="mt-1 text-xs font-medium uppercase tracking-wide text-surface-400">{useCase.tagline}</p>
+            <p class="mt-3 text-sm text-surface-500">{useCase.description}</p>
+            <span class="mt-4 inline-flex items-center gap-1 text-sm font-medium text-brand-600 group-hover:text-brand-700">
+              Mehr erfahren
+              <svg class="h-3.5 w-3.5 transition group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </span>
+          </a>
+        ))}
+        <a href="/de/funktionen" class="group rounded-xl border-2 border-dashed border-surface-300 bg-white p-8 transition hover:border-brand-400">
+          <div class="flex h-full flex-col items-start justify-center">
+            <h2 class="text-xl font-semibold text-surface-900 group-hover:text-brand-600">Alle Funktionen entdecken</h2>
+            <p class="mt-3 text-sm text-surface-500">Einheitliche API, Action Engine, Prüf-Dashboard, Konnektoren und DSA-Audit-Trail.</p>
+            <span class="mt-4 inline-flex items-center gap-1 text-sm font-medium text-brand-600 group-hover:text-brand-700">
+              Zur Plattform
+              <svg class="h-3.5 w-3.5 transition group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Dieselbe Plattform, unterschiedliche Regeln</h2>
+        <p class="mt-4 text-lg text-surface-500">Jeder Anwendungsfall nutzt dieselben Bausteine. Nur die Regeln ändern sich.</p>
+      </div>
+      <div class="grid gap-4 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">1. Inhalte einspeisen</h3>
+          <p class="mt-2 text-sm text-surface-500">Per REST-API, Batch-Endpunkt für Rückstände, Webhooks oder native Konnektoren für Facebook, Instagram, YouTube und WordPress.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">2. Mit KI moderieren</h3>
+          <p class="mt-2 text-sm text-surface-500">Leiten Sie jede Anfrage an den Anbieter weiter, der für Sprache, Inhaltstyp und Budget am besten passt. Das Antwortschema bleibt immer gleich.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">3. Automatisch durchsetzen</h3>
+          <p class="mt-2 text-sm text-surface-500">Verbotene Wörter, Schwellenwerte pro Kategorie und Ihre Community-Richtlinien steuern das Ausblenden, Löschen, Markieren und die manuelle Prüfung.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8 text-2xl font-bold text-surface-900 sm:text-3xl">Weiterführende Ressourcen</h2>
+      <div class="grid gap-6 md:grid-cols-3">
+        <a href="/de/blog/dsa-leitfaden-kmu" class="group rounded-xl border border-surface-200 bg-surface-50 p-6 transition hover:shadow-md">
+          <div class="mb-2 text-xs font-medium text-brand-600">Leitfaden</div>
+          <h3 class="text-lg font-semibold text-surface-900 group-hover:text-brand-600">DSA-Konformität für kleine und mittlere Plattformen</h3>
+          <p class="mt-2 text-sm text-surface-500">Praktische Schritte, um die DSA-Anforderungen 2026 mit Open-Source-Tools zu erfüllen.</p>
+        </a>
+        <a href="/de/blog/ki-content-moderation-leitfaden-entwickler" class="group rounded-xl border border-surface-200 bg-surface-50 p-6 transition hover:shadow-md">
+          <div class="mb-2 text-xs font-medium text-brand-600">Leitfaden</div>
+          <h3 class="text-lg font-semibold text-surface-900 group-hover:text-brand-600">Content Moderation für KI-Anwendungen</h3>
+          <p class="mt-2 text-sm text-surface-500">Best Practices für das Filtern von Ein- und Ausgaben in LLM-basierten Apps.</p>
+        </a>
+        <a href="/de/moderationskonsole" class="group rounded-xl border border-surface-200 bg-surface-50 p-6 transition hover:shadow-md">
+          <div class="mb-2 text-xs font-medium text-brand-600">Produkt</div>
+          <h3 class="text-lg font-semibold text-surface-900 group-hover:text-brand-600">Die Moderationskonsole</h3>
+          <p class="mt-2 text-sm text-surface-500">Prüfwarteschlangen, Audit-Trail, Anbieterstatus und Nutzungsanalysen.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <CTASection
+    title="In wenigen Minuten die passende Lösung finden."
+    subtitle="Wählen Sie Ihren Anwendungsfall, deployen Sie mit Docker oder nutzen Sie die Managed Cloud, und moderieren Sie noch heute Ihre ersten Inhalte."
+    buttonText="Kostenlos testen"
+    buttonHref="https://app.openmoderation.com/signup"
+  />
+</BaseLayout>

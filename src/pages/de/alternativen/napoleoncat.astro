@@ -1,0 +1,170 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import FAQ from '../../../components/FAQ.astro';
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/de/alternativen/napoleoncat",
+  "name": "NapoleonCat-Alternative: OpenModeration im Vergleich",
+  "description": "NapoleonCat oder OpenModeration? Ein Vergleich mit Quellen zwischen einer Social-Media-Management-Suite und einem reinen Moderationstool: Netzwerke, Preise, Begründungen, DSA-Protokoll und Open Source.",
+  "inLanguage": "de",
+  "about": { "@id": "https://www.openmoderation.com/#software" }
+};
+
+const rows = [
+  { feature: "Angebot", napoleoncat: "Eine Social-Media-Management-Suite für Marken und Agenturen: Inbox, automatische Moderation, Publishing, Analysen und Reports", openmod: "Ausschließlich Moderation: Konnektoren für soziale Netzwerke und WordPress, dazu REST-API und Webhooks für alles Weitere" },
+  { feature: "Abgedeckte Netzwerke", napoleoncat: "Facebook, Messenger, Instagram, LinkedIn, TikTok, YouTube, Google Business Profile, Bewertungen im App Store und bei Google Play; X für das Publishing", openmod: "Facebook, Instagram, YouTube und WordPress nativ; alles andere über die API" },
+  { feature: "Kommentare auf der eigenen Website", napoleoncat: "Auf der Website nicht angegeben", openmod: "Ja: WordPress-Konnektor oder die API für jedes Kommentarsystem" },
+  { feature: "Preise", napoleoncat: "Standard 89 €, Pro 109 €, Expert 139 € pro Monat (monatliche Zahlung, 5 Profile, 2 Nutzer). Enterprise ab 465 €. 14 Tage kostenlos testen", openmod: "Öffentlich: kostenlos bis 1.000 Anfragen pro Monat, Pro für 99 € pro Monat mit 10.000 Anfragen, Self-Hosting kostenlos" },
+  { feature: "Kommentare automatisch ausblenden", napoleoncat: "Ab dem Expert-Plan enthalten („Automatic comment hiding and deletion“)", openmod: "In jedem Plan enthalten, auch im kostenlosen" },
+  { feature: "Wie Regeln entstehen", napoleoncat: "Automatisierte Moderationsregeln, dazu ein KI-Assistent zur Erkennung von Spam und Hass", openmod: "Ihre Richtlinie in Alltagssprache, ein Schwellenwert pro Kategorie und eine Grauzone, die an Menschen geht" },
+  { feature: "Schriftliche Begründung jeder Entscheidung", napoleoncat: "Auf der Website nicht angegeben", openmod: "Ja, in der Sprache Ihrer Wahl, über die API abrufbar" },
+  { feature: "DSA", napoleoncat: "Auf der Website nicht angegeben", openmod: "Aktivitätsprotokoll: automatische Entscheidung oder welcher Moderator entschieden hat" },
+  { feature: "Daten und Compliance", napoleoncat: "Siegel „100% EU GDPR compliant“; Hosting-Standort nicht angegeben", openmod: "In der Europäischen Union entwickelt und gehostet, DSGVO" },
+  { feature: "Quellcode und Self-Hosting", napoleoncat: "Proprietär; Self-Hosting nicht angegeben", openmod: "Open Source unter AGPL v3, Self-Hosting mit Docker" },
+  { feature: "Publishing, Inbox, Analysen", napoleoncat: "Ja, der Kern der Suite", openmod: "Nein, OpenModeration moderiert nur" },
+];
+
+const faqItems = [
+  {
+    question: "Was ist die beste NapoleonCat-Alternative für die Kommentarmoderation?",
+    answer: "Wenn Sie vor allem moderieren müssen, ist OpenModeration genau dafür gebaut: Regeln in Alltagssprache, eine schriftliche Begründung für jeden ausgeblendeten Kommentar und ein Protokoll für den DSA, in sozialen Netzwerken wie auf Ihrer Website. Wenn Sie vor allem eine Team-Inbox, einen Redaktionsplan und Analysen für TikTok, LinkedIn und App-Bewertungen brauchen, deckt NapoleonCat das ab und OpenModeration nicht.",
+  },
+  {
+    question: "Was kostet NapoleonCat im Vergleich zu OpenModeration?",
+    answer: "NapoleonCat nennt für Standard 89 €, für Pro 109 € und für Expert 139 € pro Monat bei monatlicher Zahlung, jeweils für 5 Profile und 2 Nutzer. Das automatische Ausblenden von Kommentaren gibt es ab Expert. Enterprise beginnt bei 465 €. OpenModeration ist bis 1.000 Anfragen pro Monat kostenlos, danach kostet Pro 99 € pro Monat für 10.000 Anfragen. Self-Hosting ist kostenlos.",
+  },
+  {
+    question: "Kann ich OpenModeration testen, ohne NapoleonCat abzuschalten?",
+    answer: "Ja. Im Sandbox-Modus analysiert OpenModeration Ihre echten Kommentare und schreibt Entscheidungen und Begründungen, ohne etwas auszublenden. So vergleichen Sie beide Tools an denselben Kommentaren, bevor Sie in NapoleonCat irgendetwas umstellen.",
+  },
+  {
+    question: "Kann OpenModeration Hasskommentare auf Facebook automatisch ausblenden?",
+    answer: "Ja. Sie verbinden Ihre Facebook-Seite, legen Ihre Regeln fest und bestimmen pro Kategorie, ab welchem Schwellenwert ein Kommentar ausgeblendet wird. Grenzfälle landen in einer Grauzone für Ihr Team, und jede Entscheidung erhält eine schriftliche Begründung.",
+  },
+  {
+    question: "Moderiert OpenModeration auch Leserkommentare auf der Website eines Verlags?",
+    answer: "Ja. Der WordPress-Konnektor und die REST-API moderieren Leserkommentare unter Ihren Artikeln mit derselben Richtlinie wie Ihre Social-Media-Kanäle. Der Südkurier gehört zu den Redaktionen, die OpenModeration einsetzen.",
+  },
+];
+---
+
+<BaseLayout title="NapoleonCat-Alternative: Vergleich mit OpenModeration (2026)" description="NapoleonCat oder OpenModeration? Vergleich mit Quellen: echte Preise, Netzwerke, Website-Kommentare, Begründungen und DSA-Protokoll für jede Entscheidung." jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Startseite", href: "/de" }, { label: "Alternativen", href: "/de/alternativen" }, { label: "NapoleonCat" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Vergleich
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">NapoleonCat-Alternative: OpenModeration im Vergleich</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        NapoleonCat ist eine Suite für Social-Media-Management. Das automatische Ausblenden von Kommentaren ist dort eine Funktion unter vielen, ab dem Expert-Plan. OpenModeration macht nur eines: Es moderiert Kommentare, begründet jede Entscheidung schriftlich und führt ein Protokoll für den DSA. Hier sind die Unterschiede, mit Quellen.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Wählen Sie OpenModeration, wenn …</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>Moderation Ihr eigentliches Problem ist und Sie zum Veröffentlichen schon ein Tool haben;</li>
+          <li>Ihre Moderationsrichtlinie so angewendet werden soll, wie sie geschrieben ist, mit einer Grauzone für Ihr Team;</li>
+          <li>Sie für jeden ausgeblendeten Kommentar eine Begründung und ein DSA-Protokoll brauchen;</li>
+          <li>für die Leserkommentare auf Ihrer Website dieselben Regeln gelten sollen wie auf Ihrer Facebook-Seite;</li>
+          <li>Sie offenen Quellcode und Datenhosting in der EU wollen.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">NapoleonCat passt womöglich besser, wenn …</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>Sie TikTok, LinkedIn, Google Business Profile oder App-Store-Bewertungen betreuen;</li>
+          <li>Sie Publishing, Team-Inbox, Analysen und Moderation in einem Abo wollen;</li>
+          <li>Ihr Team vor allem Kundenanfragen beantwortet und weniger Beleidigungen entfernt;</li>
+          <li>Sie Kommentare unter TikTok-Anzeigen moderieren müssen.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">NapoleonCat und OpenModeration im Detail</h2>
+      <p class="mt-4 text-surface-500">Angaben zu NapoleonCat von der eigenen Website, napoleoncat.com, abgerufen am 20. Oktober 2026.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Kriterium</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">NapoleonCat</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.napoleoncat}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Was sich im Alltag wirklich ändert</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Jeder ausgeblendete Kommentar hat eine Begründung</h3>
+          <p class="mt-2 text-sm text-surface-600">OpenModeration schreibt auf, warum ein Kommentar ausgeblendet wurde, in der Sprache Ihrer Wahl. Das Aktivitätsprotokoll zeigt, ob die Entscheidung automatisch fiel oder welcher Moderator sie getroffen hat. Wenn sich ein Leser beschwert oder eine Behörde nachfragt, haben Sie die Antwort.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Ihre Richtlinie, mit Kontext angewendet</h3>
+          <p class="mt-2 text-sm text-surface-600">Sie formulieren Ihre Regeln in Alltagssprache und legen pro Kategorie einen Schwellenwert fest. Die KI liest jeden Kommentar zusammen mit dem Titel des Beitrags und dem Diskussionsverlauf. Grenzfälle gehen in eine Grauzone, über die ein Moderator entscheidet.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Website und Social Media mit denselben Regeln</h3>
+          <p class="mt-2 text-sm text-surface-600">Facebook, Instagram, YouTube und WordPress werden nativ angebunden. Jedes andere Kommentarsystem kommt über REST-API und Webhooks dazu. Eine Redaktion moderiert ihre Artikel und ihre Social-Media-Beiträge mit derselben Richtlinie.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Offener Code, Hosting in der EU</h3>
+          <p class="mt-2 text-sm text-surface-600">OpenModeration ist Open Source unter AGPL v3 und wird in der Europäischen Union gehostet. Sie können den Code lesen und ihn mit Docker kostenlos selbst betreiben.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Häufige Fragen" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        NapoleonCat ist eine Marke ihres Herausgebers. Die Angaben dazu stammen von <a href="https://napoleoncat.com/pricing/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">napoleoncat.com</a> (abgerufen am 20. Oktober 2026). Die Preise von NapoleonCat verstehen sich ohne Mehrwertsteuer. Ein Fehler? Schreiben Sie uns an <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Weiterlesen</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/de/social-media-moderation" class="font-medium text-brand-600 hover:text-brand-500">Social-Media-Moderation mit OpenModeration &rarr;</a></li>
+        <li><a href="/de/integrationen/wordpress-moderation" class="font-medium text-brand-600 hover:text-brand-500">WordPress-Kommentare moderieren &rarr;</a></li>
+        <li><a href="/de/dsa-konformitaet/begruendung" class="font-medium text-brand-600 hover:text-brand-500">Die vom DSA verlangte Begründung &rarr;</a></li>
+        <li><a href="/de/alternativen" class="font-medium text-brand-600 hover:text-brand-500">Alle Vergleiche &rarr;</a></li>
+        <li><a href="/de/preise" class="font-medium text-brand-600 hover:text-brand-500">Die Preise von OpenModeration &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <CTASection title="Moderieren Sie Kommentare mit einem Tool, das nur dafür gebaut ist." subtitle="Verbinden Sie Ihre Seiten und Ihre Website, schreiben Sie Ihre Richtlinie und lesen Sie die Begründung zu jedem ausgeblendeten Kommentar. Kostenlos bis 1.000 Anfragen im Monat." />
+</BaseLayout>
