@@ -1,0 +1,169 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CharterSupport from '../../components/CharterSupport.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import CTASection from '../../components/CTASection.astro';
+import FAQ from '../../components/FAQ.astro';
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Charte de modération : comment l'écrire, ce que le DSA impose et un modèle",
+  "description": "Guide pour rédiger la charte de modération d'un site, d'un média ou d'une page de réseau social : rubriques, obligations du DSA, règles qu'une IA peut appliquer et modèle de charte.",
+  "inLanguage": "fr",
+  "datePublished": "2026-10-20",
+  "dateModified": "2026-10-20",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/fr/charte-de-moderation" }
+};
+
+const sections = [
+  { title: "L'esprit des échanges", text: "Pourquoi l'espace de commentaires existe et le ton attendu. Deux ou trois phrases suffisent, mais elles orientent toutes les décisions difficiles." },
+  { title: "Ce qui est interdit", text: "Insultes et attaques personnelles, propos haineux ou discriminatoires, menaces, harcèlement, spam et publicité, arnaques, divulgation de données personnelles, contenus illicites. Chaque interdit gagne à être illustré d'un exemple." },
+  { title: "Ce qui reste permis", text: "Le désaccord, la critique vive d'une idée, d'un article ou d'une personnalité publique, l'ironie qui ne vise personne. Écrire ce qui est permis évite de censurer le débat par excès de prudence." },
+  { title: "Comment la modération s'applique", text: "Qui modère, avec quels outils, et la part de décisions automatiques et humaines. Le DSA demande justement d'en informer vos utilisateurs." },
+  { title: "Les sanctions", text: "Retrait du commentaire, suspension temporaire, exclusion définitive : une échelle graduée et connue de tous rend chaque décision plus facile à accepter." },
+  { title: "Comment contester", text: "Où et comment un utilisateur peut demander le réexamen d'une décision, et dans quel délai il obtiendra une réponse." },
+];
+
+const faqItems = [
+  {
+    question: "Qu'est-ce qu'une charte de modération ?",
+    answer: "C'est le texte qui fixe ce qui est accepté ou refusé dans un espace de commentaires, un forum ou sous les publications d'une page, et la façon dont les décisions sont prises. On parle aussi de charte de participation ou de règles de la communauté.",
+  },
+  {
+    question: "La charte de modération est-elle obligatoire ?",
+    answer: "Le DSA impose à tout fournisseur de services intermédiaires d'indiquer dans ses conditions générales les restrictions qu'il applique aux contenus, ainsi que ses politiques, procédures et outils de modération, y compris les décisions algorithmiques et le réexamen humain (article 14). Une charte claire est le moyen le plus simple d'y répondre.",
+  },
+  {
+    question: "Une IA peut-elle appliquer une charte de modération ?",
+    answer: "Oui, si elle est écrite en langage clair, avec des exemples et une frontière nette entre les cas évidents et les cas à faire relire. Dans OpenModeration, la charte est transmise à l'IA pour chaque commentaire, avec le titre de la publication et le fil de discussion.",
+  },
+  {
+    question: "Faut-il une charte différente selon les rubriques ?",
+    answer: "Souvent, oui. Une rubrique sportive et une rubrique politique n'appellent pas les mêmes vigilances, surtout en période électorale. Le plus simple est de garder une charte commune et d'ajouter des consignes propres à certaines sources ou rubriques.",
+  },
+  {
+    question: "À quelle fréquence faut-il mettre la charte à jour ?",
+    answer: "Dès que l'actualité fait apparaître de nouveaux abus ou que vos modérateurs corrigent souvent les mêmes décisions. Le DSA demande d'informer les utilisateurs de toute modification importante des conditions générales.",
+  },
+];
+---
+
+<BaseLayout title="Charte de modération : guide, obligations DSA et modèle" description="Comment rédiger la charte de modération de votre site, média ou page : rubriques indispensables, obligations du DSA, règles applicables par une IA et modèle." ogType="article" jsonLd={articleJsonLd}>
+  <Breadcrumb items={[{ label: "Accueil", href: "/fr" }, { label: "Charte de modération" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-20">20 octobre 2026</time>
+        <span>&middot;</span>
+        <span>8 min de lecture</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Charte de modération : comment l'écrire, ce que le DSA impose et un modèle</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Une bonne modération commence par un bon texte. La charte dit à vos lecteurs ce qu'ils peuvent écrire, guide vos
+        modérateurs dans les cas difficiles et sert aujourd'hui de consigne à l'IA qui trie les commentaires. Voici comment la
+        construire, ce que la loi exige, et un modèle pour démarrer.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Ce que le DSA impose</h2>
+      <p>
+        Le règlement européen sur les services numériques (DSA) demande à tous les fournisseurs de services intermédiaires
+        d'indiquer dans leurs conditions générales les restrictions qu'ils appliquent aux contenus publiés par leurs
+        utilisateurs (article 14). Ces informations doivent couvrir :
+      </p>
+      <ul>
+        <li>les politiques, procédures, mesures et outils de modération ;</li>
+        <li>la prise de décision fondée sur des algorithmes et le réexamen par un être humain ;</li>
+        <li>le fonctionnement du système interne de traitement des réclamations.</li>
+      </ul>
+      <p>
+        Le texte doit être clair, simple et sans ambiguïté, accessible au public, et les utilisateurs doivent être informés de
+        toute modification importante. Enfin, la modération doit rester diligente, objective et proportionnée, en tenant compte
+        de la liberté d'expression et du pluralisme des médias.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Les rubriques d'une charte de modération</h2>
+    </div>
+
+    <div class="mt-6 grid gap-3 sm:grid-cols-2">
+      {sections.map((s) => (
+        <div class="rounded-lg border border-surface-200 bg-surface-50 p-4">
+          <p class="text-sm font-medium text-surface-900">{s.title}</p>
+          <p class="mt-1 text-sm text-surface-500">{s.text}</p>
+        </div>
+      ))}
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">Écrire des règles qu'une IA peut appliquer</h2>
+      <p>
+        Une IA lit votre charte comme un modérateur débutant : elle applique ce qui est écrit, rien de plus. Quelques
+        principes font toute la différence.
+      </p>
+      <ul>
+        <li><strong>Des phrases, pas des listes de mots.</strong> « Pas d'insulte envers un autre lecteur, même déguisée » couvre bien plus de cas qu'une liste de mots interdits, qui laisse passer le second degré et les fautes volontaires.</li>
+        <li><strong>Des exemples dans les deux sens.</strong> Pour chaque interdit, un exemple refusé et un exemple accepté qui lui ressemble. C'est la meilleure façon de placer la frontière.</li>
+        <li><strong>Le contexte compte.</strong> Un même mot n'a pas le même poids sous un article sur une collecte de dons et sous un sujet qui divise. Dites-le, et utilisez un outil qui transmet le sujet de la publication à l'IA.</li>
+        <li><strong>Une zone grise assumée.</strong> Écrivez quels cas doivent être relus par un humain plutôt que tranchés automatiquement : critique dure d'un journaliste, sujet judiciaire en cours, propos politique limite.</li>
+        <li><strong>Des consignes d'actualité.</strong> Pendant une élection ou après un fait divers, ajoutez une consigne temporaire ciblée plutôt que de durcir toute la charte.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Modèle de charte de modération</h2>
+      <p>Modèle à adapter, ici pour l'espace de commentaires d'un site d'information :</p>
+    </div>
+
+    <div class="mt-6 rounded-xl border border-surface-200 bg-white p-6 text-sm leading-relaxed text-surface-700 shadow-sm">
+      <p class="font-semibold text-surface-900">Charte de participation</p>
+      <p class="mt-3">Les commentaires sont un espace de débat autour de nos articles. Vous pouvez y exprimer votre désaccord, y compris avec la rédaction, à condition de respecter les autres participants.</p>
+      <p class="mt-3"><strong>Sont refusés :</strong> les insultes et attaques personnelles, y compris déguisées ; les propos haineux ou discriminatoires ; les menaces et appels à la violence ; le harcèlement d'un participant ; la publicité, le spam et les liens trompeurs ; la publication de données personnelles d'autrui ; tout contenu contraire à la loi.</p>
+      <p class="mt-3"><strong>Sont acceptés :</strong> la critique, même vive, d'une idée, d'un article ou d'une personnalité publique ; l'ironie qui ne vise pas une personne en particulier ; les avis minoritaires exprimés sans attaque.</p>
+      <p class="mt-3"><strong>Comment nous modérons :</strong> les commentaires sont analysés par un outil automatique qui applique cette charte. Les cas incertains sont relus par notre équipe. Chaque commentaire retiré fait l'objet d'une explication.</p>
+      <p class="mt-3"><strong>Sanctions :</strong> retrait du commentaire, puis suspension temporaire du compte en cas de récidive, puis exclusion définitive.</p>
+      <p class="mt-3"><strong>Contester une décision :</strong> vous pouvez demander le réexamen d'une décision en répondant au message qui vous l'a notifiée. Nous vous répondons dans les meilleurs délais.</p>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">Faire vivre la charte</h2>
+      <p>
+        Une charte n'est jamais finie. Les décisions de vos modérateurs disent où elle est floue : quand ils corrigent souvent
+        l'IA sur le même type de commentaire, c'est qu'une règle manque ou qu'un exemple est mal choisi. Dans OpenModeration,
+        le système apprend de ces décisions et propose des ajustements de vos règles, que vous appliquez en un clic. Chaque
+        changement crée une nouvelle version, ce qui permet de savoir quelle règle s'appliquait à chaque décision.
+      </p>
+      <p class="text-sm text-surface-400">
+        Source : <a href="https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32022R2065" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">règlement (UE) 2022/2065 relatif à un marché unique des services numériques</a>, article 14. Cette page est informative et ne constitue pas un avis juridique.
+      </p>
+    </div>
+  </article>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Questions fréquentes sur la charte de modération" items={faqItems} />
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Pour aller plus loin</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/fr/conformite-dsa/expose-des-motifs" class="font-medium text-brand-600 hover:text-brand-500">L'exposé des motifs exigé par le DSA &rarr;</a></li>
+        <li><a href="/fr/cas-usage/medias" class="font-medium text-brand-600 hover:text-brand-500">La modération des commentaires pour les médias &rarr;</a></li>
+        <li><a href="/fr/moderation-reseaux-sociaux" class="font-medium text-brand-600 hover:text-brand-500">La modération des réseaux sociaux &rarr;</a></li>
+        <li><a href="/fr/conformite-dsa" class="font-medium text-brand-600 hover:text-brand-500">La conformité DSA avec OpenModeration &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <CTASection title="Confiez votre charte à OpenModeration." subtitle="Collez votre charte dans OpenModeration : elle s'applique à chaque commentaire, et notre équipe vous aide à l'affiner. Gratuit pour commencer." />
+</BaseLayout>
