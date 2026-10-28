@@ -32,6 +32,7 @@ const copy = {
     time: 'Answered in',
     empty: 'Write or pick a comment first.',
     error: 'The demo did not answer. Please try again in a moment.',
+    quota: 'Demo quota reached: 10 tries per hour and per IP address. Try again later, or test the moderation on your own comments.',
     note: 'Live demo powered by the moderation engine of Logora, the company behind OpenModeration. In OpenModeration, your full charter, several AI models and your team review apply to every comment.',
     cta: 'Test it on your own comments in sandbox mode',
     signup: 'https://app.openmoderation.com/signup',
@@ -64,6 +65,7 @@ const copy = {
     time: 'Réponse en',
     empty: "Écrivez ou choisissez d'abord un commentaire.",
     error: "La démo n'a pas répondu. Réessayez dans un instant.",
+    quota: "Quota de démo atteint : 10 essais par heure et par adresse IP. Réessayez plus tard, ou testez la modération sur vos propres commentaires.",
     note: "Démo en direct, propulsée par le moteur de modération de Logora, l'éditeur d'OpenModeration. Dans OpenModeration, votre charte complète, plusieurs modèles d'IA et la relecture de votre équipe s'appliquent à chaque commentaire.",
     cta: 'Testez-le sur vos propres commentaires en mode bac à sable',
     signup: 'https://app.openmoderation.com/signup',
@@ -96,6 +98,7 @@ const copy = {
     time: 'Respuesta en',
     empty: 'Escribe o elige primero un comentario.',
     error: 'La demo no ha respondido. Vuelve a intentarlo en un momento.',
+    quota: 'Cuota de demo alcanzada: 10 pruebas por hora y por dirección IP. Vuelve a intentarlo más tarde o prueba la moderación con tus propios comentarios.',
     note: 'Demo en directo con el motor de moderación de Logora, la empresa que desarrolla OpenModeration. En OpenModeration se aplican a cada comentario tus normas completas, varios modelos de IA y la revisión de tu equipo.',
     cta: 'Pruébalo con tus propios comentarios en modo sandbox',
     signup: 'https://app.openmoderation.com/signup',
@@ -128,6 +131,7 @@ const copy = {
     time: 'Antwort in',
     empty: 'Schreiben oder wählen Sie zuerst einen Kommentar.',
     error: 'Die Demo hat nicht geantwortet. Bitte versuchen Sie es gleich noch einmal.',
+    quota: 'Demo-Kontingent erreicht: 10 Versuche pro Stunde und IP-Adresse. Versuchen Sie es später erneut oder testen Sie die Moderation mit Ihren eigenen Kommentaren.',
     note: 'Live-Demo mit der Moderations-Engine von Logora, dem Unternehmen hinter OpenModeration. In OpenModeration gelten für jeden Kommentar Ihre vollständigen Richtlinien, mehrere KI-Modelle und die Prüfung durch Ihr Team.',
     cta: 'Mit Ihren eigenen Kommentaren im Sandbox-Modus testen',
     signup: 'https://app.openmoderation.com/signup',
@@ -160,6 +164,7 @@ const copy = {
     time: 'Risposta in',
     empty: 'Scrivi o scegli prima un commento.',
     error: 'La demo non ha risposto. Riprova tra un momento.',
+    quota: 'Quota demo raggiunto: 10 prove all’ora e per indirizzo IP. Riprova più tardi o prova la moderazione sui tuoi commenti.',
     note: "Demo dal vivo con il motore di moderazione di Logora, l'azienda che sviluppa OpenModeration. In OpenModeration a ogni commento si applicano la tua policy completa, più modelli di IA e la revisione del tuo team.",
     cta: 'Provalo sui tuoi commenti in modalità sandbox',
     signup: 'https://app.openmoderation.com/signup',
@@ -178,7 +183,7 @@ const languages = [
 const config = JSON.stringify({
   lang: copy.lang,
   charter: copy.charter,
-  labels: { accepted: copy.accepted, rejected: copy.rejected, pending: copy.pending, loading: copy.loading, submit: copy.submit, noReason: copy.noReason, empty: copy.empty, error: copy.error, time: copy.time },
+  labels: { accepted: copy.accepted, rejected: copy.rejected, pending: copy.pending, loading: copy.loading, submit: copy.submit, noReason: copy.noReason, empty: copy.empty, error: copy.error, quota: copy.quota, time: copy.time },
 });
 ---
 
@@ -241,7 +246,19 @@ const config = JSON.stringify({
 </div>
 
 <script>
-  const API = 'https://moderation.logora.fr/predict_llm';
+  const API = 'https://api.openmoderation.com/v1/demo/moderation';
+
+  class DemoError extends Error {
+    constructor(readonly kind: 'quota' | 'failed') {
+      super(kind);
+    }
+  }
+
+  type DemoResult = {
+    status: 'accepted' | 'rejected' | 'pending';
+    category: string | null;
+    reason: string | null;
+  };
 
   document.querySelectorAll<HTMLElement>('.om-demo').forEach((root) => {
     const config = JSON.parse(root.dataset.config || '{}');
@@ -288,6 +305,7 @@ const config = JSON.stringify({
       accepted: 'bg-accent-100 text-accent-800',
       rejected: 'bg-red-100 text-red-700',
       pending: 'bg-amber-100 text-amber-800',
+      failed: 'bg-surface-200 text-surface-600',
     };
 
     const showMessage = (message: string) => {
@@ -315,24 +333,39 @@ const config = JSON.stringify({
       submit.disabled = true;
       submit.textContent = config.labels.loading;
       const lines = content.split('\n').map((line) => line.trim()).filter(Boolean).slice(0, 10);
-      const context = post.value.trim() ? { post: post.value.trim() } : undefined;
-      const moderate = async (comment: string) => {
-        const body: Record<string, unknown> = { text: comment, language: language.value, policy: policy.value.trim() || config.charter };
-        if (context) body.context = context;
+      const postTitle = post.value.trim();
+      const moderate = async (comment: string): Promise<DemoResult> => {
+        const lang = language.value.split('-')[0];
+        const body: Record<string, unknown> = {
+          input: comment,
+          content: { language: lang },
+          moderation: {
+            reasonLanguage: lang,
+            policy: { llm_prompt: policy.value.trim() || config.charter },
+          },
+        };
+        if (postTitle) body.context = { postTitle };
         const controller = new AbortController();
         const timer = setTimeout(() => controller.abort(), 20000);
-        const response = await fetch(API, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body),
-          signal: controller.signal,
-        });
-        clearTimeout(timer);
-        if (!response.ok) throw new Error(String(response.status));
-        const { prediction } = await response.json();
-        const decision = ['accepted', 'rejected', 'pending'].includes(prediction?.decision) ? prediction.decision : 'pending';
-        return { decision, category: prediction?.category as string | null, reason: prediction?.reason as string | null };
+        let response: Response;
+        try {
+          response = await fetch(API, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+            signal: controller.signal,
+          });
+        } finally {
+          clearTimeout(timer);
+        }
+        if (response.status === 429) throw new DemoError('quota');
+        if (!response.ok) throw new DemoError('failed');
+        const { decision } = await response.json();
+        const status = ['accepted', 'rejected', 'pending'].includes(decision?.status) ? decision.status : 'pending';
+        return { status, category: (decision?.category ?? null) as string | null, reason: (decision?.reason ?? null) as string | null };
       };
+      const failureLabel = (error: unknown) =>
+        error instanceof DemoError && error.kind === 'quota' ? config.labels.quota : config.labels.error;
       const started = performance.now();
       const elapsed = () => {
         const ms = performance.now() - started;
@@ -341,8 +374,8 @@ const config = JSON.stringify({
       try {
         if (lines.length === 1) {
           const result = await moderate(lines[0]);
-          badge.className = `om-demo-badge inline-flex items-center rounded-full px-3 py-1 text-sm font-semibold ${badgeStyles[result.decision]}`;
-          badge.textContent = config.labels[result.decision];
+          badge.className = `om-demo-badge inline-flex items-center rounded-full px-3 py-1 text-sm font-semibold ${badgeStyles[result.status]}`;
+          badge.textContent = config.labels[result.status];
           categoryRow.classList.toggle('hidden', !result.category);
           category.textContent = result.category ? String(result.category).replace(/_/g, ' ').toLowerCase() : '';
           reason.textContent = result.reason || config.labels.noReason;
@@ -351,8 +384,17 @@ const config = JSON.stringify({
           batch.classList.add('hidden');
           output.classList.remove('hidden');
         } else {
-          const results = await Promise.all(lines.map((line) => moderate(line).catch(() => null)));
-          if (results.every((r) => r === null)) throw new Error('all failed');
+          const results = await Promise.all(
+            lines.map(async (line): Promise<DemoResult | Error> => {
+              try {
+                return await moderate(line);
+              } catch (error) {
+                return error instanceof Error ? error : new Error(String(error));
+              }
+            }),
+          );
+          const failures = results.filter((result) => result instanceof Error);
+          if (failures.length === results.length) throw failures[0];
           batch.replaceChildren(
             ...results.map((result, i) => {
               const item = document.createElement('li');
@@ -361,12 +403,12 @@ const config = JSON.stringify({
               quote.className = 'text-surface-700';
               quote.textContent = lines[i];
               const verdict = document.createElement('span');
-              const decision = result ? result.decision : 'pending';
-              verdict.className = `mt-2 inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${badgeStyles[decision]}`;
-              verdict.textContent = result ? config.labels[decision] : config.labels.error;
+              const failed = result instanceof Error;
+              verdict.className = `mt-2 inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${badgeStyles[failed ? 'failed' : result.status]}`;
+              verdict.textContent = failed ? failureLabel(result) : config.labels[result.status];
               const why = document.createElement('p');
               why.className = 'mt-1 text-xs text-surface-500';
-              why.textContent = result ? result.reason || config.labels.noReason : '';
+              why.textContent = failed ? '' : result.reason || config.labels.noReason;
               item.append(quote, verdict, why);
               return item;
             }),
@@ -375,8 +417,8 @@ const config = JSON.stringify({
           output.classList.add('hidden');
           batch.classList.remove('hidden');
         }
-      } catch {
-        showMessage(config.labels.error);
+      } catch (error) {
+        showMessage(failureLabel(error));
       } finally {
         submit.disabled = false;
         submit.textContent = config.labels.submit;
