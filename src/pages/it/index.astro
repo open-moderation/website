@@ -1,0 +1,458 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ModerationDemo from '../../components/ModerationDemo.astro';
+import { useTranslations } from '../../i18n/ui';
+import { getLocale } from '../../i18n/routes';
+import CharterSupport from '../../components/CharterSupport.astro';
+import CTASection from '../../components/CTASection.astro';
+import BrowserFrame from '../../components/BrowserFrame.astro';
+import ModerationVerdict from '../../components/ModerationVerdict.astro';
+import KpiBand from '../../components/KpiBand.astro';
+import LogoMarquee from '../../components/LogoMarquee.astro';
+import ClientLogos from '../../components/ClientLogos.astro';
+import FAQ from '../../components/FAQ.astro';
+
+const t = useTranslations(getLocale(Astro.url.pathname));
+
+const homeJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://www.openmoderation.com/#organization",
+      "name": "OpenModeration",
+      "url": "https://www.openmoderation.com",
+      "logo": "https://www.openmoderation.com/logo.svg",
+      "sameAs": [
+        "https://github.com/open-moderation/open-moderation"
+      ],
+      "parentOrganization": {
+        "@type": "Organization",
+        "name": "Logora",
+        "url": "https://logora.com"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.openmoderation.com/#website",
+      "url": "https://www.openmoderation.com",
+      "name": "OpenModeration",
+      "publisher": { "@id": "https://www.openmoderation.com/#organization" }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://www.openmoderation.com/#software",
+      "name": "OpenModeration",
+      "applicationCategory": "SecurityApplication",
+      "operatingSystem": "Linux, Docker",
+      "description": "Piattaforma di moderazione open source per commenti e pagine social. Una API su più fornitori di IA, regole in linguaggio naturale, una motivazione scritta per ogni decisione e un registro di audit DSA.",
+      "inLanguage": "it",
+      "url": "https://www.openmoderation.com/it",
+      "license": "https://github.com/open-moderation/open-moderation/blob/main/LICENSE",
+      "offers": {
+        "@type": "Offer", "price": "0", "priceCurrency": "EUR",
+        "priceValidUntil": "2027-12-31", "availability": "https://schema.org/InStock"
+      },
+      "author": { "@id": "https://www.openmoderation.com/#organization" }
+    }
+  ]
+};
+
+const kpiItems = [
+  { label: "Commenti moderati ogni giorno", value: "10 M+" },
+  { label: "Commenti analizzati", value: "100%" },
+  { label: "Protetto in", value: "5 min" },
+  
+  { label: "Decisioni motivate per iscritto", value: "100%" },
+];
+
+const providerItems = [
+  { name: 'OpenAI', subtitle: 'Moderation API' },
+  { name: 'Azure', subtitle: 'AI Content Safety' },
+  { name: 'HuggingFace', subtitle: 'Llama Guard' },
+  { name: 'Mistral', subtitle: 'Moderation' },
+  { name: 'Google', subtitle: 'Perspective API' },
+  { name: 'Cohere', subtitle: 'Classify' },
+  { name: 'Hive', subtitle: 'AI Moderation' },
+  { name: 'OpenAI', subtitle: 'LLM (GPT-4o)' },
+  { name: 'Anthropic', subtitle: 'LLM (Claude)' },
+];
+
+
+const faqItems = [
+  {
+    question: 'Quale piattaforma di moderazione riunisce una console per i moderatori, un\'IA che capisce il contesto e registri di audit per la conformità?',
+    answer: 'OpenModeration mette insieme tutti e tre. Modelli di IA che tengono conto del contesto (OpenAI, Azure, Mistral e altri) valutano ogni commento, le tue regole decidono cosa nascondere, pubblicare o mandare in revisione, i moderatori lavorano da un\'unica console e ogni decisione viene registrata con una motivazione scritta per gli audit DSA.',
+  },
+  {
+    question: 'Esiste uno strumento no-code per scrivere regole di moderazione, usare la classificazione con IA e conservare un registro di audit?',
+    answer: 'Sì. In OpenModeration scrivi le regole in linguaggio naturale e imposti le soglie per categoria senza codice. La classificazione con IA viene eseguita su ogni commento e il registro attività annota ogni azione, chi o cosa l\'ha compiuta e perché.',
+  },
+  {
+    question: 'Posso moderare Facebook, Instagram, YouTube e il mio sito da un unico posto?',
+    answer: 'Sì. Collega le tue pagine Facebook, gli account Instagram, i canali YouTube e il sito WordPress, oppure invia contenuti da qualsiasi piattaforma tramite l\'API. Tutto arriva nella stessa coda di revisione, con le stesse regole.',
+  },
+  {
+    question: 'Cosa devo cercare in un\'API di moderazione per la conformità aziendale?',
+    answer: 'Cerca una motivazione scritta per ogni decisione (richiesta dall\'articolo 17 del DSA), un registro di audit completo, l\'hosting dei dati nell\'UE, una conservazione configurabile e la possibilità di self-hosting. OpenModeration copre tutti e cinque i punti ed è open source con licenza AGPL v3, quindi la logica decisionale può essere verificata.',
+  },
+  {
+    question: 'OpenModeration è gratuito?',
+    answer: 'Il piano cloud è gratuito fino a 1.000 richieste al mese, il piano Pro costa 99 € al mese per 10.000 richieste e la versione self-hosted è gratuita perché il codice è open source.',
+  },
+];
+---
+
+<BaseLayout
+  title="Moderazione con IA di commenti e pagine social | OpenModeration"
+  description="Commenti d'odio e spam allontanano la tua community. OpenModeration li nasconde in automatico sui social e su WordPress, con le tue regole. Gratis, senza carta."
+  jsonLd={homeJsonLd}
+>
+  <!-- Hero -->
+  <section class="relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-brand-50 via-white to-surface-50" />
+    <div class="relative mx-auto max-w-7xl px-4 pb-12 pt-8 sm:px-6 lg:px-8 lg:pt-12">
+      <div class="mx-auto max-w-3xl text-center">
+        <div class="animate-fade-in-up mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600 shadow-sm">
+          <span class="flex h-2 w-2 animate-pulse-dot rounded-full bg-accent-500" />
+          Per Facebook • Instagram • YouTube, senza codice
+        </div>
+        <h1 class="animate-fade-in-up text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl lg:text-6xl">
+          La tua community, <em class="italic text-brand-800">protetta</em>.
+        </h1>
+        <p class="animate-fade-in-up delay-1 mt-6 text-lg leading-relaxed text-surface-500 sm:text-xl">
+          I commenti d'odio e lo spam allontanano la tua community. OpenModeration li nasconde
+          automaticamente sulle tue pagine social seguendo le tue regole, e mostra
+          una motivazione scritta per ogni decisione.
+        </p>
+        <div class="animate-fade-in-up delay-2 mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">
+            Provalo gratis
+          </a>
+          <a href="/it/come-funziona" class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">
+            Scopri come funziona
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+        <p class="animate-fade-in-up delay-2 mt-4 text-sm text-surface-400">Nessuna carta di credito richiesta</p>
+        <div class="animate-fade-in-up delay-2 mt-2 flex items-center justify-center gap-6 text-xs text-surface-400">
+          <span class="flex items-center gap-1.5">
+            
+            Sviluppato e ospitato nell'UE
+          </span>
+          <span class="flex items-center gap-1.5">
+            <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            Conforme al GDPR
+          </span>
+          <span class="flex items-center gap-1.5">
+            <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/></svg>
+            AGPL v3
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="animate-fade-in-up delay-3 relative pb-10">
+      <ClientLogos />
+    </div>
+    <!-- KPI Band -->
+    <div class="animate-fade-in-up delay-3 pb-12">
+      <KpiBand items={kpiItems} />
+      <p class="mx-auto mt-6 max-w-2xl px-4 text-center text-sm text-surface-500">{t('kpi.reassure')}</p>
+    </div>
+  </section>
+
+  <!-- Logo Marquee -->
+  <section class="border-t border-surface-100 bg-white py-8">
+    <p class="mb-4 text-center text-xs font-medium uppercase tracking-wider text-surface-400">Fornitori integrati</p>
+    <LogoMarquee items={providerItems} speed="45s" />
+  </section>
+
+  <section id="demo" class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-10 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">{t('demo.title')}</h2>
+        <p class="mt-4 text-lg text-surface-500">{t('demo.text')}</p>
+      </div>
+      <ModerationDemo />
+    </div>
+  </section>
+
+  <!-- Problem / Solution -->
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700">
+            <span class="flex h-1.5 w-1.5 animate-pulse-dot rounded-full bg-brand-500" />
+            Il problema
+          </div>
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">
+            I commenti d'odio allontanano la tua community.
+          </h2>
+          <p class="mt-4 text-lg text-surface-500">
+            Insulti, spam e truffe si accumulano sotto i tuoi post, su ogni piattaforma e ogni giorno.
+            I filtri nativi non colgono il sarcasmo, il linguaggio in codice né i contenuti multilingue,
+            e la pulizia manuale si mangia più di 10 ore a settimana.
+          </p>
+          <p class="mt-4 text-lg text-surface-500">
+            OpenModeration applica automaticamente le tue regole su Facebook, Instagram, YouTube e
+            WordPress, e mostra una motivazione scritta per ogni commento nascosto.
+          </p>
+          <div class="mt-8 space-y-4">
+            <div class="flex items-start gap-3">
+              <svg class="mt-0.5 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600"><strong>Prima:</strong> leggere, smistare e cancellare a mano i commenti d'odio, su ogni piattaforma e ogni giorno.</p>
+            </div>
+            <div class="flex items-start gap-3">
+              <svg class="mt-0.5 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600"><strong>Dopo:</strong> le tue regole applicate automaticamente su Facebook, Instagram, YouTube e WordPress. Ogni commento nascosto ha la sua motivazione scritta.</p>
+            </div>
+          </div>
+          <div class="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+            <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">
+              Provalo gratis
+            </a>
+            <p class="text-sm text-surface-400">Nessuna carta di credito richiesta</p>
+          </div>
+        </div>
+        <BrowserFrame
+          caption="Un commento nascosto, la regola violata e la motivazione scritta: visibili al tuo team e difendibili davanti a chiunque."
+        >
+          <ModerationVerdict slot="content" />
+          <div slot="annotation" class="absolute bottom-3 right-3 rounded-full border border-brand-200 bg-white/95 px-3 py-1 text-xs font-semibold text-brand-800 shadow-sm">
+            &#x270D; La motivazione scritta
+          </div>
+        </BrowserFrame>
+      </div>
+    </div>
+  </section>
+
+  <!-- Beyond the API -->
+  <section class="bg-white py-20 border-t border-surface-100">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-3xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">
+          Un filtro da solo non protegge la tua community
+        </h2>
+        <p class="mt-4 text-lg text-surface-500">
+          I filtri per parole chiave non bastano. Ti servono regole applicate ovunque, casi limite inoltrati al tuo team e una spiegazione per ogni decisione.
+        </p>
+      </div>
+      <div class="grid gap-8 md:grid-cols-2">
+        <div class="rounded-xl border border-red-100 bg-red-50/50 p-8">
+          <h3 class="flex items-center gap-2 text-xl font-semibold text-red-700">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            Una semplice API di moderazione
+          </h3>
+          <ul class="mt-6 space-y-3 text-sm text-surface-600">
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Punteggi grezzi, senza il contesto della conversazione</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Nessuna interfaccia per far esaminare i casi limite ai moderatori</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Nessuna gestione integrata delle segnalazioni degli utenti o dei ruoli del team</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Conformità e registri di audit interamente a tuo carico</li>
+          </ul>
+        </div>
+        <div class="rounded-xl border border-brand-200 bg-brand-50 p-8 shadow-sm">
+          <h3 class="flex items-center gap-2 text-xl font-semibold text-brand-700">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            L'infrastruttura OpenModeration
+          </h3>
+          <ul class="mt-6 space-y-3 text-sm text-surface-700">
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> L'IA tiene conto del contesto e coglie le sfumature che sfuggono a un elenco di parole chiave.</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> I tuoi team Trust & Safety hanno un'interfaccia dedicata per la revisione.</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Gestisci segnalazioni, ruoli e permessi dalla stessa console.</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Ogni decisione, umana o dell'IA, viene registrata per gli audit normativi.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+        <a href="/it/integrazioni/moderazione-facebook" class="text-sm font-medium text-brand-600 hover:text-brand-500">Strumento di moderazione dei commenti Facebook &rarr;</a>
+        <a href="/it/integrazioni/moderazione-instagram" class="text-sm font-medium text-brand-600 hover:text-brand-500">Moderazione automatica su Instagram &rarr;</a>
+        <a href="/it/console-di-moderazione" class="text-sm font-medium text-brand-600 hover:text-brand-500">Console di moderazione unificata &rarr;</a>
+        <a href="/it/casi-d-uso/media" class="text-sm font-medium text-brand-600 hover:text-brand-500">Moderazione dei commenti per gli editori di news &rarr;</a>
+        <a href="/it/alternative/openai-moderation" class="text-sm font-medium text-surface-500 hover:text-surface-700">Confronta con le alternative &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Full Pipeline -->
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-16 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">
+          La pipeline di moderazione completa
+        </h2>
+        <p class="mt-4 text-lg text-surface-500">
+          Dall'acquisizione all'azione, OpenModeration gestisce ogni passaggio.
+        </p>
+      </div>
+      <div class="grid gap-4 grid-cols-2 md:grid-cols-4">
+        <div class="rounded-xl border border-surface-200 bg-white p-5 text-center transition hover:shadow-md">
+          <div class="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <h3 class="font-semibold text-surface-900">1. Raccolta</h3>
+          <p class="mt-1 text-xs text-surface-500">I contenuti arrivano via API, dalle piattaforme social o tramite webhook</p>
+        </div>
+        <div class="rounded-xl border border-brand-200 bg-brand-50 p-5 text-center shadow-sm transition hover:shadow-md">
+          <div class="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-600 text-white">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          </div>
+          <h3 class="font-semibold text-surface-900">2. Analisi</h3>
+          <p class="mt-1 text-xs text-surface-500">L'IA esamina i contenuti con più fornitori</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-5 text-center transition hover:shadow-md">
+          <div class="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          </div>
+          <h3 class="font-semibold text-surface-900">3. Decisione</h3>
+          <p class="mt-1 text-xs text-surface-500">Le policy applicano automaticamente le tue linee guida</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-5 text-center transition hover:shadow-md">
+          <div class="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+          </div>
+          <h3 class="font-semibold text-surface-900">4. Revisione</h3>
+          <p class="mt-1 text-xs text-surface-500">I casi limite vengono segnalati al tuo team</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dark Contrast Section: DSA Compliance -->
+  <section class="relative overflow-hidden bg-ink-900 py-20">
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-3xl text-center">
+        <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-ink-700 bg-ink-800 px-4 py-1.5 text-sm text-surface-300">
+          <svg class="h-4 w-4 text-turquoise" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          Pronto per il DSA
+        </div>
+        <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+          Pensato per la conformità normativa
+        </h2>
+        <p class="mx-auto mt-4 max-w-xl text-surface-400">
+          Ogni decisione di moderazione finisce in un registro di audit completo. Scegli tu quanto a lungo conservare i dati,
+          esporti i report di trasparenza e, se vuoi la piena sovranità sui dati, ospiti la piattaforma in proprio.
+        </p>
+        <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 text-sm font-semibold text-surface-900 shadow-sm">
+            Provalo gratis
+          </a>
+          <a href="/it/conformita-dsa" class="inline-flex items-center gap-2 rounded-lg border border-white/30 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
+            Scopri la conformità DSA
+          </a>
+        </div>
+        <p class="mt-4 text-sm text-surface-400">Nessuna carta di credito richiesta</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison Table -->
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">
+          Il confronto
+        </h2>
+        <p class="mt-4 text-lg text-surface-500">
+          Ecco come si posiziona OpenModeration rispetto alle altre piattaforme di moderazione.
+        </p>
+      </div>
+      <div class="overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Funzionalità</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Nima</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Checkstep</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Bodyguard</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            <tr><td class="px-6 py-4 text-surface-600">Codice verificabile</td><td class="px-6 py-4"><span class="text-accent-600">Sì (AGPL v3)</span></td><td class="px-6 py-4 text-surface-400">No</td><td class="px-6 py-4 text-surface-400">No</td><td class="px-6 py-4 text-surface-400">No</td></tr>
+            <tr><td class="px-6 py-4 text-surface-600">Installazione on-premise</td><td class="px-6 py-4"><span class="text-accent-600">Sì (Docker)</span></td><td class="px-6 py-4 text-surface-400">Limitata</td><td class="px-6 py-4 text-surface-400">No</td><td class="px-6 py-4 text-surface-500">Non indicato</td></tr>
+            <tr><td class="px-6 py-4 text-surface-600">Supporto multi-fornitore</td><td class="px-6 py-4"><span class="text-accent-600">Sì</span></td><td class="px-6 py-4 text-surface-500">Sì</td><td class="px-6 py-4 text-surface-500">Sì</td><td class="px-6 py-4 text-surface-400">No</td></tr>
+            <tr><td class="px-6 py-4 text-surface-600">Uso dei tuoi account</td><td class="px-6 py-4"><span class="text-accent-600">Sì</span></td><td class="px-6 py-4 text-surface-400">No</td><td class="px-6 py-4 text-surface-400">No</td><td class="px-6 py-4 text-surface-400">No</td></tr>
+            <tr><td class="px-6 py-4 text-surface-600">Policy automatizzate</td><td class="px-6 py-4"><span class="text-accent-600">Sì</span></td><td class="px-6 py-4 text-surface-500">Sì</td><td class="px-6 py-4 text-surface-500">Sì</td><td class="px-6 py-4 text-surface-500">Sì</td></tr>
+            <tr><td class="px-6 py-4 text-surface-600">Report di conformità</td><td class="px-6 py-4"><span class="text-accent-600">Sì</span></td><td class="px-6 py-4 text-surface-500">Sì</td><td class="px-6 py-4 text-surface-500">Sì</td><td class="px-6 py-4 text-surface-500">Non indicato</td></tr>
+            <tr><td class="px-6 py-4 text-surface-600">Prezzo di partenza</td><td class="px-6 py-4"><span class="text-accent-600">Gratis</span></td><td class="px-6 py-4 text-surface-500">Su preventivo</td><td class="px-6 py-4 text-surface-500">Su preventivo</td><td class="px-6 py-4 text-surface-500">Da 1.000 €/mese</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="mt-6 text-center">
+        <a href="/it/costruire-o-acquistare" class="text-sm font-medium text-brand-600 hover:text-brand-500">
+          Vedi il confronto dettagliato tra sviluppare e acquistare &rarr;
+        </a>
+      </div>
+      <div class="mt-4 text-center">
+        <a href="/it/alternative/perspective-api" class="text-sm font-medium text-surface-500 hover:text-surface-700">
+          Guida alla migrazione dopo la dismissione di Perspective API &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Preview -->
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">
+          Prezzi semplici e trasparenti
+        </h2>
+        <p class="mt-4 text-lg text-surface-500">
+          Parti gratis e cresci al tuo ritmo. Nessuna chiamata commerciale obbligatoria.
+        </p>
+      </div>
+      <div class="grid gap-8 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-white p-8 shadow-sm">
+          <h3 class="text-lg font-semibold text-surface-900">Gratuito</h3>
+          <p class="mt-2 text-4xl font-bold text-surface-900">Gratis</p>
+          <p class="mt-1 text-sm text-surface-500">Fino a 1.000 richieste al mese</p>
+          <ul class="mt-6 space-y-3">
+            <li class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Tutte le funzionalità incluse</li>
+            <li class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Usi le tue chiavi (BYOK)</li>
+            <li class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Infrastruttura ospitata nell'UE</li>
+            <li class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Supporto della community</li>
+          </ul>
+          <a href="https://app.openmoderation.com/signup" class="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg border border-surface-300 px-4 py-2.5 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">
+            Inizia gratis
+          </a>
+        </div>
+        <div class="relative rounded-xl border-2 border-brand-500 bg-white p-8 shadow-md">
+          <div class="absolute -top-3 right-6 rounded-full bg-brand-600 px-3 py-1 text-xs font-semibold text-white">Il più scelto</div>
+          <h3 class="text-lg font-semibold text-surface-900">Pro</h3>
+           <p class="mt-2 text-4xl font-bold text-surface-900">99 €<span class="text-lg font-medium text-surface-400">/mese</span></p>
+           <p class="mt-1 text-sm text-surface-500">10.000 richieste al mese · Hosting gestito · ≈ 300 commenti al giorno</p>
+          <ul class="mt-6 space-y-3">
+            <li class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Tutto quello che c'è nel piano Gratuito</li>
+            <li class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Chiavi dei fornitori gestite dalla piattaforma</li>
+            <li class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Supporto prioritario e SLA</li>
+            <li class="flex items-center gap-2 text-sm text-surface-600"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Gestione del team e statistiche</li>
+          </ul>
+          <a href="https://app.openmoderation.com/signup" class="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700">
+            Prova Pro
+          </a>
+        </div>
+      </div>
+      <p class="mt-4 text-center text-sm text-surface-400">Nessuna carta di credito richiesta · Disdici quando vuoi</p>
+      <p class="mt-6 text-center text-sm text-surface-400">
+        Preferisci il self-hosting? <a href="/it/prezzi" class="text-brand-600 hover:text-brand-500">Installalo gratis con Docker &rarr;</a>
+      </p>
+      <div class="mt-6 text-center">
+        <a href="/it/prezzi" class="text-sm font-medium text-brand-600 hover:text-brand-500">
+          Vedi tutti i dettagli sui prezzi &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="border-t border-surface-100 bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Le domande che i team si pongono prima di scegliere una piattaforma di moderazione" items={faqItems} />
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

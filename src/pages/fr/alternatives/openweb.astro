@@ -1,0 +1,169 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import FAQ from '../../../components/FAQ.astro';
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/fr/alternatives/openweb",
+  "name": "Alternative à OpenWeb : le comparatif avec OpenModeration",
+  "description": "OpenWeb ou OpenModeration ? Comparatif sourcé : modèle économique, prix, open source, hébergement des données, réseaux sociaux et explication écrite de chaque décision de modération.",
+  "inLanguage": "fr",
+  "about": { "@id": "https://www.openmoderation.com/#software" }
+};
+
+const rows = [
+  { feature: "Nature de l'outil", openweb: "Une plateforme communautaire hébergée pour les éditeurs : commentaires et forums", openmod: "Une couche de modération : elle décide sur les commentaires là où ils se trouvent déjà, sans les afficher elle-même" },
+  { feature: "Modèle économique", openweb: "Une activité de monétisation et de publicité adossée aux outils communautaires", openmod: "Un abonnement logiciel. Aucune publicité liée aux commentaires de vos lecteurs" },
+  { feature: "Où il modère", openweb: "Le site de l'éditeur. Réseaux sociaux : non précisé", openmod: "Facebook, Instagram, YouTube et WordPress en natif, plus une API REST et des webhooks" },
+  { feature: "Prix", openweb: "Non indiqués (« Let's Talk »)", openmod: "Publics : gratuit jusqu'à 1 000 requêtes par mois, Pro à 99 € par mois pour 10 000, sur mesure pour les gros volumes" },
+  { feature: "Code source", openweb: "Pas open source", openmod: "Open source sous licence AGPL v3, publié sur GitHub" },
+  { feature: "Auto-hébergement", openweb: "Non précisé", openmod: "Oui, gratuit, avec Docker" },
+  { feature: "Hébergement des données et RGPD", openweb: "Non précisé sur son site", openmod: "Conçu et hébergé dans l'Union européenne, RGPD" },
+  { feature: "Modération", openweb: "Modération par IA sous le nom « Aida ». Modération humaine : non précisé", openmod: "Règles en langage courant, un seuil par catégorie, une zone grise envoyée à vos modérateurs" },
+  { feature: "Explication écrite de chaque décision", openweb: "Non précisé", openmod: "Oui, dans la langue de votre choix, renvoyée par l'API" },
+  { feature: "DSA", openweb: "Non précisé", openmod: "Journal d'activité qui indique si chaque décision est automatique ou prise par quel modérateur" },
+  { feature: "Références", openweb: "Logos affichés : CNN, Yahoo!, Forbes, WSJ, The Times, HuffPost. Revendique plus de 5 000 éditeurs", openmod: "L'Équipe, Challenges, Sud Ouest, actu.fr, Estadão, Südkurier" },
+];
+
+const faqItems = [
+  {
+    question: "Quelle est la meilleure alternative à OpenWeb ?",
+    answer: "Tout dépend de ce que vous cherchez. Si vous voulez un espace de commentaires et de forums hébergé, financé par un modèle publicitaire, OpenWeb est conçu ainsi. Si vous voulez garder votre propre système de commentaires, modérer vos réseaux sociaux avec les mêmes règles, payer un abonnement à prix public et obtenir une explication écrite pour chaque décision, OpenModeration répond à ce besoin.",
+  },
+  {
+    question: "Combien coûte OpenWeb par rapport à OpenModeration ?",
+    answer: "OpenWeb n'affiche pas de tarif sur son site et invite les éditeurs à prendre contact. OpenModeration publie les siens : gratuit jusqu'à 1 000 requêtes par mois, Pro à 99 € par mois pour 10 000 requêtes, offre sur mesure pour les gros volumes, et auto-hébergement gratuit avec Docker.",
+  },
+  {
+    question: "Peut-on tester OpenModeration sans retirer OpenWeb ?",
+    answer: "Oui. En mode bac à sable, OpenModeration analyse de vrais commentaires sans appliquer aucune action. Vous envoyez un échantillon de vos commentaires à l'API et vous comparez ses décisions avec votre modération actuelle, commentaire par commentaire, avant de changer quoi que ce soit.",
+  },
+  {
+    question: "OpenWeb est-il conforme au RGPD et héberge-t-il les données en Europe ?",
+    answer: "Le site d'OpenWeb ne précise pas où les données sont hébergées et nous n'y avons trouvé aucune mention du RGPD. Posez la question directement à l'éditeur si votre service juridique en a besoin. OpenModeration est conçu et hébergé dans l'Union européenne, et vous pouvez aussi l'héberger vous-même.",
+  },
+  {
+    question: "OpenModeration aide-t-il un média à respecter le DSA ?",
+    answer: "OpenModeration rédige une explication pour chaque décision et tient un journal d'activité qui indique si la décision est automatique ou prise par un modérateur nommé. Ces deux éléments servent directement l'exposé des motifs exigé par l'article 17 du DSA.",
+  },
+];
+---
+
+<BaseLayout title="Alternative à OpenWeb : comparatif avec OpenModeration (2026)" description="OpenWeb ou OpenModeration ? Comparatif sourcé : modèle économique, prix publics, open source, hébergement UE, réseaux sociaux et DSA." jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Accueil", href: "/fr" }, { label: "Alternatives", href: "/fr/alternatives" }, { label: "OpenWeb" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Comparatif
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Alternative à OpenWeb : OpenModeration comparé</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        OpenWeb gère les commentaires et les forums de grands éditeurs, avec une modération par IA et une activité publicitaire associée. OpenModeration fait un seul travail : il modère les commentaires de votre site et de vos réseaux sociaux, pour un abonnement à prix public. Voici les différences, sources à l'appui.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Choisissez OpenModeration si…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>vous voulez garder votre propre espace de commentaires et y ajouter la modération ;</li>
+          <li>vous préférez un abonnement à prix public à un modèle lié à la publicité ;</li>
+          <li>vos données doivent rester dans l'Union européenne ;</li>
+          <li>vous modérez aussi les commentaires Facebook, Instagram ou YouTube ;</li>
+          <li>vous devez expliquer chaque commentaire masqué, comme le demande le DSA.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">OpenWeb peut mieux vous convenir si…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>vous voulez un espace de commentaires et de forums complet, hébergé, sur votre site ;</li>
+          <li>vous voulez que l'outil rapporte des revenus publicitaires plutôt que de coûter un abonnement ;</li>
+          <li>vous cherchez un fournisseur qui affiche de grands éditeurs américains comme CNN et Yahoo!.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">OpenWeb et OpenModeration, point par point</h2>
+      <p class="mt-4 text-surface-500">Informations sur OpenWeb tirées de son site, openweb.com, consulté le 20 octobre 2026. Lancement des forums rapporté par Axios le 30 septembre 2026.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Critère</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">OpenWeb</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.openweb}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Ce qui change vraiment au quotidien</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Un prix connu à l'avance</h3>
+          <p class="mt-2 text-sm text-surface-600">Les tarifs sont publics et vous pouvez commencer gratuitement. Vous payez la modération, et les commentaires de vos lecteurs ne sont liés à aucun produit publicitaire.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Des données dans l'UE, un code lisible</h3>
+          <p class="mt-2 text-sm text-surface-600">OpenModeration est conçu et hébergé dans l'Union européenne. Le code est open source sous licence AGPL v3 : votre équipe peut l'auditer ou l'installer sur vos propres serveurs.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Une explication pour chaque commentaire masqué</h3>
+          <p class="mt-2 text-sm text-surface-600">L'IA lit chaque commentaire avec le titre de l'article et le fil de discussion, puis décide selon vos règles. Chaque décision porte une explication écrite, et le journal d'activité indique qui a tranché : l'IA ou un modérateur nommé.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Un test en parallèle avant de changer quoi que ce soit</h3>
+          <p class="mt-2 text-sm text-surface-600">Le mode bac à sable analyse de vrais commentaires sans rien masquer. Vous comparez ses décisions avec votre modération actuelle, puis vous décidez.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Questions fréquentes" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        OpenWeb est une marque de son éditeur. Les informations la concernant proviennent de <a href="https://www.openweb.com" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">openweb.com</a> (consulté le 20 octobre 2026) et, pour les forums, d'<a href="https://axios.com/2026/09/30/openweb-forums-publishers-reddit" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">Axios</a>. Une erreur ? Écrivez-nous à <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Pour aller plus loin</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/fr/cas-usage/medias" class="font-medium text-brand-600 hover:text-brand-500">La modération des commentaires pour les médias &rarr;</a></li>
+        <li><a href="/fr/moderation-reseaux-sociaux" class="font-medium text-brand-600 hover:text-brand-500">Modération des réseaux sociaux avec OpenModeration &rarr;</a></li>
+        <li><a href="/fr/conformite-dsa/expose-des-motifs" class="font-medium text-brand-600 hover:text-brand-500">L'exposé des motifs exigé par le DSA &rarr;</a></li>
+        <li><a href="/fr/alternatives" class="font-medium text-brand-600 hover:text-brand-500">Tous les comparatifs &rarr;</a></li>
+        <li><a href="/fr/tarifs" class="font-medium text-brand-600 hover:text-brand-500">Les tarifs d'OpenModeration &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <CTASection title="Modérez les commentaires de vos lecteurs à prix public." subtitle="Connectez votre site et vos pages, écrivez vos règles en langage courant et lisez l'explication de chaque décision. Gratuit pour commencer." />
+</BaseLayout>

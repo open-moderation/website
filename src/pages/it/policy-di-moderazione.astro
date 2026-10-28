@@ -1,0 +1,169 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CharterSupport from '../../components/CharterSupport.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import CTASection from '../../components/CTASection.astro';
+import FAQ from '../../components/FAQ.astro';
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Policy di moderazione: come scriverla, cosa impone il DSA e un modello",
+  "description": "Guida per scrivere la policy di moderazione (o le regole della community) di un sito, di una testata o di una pagina social: sezioni, obblighi del DSA, regole che un'IA può applicare e un modello.",
+  "inLanguage": "it",
+  "datePublished": "2026-10-20",
+  "dateModified": "2026-10-20",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/it/policy-di-moderazione" }
+};
+
+const sections = [
+  { title: "Lo spirito della discussione", text: "Perché esiste lo spazio dei commenti e quale tono ci si aspetta. Bastano due o tre frasi, ma orientano tutte le decisioni difficili." },
+  { title: "Cosa è vietato", text: "Insulti e attacchi personali, discorsi d'odio o discriminatori, minacce, molestie, spam e pubblicità, truffe, diffusione di dati personali, contenuti illegali. Ogni divieto funziona meglio se accompagnato da un esempio." },
+  { title: "Cosa resta consentito", text: "Il disaccordo, la critica anche accesa di un'idea, di un articolo o di un personaggio pubblico, l'ironia che non prende di mira nessuno. Scrivere cosa è consentito evita di censurare il dibattito per eccesso di prudenza." },
+  { title: "Come si applica la moderazione", text: "Chi modera, con quali strumenti e quale parte delle decisioni è automatica o umana. Il DSA chiede proprio di informarne gli utenti." },
+  { title: "Le sanzioni", text: "Rimozione del commento, sospensione temporanea, esclusione definitiva: una scala graduale e nota a tutti rende ogni decisione più facile da accettare." },
+  { title: "Come contestare", text: "Dove e come un utente può chiedere il riesame di una decisione, ed entro quanto tempo riceverà una risposta." },
+];
+
+const faqItems = [
+  {
+    question: "Che cos'è una policy di moderazione?",
+    answer: "È il testo che stabilisce cosa è accettato o rifiutato in uno spazio di commenti, in un forum o sotto i post di una pagina, e come vengono prese le decisioni. Si parla anche di regole della community, regolamento dei commenti o netiquette.",
+  },
+  {
+    question: "La policy di moderazione è obbligatoria?",
+    answer: "Il DSA impone a ogni prestatore di servizi intermediari di includere nelle condizioni generali informazioni sulle restrizioni che applica ai contenuti, nonché sulle politiche, procedure e strumenti di moderazione, compresi il processo decisionale algoritmico e la verifica umana (articolo 14). Una policy chiara è il modo più semplice per rispettare questo obbligo.",
+  },
+  {
+    question: "Un'IA può applicare una policy di moderazione?",
+    answer: "Sì, se è scritta in un linguaggio chiaro, con esempi e un confine netto tra i casi evidenti e quelli da far rileggere. In OpenModeration la policy viene trasmessa all'IA per ogni commento, insieme al titolo del post e al thread della discussione.",
+  },
+  {
+    question: "Serve una policy diversa per ogni sezione?",
+    answer: "Spesso sì. Una sezione sportiva e una politica non richiedono la stessa attenzione, soprattutto in periodo elettorale. La soluzione più semplice è mantenere una policy comune e aggiungere istruzioni specifiche per alcune fonti o sezioni.",
+  },
+  {
+    question: "Ogni quanto va aggiornata la policy?",
+    answer: "Ogni volta che l'attualità fa emergere nuovi abusi o i tuoi moderatori correggono spesso le stesse decisioni. Il DSA chiede di informare gli utenti di qualsiasi modifica significativa delle condizioni generali.",
+  },
+];
+---
+
+<BaseLayout title="Policy di moderazione: guida, obblighi DSA e modello" description="Come scrivere la policy di moderazione o le regole della community del tuo sito o della tua pagina: sezioni essenziali, obblighi del DSA, regole per l'IA e un modello." ogType="article" jsonLd={articleJsonLd}>
+  <Breadcrumb items={[{ label: "Home", href: "/it" }, { label: "Policy di moderazione" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-20">20 ottobre 2026</time>
+        <span>&middot;</span>
+        <span>8 min di lettura</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Policy di moderazione e regole della community: come scriverle, cosa impone il DSA e un modello</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Una buona moderazione inizia da un buon testo. La policy dice ai tuoi lettori cosa possono scrivere, guida i tuoi
+        moderatori nei casi difficili e oggi fa da istruzione all'IA che smista i commenti. Ecco come costruirla, cosa
+        richiede la legge e un modello per iniziare.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Cosa impone il DSA</h2>
+      <p>
+        Il regolamento europeo sui servizi digitali (DSA) chiede a tutti i prestatori di servizi intermediari di includere
+        nelle loro condizioni generali informazioni sulle restrizioni che applicano ai contenuti pubblicati dai loro
+        utenti (articolo 14). Queste informazioni devono riguardare:
+      </p>
+      <ul>
+        <li>le politiche, le procedure, le misure e gli strumenti utilizzati ai fini della moderazione dei contenuti;</li>
+        <li>il processo decisionale algoritmico e la verifica umana;</li>
+        <li>le regole procedurali del sistema interno di gestione dei reclami.</li>
+      </ul>
+      <p>
+        Il testo deve essere redatto in un linguaggio chiaro, semplice e privo di ambiguità, essere disponibile al pubblico,
+        e gli utenti devono essere informati di qualsiasi modifica significativa. Infine, la moderazione deve restare
+        diligente, obiettiva e proporzionata, tenendo conto della libertà di espressione e del pluralismo dei media.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Le sezioni di una policy di moderazione</h2>
+    </div>
+
+    <div class="mt-6 grid gap-3 sm:grid-cols-2">
+      {sections.map((s) => (
+        <div class="rounded-lg border border-surface-200 bg-surface-50 p-4">
+          <p class="text-sm font-medium text-surface-900">{s.title}</p>
+          <p class="mt-1 text-sm text-surface-500">{s.text}</p>
+        </div>
+      ))}
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">Scrivere regole che un'IA può applicare</h2>
+      <p>
+        Un'IA legge la tua policy come un moderatore alle prime armi: applica ciò che è scritto, niente di più. Alcuni
+        principi fanno tutta la differenza.
+      </p>
+      <ul>
+        <li><strong>Frasi, non elenchi di parole.</strong> «Nessun insulto verso un altro lettore, nemmeno camuffato» copre molti più casi di un elenco di parole vietate, che lascia passare l'ironia e gli errori di ortografia voluti.</li>
+        <li><strong>Esempi in entrambe le direzioni.</strong> Per ogni divieto, un esempio rifiutato e un esempio accettato che gli somiglia. È il modo migliore per tracciare il confine.</li>
+        <li><strong>Il contesto conta.</strong> La stessa parola non ha lo stesso peso sotto un articolo su una raccolta fondi e sotto un tema che divide. Scrivilo, e usa uno strumento che trasmetta all'IA l'argomento del post.</li>
+        <li><strong>Una zona grigia dichiarata.</strong> Indica quali casi devono essere riletti da una persona anziché decisi automaticamente: critica dura a un giornalista, procedimento giudiziario in corso, affermazione politica al limite.</li>
+        <li><strong>Istruzioni legate all'attualità.</strong> Durante un'elezione o dopo un fatto di cronaca, aggiungi un'istruzione temporanea e mirata invece di irrigidire tutta la policy.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Modello di policy di moderazione</h2>
+      <p>Modello da adattare, qui per lo spazio dei commenti di un sito di informazione:</p>
+    </div>
+
+    <div class="mt-6 rounded-xl border border-surface-200 bg-white p-6 text-sm leading-relaxed text-surface-700 shadow-sm">
+      <p class="font-semibold text-surface-900">Regole di partecipazione</p>
+      <p class="mt-3">I commenti sono uno spazio di dibattito sui nostri articoli. Puoi esprimere il tuo disaccordo, anche con la redazione, purché rispetti gli altri partecipanti.</p>
+      <p class="mt-3"><strong>Non sono ammessi:</strong> insulti e attacchi personali, anche camuffati; discorsi d'odio o discriminatori; minacce e incitamenti alla violenza; molestie nei confronti di un partecipante; pubblicità, spam e link ingannevoli; la pubblicazione di dati personali altrui; qualsiasi contenuto contrario alla legge.</p>
+      <p class="mt-3"><strong>Sono ammessi:</strong> la critica, anche accesa, di un'idea, di un articolo o di un personaggio pubblico; l'ironia che non prende di mira una persona in particolare; le opinioni minoritarie espresse senza attacchi.</p>
+      <p class="mt-3"><strong>Come moderiamo:</strong> i commenti sono analizzati da uno strumento automatico che applica queste regole. I casi incerti vengono riletti dal nostro team. Ogni commento rimosso è accompagnato da una motivazione.</p>
+      <p class="mt-3"><strong>Sanzioni:</strong> rimozione del commento, poi sospensione temporanea dell'account in caso di recidiva, poi esclusione definitiva.</p>
+      <p class="mt-3"><strong>Contestare una decisione:</strong> puoi chiedere il riesame di una decisione rispondendo al messaggio con cui ti è stata notificata. Ti risponderemo il prima possibile.</p>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">Mantenere viva la policy</h2>
+      <p>
+        Una policy non è mai finita. Le decisioni dei tuoi moderatori indicano dove è poco chiara: quando correggono spesso
+        l'IA sullo stesso tipo di commento, vuol dire che manca una regola o che un esempio è scelto male. In OpenModeration
+        il sistema impara da queste decisioni e propone modifiche alle tue regole, che applichi con un clic. Ogni
+        modifica crea una nuova versione, così sai quale regola si applicava a ogni decisione.
+      </p>
+      <p class="text-sm text-surface-400">
+        Fonte: <a href="https://eur-lex.europa.eu/legal-content/IT/TXT/?uri=CELEX:32022R2065" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">regolamento (UE) 2022/2065 relativo a un mercato unico dei servizi digitali</a>, articolo 14. Questa pagina ha scopo informativo e non costituisce una consulenza legale.
+      </p>
+    </div>
+  </article>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Domande frequenti sulla policy di moderazione" items={faqItems} />
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Per approfondire</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/it/conformita-dsa/motivazione" class="font-medium text-brand-600 hover:text-brand-500">La motivazione richiesta dal DSA &rarr;</a></li>
+        <li><a href="/it/casi-d-uso/media" class="font-medium text-brand-600 hover:text-brand-500">La moderazione dei commenti per i media &rarr;</a></li>
+        <li><a href="/it/moderazione-social" class="font-medium text-brand-600 hover:text-brand-500">La moderazione dei social &rarr;</a></li>
+        <li><a href="/it/conformita-dsa" class="font-medium text-brand-600 hover:text-brand-500">La conformità DSA con OpenModeration &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <CTASection title="Metti al lavoro la tua policy." subtitle="Incolla la tua policy in OpenModeration: si applica a ogni commento e il nostro team ti aiuta a perfezionarla. Gratis per iniziare." />
+</BaseLayout>

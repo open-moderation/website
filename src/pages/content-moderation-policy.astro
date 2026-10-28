@@ -1,0 +1,169 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CharterSupport from '../components/CharterSupport.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import CTASection from '../components/CTASection.astro';
+import FAQ from '../components/FAQ.astro';
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Content moderation policy: how to write it, what the DSA requires, and a template",
+  "description": "A guide to writing the content moderation policy or community guidelines of a website, news outlet or social media page: key sections, DSA obligations, rules an AI can apply and a template.",
+  "inLanguage": "en",
+  "datePublished": "2026-10-20",
+  "dateModified": "2026-10-20",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/content-moderation-policy" }
+};
+
+const sections = [
+  { title: "The spirit of the conversation", text: "Why the comment section exists and the tone you expect. Two or three sentences are enough, but they guide every difficult decision." },
+  { title: "What is not allowed", text: "Insults and personal attacks, hateful or discriminatory speech, threats, harassment, spam and advertising, scams, sharing personal data, illegal content. Each rule works better with an example." },
+  { title: "What is still allowed", text: "Disagreement, sharp criticism of an idea, an article or a public figure, irony that targets no one. Spelling out what is allowed keeps you from stifling debate out of excess caution." },
+  { title: "How moderation works", text: "Who moderates, with which tools, and the share of automated and human decisions. The DSA requires you to tell your users exactly this." },
+  { title: "Sanctions", text: "Comment removal, temporary suspension, permanent ban: a graduated scale that everyone knows makes each decision easier to accept." },
+  { title: "How to appeal", text: "Where and how a user can ask for a decision to be reviewed, and how soon they will get an answer." },
+];
+
+const faqItems = [
+  {
+    question: "What is a content moderation policy?",
+    answer: "It is the text that sets out what is accepted or refused in a comment section, a forum or under a page's posts, and how decisions are made. It is also called community guidelines, house rules or a commenting policy.",
+  },
+  {
+    question: "Is a content moderation policy mandatory?",
+    answer: "The DSA requires every provider of intermediary services to state in its terms and conditions the restrictions it imposes on content, along with its content moderation policies, procedures and tools, including algorithmic decision-making and human review (Article 14). Clear community guidelines are the simplest way to meet that requirement.",
+  },
+  {
+    question: "Can an AI apply a content moderation policy?",
+    answer: "Yes, if it is written in plain language, with examples and a clear line between obvious cases and cases that need a human review. In OpenModeration, the policy is sent to the AI with every comment, together with the post title and the discussion thread.",
+  },
+  {
+    question: "Do different sections need different guidelines?",
+    answer: "Often, yes. A sports section and a politics section do not call for the same vigilance, especially during an election. The simplest approach is to keep one shared policy and add specific instructions for certain sources or sections.",
+  },
+  {
+    question: "How often should the policy be updated?",
+    answer: "Whenever the news brings new kinds of abuse or your moderators keep correcting the same decisions. The DSA requires you to inform users of any significant change to the terms and conditions.",
+  },
+];
+---
+
+<BaseLayout title="Content Moderation Policy: Guide, DSA Rules and Template" description="How to write the content moderation policy or community guidelines for your site, news outlet or page: key sections, what the DSA requires, AI-ready rules and a template." ogType="article" jsonLd={articleJsonLd}>
+  <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Content moderation policy" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-20">October 20, 2026</time>
+        <span>&middot;</span>
+        <span>8 min read</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Content moderation policy: how to write it, what the DSA requires, and a template</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Good moderation starts with a good text. Your moderation policy tells readers what they can post, guides your
+        moderators through the hard cases and now also serves as the instructions for the AI that sorts your comments. Here is how to
+        build it, what the law requires, and a template to get started.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">What the DSA requires</h2>
+      <p>
+        The EU Digital Services Act (DSA) requires all providers of intermediary services to include in their
+        terms and conditions information on any restrictions they impose on content provided by their
+        users (Article 14). That information must cover:
+      </p>
+      <ul>
+        <li>the policies, procedures, measures and tools used for content moderation;</li>
+        <li>algorithmic decision-making and human review;</li>
+        <li>the rules of procedure of the internal complaint-handling system.</li>
+      </ul>
+      <p>
+        The text must be written in clear, plain and unambiguous language and be publicly available, and users must be informed of
+        any significant change. Finally, moderation must be applied in a diligent, objective and proportionate manner, with due regard
+        to freedom of expression and the freedom and pluralism of the media.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">The sections of a content moderation policy</h2>
+    </div>
+
+    <div class="mt-6 grid gap-3 sm:grid-cols-2">
+      {sections.map((s) => (
+        <div class="rounded-lg border border-surface-200 bg-surface-50 p-4">
+          <p class="text-sm font-medium text-surface-900">{s.title}</p>
+          <p class="mt-1 text-sm text-surface-500">{s.text}</p>
+        </div>
+      ))}
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">Writing rules an AI can apply</h2>
+      <p>
+        An AI reads your policy like a new moderator: it applies what is written, nothing more. A few
+        principles help a great deal.
+      </p>
+      <ul>
+        <li><strong>Sentences, not word lists.</strong> "No insults towards another reader, even disguised ones" covers far more cases than a list of banned words, which lets irony and deliberate misspellings slip through.</li>
+        <li><strong>Examples on both sides.</strong> For each rule, give one refused example and one similar accepted example. It is the best way to draw the line.</li>
+        <li><strong>Context matters.</strong> The same word does not carry the same weight under an article about a fundraiser and under a divisive story. Say so, and use a tool that passes the topic of the post to the AI.</li>
+        <li><strong>An acknowledged grey zone.</strong> Write down which cases should be reviewed by a human rather than decided automatically: harsh criticism of a journalist, an ongoing court case, borderline political speech.</li>
+        <li><strong>Instructions for the news cycle.</strong> During an election or after a major incident, add a targeted temporary instruction instead of tightening the whole policy.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Content moderation policy template</h2>
+      <p>A template to adapt, here for the comment section of a news website:</p>
+    </div>
+
+    <div class="mt-6 rounded-xl border border-surface-200 bg-white p-6 text-sm leading-relaxed text-surface-700 shadow-sm">
+      <p class="font-semibold text-surface-900">Community guidelines</p>
+      <p class="mt-3">The comments are a space for debate around our articles. You are welcome to disagree, including with our newsroom, as long as you respect the other participants.</p>
+      <p class="mt-3"><strong>Not allowed:</strong> insults and personal attacks, including disguised ones; hateful or discriminatory speech; threats and calls for violence; harassment of a participant; advertising, spam and misleading links; publishing other people's personal data; any content that breaks the law.</p>
+      <p class="mt-3"><strong>Allowed:</strong> criticism, even sharp, of an idea, an article or a public figure; irony that does not target a specific person; minority opinions expressed without attacks.</p>
+      <p class="mt-3"><strong>How we moderate:</strong> comments are analysed by an automated tool that applies these guidelines. Uncertain cases are reviewed by our team. Every removed comment comes with an explanation.</p>
+      <p class="mt-3"><strong>Sanctions:</strong> removal of the comment, then temporary suspension of the account for repeat offences, then a permanent ban.</p>
+      <p class="mt-3"><strong>Appealing a decision:</strong> you can ask for a decision to be reviewed by replying to the message that notified you of it. We will get back to you as soon as possible.</p>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">Keeping the policy alive</h2>
+      <p>
+        A policy is never finished. Your moderators' decisions show where it is unclear: when they keep correcting
+        the AI on the same kind of comment, a rule is missing or an example is badly chosen. In OpenModeration,
+        the system learns from these decisions and suggests adjustments to your rules, which you apply in one click. Every
+        change creates a new version, so you always know which rule applied to each decision.
+      </p>
+      <p class="text-sm text-surface-400">
+        Source: <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022R2065" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">Regulation (EU) 2022/2065 on a Single Market For Digital Services</a>, Article 14. This page is for information only and does not constitute legal advice.
+      </p>
+    </div>
+  </article>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Content moderation policy: frequently asked questions" items={faqItems} />
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Further reading</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/dsa-compliance/statement-of-reasons" class="font-medium text-brand-600 hover:text-brand-500">The statement of reasons required by the DSA &rarr;</a></li>
+        <li><a href="/use-cases/news-publishers" class="font-medium text-brand-600 hover:text-brand-500">Comment moderation for news publishers &rarr;</a></li>
+        <li><a href="/social-media-moderation" class="font-medium text-brand-600 hover:text-brand-500">Social media moderation &rarr;</a></li>
+        <li><a href="/dsa-compliance" class="font-medium text-brand-600 hover:text-brand-500">DSA compliance with OpenModeration &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <CTASection title="Put your moderation policy to work." subtitle="Paste your policy into OpenModeration: it applies to every comment, and our team helps you refine it. Free to start." />
+</BaseLayout>

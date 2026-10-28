@@ -1,0 +1,280 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import BrowserFrame from '../../../components/BrowserFrame.astro';
+import ModerationVerdict from '../../../components/ModerationVerdict.astro';
+import FAQ from '../../../components/FAQ.astro';
+import SectionTitle from '../../../components/SectionTitle.astro';
+
+const faqItems = [
+  {
+    question: "Perché il mio commento è stato nascosto?",
+    answer: "Perché ha violato una delle tue regole. La console mostra la motivazione esatta in linguaggio semplice (per esempio \"Questo commento contiene un insulto\" o \"Questo commento promuove una truffa\") insieme alla cronologia completa della decisione.",
+  },
+  {
+    question: "Posso vedere il ragionamento dell'IA per ogni decisione?",
+    answer: "Sì. Ogni decisione automatica è accompagnata da una giustificazione scritta. I commenti in zona grigia passano alla revisione umana con tutto il loro contesto, e le decisioni dei tuoi moderatori vengono registrate esattamente allo stesso modo: chi ha deciso, quando e perché.",
+  },
+  {
+    question: "Il codice è davvero open source?",
+    answer: "Sì, con licenza AGPL v3. Il motore di regole, la pipeline di IA e il registro di audit sono pubblici su GitHub. Puoi leggerli, verificarli e ospitare in proprio l'intera piattaforma per controllare ogni affermazione di questa pagina.",
+  },
+  {
+    question: "Dove sono conservati i miei dati?",
+    answer: "Nell'Unione europea, nel rispetto del GDPR. Nessun cookie di tracciamento su questo sito, nessuna rivendita di dati. Se scegli il self-hosting, i tuoi dati non lasciano mai la tua infrastruttura.",
+  },
+];
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://www.openmoderation.com/it/prodotto/trasparenza",
+      "url": "https://www.openmoderation.com/it/prodotto/trasparenza",
+      "name": "Trasparenza: scopri esattamente perché ogni commento è stato nascosto",
+      "description": "Ogni decisione di moderazione ha una motivazione scritta, un registro di audit completo delle azioni dell'IA e umane, codice open source e hosting nell'UE. Nessuna scatola nera.",
+      "inLanguage": "it",
+      "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://www.openmoderation.com/it/prodotto/trasparenza#faq",
+      "inLanguage": "it",
+      "mainEntity": faqItems.map((item) => ({
+        "@type": "Question",
+        "name": item.question,
+        "acceptedAnswer": { "@type": "Answer", "text": item.answer }
+      }))
+    }
+  ]
+};
+
+const steps = [
+  {
+    title: "L'IA nasconde un commento",
+    description: "Il commento viola una delle tue regole: insulti, spam, truffe o qualsiasi altra cosa vietata dalla tua carta.",
+  },
+  {
+    title: "Viene allegata una motivazione scritta",
+    description: "In linguaggio semplice: cosa ha fatto il commento e quale regola ha violato. Nessun punteggio da decifrare.",
+  },
+  {
+    title: "Tutto finisce nel registro",
+    description: "Ogni decisione, dell'IA o umana, è datata e consultabile: chi ha deciso, quando e perché.",
+  },
+];
+
+const proofs = [
+  {
+    title: "Motivazioni scritte",
+    description: "Ogni commento nascosto porta con sé la sua spiegazione, in linguaggio semplice, direttamente nella console.",
+    icon: "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z",
+    href: null,
+    hrefLabel: null,
+  },
+  {
+    title: "Registro di audit completo",
+    description: "Decisioni dell'IA e umane in un unico posto, con data, ora e contesto completo. Pensato per gli audit DSA.",
+    icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
+    href: "/it/conformita-dsa",
+    hrefLabel: "Scopri i registri di audit DSA",
+  },
+  {
+    title: "Open source e verificabile",
+    description: "Il codice è pubblico con licenza AGPL v3. Leggilo, verificalo, eseguilo tu stesso.",
+    icon: "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4",
+    href: "https://github.com/open-moderation/open-moderation",
+    hrefLabel: "Vedi il codice sorgente su GitHub",
+  },
+  {
+    title: "Ospitato nell'UE, conforme al GDPR",
+    description: "I tuoi dati restano nell'Unione europea. Con il self-hosting li tieni interamente sui tuoi server.",
+    icon: "M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+    href: "/it/faq",
+    hrefLabel: "Le domande sui dati nelle FAQ",
+  },
+];
+---
+
+<BaseLayout
+  title="Trasparenza: perché ogni commento è stato nascosto | OpenModeration"
+  description="Ogni decisione di moderazione ha una motivazione scritta, un registro di audit completo, codice open source e hosting nell'UE. Mai scatole nere."
+  jsonLd={pageJsonLd}
+>
+  <Breadcrumb items={[{ label: 'Home', href: '/it' }, { label: 'Prodotto' }, { label: 'Trasparenza' }]} />
+
+  <!-- Hero -->
+  <section class="relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-brand-50 via-white to-surface-50" />
+    <div class="relative mx-auto max-w-7xl px-4 pb-12 pt-10 sm:px-6 lg:px-8 lg:pt-14">
+      <div class="mx-auto max-w-3xl text-center">
+        <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600 shadow-sm">
+          <span class="flex h-2 w-2 animate-pulse-dot rounded-full bg-accent-500" />
+          La nostra promessa · Trasparenza
+        </div>
+        <h1 class="animate-fade-in-up text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">
+          Ogni commento nascosto ha la sua <em class="italic text-brand-800">motivazione</em> scritta.
+        </h1>
+        <p class="animate-fade-in-up delay-1 mt-6 text-lg leading-relaxed text-surface-500 sm:text-xl">
+          Una moderazione che non sai spiegare è una moderazione che non sai difendere. open-moderation ti mostra
+          esattamente perché ogni commento è stato nascosto, in linguaggio semplice, ogni volta. Nessuna scatola nera.
+        </p>
+        <div class="animate-fade-in-up delay-2 mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">
+            Provalo gratis
+          </a>
+          <a href="/it/come-funziona" class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">
+            Scopri come funziona
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+        <p class="animate-fade-in-up delay-2 mt-4 text-sm text-surface-400">Nessuna carta di credito richiesta</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Proof capture -->
+  <section class="bg-white pb-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-xl">
+        <BrowserFrame
+          caption="Spazio di lavoro dimostrativo: un commento truffaldino respinto, la sua motivazione scritta e la cronologia completa."
+        >
+          <ModerationVerdict slot="content" />
+          <div slot="annotation" class="absolute bottom-3 right-3 rounded-full border border-brand-200 bg-white/95 px-3 py-1 text-xs font-semibold text-brand-800 shadow-sm">
+            &#x270D; La motivazione scritta
+          </div>
+        </BrowserFrame>
+      </div>
+    </div>
+  </section>
+
+  <!-- Black box vs open -->
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-3xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">
+          Un commento nascosto che non sai spiegare è un rischio
+        </h2>
+        <p class="mt-4 text-lg text-surface-500">
+          Il giorno in cui un cliente, il tuo capo o un'autorità di controllo ti chiede &laquo;perché è stato nascosto?&raquo;,
+          &laquo;ha deciso l'algoritmo&raquo; non è una risposta.
+        </p>
+      </div>
+      <div class="grid gap-8 md:grid-cols-2">
+        <div class="rounded-xl border border-red-100 bg-red-50/50 p-8">
+          <h3 class="flex items-center gap-2 text-xl font-semibold text-red-700">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            Moderazione a scatola nera
+          </h3>
+          <ul class="mt-6 space-y-3 text-sm text-surface-600">
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Punteggi grezzi senza contesto né spiegazione</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Nessuna giustificazione scritta per i commenti nascosti</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Niente da mostrare in caso di audit o contestazione</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Scopri gli errori quando è troppo tardi</li>
+          </ul>
+        </div>
+        <div class="rounded-xl border border-brand-200 bg-brand-50 p-8 shadow-sm">
+          <h3 class="flex items-center gap-2 text-xl font-semibold text-brand-700">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            Con open-moderation
+          </h3>
+          <ul class="mt-6 space-y-3 text-sm text-surface-700">
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Una motivazione scritta per ogni commento nascosto</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Azioni dell'IA e umane in un unico registro</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Decisioni spiegabili a clienti, responsabili e autorità</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Codice open source da ispezionare riga per riga</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="border-t border-surface-100 bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <SectionTitle
+        title="Come funziona la trasparenza"
+        subtitle="Tre passaggi, zero misteri: dal commento segnalato alla motivazione che puoi mostrare a chiunque."
+      />
+      <div class="grid gap-6 md:grid-cols-3">
+        {steps.map((step, i) => (
+          <div class="relative rounded-xl border border-surface-200 bg-white p-8">
+            <span class="text-4xl font-bold text-brand-100">0{i + 1}</span>
+            <h3 class="mt-4 text-lg font-semibold text-surface-900">{step.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-surface-500">{step.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Proofs -->
+  <section class="border-t border-surface-100 bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <SectionTitle
+        title="Trasparenza dimostrata"
+        subtitle="Quattro prove verificabili, non semplici promesse. Clicca, leggi, verifica."
+      />
+      <div class="stagger-fade-in grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {proofs.map((p) => (
+          <div class="flex flex-col rounded-xl border border-surface-200 bg-white p-6 transition hover:-translate-y-0.5 hover:shadow-md">
+            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
+              <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={p.icon}/></svg>
+            </div>
+            <h3 class="mt-4 text-lg font-semibold text-surface-900">{p.title}</h3>
+            <p class="mt-2 flex-1 text-sm leading-relaxed text-surface-500">{p.description}</p>
+            {p.href && (
+              <a href={p.href} class="mt-4 text-sm font-medium text-brand-600 hover:text-brand-500">
+                {p.hrefLabel} &rarr;
+              </a>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Stat -->
+  <section class="border-t border-surface-100 bg-white py-16">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <p class="text-5xl font-bold tracking-tight text-brand-900 sm:text-6xl">68%</p>
+      <p class="mt-4 text-lg text-surface-600 sm:text-xl">
+        dei consumatori legge i tuoi commenti prima di acquistare.
+      </p>
+      <p class="mt-2 text-sm text-surface-400">Fonte: ricerca sui consumatori citata da Respondology</p>
+      <p class="mx-auto mt-6 max-w-2xl text-surface-500">
+        Ciò che vi trovano decide se si fideranno di te. Ecco perché ogni decisione di
+        moderazione dovrebbe essere accompagnata dalla sua motivazione, per iscritto.
+      </p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="border-t border-surface-100 bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <SectionTitle title="Domande frequenti" />
+      <FAQ items={faqItems} disableJsonLd />
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="relative overflow-hidden bg-ink-900 py-20">
+    <div class="relative mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+        Una moderazione che puoi difendere. Ogni decisione, spiegata.
+      </h2>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-300">
+        Collega la tua pagina in pochi clic e scopri la motivazione scritta dietro ogni commento nascosto.
+      </p>
+      <div class="mt-8">
+        <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 text-sm font-semibold text-surface-900 shadow-sm transition hover:bg-surface-100">
+          Provalo gratis
+        </a>
+        <p class="mt-4 text-sm text-surface-400">Nessuna carta di credito richiesta</p>
+      </div>
+      <p class="mt-12 text-xs text-surface-500">Nessun cookie di tracciamento. Ospitato nell'UE. Open source.</p>
+    </div>
+  </section>
+</BaseLayout>

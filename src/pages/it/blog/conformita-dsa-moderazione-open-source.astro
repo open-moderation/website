@@ -1,0 +1,123 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Conformità DSA semplice con la moderazione open source",
+  "description": "Come rispettare il Digital Services Act dell'UE con strumenti open source: registro di audit, relazioni di trasparenza e sovranità dei dati.",
+  "inLanguage": "it",
+  "datePublished": "2026-06-08",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/it/blog/conformita-dsa-moderazione-open-source" },
+  "dateModified": "2026-06-08"
+};
+---
+
+<BaseLayout title="Conformità DSA semplice con la moderazione open source" description="Come rispettare il Digital Services Act dell'UE con strumenti open source: registro di audit, relazioni di trasparenza e sovranità dei dati." jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Home", href: "/it" }, { label: "Blog", href: "/it/blog" }, { label: "Conformità DSA con l'open source" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-06-08">8 giugno 2026</time>
+        <span>&middot;</span>
+        <span>6 min di lettura</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Conformità DSA semplice con la moderazione open source</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Il Digital Services Act (DSA) dell'UE è pienamente applicabile dal 2024 e i suoi effetti
+        si fanno ancora sentire in tutto il settore tecnologico. Qualsiasi servizio che ospita
+        contenuti degli utenti per persone nell'UE, ovunque abbia sede, deve dare seguito alle segnalazioni
+        di contenuti illegali, motivare le proprie decisioni di moderazione e permettere agli utenti di contestarle.
+        Le sanzioni possono arrivare al 6% del fatturato annuo mondiale.
+      </p>
+      <p>
+        Per molte piattaforme il DSA pone una sfida di fondo: come dimostrare alle autorità che il
+        proprio sistema di moderazione funziona? La risposta richiede tre elementi: una pipeline di
+        moderazione automatica, un registro di audit completo e la capacità di produrre relazioni
+        di trasparenza.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Gli obblighi del DSA, in sintesi</h2>
+      <p>Il DSA non impone una tecnologia specifica. Impone dei risultati:</p>
+      <ul>
+        <li><strong>Segnalazione e azione (art. 16):</strong> gli utenti devono poter segnalare i contenuti. Le piattaforme devono dare seguito alle segnalazioni.</li>
+        <li><strong>Relazioni di trasparenza (art. 15):</strong> le piattaforme devono pubblicare relazioni sulle proprie attività di moderazione dei contenuti.</li>
+        <li><strong>Motivazione delle decisioni (art. 17):</strong> ogni rimozione o limitazione deve essere spiegata all'utente, indicando anche se sono stati usati strumenti automatizzati.</li>
+        <li><strong>Sistema di reclamo (art. 20):</strong> gli utenti devono poter contestare le decisioni di moderazione.</li>
+        <li><strong>Valutazione dei rischi (art. 34):</strong> le piattaforme di dimensioni molto grandi (oltre 45 milioni di utenti mensili nell'UE) devono valutare i rischi sistemici.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Perché l'open source conta per la conformità</h2>
+      <p>
+        Ecco una domanda che ogni responsabile della conformità al DSA dovrebbe porsi: se la tua
+        piattaforma di moderazione è una scatola nera proprietaria, come puoi dimostrare a
+        un'autorità che cosa fa?
+      </p>
+      <p>
+        Le piattaforme proprietarie possono dichiarare di moderare i contenuti, ma non puoi
+        ispezionarne la logica. Non puoi verificare che trattino i contenuti correttamente. Non
+        puoi sottoporre a audit il loro processo decisionale. Ti fidi delle loro dichiarazioni, e
+        quella fiducia potrebbe non bastare a un'autorità di vigilanza.
+      </p>
+      <p>
+        La moderazione open source risolve il problema. Ogni riga di codice è verificabile. Ogni
+        decisione è tracciabile. Il tuo team di compliance può controllare esattamente come vengono
+        moderati i contenuti, quali criteri vengono applicati e dove finiscono i risultati.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Costruire una pipeline di moderazione conforme al DSA</h2>
+      <p>Ecco come si presenta una configurazione conforme al DSA con OpenModeration:</p>
+      <ol>
+        <li><strong>Acquisizione dei contenuti:</strong> i contenuti arrivano tramite API, webhook o connettori social. Ogni elemento riceve un ID univoco e viene archiviato cifrato.</li>
+        <li><strong>Moderazione con IA:</strong> il contenuto viene indirizzato al fornitore più adatto. I risultati includono i punteggi per categoria e una decisione segnalato/non segnalato.</li>
+        <li><strong>Valutazione delle regole:</strong> le tue regole combinano parole vietate per il blocco immediato, soglie per categoria per le decisioni automatiche e la carta della community che hai scritto tu.</li>
+        <li><strong>Registro di audit:</strong> ogni passaggio viene registrato: contenuto, fornitore, punteggi, regola applicata, azione eseguita, data e ora.</li>
+        <li><strong>Esportazione per la trasparenza:</strong> GET /v1/analytics/usage fornisce i dati necessari per le relazioni di trasparenza previste dal DSA.</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Rispondere ai singoli obblighi del DSA</h2>
+      <p>
+        <strong>Registro di audit:</strong> OpenModeration registra ogni moderazione con fornitore, latenza, punteggi e decisione.
+        I dati vengono conservati secondo la politica che hai configurato (per impostazione predefinita 7 giorni per il testo in ingresso e 90 giorni per i log).
+        Tutto è esportabile per gli audit delle autorità.
+      </p>
+      <p>
+        <strong>Relazioni di trasparenza:</strong> l'API di analytics fornisce i dati di utilizzo per periodo, fornitore e categoria.
+        Richieste totali, tassi di segnalazione, prestazioni dei fornitori: esattamente ciò che chiedono le relazioni di trasparenza del DSA.
+      </p>
+      <p>
+        <strong>Sovranità dei dati:</strong> ospita la piattaforma in proprio, sulla tua infrastruttura. Tutti i dati restano sotto il tuo controllo.
+        Nessun trattamento da parte di terzi. Un requisito essenziale per la conformità al GDPR e per le valutazioni dei rischi previste dal DSA.
+      </p>
+      <p>
+        <strong>Revisione umana:</strong> la coda di revisione manuale permette ai moderatori umani di gestire i casi limite,
+        soddisfacendo gli obblighi del DSA in materia di gestione dei reclami e di ricorsi.
+      </p>
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Per approfondire</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/it/conformita-dsa" class="font-medium text-brand-600 hover:text-brand-500">Conformità DSA: registro di audit e relazioni di trasparenza &rarr;</a></li>
+        <li><a href="/it/prodotto/trasparenza" class="font-medium text-brand-600 hover:text-brand-500">Ogni commento nascosto ha la sua motivazione scritta &rarr;</a></li>
+        <li><a href="/it/prezzi" class="font-medium text-brand-600 hover:text-brand-500">Inizia gratis, passa al piano superiore quando cresci &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

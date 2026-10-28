@@ -1,0 +1,121 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FAQ from '../../components/FAQ.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const faqItems = [
+  {
+    question: "¿Tengo que saber programar para configurar las reglas de moderación?",
+    answer: "No. OpenModeration funciona con tres herramientas sencillas: palabras prohibidas para bloquear al instante, umbrales por categoría para automatizar las decisiones y unas normas de la comunidad que redactas en lenguaje natural. El motor de acciones se encarga de aplicarlas automáticamente, sin código.",
+  },
+  {
+    question: "¿Puedo corregir manualmente una decisión de la IA?",
+    answer: "Sí. La consola de moderación tiene una cola de revisión para tu equipo. Los moderadores ven el contenido señalado y el razonamiento de la IA, y aprueban, rechazan o corrigen la decisión. Cada corrección queda registrada.",
+  },
+  {
+    question: "¿OpenModeration es realmente gratis?",
+    answer: "Sí, OpenModeration es de código abierto bajo licencia AGPL v3. La versión autoalojada no tiene límites de uso, ni costes ocultos, ni funcionalidades restringidas, y puedes ejecutarla en tu propia infraestructura indefinidamente sin pagar nada. La nube gestionada también tiene un plan gratuito, de hasta 1000 solicitudes al mes.",
+  },
+  {
+    question: "¿En qué se diferencia de la API de moderación de OpenAI?",
+    answer: "La API de moderación de OpenAI te ata a un único proveedor y no te deja ver cómo funciona la moderación. OpenModeration trabaja con varios proveedores (OpenAI, Azure, HuggingFace, Mistral, LLM personalizados), admite tus propias claves (BYOK), es de código abierto, ofrece una consola para la revisión e incluye un motor de acciones para automatizar los flujos de trabajo.",
+  },
+  {
+    question: "¿En qué se diferencia de Nima (Tremau)?",
+    answer: "Nima (Tremau) es una plataforma propietaria y de código cerrado que obliga a compartir los datos de tu contenido con su infraestructura. OpenModeration es de código abierto, te permite usar tus propias claves de API y puede autoalojarse con un solo comando docker-compose: tus datos se quedan en tu infraestructura.",
+  },
+  {
+    question: "¿En qué se diferencia de Checkstep?",
+    answer: "Checkstep es un SaaS propietario. OpenModeration es de código abierto (AGPL v3), está diseñado desde el principio en torno a su API y pensado para desarrolladores que quieren integrar la moderación directamente en su stack sin depender de un proveedor ni pagar en función del uso.",
+  },
+  {
+    question: "¿Qué significa cumplir con la DSA?",
+    answer: "OpenModeration ofrece un registro de auditoría completo de todas las decisiones de moderación, políticas de conservación de datos configurables e informes exportables, lo que ayuda a las plataformas a cumplir los requisitos de transparencia y rendición de cuentas de la Ley de Servicios Digitales de la UE (DSA).",
+  },
+  {
+    question: "¿Puedo usar mis propias claves de API?",
+    answer: "Sí, BYOK (usar tus propias claves) es una funcionalidad central. Puedes configurar las claves de API en tres niveles: global (compartidas entre todos los espacios de trabajo), por espacio de trabajo (definidas por el administrador de cada organización) y por clave de API (prevalece sobre cualquier otro ajuste de claves).",
+  },
+  {
+    question: "¿Puedo autoalojarlo?",
+    answer: "Sí. Con un solo comando docker-compose up obtienes una instancia completa con PostgreSQL y Redis. No hay telemetría, ni conexiones a nuestros servidores, ni dependencias ocultas: los datos y la infraestructura son tuyos.",
+  },
+  {
+    question: "¿Ofrecéis una nube gestionada?",
+    answer: "Sí, nuestro SaaS en la nube gestionada empieza en 99 €/mes. Incluye 10.000 solicitudes al mes, nos ocupamos de la infraestructura, y tienes claves de proveedor gestionadas por la plataforma, infraestructura alojada en la UE, soporte prioritario y SLA. Consulta la página de precios para ver todos los detalles.",
+  },
+  {
+    question: "¿Cuánto se tarda en sacarle partido?",
+    answer: "Unos minutos si usas la API REST para una moderación básica. Unas pocas horas para desplegar la plataforma completa con la consola, el motor de acciones y los conectores siguiendo la guía de inicio rápido. Tu equipo de operaciones puede empezar a revisar contenido de inmediato.",
+  },
+  {
+    question: "¿Qué proveedores son compatibles?",
+    answer: "Admitimos OpenAI (incluido GPT-4o), Azure OpenAI Service, los endpoints de inferencia de HuggingFace, Mistral AI y cualquier proveedor de LLM compatible con OpenAI (incluido Claude a través de la API de Anthropic). Cada proveedor puede configurarse con modelos y parámetros personalizados.",
+  },
+  {
+    question: "¿Puedo añadir categorías personalizadas?",
+    answer: "Sí, mediante la moderación basada en LLM con prompts personalizados. A diferencia de los clasificadores tradicionales por categorías, puedes definir cualquier categoría de moderación con prompts en lenguaje natural y adaptar así la moderación a tus propias políticas de contenido.",
+  },
+  {
+    question: "¿Y las imágenes y los vídeos?",
+    answer: "La versión actual se centra en la moderación de texto. La moderación de imágenes y vídeos está en la hoja de ruta y se apoyará en proveedores de LLM multimodales a medida que estén disponibles.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://www.openmoderation.com/es/preguntas-frecuentes",
+      "url": "https://www.openmoderation.com/es/preguntas-frecuentes",
+      "name": "Preguntas frecuentes sobre moderación de contenido: precios, alojamiento y DSA",
+      "inLanguage": "es",
+      "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://www.openmoderation.com/es/preguntas-frecuentes#faq",
+      "inLanguage": "es",
+      "mainEntity": faqItems.map(item => ({
+        "@type": "Question",
+        "name": item.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": item.answer.replace(/&mdash;/g, '—')
+        }
+      }))
+    }
+  ]
+};
+---
+
+<BaseLayout
+  title="Preguntas frecuentes: precios, alojamiento y DSA | OpenModeration"
+  description="Respuestas a las preguntas más habituales sobre OpenModeration: precios, autoalojamiento, BYOK, cumplimiento de la DSA, proveedores compatibles e integración."
+  jsonLd={faqJsonLd}
+>
+<Breadcrumb items={[{ label: "Inicio", href: "/es" }, { label: "Preguntas frecuentes" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Preguntas frecuentes</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Las respuestas a las preguntas más habituales sobre OpenModeration. Si no encuentras la tuya, escríbenos en GitHub.
+      </p>
+      <div class="mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">
+          Pruébalo gratis
+        </a>
+        <a href="/es/precios" class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">
+          Ver precios
+        </a>
+      </div>
+      <p class="mt-4 text-sm text-surface-400">Sin tarjeta de crédito</p>
+    </div>
+  </section>
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ items={faqItems} disableJsonLd />
+    </div>
+  </section>
+</BaseLayout>

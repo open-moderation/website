@@ -1,0 +1,120 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "DSA-Konformität leicht gemacht mit Open-Source-Moderation",
+  "description": "Wie Sie die Anforderungen des Digital Services Act mit Open-Source-Tools erfüllen: Audit-Trails, Transparenzberichte und Datensouveränität.",
+  "inLanguage": "de",
+  "datePublished": "2026-06-08",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/de/blog/dsa-konformitaet-open-source-moderation" },
+  "dateModified": "2026-06-08"
+};
+---
+
+<BaseLayout title="DSA-Konformität mit Open-Source-Moderation" description="So erfüllen Sie die Anforderungen des Digital Services Act mit Open-Source-Tools: Audit-Trail, Transparenzberichte und Datensouveränität." jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Startseite", href: "/de" }, { label: "Blog", href: "/de/blog" }, { label: "DSA-Konformität mit Open Source" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-06-08">8. Juni 2026</time>
+        <span>&middot;</span>
+        <span>6 Min. Lesezeit</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">DSA-Konformität leicht gemacht mit Open-Source-Moderation</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Der Digital Services Act (DSA) der EU gilt seit 2024 vollständig, und seine Auswirkungen
+        sind in der Tech-Branche noch immer deutlich zu spüren. Jeder Dienst, der Nutzerinhalte für Menschen in der EU hostet,
+        muss unabhängig von seinem Sitz auf Meldungen rechtswidriger Inhalte reagieren, seine Moderationsentscheidungen
+        begründen und Nutzern den Widerspruch dagegen ermöglichen.
+        Die Bußgelder können bis zu 6 % des weltweiten Jahresumsatzes erreichen.
+      </p>
+      <p>
+        Für viele Plattformen stellt der DSA eine grundlegende Herausforderung dar: Wie beweisen Sie den Aufsichtsbehörden,
+        dass Ihr Moderationssystem funktioniert? Dafür braucht es drei Dinge: eine automatisierte Moderationspipeline,
+        einen lückenlosen Audit-Trail und die Möglichkeit, Transparenzberichte zu erstellen.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Die DSA-Anforderungen im Überblick</h2>
+      <p>Der DSA schreibt keine bestimmte Technologie vor. Er verlangt Ergebnisse:</p>
+      <ul>
+        <li><strong>Melde- und Abhilfeverfahren (Art. 16):</strong> Nutzer müssen Inhalte melden können. Plattformen müssen auf Meldungen reagieren.</li>
+        <li><strong>Transparenzberichte (Art. 15):</strong> Plattformen müssen Berichte über ihre Moderationstätigkeit veröffentlichen.</li>
+        <li><strong>Begründung (Art. 17):</strong> Jede Entfernung oder Einschränkung muss dem Nutzer erklärt werden, einschließlich der Angabe, ob automatisierte Mittel eingesetzt wurden.</li>
+        <li><strong>Beschwerdesystem (Art. 20):</strong> Nutzer müssen Moderationsentscheidungen anfechten können.</li>
+        <li><strong>Risikobewertung (Art. 34):</strong> Sehr große Plattformen (mehr als 45 Millionen monatliche Nutzer in der EU) müssen systemische Risiken bewerten.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Warum Open Source für die Compliance zählt</h2>
+      <p>
+        Diese Frage sollten sich DSA-Compliance-Verantwortliche stellen: Wenn Ihre Moderationsplattform
+        eine proprietäre Blackbox ist, wie wollen Sie einer Aufsichtsbehörde nachweisen, was sie tut?
+      </p>
+      <p>
+        Proprietäre Plattformen können behaupten, Inhalte zu moderieren, aber ihre Logik lässt sich nicht einsehen.
+        Sie können nicht überprüfen, ob Inhalte korrekt behandelt werden. Sie können die Entscheidungsfindung nicht auditieren.
+        Sie verlassen sich auf die Aussagen des Anbieters, und dieses Vertrauen reicht einer Aufsichtsbehörde womöglich nicht.
+      </p>
+      <p>
+        Open-Source-Moderation löst dieses Problem. Jede Codezeile ist prüfbar. Jede Entscheidung
+        lässt sich nachvollziehen. Ihr Compliance-Team kann genau verifizieren, wie Inhalte moderiert werden,
+        welche Kriterien gelten und wohin die Ergebnisse fließen.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Eine DSA-konforme Moderationspipeline aufbauen</h2>
+      <p>So sieht ein DSA-konformes Setup mit OpenModeration aus:</p>
+      <ol>
+        <li><strong>Erfassung der Inhalte:</strong> Inhalte kommen per API, Webhook oder Social-Media-Konnektor an. Jedes Element erhält eine eindeutige ID und wird verschlüsselt gespeichert.</li>
+        <li><strong>KI-Moderation:</strong> Weiterleitung an den am besten geeigneten Anbieter. Die Ergebnisse enthalten Scores pro Kategorie und eine Entscheidung „markiert“ oder „nicht markiert“.</li>
+        <li><strong>Regelauswertung:</strong> Ihre Regeln kombinieren verbotene Wörter für die sofortige Sperre, Schwellenwerte pro Kategorie für automatische Entscheidungen und Ihre schriftlichen Community-Richtlinien.</li>
+        <li><strong>Audit-Logging:</strong> Jeder Schritt wird protokolliert: Inhalt, Anbieter, Scores, ausgelöste Regel, ergriffene Maßnahme, Zeitstempel.</li>
+        <li><strong>Transparenz-Export:</strong> GET /v1/analytics/usage liefert die Daten, die Sie für die DSA-Transparenzberichte benötigen.</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Konkrete DSA-Anforderungen erfüllen</h2>
+      <p>
+        <strong>Audit-Trail:</strong> OpenModeration protokolliert jede Moderation mit Anbieter, Latenz, Scores und Entscheidung.
+        Die Daten werden gemäß Ihrer konfigurierten Richtlinie aufbewahrt (standardmäßig 7 Tage für Eingabetexte, 90 Tage für Logs).
+        Alles lässt sich für behördliche Prüfungen exportieren.
+      </p>
+      <p>
+        <strong>Transparenzberichte:</strong> Die Analytics-API liefert Nutzungsdaten nach Zeitraum, Anbieter und Kategorie.
+        Gesamtzahl der Anfragen, Markierungsquoten, Leistung der Anbieter: genau das, was DSA-Transparenzberichte verlangen.
+      </p>
+      <p>
+        <strong>Datensouveränität:</strong> Hosten Sie die Lösung auf Ihrer eigenen Infrastruktur. Alle Daten bleiben unter Ihrer Kontrolle.
+        Keine Datenverarbeitung durch Dritte. Das ist unverzichtbar für die DSGVO-Konformität und die Risikobewertungen nach dem DSA.
+      </p>
+      <p>
+        <strong>Manuelle Prüfung:</strong> Über die Prüfwarteschlange bearbeiten menschliche Moderatoren Grenzfälle
+        und erfüllen damit die DSA-Anforderungen an die Bearbeitung von Beschwerden und Einsprüchen.
+      </p>
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Weiterlesen</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/de/dsa-konformitaet" class="font-medium text-brand-600 hover:text-brand-500">DSA-Konformität: Audit-Trail und Transparenzberichte &rarr;</a></li>
+        <li><a href="/de/produkt/transparenz" class="font-medium text-brand-600 hover:text-brand-500">Zu jedem ausgeblendeten Kommentar gibt es eine schriftliche Begründung &rarr;</a></li>
+        <li><a href="/de/preise" class="font-medium text-brand-600 hover:text-brand-500">Kostenlos starten, upgraden, wenn Sie wachsen &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

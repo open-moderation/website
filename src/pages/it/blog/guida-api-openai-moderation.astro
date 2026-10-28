@@ -1,0 +1,190 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import FAQ from '../../../components/FAQ.astro';
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "API OpenAI Moderation: omni-moderation-latest, categorie, prezzi e limiti",
+  "description": "Guida pratica all'API OpenAI Moderation: cosa rileva omni-moderation-latest, le 13 categorie, il formato della risposta, se è gratuita e cosa lascia a te.",
+  "inLanguage": "it",
+  "datePublished": "2026-10-20",
+  "dateModified": "2026-10-20",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/it/blog/guida-api-openai-moderation" }
+};
+
+const categories = [
+  { id: "harassment", desc: "Linguaggio molesto nei confronti di qualsiasi bersaglio.", inputs: "Testo" },
+  { id: "harassment/threatening", desc: "Molestie che includono anche violenza o danni gravi nei confronti di qualsiasi bersaglio.", inputs: "Testo" },
+  { id: "hate", desc: "Odio basato su razza, genere, etnia, religione, nazionalità, orientamento sessuale, disabilità o casta. I contenuti d'odio rivolti a gruppi non protetti rientrano nelle molestie.", inputs: "Testo" },
+  { id: "hate/threatening", desc: "Contenuti d'odio che includono anche violenza o danni gravi nei confronti del gruppo preso di mira.", inputs: "Testo" },
+  { id: "illicit", desc: "Consigli o istruzioni su come commettere atti illeciti.", inputs: "Testo" },
+  { id: "illicit/violent", desc: "Contenuti illeciti che fanno anche riferimento alla violenza o al procurarsi un'arma.", inputs: "Testo" },
+  { id: "self-harm", desc: "Contenuti che promuovono, incoraggiano o rappresentano atti di autolesionismo.", inputs: "Testo e immagini" },
+  { id: "self-harm/intent", desc: "Chi scrive dichiara di praticare, o di voler praticare, atti di autolesionismo.", inputs: "Testo e immagini" },
+  { id: "self-harm/instructions", desc: "Contenuti che incoraggiano l'autolesionismo o danno istruzioni su come praticarlo.", inputs: "Testo e immagini" },
+  { id: "sexual", desc: "Contenuti pensati per suscitare eccitazione sessuale o che promuovono servizi sessuali (esclusi educazione sessuale e benessere).", inputs: "Testo e immagini" },
+  { id: "sexual/minors", desc: "Contenuti sessuali che coinvolgono una persona di età inferiore ai 18 anni.", inputs: "Testo" },
+  { id: "violence", desc: "Contenuti che rappresentano morte, violenza o lesioni fisiche.", inputs: "Testo e immagini" },
+  { id: "violence/graphic", desc: "Contenuti che rappresentano morte, violenza o lesioni fisiche in modo crudo e dettagliato.", inputs: "Testo e immagini" },
+];
+
+const curlExample = `curl https://api.openai.com/v1/moderations \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer \$OPENAI_API_KEY" \
+  -d '{
+    "model": "omni-moderation-latest",
+    "input": "Il commento che vuoi verificare"
+  }'`;
+
+const faqItems = [
+  {
+    question: "L'API OpenAI Moderation è gratuita?",
+    answer: "Sì. OpenAI dichiara che l'endpoint di moderazione è gratuito. Le immagini possono pesare fino a 20 MB.",
+  },
+  {
+    question: "Che cos'è omni-moderation-latest?",
+    answer: "omni-moderation-latest è l'attuale modello di moderazione di OpenAI. Accetta testo e immagini, ma non classifica l'audio.",
+  },
+  {
+    question: "Quali categorie rileva l'API OpenAI Moderation?",
+    answer: "Tredici: harassment, harassment/threatening, hate, hate/threatening, illicit, illicit/violent, self-harm, self-harm/intent, self-harm/instructions, sexual, sexual/minors, violence e violence/graphic. Sei di queste valgono anche per le immagini.",
+  },
+  {
+    question: "Cosa non fa l'API OpenAI Moderation?",
+    answer: "Restituisce punteggi e segnalazioni, niente di più. Decidere cosa nascondere, scrivere le regole della tua community, esaminare i casi dubbi, spiegare ogni decisione all'autore e tenere un registro di audit per il DSA resta compito tuo. OpenModeration aggiunge questo livello sopra omni-moderation-latest e altri modelli.",
+  },
+];
+---
+
+<BaseLayout title="API OpenAI Moderation (omni-moderation-latest): categorie e prezzi" description="Come funziona l'API OpenAI Moderation: cosa rileva omni-moderation-latest, le 13 categorie, la risposta, se è gratuita e cosa resta da fare a te." ogType="article" jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Home", href: "/it" }, { label: "Blog", href: "/it/blog" }, { label: "Guida all'API OpenAI Moderation" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-20">20 ottobre 2026</time>
+        <span>&middot;</span>
+        <span>6 min di lettura</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">API OpenAI Moderation: omni-moderation-latest, categorie, prezzi e limiti</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        L'API OpenAI Moderation ti dice se un testo o un'immagine è potenzialmente dannoso e in quale
+        categoria rientra. È gratuita, veloce da chiamare ed è spesso il primo passo per i team che devono
+        moderare i contenuti degli utenti. Questa guida riassume cosa rileva, cosa restituisce e cosa ti
+        lascia da costruire.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">In breve</h2>
+      <ul>
+        <li><strong>Modello:</strong> <code>omni-moderation-latest</code>, che accetta testo e immagini. Non classifica l'audio.</li>
+        <li><strong>Prezzo:</strong> gratuito. OpenAI afferma che «l'endpoint di moderazione è gratuito», e i file immagine possono pesare fino a 20 MB.</li>
+        <li><strong>Output:</strong> un booleano <code>flagged</code> e, per ogni categoria, un booleano e un punteggio di confidenza compreso tra 0 e 1.</li>
+        <li><strong>Categorie:</strong> 13, di cui sei valgono anche per le immagini.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Come chiamarla</h2>
+      <p>
+        Invia una richiesta POST all'endpoint <code>/v1/moderations</code> con il nome del modello e il tuo contenuto.
+      </p>
+      <pre class="overflow-x-auto rounded-lg bg-ink-900 p-4 text-sm text-surface-100"><code set:text={curlExample} /></pre>
+      <p>
+        Puoi anche attivare la moderazione inline tramite il parametro <code>moderation</code> della
+        Responses API. In quel caso il risultato contiene due sezioni separate, <code>input</code> e
+        <code>output</code>, e ciascuna può essere un oggetto di errore anziché dei punteggi.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Cosa contiene la risposta</h2>
+      <ul>
+        <li><code>flagged</code>: <code>true</code> se il modello classifica il contenuto come potenzialmente dannoso, altrimenti <code>false</code>.</li>
+        <li><code>categories</code>: un booleano per categoria, che indica se quella categoria viene violata.</li>
+        <li><code>category_scores</code>: un punteggio di confidenza per categoria, da 0 a 1. Più è alto, maggiore è la confidenza.</li>
+        <li><code>category_applied_input_types</code>: per ogni categoria, i tipi di input (testo, immagine) a cui si applica il punteggio.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Le 13 categorie</h2>
+      <p>
+        Se invii solo un'immagine, le categorie riservate al testo restituiscono un punteggio di 0.
+      </p>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Categoria</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Cosa copre</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Input</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {categories.map((c) => (
+            <tr>
+              <td class="px-4 py-3 font-mono text-xs text-surface-900">{c.id}</td>
+              <td class="px-4 py-3 text-surface-600">{c.desc}</td>
+              <td class="px-4 py-3 text-surface-500">{c.inputs}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">Punti da tenere a mente</h2>
+      <ul>
+        <li>OpenAI avverte che le policy personalizzate basate su <code>category_scores</code> potrebbero richiedere una ricalibrazione nel tempo, man mano che il modello evolve.</li>
+        <li>Con la moderazione inline, i punteggi non sono inclusi nei delta parziali dell'output in streaming.</li>
+        <li>Con le chiamate a strumenti, vengono moderati gli argomenti e gli output degli strumenti, ma non i nomi, le descrizioni e gli schemi degli strumenti.</li>
+        <li>Non inviare all'API Moderation materiale pedopornografico noto o sospetto.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Cosa ti lascia da fare l'API Moderation</h2>
+      <p>
+        Un punteggio non è una decisione di moderazione. Una volta ottenuto, devi ancora stabilire dove
+        fissare la soglia di ogni categoria, cosa fare dei commenti che stanno nel mezzo, come applicare le
+        regole specifiche della tua community e come spiegare ogni rimozione all'autore. Ai sensi del Digital
+        Services Act, i servizi di hosting devono fornire una motivazione chiara e specifica per ogni
+        rimozione e indicare se sono stati usati strumenti automatizzati.
+      </p>
+      <p>
+        OpenModeration mantiene <code>omni-moderation-latest</code> tra i suoi modelli e aggiunge il livello
+        mancante: regole scritte in linguaggio semplice, due soglie per categoria con una zona grigia per la
+        revisione umana, una console di moderazione per il tuo team, una motivazione scritta per ogni
+        decisione e un registro di audit completo. Se in seguito vuoi aggiungere Mistral, Azure o un altro
+        fornitore, o passare a uno di questi, lo fai senza riscrivere la tua integrazione.
+      </p>
+      <p class="text-sm text-surface-400">
+        Fonte: <a href="https://developers.openai.com/api/docs/guides/moderation" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">guida di OpenAI sulla moderazione</a> (in inglese), consultata il 20 ottobre 2026.
+      </p>
+    </div>
+
+    <div class="mt-12">
+      <FAQ title="Domande frequenti" items={faqItems} />
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Per approfondire</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/it/alternative/openai-moderation" class="font-medium text-brand-600 hover:text-brand-500">API OpenAI Moderation o OpenModeration &rarr;</a></li>
+        <li><a href="/it/blog/confronto-openai-azure-llama-guard" class="font-medium text-brand-600 hover:text-brand-500">OpenAI, Azure e Llama Guard a confronto &rarr;</a></li>
+        <li><a href="/it/api-moderazione-contenuti" class="font-medium text-brand-600 hover:text-brand-500">Un'unica API di moderazione dei contenuti per tutti i fornitori &rarr;</a></li>
+        <li><a href="/it/conformita-dsa" class="font-medium text-brand-600 hover:text-brand-500">Cosa richiede il DSA per le decisioni di moderazione &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

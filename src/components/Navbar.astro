@@ -1,3 +1,14 @@
+---
+import { getAlternates, getLocale, localeNames, localizePath, locales } from '../i18n/routes';
+import { useTranslations } from '../i18n/ui';
+
+const locale = getLocale(Astro.url.pathname);
+const t = useTranslations(locale);
+const l = (path: string) => localizePath(path, locale);
+const alternates = getAlternates(Astro.url.pathname);
+const switchTargets = locales.map((code) => ({ code, href: alternates[code] ?? localizePath('/', code) }));
+---
+
 <style>
   .om-nav { transition: box-shadow 0.2s ease; }
   .om-nav.scrolled { box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
@@ -54,8 +65,8 @@
 
 <nav class="om-nav glass sticky top-0 z-50 border-b border-surface-200/80 bg-white/92">
   <div class="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8" style="height: 64px;">
-    <a href="/" class="flex items-center gap-2 text-lg font-semibold text-surface-900 shrink-0">
-      <img src="/logo.svg" alt="OpenModeration — home" width="224" height="40" fetchpriority="high" decoding="async" class="h-[2.5rem] w-auto" />
+    <a href={l('/')} class="flex items-center gap-2 text-lg font-semibold text-surface-900 shrink-0">
+      <img src="/logo.svg" alt={t('nav.home')} width="224" height="40" fetchpriority="high" decoding="async" class="h-[2.5rem] w-auto" />
     </a>
 
     <!-- Desktop -->
@@ -64,21 +75,21 @@
       <!-- Product -->
       <div class="om-item relative">
         <button class="om-trigger flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-surface-600 transition hover:bg-surface-100 hover:text-surface-900" aria-haspopup="true">
-          Product <svg class="om-caret h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          {t('nav.product')} <svg class="om-caret h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
         </button>
         <div class="om-mega" role="menu">
           <div class="grid grid-cols-2 gap-6">
             <div>
-              <p class="om-mega-eyebrow">Platform Modules</p>
-              <a href="/product/transparency" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Transparency</strong><br /><span class="text-xs text-surface-500">Every decision explained in writing</span></div></a>
-              <a href="/dashboard" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Moderation Console</strong><br /><span class="text-xs text-surface-500">Review, manage, and track decisions</span></div></a>
-              <a href="/how-it-works" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Action Engine</strong><br /><span class="text-xs text-surface-500">Auto-hide, delete, or flag content</span></div></a>
-              <a href="/connectors" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Platform Integrations</strong><br /><span class="text-xs text-surface-500">Facebook, Instagram, YouTube, WordPress</span></div></a>
+              <p class="om-mega-eyebrow">{t('nav.modules')}</p>
+              <a href={l('/product/transparency')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.transparency')}</strong><br /><span class="text-xs text-surface-500">{t('nav.transparencyDesc')}</span></div></a>
+              <a href={l('/dashboard')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.console')}</strong><br /><span class="text-xs text-surface-500">{t('nav.consoleDesc')}</span></div></a>
+              <a href={l('/how-it-works')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.actionEngine')}</strong><br /><span class="text-xs text-surface-500">{t('nav.actionEngineDesc')}</span></div></a>
+              <a href={l('/connectors')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.integrations')}</strong><br /><span class="text-xs text-surface-500">{t('nav.integrationsDesc')}</span></div></a>
             </div>
             <div>
-              <p class="om-mega-eyebrow">Documentation &amp; Resources</p>
-              <a href="https://api.openmoderation.com/docs" class="om-mega-link" target="_blank"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Documentation</strong><br /><span class="text-xs text-surface-500">Setup guides, API reference</span></div></a>
-              <a href="https://github.com/open-moderation/open-moderation" class="om-mega-link" target="_blank"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-surface-100 text-surface-600"><svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Open Source</strong><br /><span class="text-xs text-surface-500">AGPL v3, community on GitHub</span></div></a>
+              <p class="om-mega-eyebrow">{t('nav.docsResources')}</p>
+              <a href="https://api.openmoderation.com/docs" class="om-mega-link" target="_blank"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.docs')}</strong><br /><span class="text-xs text-surface-500">{t('nav.docsDesc')}</span></div></a>
+              <a href="https://github.com/open-moderation/open-moderation" class="om-mega-link" target="_blank"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-surface-100 text-surface-600"><svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.openSource')}</strong><br /><span class="text-xs text-surface-500">{t('nav.openSourceDesc')}</span></div></a>
             </div>
           </div>
         </div>
@@ -87,27 +98,28 @@
       <!-- Why -->
       <div class="om-item relative">
         <button class="om-trigger flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-surface-600 transition hover:bg-surface-100 hover:text-surface-900" aria-haspopup="true">
-          Why <svg class="om-caret h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          {t('nav.why')} <svg class="om-caret h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
         </button>
         <div class="om-mega" role="menu">
           <div class="grid grid-cols-2 gap-6">
             <div>
-              <p class="om-mega-eyebrow">By Use Case</p>
-              <a href="/use-cases/social-platforms" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Social Platforms</strong><br /><span class="text-xs text-surface-500">Forums, communities, UGC</span></div></a>
-              <a href="/use-cases/ai-applications" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">AI Applications</strong><br /><span class="text-xs text-surface-500">LLM input/output filtering</span></div></a>
-              <a href="/use-cases/marketplaces" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Marketplaces</strong><br /><span class="text-xs text-surface-500">Listings, reviews, classifieds</span></div></a>
-              <a href="/use-cases/gaming" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Gaming</strong><br /><span class="text-xs text-surface-500">Chat, MMOs, live ops</span></div></a>
-              <a href="/use-cases/enterprise-saas" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Enterprise SaaS</strong><br /><span class="text-xs text-surface-500">Compliance, SOC 2, audit</span></div></a>
+              <p class="om-mega-eyebrow">{t('nav.byUseCase')}</p>
+              <a href={l('/use-cases/news-publishers')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.newsPublishers')}</strong><br /><span class="text-xs text-surface-500">{t('nav.newsPublishersDesc')}</span></div></a>
+              <a href={l('/use-cases/social-platforms')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.social')}</strong><br /><span class="text-xs text-surface-500">{t('nav.socialDesc')}</span></div></a>
+              <a href={l('/use-cases/ai-applications')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.ai')}</strong><br /><span class="text-xs text-surface-500">{t('nav.aiDesc')}</span></div></a>
+              <a href={l('/use-cases/marketplaces')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.marketplaces')}</strong><br /><span class="text-xs text-surface-500">{t('nav.marketplacesDesc')}</span></div></a>
+              <a href={l('/use-cases/gaming')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.gaming')}</strong><br /><span class="text-xs text-surface-500">{t('nav.gamingDesc')}</span></div></a>
+              <a href={l('/use-cases/enterprise-saas')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.saas')}</strong><br /><span class="text-xs text-surface-500">{t('nav.saasDesc')}</span></div></a>
             </div>
             <div>
-              <p class="om-mega-eyebrow">Why OpenModeration</p>
-              <a href="/features" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">All Features</strong><br /><span class="text-xs text-surface-500">Complete platform overview</span></div></a>
-              <a href="/build-vs-buy" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Build vs Buy</strong><br /><span class="text-xs text-surface-500">$1-2M saved by not building</span></div></a>
-              <a href="/alternatives/perspective-api" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Perspective API Alternative</strong><br /><span class="text-xs text-surface-500">Sunset 2026 migration</span></div></a>
-              <a href="/alternatives/openai-moderation" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">OpenAI Moderation Alternative</strong><br /><span class="text-xs text-surface-500">Platform vs single API</span></div></a>
-              <a href="/alternatives/azure-content-safety" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Azure Content Safety Alternative</strong><br /><span class="text-xs text-surface-500">No Azure lock-in</span></div></a>
-              <a href="/alternatives/checkstep" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Checkstep Alternative</strong><br /><span class="text-xs text-surface-500">Open source, self-hostable</span></div></a>
-              <a href="/alternatives" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-surface-100 text-surface-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">All comparisons</strong><br /><span class="text-xs text-surface-500">Every alternative, compared</span></div></a>
+              <p class="om-mega-eyebrow">{t('nav.whyOm')}</p>
+              <a href={l('/features')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.features')}</strong><br /><span class="text-xs text-surface-500">{t('nav.featuresDesc')}</span></div></a>
+              <a href={l('/build-vs-buy')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.buildVsBuy')}</strong><br /><span class="text-xs text-surface-500">{t('nav.buildVsBuyDesc')}</span></div></a>
+              <a href={l('/alternatives/perspective-api')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.perspective')}</strong><br /><span class="text-xs text-surface-500">{t('nav.perspectiveDesc')}</span></div></a>
+              <a href={l('/alternatives/openai-moderation')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.openai')}</strong><br /><span class="text-xs text-surface-500">{t('nav.openaiDesc')}</span></div></a>
+              <a href={l('/alternatives/azure-content-safety')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.azure')}</strong><br /><span class="text-xs text-surface-500">{t('nav.azureDesc')}</span></div></a>
+              <a href={l('/alternatives/checkstep')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.checkstep')}</strong><br /><span class="text-xs text-surface-500">{t('nav.checkstepDesc')}</span></div></a>
+              <a href={l('/alternatives')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-surface-100 text-surface-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.allComparisons')}</strong><br /><span class="text-xs text-surface-500">{t('nav.allComparisonsDesc')}</span></div></a>
             </div>
           </div>
         </div>
@@ -116,35 +128,49 @@
       <!-- Resources -->
       <div class="om-item relative">
         <button class="om-trigger flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-surface-600 transition hover:bg-surface-100 hover:text-surface-900" aria-haspopup="true">
-          Resources <svg class="om-caret h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          {t('nav.resources')} <svg class="om-caret h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
         </button>
         <div class="om-mega" role="menu">
           <div class="grid grid-cols-2 gap-6">
             <div>
-              <p class="om-mega-eyebrow">Learn</p>
-              <a href="/blog" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Blog</strong><br /><span class="text-xs text-surface-500">Articles, comparisons, guides</span></div></a>
-              <a href="/faq" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">FAQ</strong><br /><span class="text-xs text-surface-500">Common questions answered</span></div></a>
+              <p class="om-mega-eyebrow">{t('nav.learn')}</p>
+              <a href={l('/blog')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.blog')}</strong><br /><span class="text-xs text-surface-500">{t('nav.blogDesc')}</span></div></a>
+              <a href={l('/faq')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.faq')}</strong><br /><span class="text-xs text-surface-500">{t('nav.faqDesc')}</span></div></a>
             </div>
             <div>
-              <p class="om-mega-eyebrow">Company</p>
-              <a href="/about" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">About</strong><br /><span class="text-xs text-surface-500">Mission, team, open source</span></div></a>
-              <a href="/dsa-compliance" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">DSA Compliance</strong><br /><span class="text-xs text-surface-500">Regulatory requirements</span></div></a>
-              <a href="/terms" class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Legal</strong><br /><span class="text-xs text-surface-500">Privacy, terms, security</span></div></a>
+              <p class="om-mega-eyebrow">{t('nav.company')}</p>
+              <a href={l('/about')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.about')}</strong><br /><span class="text-xs text-surface-500">{t('nav.aboutDesc')}</span></div></a>
+              <a href={l('/dsa-compliance')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.dsa')}</strong><br /><span class="text-xs text-surface-500">{t('nav.dsaDesc')}</span></div></a>
+              <a href={l('/terms')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.legal')}</strong><br /><span class="text-xs text-surface-500">{t('nav.legalDesc')}</span></div></a>
             </div>
           </div>
         </div>
       </div>
 
-      <a href="/pricing" class="rounded-lg px-3 py-2 text-sm font-medium text-surface-600 transition hover:bg-surface-100 hover:text-surface-900">Pricing</a>
+      <a href={l('/pricing')} class="rounded-lg px-3 py-2 text-sm font-medium text-surface-600 transition hover:bg-surface-100 hover:text-surface-900">{t('nav.pricing')}</a>
+      <a href={l('/demo')} class="rounded-lg px-3 py-2 text-sm font-semibold text-brand-700 transition hover:bg-surface-100 hover:text-brand-900">{t('nav.demo')}</a>
     </div>
 
     <!-- Desktop actions -->
     <div class="om-desktop flex items-center gap-2 ml-auto">
+      <div class="om-item relative">
+        <button class="om-trigger flex items-center gap-1 rounded-lg px-2 py-2 text-sm font-medium uppercase text-surface-600 transition hover:bg-surface-100 hover:text-surface-900" aria-haspopup="true" aria-label={t('nav.switchLangLabel')}>
+          <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h18M12 3a15 15 0 010 18M12 3a15 15 0 000 18M12 3a9 9 0 110 18 9 9 0 010-18z"/></svg>
+          {locale}
+        </button>
+        <div class="om-mega" role="menu" style="min-width: 180px;">
+          {switchTargets.map(({ code, href }) => (
+            <a href={href} hreflang={code} lang={code} class="om-mega-link text-sm text-surface-700" aria-current={code === locale ? 'true' : undefined}>
+              <span class={code === locale ? 'font-semibold text-surface-900' : ''}>{localeNames[code]}</span>
+            </a>
+          ))}
+        </div>
+      </div>
       <a href="https://github.com/open-moderation/open-moderation" class="hidden rounded-lg p-2 text-surface-400 transition hover:text-surface-600 lg:block" title="GitHub">
         <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
       </a>
-      <a href="https://app.openmoderation.com/login" class="hidden whitespace-nowrap rounded-lg border border-surface-300 px-4 py-2 text-sm font-medium text-surface-700 transition hover:border-surface-900 hover:text-surface-900 sm:inline-block">Log in</a>
-      <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 whitespace-nowrap rounded-lg bg-brand-900 px-5 py-2 text-sm font-medium text-white shadow-sm hover:bg-brand-800">Try it for free</a>
+      <a href="https://app.openmoderation.com/login" class="hidden whitespace-nowrap rounded-lg border border-surface-300 px-4 py-2 text-sm font-medium text-surface-700 transition hover:border-surface-900 hover:text-surface-900 sm:inline-block">{t('nav.login')}</a>
+      <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 whitespace-nowrap rounded-lg bg-brand-900 px-5 py-2 text-sm font-medium text-white shadow-sm hover:bg-brand-800">{t('nav.signup')}</a>
     </div>
 
     <!-- Mobile hamburger -->
@@ -158,41 +184,49 @@
   <!-- Mobile menu -->
   <div id="om-menu">
     <div class="om-actions-mobile">
-      <a href="https://app.openmoderation.com/signup" style="background:#1e3a8a;color:white">Try it for free</a>
-      <a href="https://app.openmoderation.com/login" style="color:#334155;border:1px solid #cbd5e1">Log in</a>
+      <a href="https://app.openmoderation.com/signup" style="background:#1e3a8a;color:white">{t('nav.signup')}</a>
+      <a href="https://app.openmoderation.com/login" style="color:#334155;border:1px solid #cbd5e1">{t('nav.login')}</a>
     </div>
     <hr style="margin: 0; border-color: #e2e8f0;" />
-    <p style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94a3b8;padding:8px 8px 0;">Product</p>
-    <a href="/features">Features</a>
-    <a href="/product/transparency">Transparency</a>
-    <a href="/dashboard">Moderation Console</a>
-    <a href="/how-it-works">Action Engine</a>
-    <a href="/connectors">Platform Integrations</a>
-    <a href="https://api.openmoderation.com/docs" target="_blank">Documentation</a>
+    <a href={l('/demo')}>{t('nav.demo')}</a>
+    <p style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94a3b8;padding:8px 8px 0;">{t('nav.product')}</p>
+    <a href={l('/features')}>{t('footer.features')}</a>
+    <a href={l('/product/transparency')}>{t('nav.transparency')}</a>
+    <a href={l('/dashboard')}>{t('nav.console')}</a>
+    <a href={l('/how-it-works')}>{t('nav.actionEngine')}</a>
+    <a href={l('/connectors')}>{t('nav.integrations')}</a>
+    <a href="https://api.openmoderation.com/docs" target="_blank">{t('nav.docs')}</a>
     <hr />
-    <p style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94a3b8;padding:8px 8px 0;">Use Cases</p>
-    <a href="/use-cases/social-platforms">Social Platforms</a>
-    <a href="/use-cases/ai-applications">AI Applications</a>
-    <a href="/use-cases/marketplaces">Marketplaces</a>
-    <a href="/use-cases/gaming">Gaming</a>
-    <a href="/use-cases/enterprise-saas">Enterprise SaaS</a>
+    <p style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94a3b8;padding:8px 8px 0;">{t('nav.useCases')}</p>
+    <a href={l('/use-cases/news-publishers')}>{t('nav.newsPublishers')}</a>
+    <a href={l('/use-cases/social-platforms')}>{t('nav.social')}</a>
+    <a href={l('/use-cases/ai-applications')}>{t('nav.ai')}</a>
+    <a href={l('/use-cases/marketplaces')}>{t('nav.marketplaces')}</a>
+    <a href={l('/use-cases/gaming')}>{t('nav.gaming')}</a>
+    <a href={l('/use-cases/enterprise-saas')}>{t('nav.saas')}</a>
     <hr />
-    <a href="/build-vs-buy">Build vs Buy</a>
-    <a href="/alternatives/perspective-api">Perspective API Alternative</a>
-    <a href="/alternatives/openai-moderation">OpenAI Moderation Alternative</a>
-    <a href="/alternatives/mistral-moderation">Mistral Moderation Alternative</a>
-    <a href="/alternatives/hive-moderation">Hive Moderation Alternative</a>
-    <a href="/alternatives/azure-content-safety">Azure Content Safety Alternative</a>
-    <a href="/alternatives/checkstep">Checkstep Alternative</a>
-    <a href="/alternatives">All comparisons</a>
-    <a href="/dsa-compliance">DSA Compliance</a>
-    <a href="/pricing">Pricing</a>
+    <a href={l('/build-vs-buy')}>{t('nav.buildVsBuy')}</a>
+    <a href={l('/alternatives/perspective-api')}>{t('nav.perspective')}</a>
+    <a href={l('/alternatives/openai-moderation')}>{t('nav.openai')}</a>
+    <a href={l('/alternatives/mistral-moderation')}>{t('nav.mistral')}</a>
+    <a href={l('/alternatives/hive-moderation')}>{t('nav.hive')}</a>
+    <a href={l('/alternatives/azure-content-safety')}>{t('nav.azure')}</a>
+    <a href={l('/alternatives/checkstep')}>{t('nav.checkstep')}</a>
+    <a href={l('/alternatives')}>{t('nav.allComparisons')}</a>
+    <a href={l('/dsa-compliance')}>{t('nav.dsa')}</a>
+    <a href={l('/pricing')}>{t('nav.pricing')}</a>
     <hr />
-    <a href="/blog">Blog</a>
-    <a href="/faq">FAQ</a>
-    <a href="/about">About</a>
-    <a href="/terms">Legal</a>
+    <a href={l('/blog')}>{t('nav.blog')}</a>
+    <a href={l('/faq')}>{t('nav.faq')}</a>
+    <a href={l('/about')}>{t('nav.about')}</a>
+    <a href={l('/terms')}>{t('nav.legal')}</a>
     <hr />
+    <p style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94a3b8;padding:8px 8px 0;">{t('nav.switchLang')}</p>
+    <div class="flex flex-wrap gap-2 px-2 pb-2">
+      {switchTargets.map(({ code, href }) => (
+        <a href={href} hreflang={code} lang={code} class={`rounded-md border px-3 py-1.5 text-sm ${code === locale ? 'border-surface-900 font-semibold text-surface-900' : 'border-surface-200 text-surface-600'}`}>{localeNames[code]}</a>
+      ))}
+    </div>
   </div>
 </nav>
 

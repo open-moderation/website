@@ -1,4 +1,9 @@
 ---
+import { getLocale } from '../i18n/routes';
+import { useTranslations } from '../i18n/ui';
+
+const t = useTranslations(getLocale(Astro.url.pathname));
+
 export interface Props {
   title?: string;
   subtitle?: string;
@@ -8,21 +13,15 @@ export interface Props {
 }
 
 const {
-  title = 'Protect your Facebook page in 5 minutes.',
-  subtitle = 'Connect your Page, write your rules in plain language, every hidden comment comes with a written reason.',
-  buttonText = 'Try it for free',
+  title = t('cta.title'),
+  subtitle = t('cta.subtitle'),
+  buttonText = t('cta.button'),
   buttonHref = 'https://app.openmoderation.com/signup',
   dark = true,
 } = Astro.props;
 ---
 
 <section class={`relative overflow-hidden ${dark ? 'bg-brand-900' : 'bg-brand-600'}`}>
-  {dark && (
-    <svg class="pointer-events-none absolute -right-20 -top-20 h-80 w-80 text-surface-800" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="300" cy="50" r="200" fill="currentColor" opacity="0.3" />
-      <circle cx="250" cy="100" r="140" fill="currentColor" opacity="0.2" />
-    </svg>
-  )}
   <div class="relative mx-auto max-w-4xl px-4 py-20 text-center sm:px-6 lg:px-8">
     <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">{title}</h2>
     <p class={`mx-auto mt-4 max-w-2xl text-lg ${dark ? 'text-surface-300' : 'text-brand-100'}`}>{subtitle}</p>
@@ -33,15 +32,15 @@ const {
       </a>
       {!dark && (
         <a href="https://api.openmoderation.com/docs" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-lg border border-white/30 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
-          Read the docs
+          {t('cta.docs')}
         </a>
       )}
     </div>
     <p class={`mt-4 text-sm ${dark ? 'text-surface-300' : 'text-brand-100'}`}>
-      No credit card required
+      {t('cta.noCard')}
     </p>
     <p class={`mt-2 text-sm ${dark ? 'text-surface-400' : 'text-brand-100'}`}>
-      Questions? <a href="mailto:contact@openmoderation.com" class={`underline transition ${dark ? 'hover:text-surface-200' : 'hover:text-white'}`}>contact@openmoderation.com</a>
+      {t('cta.questions')} <a href="mailto:contact@openmoderation.com" class={`underline transition ${dark ? 'hover:text-surface-200' : 'hover:text-white'}`}>contact@openmoderation.com</a>
     </p>
   </div>
 </section>
