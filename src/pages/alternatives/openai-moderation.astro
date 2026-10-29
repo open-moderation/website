@@ -8,7 +8,7 @@ import FAQ from '../../components/FAQ.astro';
 const migrationCode = `# OpenAI Moderation API (direct)
 const openai = new OpenAI({ apiKey: 'sk-...' });
 const mod = await openai.moderations.create({ input: text });
-// Result: OpenAI-specific format, 11 categories, no thresholds
+// Result: OpenAI-specific format, 13 categories, no thresholds
 
 # OpenModeration (unified)
 const result = await fetch('https://api.openmoderation.com/v1/moderation', {
@@ -25,7 +25,7 @@ const result = await fetch('https://api.openmoderation.com/v1/moderation', {
 const comparisonJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "name": "OpenAI Moderation API Alternative: Pricing & Comparison",
+  "name": "OpenAI Moderation API Pricing & Alternatives",
   "description": "OpenModeration is an OpenAI Moderation API alternative that gives you several providers through a single API, with automated rules, human review and DSA audit trails for enterprise compliance.",
 };
 
@@ -76,6 +76,14 @@ const verticals = [
 
 const faqItems = [
   {
+    question: "Is the OpenAI Moderation API free?",
+    answer: "Yes. OpenAI states that its moderation endpoint is free to use. It returns a flagged boolean and a score per category. Deciding what to hide, reviewing borderline cases and keeping an audit trail are left to you."
+  },
+  {
+    question: "What does omni-moderation-latest detect?",
+    answer: "omni-moderation-latest is OpenAI's current moderation model. It accepts text and images and scores 13 categories: harassment, harassment/threatening, hate, hate/threatening, illicit, illicit/violent, self-harm, self-harm/intent, self-harm/instructions, sexual, sexual/minors, violence and violence/graphic."
+  },
+  {
     question: "How much does OpenAI Moderation API cost vs OpenModeration?",
     answer: "OpenAI's moderation endpoint is free, but it only returns scores: no dashboard, no rules, no human review and no audit trail. OpenModeration is free to self-host and keeps using omni-moderation-latest underneath; the managed cloud starts at €99/month for 10K requests."
   },
@@ -107,8 +115,8 @@ const faqItems = [
 ---
 
 <BaseLayout 
-  title="OpenAI Moderation API Alternative: Pricing & Comparison" 
-  description="OpenAI's free endpoint returns scores only. OpenModeration adds 10 providers behind one API, rules, human review and DSA audit trails. Free to start."
+  title="OpenAI Moderation API Pricing & Alternatives (2026)" 
+  description="Is the OpenAI Moderation API free? Yes, but it only returns scores. Compare it with OpenModeration: your rules, human review and a DSA audit trail on top."
   canonical="https://www.openmoderation.com/alternatives/openai-moderation"
   jsonLd={comparisonJsonLd}
 >
@@ -131,6 +139,16 @@ const faqItems = [
       <div class="mt-8 flex items-center justify-center gap-4">
         <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm">Try OpenModeration free</a>
         <a href="#comparison" class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700">See full comparison</a>
+      </div>
+      <div class="mx-auto mt-10 max-w-3xl rounded-xl border border-surface-200 bg-white p-6 text-left shadow-sm">
+        <h2 class="text-base font-semibold text-surface-900">The OpenAI Moderation API in 30 seconds</h2>
+        <ul class="mt-3 space-y-2 text-sm text-surface-600">
+          <li><strong class="text-surface-900">Price:</strong> free. OpenAI states that the moderation endpoint is free to use.</li>
+          <li><strong class="text-surface-900">Model:</strong> <code>omni-moderation-latest</code>, for text and images.</li>
+          <li><strong class="text-surface-900">Categories:</strong> 13, from harassment and hate to self-harm, sexual content and violence.</li>
+          <li><strong class="text-surface-900">What it leaves to you:</strong> rules, human review, explaining decisions to users and the DSA audit trail.</li>
+        </ul>
+        <a href="/blog/openai-moderation-api-guide" class="mt-4 inline-block text-sm font-semibold text-brand-600 hover:text-brand-700">Read the full guide: categories, response format and limits &rarr;</a>
       </div>
     </div>
   </section>

@@ -1,18 +1,18 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ModerationDemo from '../../components/ModerationDemo.astro';
-import { useTranslations } from '../../i18n/ui';
-import { getLocale } from '../../i18n/routes';
+import { BOOKING_URL, useTranslations } from '../../i18n/ui';
+import { getLocale, localizePath } from '../../i18n/routes';
 import CharterSupport from '../../components/CharterSupport.astro';
 import CTASection from '../../components/CTASection.astro';
 import BrowserFrame from '../../components/BrowserFrame.astro';
 import ModerationVerdict from '../../components/ModerationVerdict.astro';
 import KpiBand from '../../components/KpiBand.astro';
-import LogoMarquee from '../../components/LogoMarquee.astro';
 import ClientLogos from '../../components/ClientLogos.astro';
 import FAQ from '../../components/FAQ.astro';
 
-const t = useTranslations(getLocale(Astro.url.pathname));
+const locale = getLocale(Astro.url.pathname);
+const t = useTranslations(locale);
 
 const homeJsonLd = {
   "@context": "https://schema.org",
@@ -23,9 +23,6 @@ const homeJsonLd = {
       "name": "OpenModeration",
       "url": "https://www.openmoderation.com",
       "logo": "https://www.openmoderation.com/logo.svg",
-      "sameAs": [
-        "https://github.com/open-moderation/open-moderation"
-      ],
       "parentOrganization": {
         "@type": "Organization",
         "name": "Logora",
@@ -48,7 +45,6 @@ const homeJsonLd = {
       "description": "Plateforme de modération open source pour les commentaires et les réseaux sociaux. Une API sur plusieurs fournisseurs d'IA, des règles en langage courant, une explication écrite pour chaque décision et un journal d'audit DSA.",
       "inLanguage": "fr",
       "url": "https://www.openmoderation.com/fr",
-      "license": "https://github.com/open-moderation/open-moderation/blob/main/LICENSE",
       "offers": {
         "@type": "Offer", "price": "0", "priceCurrency": "EUR",
         "priceValidUntil": "2027-12-31", "availability": "https://schema.org/InStock"
@@ -59,30 +55,24 @@ const homeJsonLd = {
 };
 
 const kpiItems = [
-  { label: "Commentaires modérés chaque jour", value: "10 M+" },
-  { label: "Commentaires analysés", value: "100 %" },
-  { label: "Protégé en", value: "5 min" },
-  
-  { label: "Décisions expliquées par écrit", value: "100 %" },
+  { label: "Commentaires modérés chaque jour", value: "10 M+" },
+  { label: "Opérationnel en", value: "5 min" },
+  { label: "Modération automatique", value: "24 h/24" },
+  { label: "Décisions expliquées par écrit", value: "100 %" },
 ];
 
-const providerItems = [
-  { name: 'OpenAI', subtitle: 'Moderation API' },
-  { name: 'Azure', subtitle: 'AI Content Safety' },
-  { name: 'HuggingFace', subtitle: 'Llama Guard' },
-  { name: 'Mistral', subtitle: 'Moderation' },
-  { name: 'Google', subtitle: 'Perspective API' },
-  { name: 'Cohere', subtitle: 'Classify' },
-  { name: 'Hive', subtitle: 'AI Moderation' },
-  { name: 'OpenAI', subtitle: 'LLM (GPT-4o)' },
-  { name: 'Anthropic', subtitle: 'LLM (Claude)' },
+const valueItems = [
+  { title: "Votre charte, vos cas limites", text: "On paramètre la modération à partir de votre charte et des cas qui comptent pour vous : ironie, politique, concurrents, expressions locales. Rien de générique." },
+  { title: "Une équipe derrière l'outil", text: "On vous aide à écrire et à affiner vos règles, on regarde les cas douteux avec vous et on ajuste quand votre communauté évolue. Vous avez toujours quelqu'un à qui parler." },
+  { title: "Tout tourne en automatique", text: "Une fois les règles posées, chaque commentaire est traité en quelques secondes, jour et nuit. Votre équipe ne voit que les cas qui demandent un humain." },
+  { title: "Bien moins cher qu'à la main", text: "La modération automatique coûte une fraction d'une équipe de modération interne ou externalisée." },
 ];
 
 
 const faqItems = [
   {
     question: 'Quelle plateforme de modération réunit une console pour les modérateurs, une IA qui comprend le contexte et un journal d\'audit pour la conformité ?',
-    answer: 'OpenModeration réunit les trois. Des modèles d\'IA sensibles au contexte (OpenAI, Azure, Mistral et d\'autres) évaluent chaque commentaire, vos règles décident de ce qui est masqué, publié ou envoyé en revue, vos modérateurs travaillent depuis une seule console, et chaque décision est enregistrée avec une explication écrite pour les audits DSA.',
+    answer: 'OpenModeration réunit les trois. Une IA sensible au contexte lit chaque commentaire, vos règles décident de ce qui est masqué, publié ou envoyé en revue, vos modérateurs travaillent depuis une seule console, et chaque décision est enregistrée avec une explication écrite pour les audits DSA.',
   },
   {
     question: 'Existe-t-il un outil sans code pour écrire des règles de modération, utiliser une classification par IA et conserver un journal d\'audit ?',
@@ -104,8 +94,8 @@ const faqItems = [
 ---
 
 <BaseLayout
-  title="Outil de modération des commentaires par IA | OpenModeration"
-  description="Commentaires haineux et spam font fuir votre communauté. OpenModeration les masque automatiquement sur vos réseaux et WordPress, selon vos règles. Gratuit, sans CB."
+  title="Modération IA des commentaires, conforme DSA | OpenModeration"
+  description="Modération des commentaires par IA selon votre charte, sur votre site et vos réseaux sociaux. Conforme DSA, hébergée dans l'UE, avec un accompagnement humain."
   jsonLd={homeJsonLd}
 >
   <!-- Hero -->
@@ -115,27 +105,29 @@ const faqItems = [
       <div class="mx-auto max-w-3xl text-center">
         <div class="animate-fade-in-up mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600 shadow-sm">
           <span class="flex h-2 w-2 animate-pulse-dot rounded-full bg-accent-500" />
-          Pour Facebook • Instagram • YouTube, sans code
+          Pour les médias, les marques et les réseaux sociaux
         </div>
         <h1 class="animate-fade-in-up text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl lg:text-6xl">
-          Votre communauté, <em class="italic text-brand-800">protégée</em>.
+          Une modération qui applique <em>votre</em> charte.
         </h1>
         <p class="animate-fade-in-up delay-1 mt-6 text-lg leading-relaxed text-surface-500 sm:text-xl">
-          Les commentaires haineux et le spam font fuir votre communauté. OpenModeration les masque
-          automatiquement sur vos réseaux sociaux, selon vos règles, et affiche une explication
-          écrite pour chaque décision.
+          On configure l'IA avec votre charte et vos cas limites, notre équipe vous accompagne,
+          et chaque commentaire est traité automatiquement, pour bien moins cher qu'une modération manuelle.
         </p>
         <div class="animate-fade-in-up delay-2 mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">
+          <a href={BOOKING_URL} target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">
+            Prendre rendez-vous
+          </a>
+          <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">
             Essayer gratuitement
           </a>
-          <a href="/fr/comment-ca-marche" class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">
-            Voir comment ça marche
-            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-          </a>
         </div>
-        <p class="animate-fade-in-up delay-2 mt-4 text-sm text-surface-400">Sans carte bancaire</p>
-        <div class="animate-fade-in-up delay-2 mt-2 flex items-center justify-center gap-6 text-xs text-surface-400">
+        <p class="animate-fade-in-up delay-2 mt-4 text-sm text-surface-400"><a href="#demo" class="underline transition hover:text-surface-600">Ou testez un commentaire tout de suite, sans inscription</a></p>
+        <div class="animate-fade-in-up delay-2 mt-2 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-surface-400">
+          <a href={localizePath('/dsa-compliance', locale)} class="flex items-center gap-1.5 font-semibold text-brand-700 hover:text-brand-600">
+            <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            {t('footer.dsa')}
+          </a>
           <span class="flex items-center gap-1.5">
             
             Conçu et hébergé dans l'UE
@@ -146,7 +138,7 @@ const faqItems = [
           </span>
           <span class="flex items-center gap-1.5">
             <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/></svg>
-            AGPL v3
+            Accompagnement humain inclus
           </span>
         </div>
       </div>
@@ -161,10 +153,24 @@ const faqItems = [
     </div>
   </section>
 
-  <!-- Logo Marquee -->
-  <section class="border-t border-surface-100 bg-white py-8">
-    <p class="mb-4 text-center text-xs font-medium uppercase tracking-wider text-surface-400">Fournisseurs intégrés</p>
-    <LogoMarquee items={providerItems} speed="45s" />
+  <!-- What you get -->
+  <section class="border-t border-surface-100 bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Une modération mise en place avec vous, pas un outil à comprendre seul</h2>
+      </div>
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {valueItems.map((item) => (
+          <div class="rounded-xl border border-surface-200 bg-white p-6 shadow-sm">
+            <h3 class="text-lg font-semibold text-surface-900">{item.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-surface-500">{item.text}</p>
+          </div>
+        ))}
+      </div>
+      <div class="mt-10 text-center">
+        <a href={BOOKING_URL} target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">Prendre rendez-vous pour le voir sur vos commentaires</a>
+      </div>
+    </div>
   </section>
 
   <section id="demo" class="bg-surface-50 py-20">
@@ -212,7 +218,9 @@ const faqItems = [
             <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">
               Essayer gratuitement
             </a>
-            <p class="text-sm text-surface-400">Sans carte bancaire</p>
+            <a href={BOOKING_URL} target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">
+              Prendre rendez-vous
+            </a>
           </div>
         </div>
         <BrowserFrame
@@ -269,6 +277,7 @@ const faqItems = [
         <a href="/fr/integrations/moderation-instagram" class="text-sm font-medium text-brand-600 hover:text-brand-500">Modération automatique sur Instagram &rarr;</a>
         <a href="/fr/console-de-moderation" class="text-sm font-medium text-brand-600 hover:text-brand-500">Console de modération unifiée &rarr;</a>
         <a href="/fr/cas-usage/medias" class="text-sm font-medium text-brand-600 hover:text-brand-500">Modération de commentaires pour les médias &rarr;</a>
+        <a href="/fr/cas-usage/marques-retail" class="text-sm font-medium text-brand-600 hover:text-brand-500">Modération des commentaires pour les marques &rarr;</a>
         <a href="/fr/alternatives/openai-moderation" class="text-sm font-medium text-surface-500 hover:text-surface-700">Comparer avec les alternatives &rarr;</a>
       </div>
     </div>
@@ -401,7 +410,7 @@ const faqItems = [
           Des tarifs simples et transparents
         </h2>
         <p class="mt-4 text-lg text-surface-500">
-          Commencez gratuitement et évoluez à votre rythme. Pas besoin de parler à un commercial.
+          Commencez gratuitement et évoluez à votre rythme. Pour de gros volumes, prenez rendez-vous et on dimensionne l'offre avec vous.
         </p>
       </div>
       <div class="grid gap-8 md:grid-cols-2">

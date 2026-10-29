@@ -12,11 +12,6 @@ export default defineConfig({
     locales: ['en', 'fr', 'es', 'de', 'it'],
     routing: { prefixDefaultLocale: false },
   },
-  integrations: [sitemap({
-    serialize(item) {
-      item.lastmod = new Date().toISOString().split('T')[0];
-      return item;
-    },
-  })],
+  integrations: [sitemap()],
   trailingSlash: 'never'
 });

@@ -3,6 +3,34 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import CTASection from '../../components/CTASection.astro';
 import BrowserFrame from '../../components/BrowserFrame.astro';
+import FAQ from '../../components/FAQ.astro';
+
+const faqItems = [
+  {
+    question: "Can one tool moderate listings, reviews and buyer messages in one place?",
+    answer: "Yes. Listings, reviews and buyer-seller messages go through the same API, the same rules and the same review queue, so your Trust & Safety team works from a single dashboard."
+  },
+  {
+    question: "Can it catch off-platform payment requests and scam links in marketplace chats?",
+    answer: "Yes. Describe the pattern in plain language as a custom category (\"asks to pay outside the platform\", \"shares an external payment link\") and the AI flags it even when scammers rephrase. Known domains and phrases can also be blocked by the word pre-filter before any AI call."
+  },
+  {
+    question: "How do you avoid wrongly removing legitimate seller listings?",
+    answer: "Each rule has two thresholds. Only clear-cut cases are hidden automatically; everything in between goes to human review. Moderators see the reason behind each AI decision, can override it, and every override is logged."
+  },
+  {
+    question: "Can we start with reviews before moderating messages?",
+    answer: "Yes. You choose what you send to OpenModeration. Many teams start with one surface such as reviews, check the results in the dashboard, then add listings and messages with the same rules."
+  },
+  {
+    question: "Can I moderate my entire existing catalog?",
+    answer: "Yes. The batch endpoint processes up to 10,000 items asynchronously, which works well for a first pass over existing listings, reviews and messages. Results are pushed to your webhook when ready."
+  },
+  {
+    question: "What happens to borderline listings?",
+    answer: "You decide per rule: above a threshold, auto-hide or delete; below it, queue for human review in the moderation console. Moderators see the AI's reasoning and can override it, and every override is logged."
+  },
+];
 
 const useCaseJsonLd = {
   "@context": "https://schema.org",
@@ -12,7 +40,7 @@ const useCaseJsonLd = {
 };
 ---
 
-<BaseLayout title="Content Moderation for Marketplaces & E-Commerce" description="Moderate product listings, reviews and seller messages with AI, so buyers can trust your marketplace and you stay compliant." canonical="https://www.openmoderation.com/use-cases/marketplaces" jsonLd={useCaseJsonLd}>
+<BaseLayout title="Marketplace Content Moderation: Listings, Reviews & Messages" description="Moderate listings, reviews and buyer-seller messages in one place: catch scams and off-platform payment requests, review edge cases, keep a DSA audit trail." canonical="https://www.openmoderation.com/use-cases/marketplaces" jsonLd={useCaseJsonLd}>
   <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Use Cases", href: "/use-cases" }, { label: "Marketplaces" }]} />
   <section class="bg-gradient-to-b from-brand-50 to-white py-20">
     <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
@@ -107,32 +135,7 @@ const useCaseJsonLd = {
 
   <section class="bg-white py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="mx-auto max-w-3xl">
-        <h2 class="text-3xl font-bold tracking-tight text-surface-900 text-center">Marketplace moderation FAQs</h2>
-        <div class="mt-8 divide-y divide-surface-200">
-          <details class="group py-5">
-            <summary class="flex cursor-pointer items-center justify-between text-base font-medium text-surface-900">
-              Can I moderate my entire existing catalog?
-              <svg class="h-5 w-5 shrink-0 text-surface-400 transition duration-200 group-open:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
-            </summary>
-            <p class="mt-3 text-sm text-surface-500">Yes. The batch endpoint processes up to 10,000 items asynchronously, which works well for a first pass over existing listings, reviews and messages. Results are pushed to your webhook when ready.</p>
-          </details>
-          <details class="group py-5">
-            <summary class="flex cursor-pointer items-center justify-between text-base font-medium text-surface-900">
-              How do I catch scams that keyword filters miss?
-              <svg class="h-5 w-5 shrink-0 text-surface-400 transition duration-200 group-open:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
-            </summary>
-            <p class="mt-3 text-sm text-surface-500">Scammers constantly rephrase. Use LLM-based moderation with a custom category describing your scam patterns ("payment outside the platform, too-good-to-be-true pricing"), or write them into your community charter for the Action Engine to enforce.</p>
-          </details>
-          <details class="group py-5">
-            <summary class="flex cursor-pointer items-center justify-between text-base font-medium text-surface-900">
-              What happens to borderline listings?
-              <svg class="h-5 w-5 shrink-0 text-surface-400 transition duration-200 group-open:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
-            </summary>
-            <p class="mt-3 text-sm text-surface-500">You decide per rule: above a threshold, auto-hide or delete; below it, queue for human review in the moderation console. Moderators see the AI's reasoning and can override it, and every override is logged.</p>
-          </details>
-        </div>
-      </div>
+      <FAQ items={faqItems} title="Marketplace moderation FAQs" />
     </div>
   </section>
 

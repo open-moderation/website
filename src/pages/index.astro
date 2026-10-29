@@ -1,18 +1,18 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ModerationDemo from '../components/ModerationDemo.astro';
-import { useTranslations } from '../i18n/ui';
-import { getLocale } from '../i18n/routes';
+import { BOOKING_URL, useTranslations } from '../i18n/ui';
+import { getLocale, localizePath } from '../i18n/routes';
 import CharterSupport from '../components/CharterSupport.astro';
 import CTASection from '../components/CTASection.astro';
 import BrowserFrame from '../components/BrowserFrame.astro';
 import ModerationVerdict from '../components/ModerationVerdict.astro';
 import KpiBand from '../components/KpiBand.astro';
-import LogoMarquee from '../components/LogoMarquee.astro';
 import ClientLogos from '../components/ClientLogos.astro';
 import FAQ from '../components/FAQ.astro';
 
-const t = useTranslations(getLocale(Astro.url.pathname));
+const locale = getLocale(Astro.url.pathname);
+const t = useTranslations(locale);
 
 const homeJsonLd = {
   "@context": "https://schema.org",
@@ -23,9 +23,6 @@ const homeJsonLd = {
       "name": "OpenModeration",
       "url": "https://www.openmoderation.com",
       "logo": "https://www.openmoderation.com/logo.svg",
-      "sameAs": [
-        "https://github.com/open-moderation/open-moderation"
-      ],
       "parentOrganization": {
         "@type": "Organization",
         "name": "Logora",
@@ -47,7 +44,6 @@ const homeJsonLd = {
       "operatingSystem": "Linux, Docker",
       "description": "Open-source moderation platform for comments and social pages. One API over several AI providers, rules in plain language, a written reason for every decision and a DSA audit trail.",
       "url": "https://www.openmoderation.com",
-      "license": "https://github.com/open-moderation/open-moderation/blob/main/LICENSE",
       "offers": {
         "@type": "Offer", "price": "0", "priceCurrency": "EUR",
         "priceValidUntil": "2027-12-31", "availability": "https://schema.org/InStock"
@@ -59,29 +55,23 @@ const homeJsonLd = {
 
 const kpiItems = [
   { label: "Comments moderated every day", value: "10M+" },
-  { label: "Comments analysed", value: "100%" },
-  { label: "Protected in", value: "5 min" },
-  
+  { label: "Ready in", value: "5 min" },
+  { label: "Automatic moderation", value: "24/7" },
   { label: "Decisions explained in writing", value: "100%" },
 ];
 
-const providerItems = [
-  { name: 'OpenAI', subtitle: 'Moderation API' },
-  { name: 'Azure', subtitle: 'AI Content Safety' },
-  { name: 'HuggingFace', subtitle: 'Llama Guard' },
-  { name: 'Mistral', subtitle: 'Moderation' },
-  { name: 'Google', subtitle: 'Perspective API' },
-  { name: 'Cohere', subtitle: 'Classify' },
-  { name: 'Hive', subtitle: 'AI Moderation' },
-  { name: 'OpenAI', subtitle: 'LLM (GPT-4o)' },
-  { name: 'Anthropic', subtitle: 'LLM (Claude)' },
+const valueItems = [
+  { title: "Your charter, your edge cases", text: "We set the moderation up from your own charter and the cases that matter to you: irony, politics, competitors, local slang. Nothing generic." },
+  { title: "A team behind the tool", text: "We help you write and tune your rules, look at doubtful cases with you and adjust as your community changes. You always have someone to talk to." },
+  { title: "Everything runs automatically", text: "Once the rules are set, every comment is handled within seconds, day and night. Your team only sees the cases that need a human." },
+  { title: "Far cheaper than doing it by hand", text: "Automatic moderation costs a fraction of an outsourced or in-house moderation team." },
 ];
 
 
 const faqItems = [
   {
     question: 'Which moderation platform combines a moderator dashboard, context-aware AI and audit logs for compliance?',
-    answer: 'OpenModeration brings the three together. Context-aware AI models (OpenAI, Azure, Mistral and others) score each comment, your rules decide what is hidden, published or sent to review, moderators work from one dashboard, and every decision is logged with a written reason for DSA audits.',
+    answer: 'OpenModeration brings the three together. Context-aware AI reads each comment, your rules decide what is hidden, published or sent to review, moderators work from one dashboard, and every decision is logged with a written reason for DSA audits.',
   },
   {
     question: 'Is there a no-code tool that lets me write moderation rules, use AI classification and keep an audit trail?',
@@ -103,8 +93,8 @@ const faqItems = [
 ---
 
 <BaseLayout
-  title="AI Moderation Platform for Comments & Social Pages | OpenModeration"
-  description="OpenModeration hides hateful comments and spam automatically on your social pages and WordPress site, following your rules and explaining every decision."
+  title="AI Comment Moderation, DSA-Compliant | OpenModeration"
+  description="AI comment moderation that applies your own charter on your site and social pages. DSA-compliant, hosted in the EU, with a team to set it up with you."
   jsonLd={homeJsonLd}
 >
   <!-- Hero -->
@@ -114,27 +104,29 @@ const faqItems = [
       <div class="mx-auto max-w-3xl text-center">
         <div class="animate-fade-in-up mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600 shadow-sm">
           <span class="flex h-2 w-2 animate-pulse-dot rounded-full bg-accent-500" />
-          For Facebook, Instagram and YouTube, with no code
+          For news sites, brands and social pages
         </div>
         <h1 class="animate-fade-in-up text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl lg:text-6xl">
-          Your community, <em class="italic text-brand-800">protected</em>.
+          Moderation that follows <em>your</em> charter.
         </h1>
         <p class="animate-fade-in-up delay-1 mt-6 text-lg leading-relaxed text-surface-500 sm:text-xl">
-          Hateful comments and spam drive your community away. OpenModeration hides them
-          automatically across your social pages, following your rules, and shows
-          a written reason for every decision.
+          We set the AI up with your charter and your edge cases, our team stays with you,
+          and every comment is handled automatically, for far less than manual moderation.
         </p>
         <div class="animate-fade-in-up delay-2 mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">
+          <a href={BOOKING_URL} target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">
+            Book a call
+          </a>
+          <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">
             Try it for free
           </a>
-          <a href="/how-it-works" class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">
-            See how it works
-            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-          </a>
         </div>
-        <p class="animate-fade-in-up delay-2 mt-4 text-sm text-surface-400">No credit card required</p>
-        <div class="animate-fade-in-up delay-2 mt-2 flex items-center justify-center gap-6 text-xs text-surface-400">
+        <p class="animate-fade-in-up delay-2 mt-4 text-sm text-surface-400"><a href="#demo" class="underline transition hover:text-surface-600">Or test a comment right now, no sign-up</a></p>
+        <div class="animate-fade-in-up delay-2 mt-2 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-surface-400">
+          <a href={localizePath('/dsa-compliance', locale)} class="flex items-center gap-1.5 font-semibold text-brand-700 hover:text-brand-600">
+            <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            {t('footer.dsa')}
+          </a>
           <span class="flex items-center gap-1.5">
             
             Made and hosted in the EU
@@ -145,7 +137,7 @@ const faqItems = [
           </span>
           <span class="flex items-center gap-1.5">
             <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/></svg>
-            AGPL v3
+            Human support included
           </span>
         </div>
       </div>
@@ -160,10 +152,24 @@ const faqItems = [
     </div>
   </section>
 
-  <!-- Logo Marquee -->
-  <section class="border-t border-surface-100 bg-white py-8">
-    <p class="mb-4 text-center text-xs font-medium uppercase tracking-wider text-surface-400">Integrated Providers</p>
-    <LogoMarquee items={providerItems} speed="45s" />
+  <!-- What you get -->
+  <section class="border-t border-surface-100 bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Moderation set up for you, not a tool to figure out alone</h2>
+      </div>
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {valueItems.map((item) => (
+          <div class="rounded-xl border border-surface-200 bg-white p-6 shadow-sm">
+            <h3 class="text-lg font-semibold text-surface-900">{item.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-surface-500">{item.text}</p>
+          </div>
+        ))}
+      </div>
+      <div class="mt-10 text-center">
+        <a href={BOOKING_URL} target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">Book a call to see it on your comments</a>
+      </div>
+    </div>
   </section>
 
   <section id="demo" class="bg-surface-50 py-20">
@@ -211,7 +217,9 @@ const faqItems = [
             <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">
               Try it for free
             </a>
-            <p class="text-sm text-surface-400">No credit card required</p>
+            <a href={BOOKING_URL} target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">
+              Book a call
+            </a>
           </div>
         </div>
         <BrowserFrame
@@ -268,6 +276,7 @@ const faqItems = [
         <a href="/integrations/instagram" class="text-sm font-medium text-brand-600 hover:text-brand-500">Instagram automoderation &rarr;</a>
         <a href="/dashboard" class="text-sm font-medium text-brand-600 hover:text-brand-500">Unified moderation dashboard &rarr;</a>
         <a href="/use-cases/news-publishers" class="text-sm font-medium text-brand-600 hover:text-brand-500">Comment moderation for news publishers &rarr;</a>
+        <a href="/use-cases/brands-retail" class="text-sm font-medium text-brand-600 hover:text-brand-500">Comment moderation for brands &rarr;</a>
         <a href="/alternatives/openai-moderation" class="text-sm font-medium text-surface-500 hover:text-surface-700">Compare with alternatives &rarr;</a>
       </div>
     </div>
@@ -399,7 +408,7 @@ const faqItems = [
           Simple, transparent pricing
         </h2>
         <p class="mt-4 text-lg text-surface-500">
-          Start free and pay more only as you grow. You don't need to talk to sales.
+          Start free and pay more only as you grow. For larger volumes, book a call and we size it with you.
         </p>
       </div>
       <div class="grid gap-8 md:grid-cols-2">
