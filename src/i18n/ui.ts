@@ -1,5 +1,7 @@
 import type { Locale } from './routes';
 
+export const BOOKING_URL = 'https://calendly.com/pierre-logora/60min';
+
 export const ui = {
   en: {
     'nav.home': 'OpenModeration, home',
@@ -100,6 +102,7 @@ export const ui = {
     'cta.docs': 'Read the docs',
     'cta.noCard': 'No credit card required',
     'cta.questions': 'Questions?',
+    'cta.book': 'Book a call',
     'verdict.aria': 'OpenModeration review queue showing a hidden spam comment with its written reason and activity history',
     'verdict.content': 'Content text',
     'verdict.sample': 'Congratulations! You are our winner of the day; claim your prize by clicking here → cadeau-info.xyz',
@@ -221,6 +224,7 @@ export const ui = {
     'cta.docs': 'Lire la documentation',
     'cta.noCard': 'Sans carte bancaire',
     'cta.questions': 'Une question ?',
+    'cta.book': 'Prendre rendez-vous',
     'verdict.aria': "File de modération OpenModeration : un commentaire de spam masqué, avec son explication écrite et l'historique des actions",
     'verdict.content': 'Texte du contenu',
     'verdict.sample': 'Félicitations ! Vous êtes notre gagnant du jour, réclamez votre cadeau en cliquant ici → cadeau-info.xyz',
@@ -342,6 +346,7 @@ export const ui = {
     'cta.docs': 'Leer la documentación',
     'cta.noCard': 'Sin tarjeta de crédito',
     'cta.questions': '¿Alguna pregunta?',
+    'cta.book': 'Reservar una llamada',
     'verdict.aria': 'Cola de revisión de OpenModeration: un comentario de spam ocultado, con su explicación escrita y el historial de actividad',
     'verdict.content': 'Texto del contenido',
     'verdict.sample': '¡Enhorabuena! Eres nuestro ganador del día; reclama tu premio haciendo clic aquí → cadeau-info.xyz',
@@ -463,6 +468,7 @@ export const ui = {
     'cta.docs': 'Dokumentation lesen',
     'cta.noCard': 'Keine Kreditkarte erforderlich',
     'cta.questions': 'Fragen?',
+    'cta.book': 'Termin vereinbaren',
     'verdict.aria': 'Prüfwarteschlange von OpenModeration: ein ausgeblendeter Spam-Kommentar mit schriftlicher Begründung und Aktivitätsverlauf',
     'verdict.content': 'Inhaltstext',
     'verdict.sample': 'Herzlichen Glückwunsch! Sie sind unser Tagesgewinner. Holen Sie sich Ihren Preis hier → cadeau-info.xyz',
@@ -584,6 +590,7 @@ export const ui = {
     'cta.docs': 'Leggi la documentazione',
     'cta.noCard': 'Nessuna carta di credito richiesta',
     'cta.questions': 'Domande?',
+    'cta.book': 'Prenota una call',
     'verdict.aria': 'Coda di revisione di OpenModeration: un commento di spam nascosto, con la motivazione scritta e la cronologia delle attività',
     'verdict.content': 'Testo del contenuto',
     'verdict.sample': 'Congratulazioni! Sei il nostro vincitore del giorno: ritira il premio cliccando qui → cadeau-info.xyz',

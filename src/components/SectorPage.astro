@@ -1,0 +1,141 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from './Breadcrumb.astro';
+import CharterSupport from './CharterSupport.astro';
+import ClientLogos from './ClientLogos.astro';
+import CTASection from './CTASection.astro';
+import FAQ from './FAQ.astro';
+import { getLocale, localizePath } from '../i18n/routes';
+import { BOOKING_URL, useTranslations } from '../i18n/ui';
+
+export interface Props {
+  title: string;
+  description: string;
+  crumb: string;
+  h1: string;
+  intro: string;
+  problem: string;
+  approach: string;
+  result: string;
+  featuresTitle: string;
+  featuresIntro: string;
+  features: Array<{ title: string; text: string }>;
+  why: Array<{ title: string; text: string }>;
+  faq: Array<{ question: string; answer: string }>;
+  related: Array<{ eyebrow: string; title: string; text: string; href: string }>;
+  ctaTitle: string;
+  ctaSubtitle: string;
+}
+
+const p = Astro.props;
+const locale = getLocale(Astro.url.pathname);
+const t = useTranslations(locale);
+
+const labels = {
+  en: { home: 'Home', useCases: 'Use cases', problem: 'The problem', approach: 'How OpenModeration handles it', result: 'The result', why: 'Why teams choose OpenModeration', faq: 'Frequently asked questions', related: 'Related resources', demo: 'Test a comment now' },
+  fr: { home: 'Accueil', useCases: "Cas d'usage", problem: 'Le problème', approach: "L'approche d'OpenModeration", result: 'Le résultat', why: 'Pourquoi ils choisissent OpenModeration', faq: 'Questions fréquentes', related: 'Ressources associées', demo: 'Tester un commentaire' },
+  es: { home: 'Inicio', useCases: 'Casos de uso', problem: 'El problema', approach: 'El enfoque de OpenModeration', result: 'El resultado', why: 'Por qué eligen OpenModeration', faq: 'Preguntas frecuentes', related: 'Recursos relacionados', demo: 'Probar un comentario' },
+  de: { home: 'Startseite', useCases: 'Anwendungsfälle', problem: 'Das Problem', approach: 'Der Ansatz von OpenModeration', result: 'Das Ergebnis', why: 'Warum sie OpenModeration wählen', faq: 'Häufige Fragen', related: 'Weitere Ressourcen', demo: 'Kommentar testen' },
+  it: { home: 'Home', useCases: "Casi d'uso", problem: 'Il problema', approach: "L'approccio di OpenModeration", result: 'Il risultato', why: 'Perché scelgono OpenModeration', faq: 'Domande frequenti', related: 'Risorse correlate', demo: 'Prova un commento' },
+}[locale];
+
+const pageJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: p.h1,
+  description: p.description,
+  inLanguage: locale,
+  about: { '@id': 'https://www.openmoderation.com/#software' },
+};
+---
+
+<BaseLayout title={p.title} description={p.description} jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: labels.home, href: localizePath('/', locale) }, { label: labels.useCases, href: localizePath('/use-cases', locale) }, { label: p.crumb }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        {labels.useCases}
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">{p.h1}</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">{p.intro}</p>
+      <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a href={BOOKING_URL} target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">{t('cta.book')}</a>
+        <a href={localizePath('/demo', locale)} class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">{labels.demo}</a>
+      </div>
+      <div class="mt-10">
+        <ClientLogos />
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mb-16 grid gap-8 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h2 class="text-lg font-semibold text-surface-900">{labels.problem}</h2>
+          <p class="mt-2 text-sm text-surface-600">{p.problem}</p>
+        </div>
+        <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+          <h2 class="text-lg font-semibold text-brand-700">{labels.approach}</h2>
+          <p class="mt-2 text-sm text-surface-700">{p.approach}</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h2 class="text-lg font-semibold text-surface-900">{labels.result}</h2>
+          <p class="mt-2 text-sm text-surface-600">{p.result}</p>
+        </div>
+      </div>
+
+      <div class="mx-auto max-w-3xl">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">{p.featuresTitle}</h2>
+        <p class="mt-4 text-lg text-surface-500">{p.featuresIntro}</p>
+        <div class="mt-8 space-y-3">
+          {p.features.map((f) => (
+            <div class="rounded-lg border border-surface-200 bg-surface-50 p-4">
+              <p class="text-sm font-medium text-surface-900">{f.title}</p>
+              <p class="mt-1 text-sm text-surface-500">{f.text}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">{labels.why}</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        {p.why.map((w) => (
+          <div class="rounded-xl border border-surface-200 bg-white p-6">
+            <h3 class="font-semibold text-surface-900">{w.title}</h3>
+            <p class="mt-2 text-sm text-surface-500">{w.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title={labels.faq} items={p.faq} />
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8 text-2xl font-bold text-surface-900 sm:text-3xl">{labels.related}</h2>
+      <div class="grid gap-6 md:grid-cols-3">
+        {p.related.map((r) => (
+          <a href={r.href} class="group rounded-xl border border-surface-200 bg-white p-6 transition hover:shadow-md">
+            <div class="mb-2 text-xs font-medium text-brand-600">{r.eyebrow}</div>
+            <h3 class="text-lg font-semibold text-surface-900 group-hover:text-brand-600">{r.title}</h3>
+            <p class="mt-2 text-sm text-surface-500">{r.text}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CTASection title={p.ctaTitle} subtitle={p.ctaSubtitle} />
+</BaseLayout>
