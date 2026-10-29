@@ -2,7 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ModerationDemo from '../../components/ModerationDemo.astro';
 import { BOOKING_URL, useTranslations } from '../../i18n/ui';
-import { getLocale } from '../../i18n/routes';
+import { getLocale, localizePath } from '../../i18n/routes';
 import CharterSupport from '../../components/CharterSupport.astro';
 import CTASection from '../../components/CTASection.astro';
 import BrowserFrame from '../../components/BrowserFrame.astro';
@@ -11,7 +11,8 @@ import KpiBand from '../../components/KpiBand.astro';
 import ClientLogos from '../../components/ClientLogos.astro';
 import FAQ from '../../components/FAQ.astro';
 
-const t = useTranslations(getLocale(Astro.url.pathname));
+const locale = getLocale(Astro.url.pathname);
+const t = useTranslations(locale);
 
 const homeJsonLd = {
   "@context": "https://schema.org",
@@ -94,8 +95,8 @@ const faqItems = [
 ---
 
 <BaseLayout
-  title="KI-Moderation für Kommentare und Social Media | OpenModeration"
-  description="Hasskommentare und Spam vertreiben Ihre Community. OpenModeration blendet sie auf Social Media und WordPress automatisch aus, nach Ihren Regeln und mit Begründung."
+  title="KI-Kommentarmoderation, DSA-konform | OpenModeration"
+  description="KI-Moderation für Kommentare nach Ihren Richtlinien, auf Ihrer Website und in Social Media. DSA-konform, in der EU gehostet, mit persönlicher Begleitung."
   jsonLd={homeJsonLd}
 >
   <!-- Hero -->
@@ -123,7 +124,11 @@ const faqItems = [
           </a>
         </div>
         <p class="animate-fade-in-up delay-2 mt-4 text-sm text-surface-400"><a href="#demo" class="underline transition hover:text-surface-600">Oder testen Sie gleich einen Kommentar, ohne Anmeldung</a></p>
-        <div class="animate-fade-in-up delay-2 mt-2 flex items-center justify-center gap-6 text-xs text-surface-400">
+        <div class="animate-fade-in-up delay-2 mt-2 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-surface-400">
+          <a href={localizePath('/dsa-compliance', locale)} class="flex items-center gap-1.5 font-semibold text-brand-700 hover:text-brand-600">
+            <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            {t('footer.dsa')}
+          </a>
           <span class="flex items-center gap-1.5">
             
             In der EU entwickelt und gehostet
