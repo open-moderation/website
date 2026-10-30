@@ -57,6 +57,19 @@ const onBookPage = Astro.url.pathname.replace(/\/$/, '') === bookPath;
         update();
       }
 
+      // Mesure des conversions dans Umami : ouverture de l'agenda, réservation confirmée, clics vers la page de rendez-vous.
+      const track = (name: string, data?: Record<string, string>) => (window as any).umami?.track(name, data);
+      addEventListener('message', (e) => {
+        if (e.origin === 'https://calendly.com' && e.data?.event === 'calendly.event_scheduled') track('booking_scheduled', { page: location.pathname });
+      });
+      document.addEventListener('click', (event) => {
+        const a = (event.target as HTMLElement).closest<HTMLAnchorElement>('a[href]');
+        if (!a) return;
+        const href = a.getAttribute('href') || '';
+        if (/\/(book-a-call|rendez-vous|reservar-llamada|termin-vereinbaren|prenota-una-call)$/.test(href)) track('booking_page_click', { page: location.pathname, from: a.classList.contains('om-sticky-book') ? 'sticky' : 'link' });
+        if (href.startsWith('https://app.openmoderation.com/signup')) track('signup_click', { page: location.pathname });
+      });
+
       // Les liens Calendly s'ouvrent par-dessus le site ; si le widget ne charge pas, on ouvre un nouvel onglet.
       let calendly: Promise<void> | null = null;
       const loadCalendly = () => calendly ??= new Promise<void>((resolve, reject) => {
@@ -72,7 +85,9 @@ const onBookPage = Astro.url.pathname.replace(/\/$/, '') === bookPath;
       });
       document.addEventListener('click', (event) => {
         const link = (event.target as HTMLElement).closest<HTMLAnchorElement>('a[href^="https://calendly.com/"]');
-        if (!link || link.hasAttribute('data-no-popup') || event.metaKey || event.ctrlKey) return;
+        if (!link) return;
+        track('booking_open', { page: location.pathname });
+        if (link.hasAttribute('data-no-popup') || event.metaKey || event.ctrlKey) return;
         event.preventDefault();
         loadCalendly()
           .then(() => (window as any).Calendly.initPopupWidget({ url: `${link.href}?hide_gdpr_banner=1&primary_color=7c3aed` }))

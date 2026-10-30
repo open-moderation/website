@@ -9,9 +9,10 @@ export default defineConfig({
   },
   i18n: {
     defaultLocale: 'en',
-    locales: ['en', 'fr', 'es', 'de', 'it'],
+    locales: ['en', 'fr', 'es', 'de', 'it', 'pt', 'pl', 'nl'],
     routing: { prefixDefaultLocale: false },
   },
   integrations: [sitemap()],
+  build: { inlineStylesheets: 'always' },
   trailingSlash: 'never'
 });
