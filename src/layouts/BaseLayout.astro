@@ -32,6 +32,21 @@ const locale = getLocale(Astro.url.pathname);
     </main>
     <Footer />
     <script>
+      // Les vidéos ne se téléchargent et ne démarrent qu'une fois visibles, puis se mettent en pause hors de l'écran.
+      const videos = document.querySelectorAll<HTMLVideoElement>('video[data-lazy-video]');
+      if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const vo = new IntersectionObserver((entries) => {
+          entries.forEach((e) => {
+            const v = e.target as HTMLVideoElement;
+            if (e.isIntersecting) { v.preload = 'auto'; v.play().catch(() => {}); } else { v.pause(); }
+          });
+        }, { rootMargin: '200px 0px' });
+        videos.forEach((v) => vo.observe(v));
+      } else {
+        videos.forEach((v) => v.setAttribute('controls', ''));
+      }
+    </script>
+    <script>
       // Fait apparaître titres et cartes au défilement ; sans JS, tout reste visible.
       if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
         const targets = document.querySelectorAll('main section:not(:first-child) h2, main section:not(:first-child) .grid > *');
