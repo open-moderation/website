@@ -1,6 +1,14 @@
 import type { Locale } from './routes';
 
-export const BOOKING_URL = 'https://calendly.com/pierre-logora/60min';
+// Agenda de rendez-vous par langue : chaque visiteur parle à quelqu'un dont c'est la langue (ou en anglais).
+export const BOOKING_URLS = {
+  en: 'https://calendly.com/jesuslogora/1h',
+  fr: 'https://calendly.com/pierre-logora/60min',
+  es: 'https://calendly.com/jesuslogora/1h',
+  de: 'https://calendly.com/sylvia-logora/60min',
+  it: 'https://calendly.com/jesuslogora/1h',
+} as const;
+export const bookingUrl = (locale: string) => BOOKING_URLS[locale as keyof typeof BOOKING_URLS] ?? BOOKING_URLS.en;
 
 export const ui = {
   en: {

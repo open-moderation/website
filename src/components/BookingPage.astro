@@ -3,13 +3,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumb from './Breadcrumb.astro';
 import ClientLogos from './ClientLogos.astro';
 import FAQ from './FAQ.astro';
+import TeamSection from './TeamSection.astro';
 import { getLocale, localizePath } from '../i18n/routes';
-import { BOOKING_URL } from '../i18n/ui';
+import { bookingUrl } from '../i18n/ui';
 
+const BOOKING_URL = bookingUrl(getLocale(Astro.url.pathname));
 const locale = getLocale(Astro.url.pathname);
 
 const copy = {
   en: {
+    contact: { label: 'Your call is with', name: 'Jesús Morillo', role: 'Product owner at Logora', note: '', photo: null },
     title: 'Book a Call: See AI Moderation on Your Comments',
     description: 'A 60-minute call, free and without commitment: we look at your comments, test the moderation on real examples and size the setup with you.',
     home: 'Home', crumb: 'Book a call',
@@ -39,6 +42,7 @@ const copy = {
     ],
   },
   fr: {
+    contact: { label: 'Vous parlerez avec', name: 'Pierre Laburthe-Tolra', role: 'Cofondateur de Logora', note: '', photo: '/images/team/pierre-laburthe-tolra.jpg' },
     title: 'Prendre rendez-vous : la modération sur vos commentaires',
     description: "Un rendez-vous de 60 minutes, gratuit et sans engagement : on regarde vos commentaires, on teste la modération sur de vrais exemples et on dimensionne l'offre.",
     home: 'Accueil', crumb: 'Prendre rendez-vous',
@@ -68,6 +72,7 @@ const copy = {
     ],
   },
   es: {
+    contact: { label: 'Hablarás con', name: 'Jesús Morillo', role: 'Product owner de Logora', note: 'En español, su lengua materna.', photo: null },
     title: 'Reserva una llamada: la moderación en tus comentarios',
     description: 'Una llamada de 60 minutos, gratuita y sin compromiso: revisamos tus comentarios, probamos la moderación con ejemplos reales y dimensionamos la oferta.',
     home: 'Inicio', crumb: 'Reservar una llamada',
@@ -97,6 +102,7 @@ const copy = {
     ],
   },
   de: {
+    contact: { label: 'Sie sprechen mit', name: 'Sylvia Guie-Mien', role: 'Business Development bei Logora', note: 'Auf Deutsch, ihrer Muttersprache.', photo: null },
     title: 'Termin vereinbaren: KI-Moderation für Ihre Kommentare',
     description: 'Ein 60-minütiger Termin, kostenlos und unverbindlich: Wir sehen uns Ihre Kommentare an, testen die Moderation an echten Beispielen und planen mit Ihnen.',
     home: 'Startseite', crumb: 'Termin vereinbaren',
@@ -126,6 +132,7 @@ const copy = {
     ],
   },
   it: {
+    contact: { label: 'Parlerai con', name: 'Jesús Morillo', role: 'Product owner di Logora', note: '', photo: null },
     title: 'Prenota una call: la moderazione sui tuoi commenti',
     description: 'Una call di 60 minuti, gratuita e senza impegno: guardiamo i tuoi commenti, testiamo la moderazione su esempi reali e dimensioniamo l’offerta con te.',
     home: 'Home', crumb: 'Prenota una call',
@@ -177,6 +184,18 @@ const pageJsonLd = {
         <p class="mb-5 inline-flex items-center gap-2 rounded-full border border-violet-200 bg-white/80 px-4 py-1.5 text-sm font-semibold text-violet-700 shadow-sm">📅 {copy.eyebrow}</p>
         <h1 class="text-4xl font-extrabold leading-[1.08] tracking-tight text-surface-900 sm:text-5xl">{copy.h1}</h1>
         <p class="mt-5 text-lg leading-relaxed text-surface-600">{copy.intro}</p>
+        <div class="mt-7 flex items-center gap-4 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-violet-100">
+          {copy.contact.photo ? (
+            <img src={copy.contact.photo} alt={copy.contact.name} width="64" height="64" class="h-16 w-16 rounded-full object-cover ring-4 ring-violet-100" />
+          ) : (
+            <span class="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-violet-400 to-rose-400 font-display text-xl font-bold text-white ring-4 ring-violet-100" aria-hidden="true">{copy.contact.name.split(' ').map((w) => w[0]).join('')}</span>
+          )}
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wider text-violet-600">{copy.contact.label}</p>
+            <p class="font-display text-lg font-bold text-surface-900">{copy.contact.name}</p>
+            <p class="text-sm text-surface-600">{copy.contact.role}{copy.contact.note && <span class="font-semibold text-mint-600"> · {copy.contact.note}</span>}</p>
+          </div>
+        </div>
 
         <h2 class="mt-10 text-xl font-bold text-surface-900">{copy.agendaTitle}</h2>
         <ol class="mt-5 space-y-4">
@@ -221,6 +240,8 @@ const pageJsonLd = {
   <section class="bg-white py-14">
     <ClientLogos />
   </section>
+
+  <TeamSection />
 
   <section class="bg-gradient-to-br from-violet-50 via-white to-sun-50 py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
