@@ -4,9 +4,11 @@ export interface Props {
   alt?: string;
   caption?: string;
   eager?: boolean;
+  /** Nom de base d'une vidéo de public/videos (sans extension) : remplace l'image, qui sert d'affiche de secours. */
+  video?: string;
 }
 
-const { src, alt = '', caption, eager = false } = Astro.props;
+const { src, alt = '', caption, eager = false, video } = Astro.props;
 ---
 
 <figure>
@@ -23,7 +25,23 @@ const { src, alt = '', caption, eager = false } = Astro.props;
       {Astro.slots.has('content') ? (
         <slot name="content" />
       ) : (
-        src && <img src={src} alt={alt} loading={eager ? "eager" : "lazy"} fetchpriority={eager ? "high" : "auto"} decoding="async" class="h-auto w-full" />
+        video ? (
+          <video
+            src={`/videos/${video}.mp4`}
+            poster={`/videos/${video}.jpg`}
+            width="1440"
+            height="810"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            aria-label={alt}
+            class="block aspect-video h-auto w-full object-cover"
+          ></video>
+        ) : (
+          src && <img src={src} alt={alt} loading={eager ? "eager" : "lazy"} fetchpriority={eager ? "high" : "auto"} decoding="async" class="h-auto w-full" />
+        )
       )}
       <slot name="annotation" />
     </div>
