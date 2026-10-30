@@ -4,6 +4,7 @@ import Breadcrumb from './Breadcrumb.astro';
 import CharterSupport from './CharterSupport.astro';
 import ClientLogos from './ClientLogos.astro';
 import AppVideo from './AppVideo.astro';
+import CostCalculator from './CostCalculator.astro';
 import CTASection from './CTASection.astro';
 import FAQ from './FAQ.astro';
 import { getLocale, localizePath } from '../i18n/routes';
@@ -50,6 +51,8 @@ const pageJsonLd = {
   inLanguage: locale,
   about: { '@id': 'https://www.openmoderation.com/#software' },
 };
+const here = Astro.url.pathname.replace(/\/$/, '');
+const showCalculator = ['/outsourced-moderation', '/automatic-comment-moderation', '/moderation-software'].some((r) => localizePath(r, locale) === here);
 const parent = p.parent === undefined ? { label: labels.useCases, href: localizePath('/use-cases', locale) } : p.parent;
 ---
 
@@ -141,6 +144,8 @@ const parent = p.parent === undefined ? { label: labels.useCases, href: localize
       </ul>
     </div>
   </section>
+
+  {showCalculator && <CostCalculator />}
 
   <CharterSupport />
 

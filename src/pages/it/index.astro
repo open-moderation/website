@@ -11,6 +11,7 @@ import KpiBand from '../../components/KpiBand.astro';
 import HeroAnimation from '../../components/HeroAnimation.astro';
 import ValueCards from '../../components/ValueCards.astro';
 import AppVideo from '../../components/AppVideo.astro';
+import CostCalculator from '../../components/CostCalculator.astro';
 import ClientLogos from '../../components/ClientLogos.astro';
 import FAQ from '../../components/FAQ.astro';
 
@@ -26,6 +27,17 @@ const homeJsonLd = {
       "name": "OpenModeration",
       "url": "https://www.openmoderation.com",
       "logo": "https://www.openmoderation.com/logo.svg",
+      "description": "AI comment moderation adapted to each client's rules and use cases, with a team that sets it up. DSA-compliant, hosted in the EU.",
+      "email": "contact@openmoderation.com",
+      "areaServed": "EU",
+      "knowsAbout": ["Comment moderation", "Content moderation", "Social media moderation", "Digital Services Act compliance", "Trust and safety"],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "sales",
+        "email": "contact@openmoderation.com",
+        "url": "https://www.openmoderation.com/book-a-call",
+        "availableLanguage": ["English", "French", "Spanish", "German", "Italian"]
+      },
       "parentOrganization": {
         "@type": "Organization",
         "name": "Logora",
@@ -87,11 +99,11 @@ const faqItems = [
   },
   {
     question: 'Cosa devo cercare in un\'API di moderazione per la conformità aziendale?',
-    answer: 'Cerca una motivazione scritta per ogni decisione (richiesta dall\'articolo 17 del DSA), un registro di audit completo, l\'hosting dei dati nell\'UE, una conservazione configurabile e la possibilità di self-hosting. OpenModeration copre tutti e cinque i punti ed è open source con licenza AGPL v3, quindi la logica decisionale può essere verificata.',
+    answer: 'Cerca una motivazione scritta per ogni decisione (richiesta dall\'articolo 17 del DSA), un registro di audit completo, l\'hosting dei dati nell\'UE, una conservazione configurabile e report esportabili. OpenModeration copre tutti e cinque i punti, e il nostro team imposta le regole con te.',
   },
   {
     question: 'OpenModeration è gratuito?',
-    answer: 'Il piano cloud è gratuito fino a 1.000 richieste al mese, il piano Pro costa 99 € al mese per 10.000 richieste e la versione self-hosted è gratuita perché il codice è open source.',
+    answer: 'Il piano cloud è gratuito fino a 1.000 richieste al mese, il piano Pro costa 99 € al mese per 10.000 richieste. Per grandi volumi o un\'installazione sui tuoi server, prenota una call e dimensioniamo l\'offerta con te.',
   },
 ];
 ---
@@ -342,7 +354,7 @@ const faqItems = [
         </h2>
         <p class="mx-auto mt-4 max-w-xl text-surface-400">
           Ogni decisione di moderazione finisce in un registro di audit completo. Scegli tu quanto a lungo conservare i dati,
-          esporti i report di trasparenza e, se vuoi la piena sovranità sui dati, ospiti la piattaforma in proprio.
+          esporti i report di trasparenza e i tuoi dati restano ospitati nell'UE.
         </p>
         <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 text-sm font-semibold text-surface-900 shadow-sm">
@@ -380,8 +392,6 @@ const faqItems = [
             </tr>
           </thead>
           <tbody class="divide-y divide-surface-200 bg-white">
-            <tr><td class="px-6 py-4 text-surface-600">Codice verificabile</td><td class="px-6 py-4"><span class="text-accent-600">Sì (AGPL v3)</span></td><td class="px-6 py-4 text-surface-400">No</td><td class="px-6 py-4 text-surface-400">No</td><td class="px-6 py-4 text-surface-400">No</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Installazione on-premise</td><td class="px-6 py-4"><span class="text-accent-600">Sì (Docker)</span></td><td class="px-6 py-4 text-surface-400">Limitata</td><td class="px-6 py-4 text-surface-400">No</td><td class="px-6 py-4 text-surface-500">Non indicato</td></tr>
             <tr><td class="px-6 py-4 text-surface-600">Supporto multi-fornitore</td><td class="px-6 py-4"><span class="text-accent-600">Sì</span></td><td class="px-6 py-4 text-surface-500">Sì</td><td class="px-6 py-4 text-surface-500">Sì</td><td class="px-6 py-4 text-surface-400">No</td></tr>
             <tr><td class="px-6 py-4 text-surface-600">Uso dei tuoi account</td><td class="px-6 py-4"><span class="text-accent-600">Sì</span></td><td class="px-6 py-4 text-surface-400">No</td><td class="px-6 py-4 text-surface-400">No</td><td class="px-6 py-4 text-surface-400">No</td></tr>
             <tr><td class="px-6 py-4 text-surface-600">Policy automatizzate</td><td class="px-6 py-4"><span class="text-accent-600">Sì</span></td><td class="px-6 py-4 text-surface-500">Sì</td><td class="px-6 py-4 text-surface-500">Sì</td><td class="px-6 py-4 text-surface-500">Sì</td></tr>
@@ -402,6 +412,8 @@ const faqItems = [
       </div>
     </div>
   </section>
+
+  <CostCalculator />
 
   <!-- Pricing Preview -->
   <section class="bg-gradient-to-b from-white to-violet-50 py-20">
@@ -447,7 +459,7 @@ const faqItems = [
       </div>
       <p class="mt-4 text-center text-sm text-surface-400">Nessuna carta di credito richiesta · Disdici quando vuoi</p>
       <p class="mt-6 text-center text-sm text-surface-400">
-        Preferisci il self-hosting? <a href="/it/prezzi" class="text-brand-600 hover:text-brand-500">Installalo gratis con Docker &rarr;</a>
+        Ti serve un'installazione sui tuoi server? <a href={BOOKING_URL} target="_blank" rel="noopener" class="text-brand-600 hover:text-brand-500">Parliamone &rarr;</a>
       </p>
       <div class="mt-6 text-center">
         <a href="/it/prezzi" class="text-sm font-medium text-brand-600 hover:text-brand-500">

@@ -11,6 +11,7 @@ import KpiBand from '../../components/KpiBand.astro';
 import HeroAnimation from '../../components/HeroAnimation.astro';
 import ValueCards from '../../components/ValueCards.astro';
 import AppVideo from '../../components/AppVideo.astro';
+import CostCalculator from '../../components/CostCalculator.astro';
 import ClientLogos from '../../components/ClientLogos.astro';
 import FAQ from '../../components/FAQ.astro';
 
@@ -26,6 +27,17 @@ const homeJsonLd = {
       "name": "OpenModeration",
       "url": "https://www.openmoderation.com",
       "logo": "https://www.openmoderation.com/logo.svg",
+      "description": "AI comment moderation adapted to each client's rules and use cases, with a team that sets it up. DSA-compliant, hosted in the EU.",
+      "email": "contact@openmoderation.com",
+      "areaServed": "EU",
+      "knowsAbout": ["Comment moderation", "Content moderation", "Social media moderation", "Digital Services Act compliance", "Trust and safety"],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "sales",
+        "email": "contact@openmoderation.com",
+        "url": "https://www.openmoderation.com/book-a-call",
+        "availableLanguage": ["English", "French", "Spanish", "German", "Italian"]
+      },
       "parentOrganization": {
         "@type": "Organization",
         "name": "Logora",
@@ -87,11 +99,11 @@ const faqItems = [
   },
   {
     question: 'Quels critères retenir pour choisir une API de modération adaptée à la conformité en entreprise ?',
-    answer: 'Vérifiez qu\'elle fournit un exposé des motifs écrit pour chaque décision (exigé par l\'article 17 du DSA), un journal d\'audit complet, un hébergement des données dans l\'UE, une durée de conservation configurable et la possibilité d\'auto-héberger. OpenModeration coche ces cinq cases et est open source sous licence AGPL v3 : la logique de décision peut donc être auditée.',
+    answer: 'Vérifiez qu\'elle fournit un exposé des motifs écrit pour chaque décision (exigé par l\'article 17 du DSA), un journal d\'audit complet, un hébergement des données dans l\'UE, une durée de conservation configurable et des rapports exportables. OpenModeration coche ces cinq cases, et notre équipe paramètre les règles avec vous.',
   },
   {
     question: 'OpenModeration est-il gratuit ?',
-    answer: 'L\'offre cloud est gratuite jusqu\'à 1 000 requêtes par mois, l\'offre Pro coûte 99 € par mois pour 10 000 requêtes, et la version auto-hébergée est gratuite puisque le code est open source.',
+    answer: 'L\'offre cloud est gratuite jusqu\'à 1 000 requêtes par mois, l\'offre Pro coûte 99 € par mois pour 10 000 requêtes. Pour de gros volumes ou un déploiement sur vos serveurs, prenez rendez-vous et on dimensionne l\'offre avec vous.',
   },
 ];
 ---
@@ -344,8 +356,8 @@ const faqItems = [
         </h2>
         <p class="mx-auto mt-4 max-w-xl text-surface-400">
           Chaque décision de modération est enregistrée dans un journal d'audit complet. La durée de conservation
-          des données est configurable, les rapports de transparence sont exportables, et l'auto-hébergement
-          vous garantit une souveraineté totale sur vos données.
+          des données est configurable, les rapports de transparence sont exportables,
+          et vos données restent hébergées dans l'UE.
         </p>
         <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 text-sm font-semibold text-surface-900 shadow-sm">
@@ -383,8 +395,6 @@ const faqItems = [
             </tr>
           </thead>
           <tbody class="divide-y divide-surface-200 bg-white">
-            <tr><td class="px-6 py-4 text-surface-600">Code auditable</td><td class="px-6 py-4"><span class="text-accent-600">Oui (AGPL v3)</span></td><td class="px-6 py-4 text-surface-400">Non</td><td class="px-6 py-4 text-surface-400">Non</td><td class="px-6 py-4 text-surface-400">Non</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Déploiement sur site</td><td class="px-6 py-4"><span class="text-accent-600">Oui (Docker)</span></td><td class="px-6 py-4 text-surface-400">Limité</td><td class="px-6 py-4 text-surface-400">Non</td><td class="px-6 py-4 text-surface-500">Non précisé</td></tr>
             <tr><td class="px-6 py-4 text-surface-600">Plusieurs fournisseurs</td><td class="px-6 py-4"><span class="text-accent-600">Oui</span></td><td class="px-6 py-4 text-surface-500">Oui</td><td class="px-6 py-4 text-surface-500">Oui</td><td class="px-6 py-4 text-surface-400">Non</td></tr>
             <tr><td class="px-6 py-4 text-surface-600">Vos propres comptes</td><td class="px-6 py-4"><span class="text-accent-600">Oui</span></td><td class="px-6 py-4 text-surface-400">Non</td><td class="px-6 py-4 text-surface-400">Non</td><td class="px-6 py-4 text-surface-400">Non</td></tr>
             <tr><td class="px-6 py-4 text-surface-600">Politiques automatisées</td><td class="px-6 py-4"><span class="text-accent-600">Oui</span></td><td class="px-6 py-4 text-surface-500">Oui</td><td class="px-6 py-4 text-surface-500">Oui</td><td class="px-6 py-4 text-surface-500">Oui</td></tr>
@@ -405,6 +415,8 @@ const faqItems = [
       </div>
     </div>
   </section>
+
+  <CostCalculator />
 
   <!-- Pricing Preview -->
   <section class="bg-gradient-to-b from-white to-violet-50 py-20">
@@ -450,7 +462,7 @@ const faqItems = [
       </div>
       <p class="mt-4 text-center text-sm text-surface-400">Sans carte bancaire · Résiliable à tout moment</p>
       <p class="mt-6 text-center text-sm text-surface-400">
-        Vous préférez l'auto-hébergement ? <a href="/fr/tarifs" class="text-brand-600 hover:text-brand-500">Déployez gratuitement avec Docker &rarr;</a>
+        Besoin d'un déploiement sur vos serveurs ? <a href={BOOKING_URL} target="_blank" rel="noopener" class="text-brand-600 hover:text-brand-500">Parlons-en &rarr;</a>
       </p>
       <div class="mt-6 text-center">
         <a href="/fr/tarifs" class="text-sm font-medium text-brand-600 hover:text-brand-500">

@@ -3,7 +3,8 @@ import '../styles/global.css';
 import SEOHead from '../components/SEOHead.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
-import { getLocale } from '../i18n/routes';
+import { getLocale, localizePath } from '../i18n/routes';
+import { useTranslations } from '../i18n/ui';
 
 export interface Props {
   title: string;
@@ -17,6 +18,9 @@ export interface Props {
 
 const { title, description, canonical, ogImage, ogType, jsonLd, robots } = Astro.props;
 const locale = getLocale(Astro.url.pathname);
+const t = useTranslations(locale);
+const bookPath = localizePath('/book-a-call', locale);
+const onBookPage = Astro.url.pathname.replace(/\/$/, '') === bookPath;
 ---
 
 <!doctype html>
@@ -31,6 +35,50 @@ const locale = getLocale(Astro.url.pathname);
       <slot />
     </main>
     <Footer />
+    {!onBookPage && (
+      <a href={bookPath} class="om-sticky-book fixed bottom-4 left-4 right-4 z-40 flex items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-brand-600 via-violet-600 to-rose-500 px-5 py-3 text-white shadow-[0_18px_40px_-12px_rgba(124,58,237,0.6)] transition sm:left-auto sm:right-6 sm:bottom-6 sm:rounded-full" aria-label={t('cta.book')}>
+        <span class="text-lg" aria-hidden="true">📅</span>
+        <span class="flex flex-col leading-tight">
+          <span class="text-sm font-bold">{t('cta.book')}</span>
+          <span class="text-[11px] font-medium text-white/85">{t('cta.bookHint')}</span>
+        </span>
+      </a>
+    )}
+    <script>
+      // Le bouton de rendez-vous flottant apparaît après un peu de lecture et s'efface au-dessus du pied de page.
+      const sticky = document.querySelector<HTMLElement>('.om-sticky-book');
+      if (sticky) {
+        const footer = document.querySelector('footer');
+        const update = () => {
+          const nearFooter = footer ? footer.getBoundingClientRect().top < innerHeight : false;
+          sticky.classList.toggle('is-shown', scrollY > 700 && !nearFooter);
+        };
+        addEventListener('scroll', update, { passive: true });
+        update();
+      }
+
+      // Les liens Calendly s'ouvrent par-dessus le site ; si le widget ne charge pas, on ouvre un nouvel onglet.
+      let calendly: Promise<void> | null = null;
+      const loadCalendly = () => calendly ??= new Promise<void>((resolve, reject) => {
+        const css = document.createElement('link');
+        css.rel = 'stylesheet';
+        css.href = 'https://assets.calendly.com/assets/external/widget.css';
+        document.head.append(css);
+        const js = document.createElement('script');
+        js.src = 'https://assets.calendly.com/assets/external/widget.js';
+        js.onload = () => resolve();
+        js.onerror = () => reject();
+        document.head.append(js);
+      });
+      document.addEventListener('click', (event) => {
+        const link = (event.target as HTMLElement).closest<HTMLAnchorElement>('a[href^="https://calendly.com/"]');
+        if (!link || link.hasAttribute('data-no-popup') || event.metaKey || event.ctrlKey) return;
+        event.preventDefault();
+        loadCalendly()
+          .then(() => (window as any).Calendly.initPopupWidget({ url: `${link.href}?hide_gdpr_banner=1&primary_color=7c3aed` }))
+          .catch(() => window.open(link.href, '_blank', 'noopener'));
+      });
+    </script>
     <script>
       // Les vidéos ne se téléchargent et ne démarrent qu'une fois visibles, puis se mettent en pause hors de l'écran.
       const videos = document.querySelectorAll<HTMLVideoElement>('video[data-lazy-video]');

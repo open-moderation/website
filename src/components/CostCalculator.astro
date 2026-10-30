@@ -1,0 +1,79 @@
+---
+import { getLocale, localizePath } from '../i18n/routes';
+import { useTranslations } from '../i18n/ui';
+
+const locale = getLocale(Astro.url.pathname);
+const t = useTranslations(locale);
+
+const copy = {
+  en: { eyebrow: 'Calculator', title: 'What does moderating by hand cost you?', text: 'Move the sliders to your situation. The figures are only yours: we do not record anything.', comments: 'Comments per day', seconds: 'Seconds to read and decide, per comment', rate: 'Hourly cost of a moderator (€, all-in)', hours: 'hours of moderation per month', cost: 'per month for fully manual moderation', fte: 'full-time equivalents', note: 'Count includes weekends. With OpenModeration, your team only handles the doubtful cases; we estimate your real saving with you during the call.', cta: 'Work out my saving with you', num: 'en-GB' },
+  fr: { eyebrow: 'Calculateur', title: 'Combien vous coûte la modération à la main ?', text: "Réglez les curseurs selon votre situation. Les chiffres restent chez vous : nous n'enregistrons rien.", comments: 'Commentaires par jour', seconds: 'Secondes pour lire et décider, par commentaire', rate: "Coût horaire d'un modérateur (€, chargé)", hours: 'heures de modération par mois', cost: 'par mois pour une modération 100 % manuelle', fte: 'équivalents temps plein', note: "Calcul sur 30 jours, week-ends compris. Avec OpenModeration, votre équipe ne traite plus que les cas douteux : on estime votre économie réelle avec vous pendant le rendez-vous.", cta: 'Calculer mon économie avec vous', num: 'fr-FR' },
+  es: { eyebrow: 'Calculadora', title: '¿Cuánto te cuesta moderar a mano?', text: 'Ajusta los controles a tu situación. Las cifras se quedan contigo: no guardamos nada.', comments: 'Comentarios al día', seconds: 'Segundos para leer y decidir, por comentario', rate: 'Coste por hora de un moderador (€, con cargas)', hours: 'horas de moderación al mes', cost: 'al mes con una moderación 100 % manual', fte: 'equivalentes a jornada completa', note: 'Cálculo sobre 30 días, fines de semana incluidos. Con OpenModeration, tu equipo solo gestiona los casos dudosos; estimamos tu ahorro real contigo durante la llamada.', cta: 'Calcular mi ahorro con vosotros', num: 'es-ES' },
+  de: { eyebrow: 'Rechner', title: 'Was kostet Sie die Moderation von Hand?', text: 'Stellen Sie die Regler auf Ihre Situation ein. Die Zahlen bleiben bei Ihnen: Wir speichern nichts.', comments: 'Kommentare pro Tag', seconds: 'Sekunden zum Lesen und Entscheiden pro Kommentar', rate: 'Stundenkosten einer Moderatorin oder eines Moderators (€, inkl. Nebenkosten)', hours: 'Moderationsstunden pro Monat', cost: 'pro Monat bei rein manueller Moderation', fte: 'Vollzeitäquivalente', note: 'Berechnung über 30 Tage inklusive Wochenenden. Mit OpenModeration bearbeitet Ihr Team nur noch die Zweifelsfälle; Ihre tatsächliche Ersparnis schätzen wir im Termin gemeinsam.', cta: 'Meine Ersparnis gemeinsam berechnen', num: 'de-DE' },
+  it: { eyebrow: 'Calcolatore', title: 'Quanto ti costa moderare a mano?', text: 'Regola i cursori sulla tua situazione. I numeri restano a te: non registriamo nulla.', comments: 'Commenti al giorno', seconds: 'Secondi per leggere e decidere, per commento', rate: 'Costo orario di un moderatore (€, lordo)', hours: 'ore di moderazione al mese', cost: 'al mese con una moderazione 100% manuale', fte: 'equivalenti a tempo pieno', note: 'Calcolo su 30 giorni, weekend inclusi. Con OpenModeration il tuo team gestisce solo i casi dubbi; stimiamo con te il risparmio reale durante la call.', cta: 'Calcolare il mio risparmio con voi', num: 'it-IT' },
+}[locale];
+---
+
+<section class="relative overflow-hidden bg-gradient-to-br from-sun-50 via-white to-rose-50 py-20" data-cost-calc data-num={copy.num}>
+  <div class="mx-auto grid max-w-6xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
+    <div>
+      <p class="mb-4 inline-flex rounded-full bg-sun-400 px-3 py-1 text-xs font-bold text-surface-900 shadow-sm">🧮 {copy.eyebrow}</p>
+      <h2 class="text-3xl font-extrabold tracking-tight text-surface-900 sm:text-4xl">{copy.title}</h2>
+      <p class="mt-3 text-surface-600">{copy.text}</p>
+      <div class="mt-8 space-y-6">
+        <label class="block">
+          <span class="flex justify-between text-sm font-semibold text-surface-900">{copy.comments} <output data-out="comments" class="text-violet-700"></output></span>
+          <input type="range" min="100" max="50000" step="100" value="2000" data-in="comments" class="mt-2 w-full accent-violet-600" />
+        </label>
+        <label class="block">
+          <span class="flex justify-between text-sm font-semibold text-surface-900">{copy.seconds} <output data-out="seconds" class="text-violet-700"></output></span>
+          <input type="range" min="5" max="60" step="1" value="15" data-in="seconds" class="mt-2 w-full accent-violet-600" />
+        </label>
+        <label class="block">
+          <span class="flex justify-between text-sm font-semibold text-surface-900">{copy.rate} <output data-out="rate" class="text-violet-700"></output></span>
+          <input type="range" min="15" max="80" step="1" value="35" data-in="rate" class="mt-2 w-full accent-violet-600" />
+        </label>
+      </div>
+    </div>
+    <div class="rounded-3xl bg-white p-8 shadow-[0_30px_60px_-28px_rgba(76,29,149,0.4)] ring-1 ring-violet-100">
+      <p class="bg-gradient-to-r from-rose-500 to-sun-500 bg-clip-text font-display text-5xl font-extrabold text-transparent sm:text-6xl" data-res="cost">–</p>
+      <p class="mt-1 text-sm font-medium text-surface-600">{copy.cost}</p>
+      <div class="mt-6 grid grid-cols-2 gap-4">
+        <div class="rounded-2xl bg-violet-50 p-4">
+          <p class="font-display text-3xl font-bold text-violet-700" data-res="hours">–</p>
+          <p class="text-xs text-surface-600">{copy.hours}</p>
+        </div>
+        <div class="rounded-2xl bg-mint-50 p-4">
+          <p class="font-display text-3xl font-bold text-mint-600" data-res="fte">–</p>
+          <p class="text-xs text-surface-600">{copy.fte}</p>
+        </div>
+      </div>
+      <p class="mt-5 text-xs leading-relaxed text-surface-500">{copy.note}</p>
+      <a href={localizePath('/book-a-call', locale)} class="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white">📅 {copy.cta}</a>
+      <p class="mt-2 text-center text-xs text-surface-400">{t('cta.bookHint')}</p>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Coût d'une modération entièrement manuelle : commentaires × secondes × 30 jours, au coût horaire chargé.
+  document.querySelectorAll<HTMLElement>('[data-cost-calc]').forEach((root) => {
+    const fmt = new Intl.NumberFormat(root.dataset.num, { maximumFractionDigits: 0 });
+    const fmt1 = new Intl.NumberFormat(root.dataset.num, { maximumFractionDigits: 1 });
+    const money = new Intl.NumberFormat(root.dataset.num, { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+    const input = (k: string) => root.querySelector<HTMLInputElement>(`[data-in="${k}"]`)!;
+    const set = (sel: string, v: string) => { root.querySelector<HTMLElement>(sel)!.textContent = v; };
+    const update = () => {
+      const comments = +input('comments').value, seconds = +input('seconds').value, rate = +input('rate').value;
+      const hours = (comments * seconds * 30) / 3600;
+      set('[data-out="comments"]', fmt.format(comments));
+      set('[data-out="seconds"]', `${seconds} s`);
+      set('[data-out="rate"]', money.format(rate));
+      set('[data-res="hours"]', fmt.format(hours));
+      set('[data-res="fte"]', fmt1.format(hours / 152));
+      set('[data-res="cost"]', money.format(hours * rate));
+    };
+    root.querySelectorAll('input').forEach((el) => el.addEventListener('input', update));
+    update();
+  });
+</script>

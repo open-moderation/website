@@ -21,6 +21,7 @@ type Route = Partial<Record<Locale, string>>;
 
 export const routes: Route[] = [
   { en: '/', fr: '/fr', es: '/es', de: '/de', it: '/it' },
+  { en: '/book-a-call', fr: '/fr/rendez-vous', es: '/es/reservar-llamada', de: '/de/termin-vereinbaren', it: '/it/prenota-una-call' },
   { en: '/demo', fr: '/fr/tester-la-moderation', es: '/es/probar-moderacion', de: '/de/moderation-testen', it: '/it/prova-moderazione' },
   { en: '/about', fr: '/fr/a-propos', es: '/es/sobre-nosotros', de: '/de/ueber-uns', it: '/it/chi-siamo' },
   { en: '/alternatives', fr: '/fr/alternatives', es: '/es/alternativas', de: '/de/alternativen', it: '/it/alternative' },

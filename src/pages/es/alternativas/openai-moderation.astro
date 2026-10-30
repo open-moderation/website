@@ -39,9 +39,9 @@ const comparisonPoints = [
   { feature: "Reglas automáticas", openai: "Tienes que construir tu propia integración", openmod: "Listas para usar: defines las reglas una vez y el motor de acciones las aplica automáticamente" },
   { feature: "Revisión humana", openai: "Tienes que construir tu propia interfaz de revisión", openmod: "Cola de revisión integrada con contexto, asignación y aprobación/rechazo" },
   { feature: "Registro de auditoría", openai: "Limitado a los registros de la API", openmod: "Registro de auditoría completo: cada decisión de la IA y humana registrada, exportable para la DSA" },
-  { feature: "Dependencia del proveedor", openai: "Dependencia total del ecosistema de OpenAI", openmod: "Ninguna. BYOK, autoalojable, open source bajo AGPL v3" },
-  { feature: "Soberanía de los datos", openai: "Datos procesados en los servidores de OpenAI", openmod: "Autoalojamiento en tu infraestructura. Opción de nube europea disponible." },
-  { feature: "Precios", openai: "Endpoint gratuito (solo puntuaciones)", openmod: "Gratis en autoalojamiento. Nube gestionada desde 99 €/mes (10.000 peticiones incluidas)." },
+  { feature: "Dependencia del proveedor", openai: "Dependencia total del ecosistema de OpenAI", openmod: "Ninguna. BYOK, 10 proveedores intercambiables, exportación de tus datos" },
+  { feature: "Soberanía de los datos", openai: "Datos procesados en los servidores de OpenAI", openmod: "Nube alojada en la UE. On-premise posible bajo petición." },
+  { feature: "Precios", openai: "Endpoint gratuito (solo puntuaciones)", openmod: "Gratis hasta 1.000 peticiones al mes. Nube gestionada desde 99 €/mes (10.000 peticiones incluidas)." },
   { feature: "Longitud máxima de entrada", openai: "32.000 caracteres", openmod: "Hasta 32.000 caracteres (según el proveedor) + procesamiento por lotes para volúmenes mayores" },
 ];
 
@@ -78,7 +78,7 @@ const verticals = [
 const faqItems = [
   {
     question: "¿Cuánto cuesta la API OpenAI Moderation frente a OpenModeration?",
-    answer: "El endpoint de moderación de OpenAI es gratuito, pero solo devuelve puntuaciones. No incluye consola, reglas, revisión humana ni registro de auditoría. OpenModeration es gratuito si lo autoalojas y sigue usando omni-moderation-latest por debajo; la nube gestionada empieza en 99 €/mes por 10.000 peticiones."
+    answer: "El endpoint de moderación de OpenAI es gratuito, pero solo devuelve puntuaciones. No incluye consola, reglas, revisión humana ni registro de auditoría. OpenModeration es gratis hasta 1.000 peticiones al mes y sigue usando omni-moderation-latest por debajo; la nube gestionada empieza en 99 €/mes por 10.000 peticiones."
   },
   {
     question: "¿Puedo seguir usando OpenAI como proveedor?",
@@ -93,12 +93,8 @@ const faqItems = [
     answer: "El prefiltro, el doble umbral (aprobación automática / revisión humana / rechazo automático), la consola de moderación, los roles de equipo y un registro de auditoría preparado para la DSA, con informes exportables."
   },
   {
-    question: "¿Es open source?",
-    answer: "Sí, bajo AGPL v3. Autoalójalo con Docker y conserva todos los datos en tu infraestructura, o usa la nube gestionada alojada en la UE."
-  },
-  {
     question: "¿Qué API de moderación es la mejor para el cumplimiento normativo en una empresa?",
-    answer: "Para cumplir la normativa, una empresa necesita decisiones documentadas, control de acceso por roles, registros de auditoría e informes exportables, y unas puntuaciones en bruto no bastan. En OpenModeration, cada decisión de la IA y humana queda registrada, las reglas se aplican automáticamente y el registro de auditoría completo se exporta con un clic para los informes de transparencia de la DSA. El autoalojamiento o la nube europea mantienen los datos bajo tu control."
+    answer: "Para cumplir la normativa, una empresa necesita decisiones documentadas, control de acceso por roles, registros de auditoría e informes exportables, y unas puntuaciones en bruto no bastan. En OpenModeration, cada decisión de la IA y humana queda registrada, las reglas se aplican automáticamente y el registro de auditoría completo se exporta con un clic para los informes de transparencia de la DSA. El alojamiento en la UE y la exportación de tus datos los mantienen bajo tu control."
   },
   {
     question: "¿Funciona OpenModeration con el modelo omni-moderation-latest de OpenAI?",
@@ -126,7 +122,7 @@ const faqItems = [
       <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
         La API de moderación de OpenAI te da puntuaciones de toxicidad. OpenModeration añade todo lo que hace falta
         para moderar de verdad: 10 proveedores a través de una sola API, prefiltrado, reglas automáticas,
-        revisión humana y registros de auditoría conformes a la DSA. El código es abierto, puedes autoalojarlo y no dependes de ningún proveedor.
+        revisión humana y registros de auditoría conformes a la DSA. Cada decisión se explica por escrito, los datos se alojan en la UE y no dependes de un solo proveedor.
       </p>
       <div class="mt-8 flex items-center justify-center gap-4">
         <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm">Prueba OpenModeration gratis</a>
@@ -259,7 +255,7 @@ const faqItems = [
             <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Las reglas se configuran sin código con tres herramientas: palabras prohibidas, umbrales por categoría y las normas de tu comunidad</li>
             <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> El registro de auditoría, los informes exportables y la retención de datos configurable vienen incluidos</li>
             <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Si OpenAI va lento, las peticiones pasan a Mistral, Azure o HuggingFace</li>
-            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> No dependes de nadie: el código es abierto (AGPL v3), puedes autoalojarlo y usar tus propias claves</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> No dependes de nadie: usas tus propias claves, cambias de proveedor cuando quieras y exportas tus datos</li>
           </ul>
         </div>
       </div>
@@ -332,7 +328,7 @@ const faqItems = [
 
   <CTASection
     title="Ve más allá de una sola API de moderación."
-    subtitle="10 proveedores, prefiltrado, reglas automáticas y una consola de revisión humana, con código abierto. Sigue usando OpenAI con BYOK o añade más proveedores."
+    subtitle="10 proveedores, prefiltrado, reglas automáticas y una consola de revisión humana, con alojamiento en la UE. Sigue usando OpenAI con BYOK o añade más proveedores."
     buttonText="Pruébalo gratis"
     buttonHref="https://app.openmoderation.com/signup"
   />
