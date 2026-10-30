@@ -1,0 +1,354 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import FAQ from '../../../components/FAQ.astro';
+
+const title = "Modération des réseaux sociaux : le guide complet";
+const description = "Modérer ses réseaux sociaux : méthodes, règles, spécificités de Facebook, Instagram, YouTube, TikTok, LinkedIn et X, équipe, crise, indicateurs et outils.";
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Modération des réseaux sociaux : le guide complet pour les marques, les médias et les collectivités",
+  "description": description,
+  "inLanguage": "fr",
+  "datePublished": "2026-10-30",
+  "dateModified": "2026-10-30",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/fr/blog/moderation-reseaux-sociaux-guide" }
+};
+
+const networks = [
+  { name: "Facebook", tools: "Blocage de mots-clés, filtre de grossièretés, masquer, supprimer, bannir", action: "Masqué (toujours visible par son auteur et ses amis) ou supprimé", om: "Oui" },
+  { name: "Instagram", tools: "Mots masqués, liste de mots personnalisée, restreindre, limiter les interactions, désactiver les commentaires", action: "Masqué ou supprimé", om: "Oui" },
+  { name: "YouTube", tools: "Mise en attente pour examen, mots bloqués, blocage des liens, utilisateurs masqués, modérateurs de chaîne", action: "En attente d'examen, supprimé, ou l'utilisateur masqué sur la chaîne", om: "Oui" },
+  { name: "TikTok", tools: "Filtre spam et commentaires offensants, filtre par mots-clés, approbation de tous les commentaires, choix de qui peut commenter", action: "Filtré en attente d'approbation ou supprimé", om: "Pas de connecteur natif" },
+  { name: "LinkedIn", tools: "Supprimer, signaler, limiter qui peut commenter, désactiver les commentaires d'un post", action: "Supprimé", om: "Pas de connecteur natif" },
+  { name: "X", tools: "Contrôle des réponses, masquer des réponses, mettre en sourdine, bloquer, signaler", action: "Réponse masquée derrière un clic, ou compte mis en sourdine ou bloqué", om: "Pas de connecteur natif" },
+];
+
+const responses = [
+  { type: "Réclamation ou critique, même vive", action: "Répondre publiquement, puis passer en message privé si des données personnelles sont nécessaires" },
+  { type: "Question sur un produit, un service ou un article", action: "Répondre, idéalement dans l'heure pendant une campagne" },
+  { type: "Hors sujet mais inoffensif", action: "Laisser, ou masquer si vos règles le prévoient" },
+  { type: "Insulte, harcèlement, propos haineux", action: "Masquer, bannir les récidivistes, ne jamais polémiquer" },
+  { type: "Spam, arnaque, faux jeu-concours, lien de phishing", action: "Masquer ou supprimer, bannir le compte, prévenir votre communauté si l'arnaque se répand" },
+  { type: "Données personnelles publiées en public", action: "Supprimer, puis contacter la personne en privé" },
+  { type: "Menace, contenu illicite, signe de détresse", action: "Escalader tout de suite : conserver les preuves, signaler à la plateforme, alerter la bonne personne ou l'autorité (Pharos pour les contenus illicites)" },
+];
+
+const faqItems = [
+  {
+    question: "Qu'est-ce que la modération des réseaux sociaux ?",
+    answer: "C'est le travail qui consiste à passer en revue ce que les internautes publient sur vos comptes, surtout les commentaires et les réponses, et à décider ce qui reste visible, ce qui est masqué ou supprimé et qui est banni, selon des règles fixées à l'avance. Ce n'est pas la même chose que répondre, qui relève du community manager.",
+  },
+  {
+    question: "Que fait un modérateur de réseaux sociaux ?",
+    answer: "Il lit les commentaires et les réponses publiés sur les comptes d'une marque, applique les règles de modération (laisser, masquer, supprimer, bannir), fait remonter les cas sensibles comme une menace ou un début de crise, et rend compte de ce qui s'est passé. Dans une petite équipe, le community manager fait les deux métiers ; dans une plus grande, la modération est un rôle à part, souvent aidé par un outil automatique.",
+  },
+  {
+    question: "Faut-il masquer ou supprimer les commentaires négatifs ?",
+    answer: "Ni l'un ni l'autre s'ils sont simplement négatifs. Une critique mérite une réponse, et la masquer se retourne souvent contre vous. Masquez ou supprimez ce qui enfreint vos règles : insultes, haine, spam, arnaques, données personnelles. Sur Facebook, masquer est en général le meilleur choix par défaut, car l'auteur continue de voir son commentaire.",
+  },
+  {
+    question: "Peut-on modérer ses réseaux sociaux automatiquement ?",
+    answer: "En partie, avec les filtres intégrés à chaque réseau, qui bloquent des mots-clés. Un outil dédié va plus loin : il lit chaque commentaire dans son contexte, applique vos règles, envoie les cas douteux à une personne et consigne un motif pour chaque décision. OpenModeration le fait pour Facebook, Instagram, YouTube et les sites web.",
+  },
+  {
+    question: "OpenModeration modère-t-il TikTok, LinkedIn ou X ?",
+    answer: "Non. OpenModeration se connecte aux Pages Facebook, aux comptes professionnels Instagram, aux chaînes YouTube, à WordPress et aux sites web via son API. Sur TikTok, LinkedIn et X, il faut s'appuyer sur les outils de chaque réseau et sur une modération manuelle.",
+  },
+  {
+    question: "Quels horaires la modération doit-elle couvrir ?",
+    answer: "Idéalement les heures où votre communauté est active, ce qui inclut souvent le soir et le week-end, et au minimum les 24 à 48 heures qui suivent un post sponsorisé ou une publication sensible. La modération automatique couvre les heures où personne n'est d'astreinte ; l'équipe reprend les cas douteux le lendemain matin.",
+  },
+  {
+    question: "Le DSA s'applique-t-il aux pages d'une marque sur les réseaux sociaux ?",
+    answer: "Les principales obligations du DSA, comme l'exposé des motifs et le mécanisme de signalement, pèsent sur l'hébergeur. Sur un réseau social, c'est la plateforme elle-même ; sur votre propre site, c'est vous. Motiver chaque décision et en garder la trace reste une bonne pratique sur vos pages, et une obligation sur votre site.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} ogType="article" jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Accueil", href: "/fr" }, { label: "Blog", href: "/fr/blog" }, { label: "Guide de la modération des réseaux sociaux" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-30">30 octobre 2026</time>
+        <span>&middot;</span>
+        <span>11 min de lecture</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Modération des réseaux sociaux : le guide complet pour les marques, les médias et les collectivités</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Chaque compte que vous ouvrez sur un réseau social devient un espace où d'autres s'expriment sous
+        votre nom. La plupart posent des questions, félicitent ou se plaignent. Quelques-uns insultent,
+        harcèlent, spamment ou tentent d'arnaquer vos abonnés. La modération des réseaux sociaux sert à
+        garder cet espace fréquentable sans faire taire les critiques légitimes. Ce guide passe en revue
+        les méthodes, les particularités de chaque réseau, les règles à écrire, l'organisation de
+        l'équipe, la gestion de crise et les indicateurs à suivre.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">L'essentiel</h2>
+      <ul>
+        <li><strong>Modérer n'est pas répondre.</strong> Modérer, c'est décider de ce qui reste visible ; répondre, c'est dialoguer avec votre communauté. Les deux sont nécessaires, souvent par des personnes différentes.</li>
+        <li><strong>Écrivez vos règles d'abord.</strong> Publiez quelques règles de bonne conduite, puis décidez de l'action (laisser, masquer, supprimer, bannir, escalader) pour chaque type de contenu.</li>
+        <li><strong>Chaque réseau a ses outils</strong> et ses actions : Facebook masque, YouTube met en attente, X cache les réponses derrière un clic.</li>
+        <li><strong>Combinez automatisation et humains.</strong> Les filtres ou un outil d'IA absorbent le volume et les nuits ; l'équipe tranche les cas douteux, répond et gère les crises.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Qu'est-ce que la modération des réseaux sociaux ?</h2>
+      <p>
+        La modération des réseaux sociaux, c'est l'examen des contenus que d'autres publient sur vos
+        comptes : commentaires sous vos posts, réponses à vos messages, parfois avis, mentions ou messages
+        privés. Pour chacun, une décision est prise : le laisser en ligne, le masquer, le supprimer,
+        bannir son auteur ou le transmettre à quelqu'un d'autre.
+      </p>
+      <p>
+        C'est un travail plus ciblé que la modération exercée par les plateformes. Meta, Google ou TikTok
+        font respecter leurs standards sur tout le réseau. Vous, vous faites respecter vos propres règles
+        sur vos propres comptes. Un commentaire peut être parfaitement légal, toléré par Instagram, et
+        n'avoir pourtant rien à faire sous votre post : le lien d'un concurrent, un débat politique sous le
+        lancement d'un produit, le numéro de téléphone d'un client publié en clair.
+      </p>
+      <p>
+        La modération des commentaires d'un site web suit la même logique, avec plus de maîtrise. Notre
+        <a href="/fr/blog/moderation-des-commentaires-guide" class="text-brand-600 hover:text-brand-500">guide de la modération des commentaires</a> couvre
+        les deux cas ; celui-ci se concentre sur les réseaux sociaux.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Pourquoi modérer ses réseaux sociaux ?</h2>
+      <ul>
+        <li><strong>Protéger votre communauté.</strong> Ceux qui voient des insultes sous vos posts cessent de commenter. Les plus virulents finissent par parler au nom de tous.</li>
+        <li><strong>Protéger votre marque.</strong> Une arnaque ou un commentaire haineux laissé sous votre logo ressemble à de la complaisance. Une capture d'écran circule plus vite qu'un démenti.</li>
+        <li><strong>Protéger vos clients.</strong> Faux comptes de service client, faux jeux-concours et liens de phishing visent vos abonnés dans vos commentaires, en usurpant votre nom.</li>
+        <li><strong>Protéger vos campagnes.</strong> Les posts sponsorisés attirent le plus de commentaires, et les pires. Sous une publicité, des commentaires non modérés abîment le message que vous payez pour diffuser.</li>
+        <li><strong>Protéger votre équipe.</strong> Un community manager qui lit des insultes toute la journée s'épuise. Des règles et des outils lui retirent une partie de cette charge.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Quelles sont les méthodes de modération ?</h2>
+      <p>Les méthodes se distinguent par le moment où la décision est prise et par celui qui la prend.</p>
+      <ul>
+        <li><strong>La modération a priori.</strong> Rien n'apparaît avant validation. C'est la méthode la plus sûre et la plus lente, et peu de réseaux la permettent : YouTube peut mettre des commentaires en attente d'examen, TikTok peut filtrer tous les commentaires pour approbation.</li>
+        <li><strong>La modération a posteriori.</strong> Les commentaires apparaissent tout de suite et sont examinés ensuite. La conversation reste vivante, mais un contenu nuisible reste visible jusqu'à ce que quelqu'un agisse.</li>
+        <li><strong>La modération réactive.</strong> Vous n'agissez que sur signalement ou quand vous tombez sur le commentaire. Elle coûte peu et laisse passer l'essentiel.</li>
+        <li><strong>La modération automatique.</strong> Des filtres par mots-clés ou des modèles d'IA agissent sur chaque commentaire dès sa publication, jour et nuit.</li>
+        <li><strong>La modération hybride.</strong> L'automatisation traite les cas évidents, l'équipe tranche les cas douteux. C'est là qu'arrivent la plupart des organisations qui ont du volume.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Comment modérer chaque réseau social ?</h2>
+      <p>Les principes sont partout les mêmes ; les outils et les actions possibles, non. Les menus changent souvent, nous décrivons donc des fonctions qui existent depuis des années plutôt que des chemins précis.</p>
+
+      <h3 class="text-lg font-semibold text-surface-900">Facebook</h3>
+      <p>
+        Une Page peut bloquer des mots-clés, activer un filtre de grossièretés et masquer, supprimer ou
+        bannir à la main. Masquer est l'action clé : le commentaire reste visible pour son auteur et ses
+        amis, qui ne s'aperçoivent souvent de rien. Les commentaires sous les publicités sont les plus
+        difficiles à suivre. Voir notre guide pour
+        <a href="/fr/blog/masquer-commentaires-facebook-automatiquement" class="text-brand-600 hover:text-brand-500">masquer les commentaires Facebook automatiquement</a>.
+      </p>
+
+      <h3 class="text-lg font-semibold text-surface-900">Instagram</h3>
+      <p>
+        La fonction Mots masqués d'Instagram filtre les commentaires offensants et accepte votre propre
+        liste de mots. Vous pouvez aussi restreindre un compte, limiter les interactions pendant une vague
+        d'attaques ou désactiver les commentaires d'une publication. Lisez notre guide de la
+        <a href="/fr/blog/moderation-commentaires-instagram" class="text-brand-600 hover:text-brand-500">modération des commentaires Instagram</a>.
+      </p>
+
+      <h3 class="text-lg font-semibold text-surface-900">YouTube</h3>
+      <p>
+        YouTube est le réseau qui va le plus loin vers la modération a priori : les commentaires
+        potentiellement inappropriés peuvent être mis en attente d'examen, et vous pouvez bloquer des mots
+        et des liens, masquer des utilisateurs de votre chaîne et nommer des modérateurs. Les chats en
+        direct demandent une attention particulière. Détails dans notre guide de la
+        <a href="/fr/blog/moderation-commentaires-youtube" class="text-brand-600 hover:text-brand-500">modération des commentaires YouTube</a>.
+      </p>
+
+      <h3 class="text-lg font-semibold text-surface-900">TikTok</h3>
+      <p>
+        TikTok propose des filtres contre le spam et les commentaires offensants, un filtre par mots-clés,
+        la possibilité d'approuver chaque commentaire avant publication et le choix de qui peut commenter.
+        Les commentaires y vont très vite, souvent portés par les tendances. Plus d'infos dans notre guide
+        de la <a href="/fr/blog/moderation-commentaires-tiktok" class="text-brand-600 hover:text-brand-500">modération des commentaires TikTok</a>.
+      </p>
+
+      <h3 class="text-lg font-semibold text-surface-900">LinkedIn</h3>
+      <p>
+        Les commentaires LinkedIn sont rarement injurieux, mais on y trouve du démarchage commercial et des
+        débats qui s'enveniment. Les outils sont sommaires : supprimer, signaler, limiter qui peut commenter
+        un post ou désactiver les commentaires. La modération y reste surtout manuelle.
+      </p>
+
+      <h3 class="text-lg font-semibold text-surface-900">X (ex-Twitter)</h3>
+      <p>
+        Sur X, vous ne pouvez pas supprimer les réponses des autres. Vous pouvez choisir qui peut répondre à
+        un post, masquer des réponses (elles restent accessibles derrière un clic), et mettre en sourdine,
+        bloquer ou signaler des comptes. Modérer sur X, c'est limiter l'exposition plutôt que retirer le
+        contenu.
+      </p>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Réseau</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Principaux outils intégrés</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Ce que devient un commentaire modéré</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">OpenModeration</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {networks.map((row) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{row.name}</td>
+              <td class="px-4 py-3 text-surface-600">{row.tools}</td>
+              <td class="px-4 py-3 text-surface-600">{row.action}</td>
+              <td class="px-4 py-3 text-surface-600">{row.om}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">Quelles règles de modération fixer ?</h2>
+      <p>Sans règles écrites, la modération dépend de qui est de permanence et de son humeur du jour. Des règles rendent les décisions cohérentes et défendables.</p>
+      <ol>
+        <li><strong>Publiez quelques règles de bonne conduite.</strong> Quelques lignes dans votre bio, un post épinglé ou une page de votre site : ce qui est bienvenu, ce qui est retiré, ce qui vaut un bannissement. Y renvoyer règle bien des contestations.</li>
+        <li><strong>Listez les catégories sur lesquelles vous agissez.</strong> Insultes et harcèlement, haine, spam et arnaques, données personnelles, contenus illicites, et les cas propres à votre activité : promotion de concurrents, polémiques hors sujet, spoilers, allégations de santé non vérifiées.</li>
+        <li><strong>Associez une action à chaque catégorie.</strong> Laisser, masquer, supprimer, bannir, escalader. Masquer est l'action par défaut là où le réseau le permet ; supprimer est réservé à ce qui doit disparaître pour tout le monde.</li>
+        <li><strong>Donnez des exemples.</strong> Deux ou trois vrais commentaires par catégorie, y compris des cas limites, aident chaque modérateur, humain ou automatique, à placer le curseur au même endroit.</li>
+        <li><strong>Définissez l'escalade.</strong> Qui appeler pour une menace, un problème juridique, la question d'un journaliste ou une crise, et dans quel délai.</li>
+      </ol>
+      <p>
+        Pour une méthode complète et un modèle, consultez notre page sur la
+        <a href="/fr/charte-de-moderation" class="text-brand-600 hover:text-brand-500">charte de modération</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Community management et modération : qui fait quoi ?</h2>
+      <p>
+        Le community manager anime : il publie, répond, remercie, renseigne, transforme un client mécontent
+        en client satisfait. Le modérateur filtre : il applique les règles, masque ce qui n'a pas sa place,
+        bannit les récidivistes, signale ce qui doit remonter. Dans une petite équipe, une seule personne
+        fait les deux, et c'est la modération qui saute les jours chargés.
+      </p>
+      <p>Dès que le volume augmente, organisez le travail noir sur blanc.</p>
+      <ul>
+        <li><strong>Les horaires.</strong> Décidez quand quelqu'un est de permanence et qui couvre le soir, le week-end et les heures qui suivent un post sensible.</li>
+        <li><strong>Une seule file.</strong> Modérer compte par compte dans l'application de chaque réseau fait perdre du temps et laisse des trous. Centralisez ce qui demande une décision humaine.</li>
+        <li><strong>Des rôles clairs.</strong> Qui peut bannir ? Qui peut supprimer ? Qui répond à la presse ? Écrivez-le.</li>
+        <li><strong>La santé de l'équipe.</strong> Faites tourner l'exposition aux pires contenus, permettez de souffler, et automatisez les cas évidents pour que les humains en voient moins.</li>
+        <li><strong>Agence ou interne.</strong> Externaliser donne une couverture de nuit, mais l'agence a besoin de vos règles, de vos exemples et d'un contact direct pour l'escalade.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Faut-il répondre ou modérer ?</h2>
+      <p>
+        L'erreur la plus courante consiste à modérer ce qui appelait une réponse. Masquer une réclamation
+        légitime donne l'impression que vous avez quelque chose à cacher, et son auteur reviendra plus fort.
+        Réservez la modération à ce qui enfreint vos règles, et la réponse à tout le reste. Pour les cas
+        délicats, lisez notre guide pour
+        <a href="/fr/blog/gerer-commentaires-negatifs-trolls" class="text-brand-600 hover:text-brand-500">gérer les commentaires négatifs et les trolls</a>.
+      </p>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Type de commentaire</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Que faire</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {responses.map((row) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{row.type}</td>
+              <td class="px-4 py-3 text-surface-600">{row.action}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">Comment gérer une crise sur les réseaux sociaux ?</h2>
+      <p>On parle de crise quand les commentaires arrivent plus vite que vous ne pouvez les lire : un post qui divise, un rappel produit, un raid coordonné, une actualité qui entraîne votre marque dans la polémique.</p>
+      <ol>
+        <li><strong>Séparez les deux problèmes.</strong> Les insultes et le spam se modèrent comme d'habitude, et même plus strictement. La colère légitime reçoit une réponse, avec un message unique et cohérent.</li>
+        <li><strong>Activez les leviers d'urgence.</strong> Limitez qui peut commenter, mettez les commentaires en attente, désactivez-les sur le post le plus exposé. Dites publiquement que vous le faites, et pourquoi.</li>
+        <li><strong>Suspendez les posts sponsorisés</strong> qui attirent la tempête, pour ne pas payer sa diffusion.</li>
+        <li><strong>Conservez les preuves.</strong> Faites des captures d'écran des menaces et des messages coordonnés avant de les masquer ou de les supprimer.</li>
+        <li><strong>Faites un point quotidien court</strong> avec la communication, le juridique et les modérateurs jusqu'au retour au calme, puis mettez vos règles à jour avec ce que vous avez appris.</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Comment mesurer la modération des réseaux sociaux ?</h2>
+      <p>Suivez quelques indicateurs, par réseau et par publication, chaque mois.</p>
+      <ul>
+        <li><strong>Le volume :</strong> commentaires reçus, et part masquée, supprimée ou escaladée.</li>
+        <li><strong>Le délai d'action :</strong> combien de temps un commentaire nuisible reste visible. C'est le chiffre qui compte le plus pour votre communauté.</li>
+        <li><strong>Le délai de réponse</strong> aux questions et aux réclamations, mesuré à part.</li>
+        <li><strong>Les erreurs :</strong> commentaires rétablis après examen, et plaintes d'internautes qui se disent censurés. S'il y en a trop, vos règles sont trop larges.</li>
+        <li><strong>Le stock à traiter :</strong> combien de cas douteux attendent une personne, et depuis quand.</li>
+        <li><strong>Les points chauds :</strong> les posts, sujets ou campagnes qui concentrent les problèmes, pour planifier la couverture.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Que doit faire un outil de modération des réseaux sociaux ? La check-list</h2>
+      <ol>
+        <li>Se connecter aux réseaux que vous utilisez vraiment, via leurs API officielles.</li>
+        <li>Agir dès qu'un commentaire est publié, pas des heures plus tard.</li>
+        <li>Appliquer vos règles et vos cas d'usage, pas seulement des catégories génériques.</li>
+        <li>Comprendre le contexte, les fautes volontaires, l'ironie et les langues de votre communauté.</li>
+        <li>Utiliser la bonne action selon le réseau : masquer, mettre en attente, rejeter, supprimer.</li>
+        <li>Envoyer les cas douteux dans une file de revue partagée.</li>
+        <li>Motiver chaque décision par écrit et conserver un journal d'audit.</li>
+        <li>Vous dire où les données sont traitées et hébergées.</li>
+        <li>Venir avec une équipe qui vous aide à configurer et ajuster les règles.</li>
+      </ol>
+      <p>
+        La <a href="/fr/moderation-reseaux-sociaux" class="text-brand-600 hover:text-brand-500">modération des réseaux sociaux d'OpenModeration</a> couvre
+        Facebook, Instagram, YouTube et les sites web (dont WordPress) dans une seule console. Elle ne se
+        connecte pas à TikTok, LinkedIn ni X : sur ces réseaux, les outils intégrés décrits plus haut restent
+        votre principale option.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Ce que le DSA change pour la modération des réseaux sociaux</h2>
+      <p>
+        Le règlement européen sur les services numériques (DSA) impose aux hébergeurs et aux plateformes
+        en ligne de motiver leurs décisions de modération par un exposé des motifs et de proposer un moyen
+        de signaler les contenus illicites. Sur les réseaux sociaux, ces obligations pèsent surtout sur la
+        plateforme, pas sur la marque qui anime une Page. Sur votre propre site, elles pèsent sur vous. Dans
+        les deux cas, garder un motif et une trace pour chaque décision est le moyen le plus simple d'être
+        prêt quand un internaute, un responsable ou un régulateur demande pourquoi un commentaire a disparu.
+      </p>
+    </div>
+
+    <div class="mt-12">
+      <FAQ title="FAQ" items={faqItems} />
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Pour aller plus loin</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/fr/moderation-reseaux-sociaux" class="font-medium text-brand-600 hover:text-brand-500">La modération des réseaux sociaux avec OpenModeration &rarr;</a></li>
+        <li><a href="/fr/blog/moderation-des-commentaires-guide" class="font-medium text-brand-600 hover:text-brand-500">Le guide complet de la modération des commentaires &rarr;</a></li>
+        <li><a href="/fr/blog/gerer-commentaires-negatifs-trolls" class="font-medium text-brand-600 hover:text-brand-500">Gérer les commentaires négatifs et les trolls &rarr;</a></li>
+        <li><a href="/fr/charte-de-moderation" class="font-medium text-brand-600 hover:text-brand-500">Rédiger sa charte de modération &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

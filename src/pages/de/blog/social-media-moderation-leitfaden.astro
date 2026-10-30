@@ -1,0 +1,353 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import FAQ from '../../../components/FAQ.astro';
+
+const title = "Social Media Moderation: der komplette Leitfaden";
+const description = "Social Media moderieren: Methoden, Regeln, Besonderheiten von Facebook, Instagram, YouTube, TikTok, LinkedIn und X, Team, Krisen, Kennzahlen und Tools.";
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Social Media Moderation: der komplette Leitfaden für Marken, Medien und Verwaltungen",
+  "description": description,
+  "inLanguage": "de",
+  "datePublished": "2026-10-30",
+  "dateModified": "2026-10-30",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/de/blog/social-media-moderation-leitfaden" }
+};
+
+const networks = [
+  { name: "Facebook", tools: "Stichwortsperre, Filter für vulgäre Sprache, ausblenden, löschen, sperren", action: "Ausgeblendet (für Verfasser und dessen Freunde weiter sichtbar) oder gelöscht", om: "Ja" },
+  { name: "Instagram", tools: "Verborgene Wörter, eigene Wortliste, einschränken, Interaktionen begrenzen, Kommentare deaktivieren", action: "Ausgeblendet oder gelöscht", om: "Ja" },
+  { name: "YouTube", tools: "Zur Überprüfung zurückhalten, blockierte Wörter, Linksperre, ausgeblendete Nutzer, Kanal-Moderatoren", action: "Zur Prüfung zurückgehalten, entfernt oder Nutzer im Kanal ausgeblendet", om: "Ja" },
+  { name: "TikTok", tools: "Filter für Spam und beleidigende Kommentare, Stichwortfilter, alle Kommentare freigeben, wer kommentieren darf", action: "Zur Freigabe gefiltert oder gelöscht", om: "Kein nativer Connector" },
+  { name: "LinkedIn", tools: "Löschen, melden, Kommentarkreis einschränken, Kommentare zu einem Beitrag deaktivieren", action: "Gelöscht", om: "Kein nativer Connector" },
+  { name: "X", tools: "Antwortsteuerung, Antworten ausblenden, stummschalten, blockieren, melden", action: "Antwort hinter einem Klick verborgen oder Konto stummgeschaltet bzw. blockiert", om: "Kein nativer Connector" },
+];
+
+const responses = [
+  { type: "Beschwerde oder Kritik, auch scharf formuliert", action: "Öffentlich antworten, für persönliche Daten in die Direktnachricht wechseln" },
+  { type: "Frage zu Produkt, Service oder Artikel", action: "Antworten, während einer Kampagne möglichst innerhalb einer Stunde" },
+  { type: "Off-Topic, aber harmlos", action: "Stehen lassen oder ausblenden, wenn Ihre Regeln das vorsehen" },
+  { type: "Beleidigung, Belästigung, Hassrede", action: "Ausblenden, Wiederholungstäter sperren, nie diskutieren" },
+  { type: "Spam, Betrug, Fake-Gewinnspiel, Phishing-Link", action: "Ausblenden oder löschen, Konto sperren, Community warnen, falls es sich verbreitet" },
+  { type: "Öffentlich gepostete persönliche Daten", action: "Löschen und die Person privat kontaktieren" },
+  { type: "Drohung, strafbarer Inhalt, Hinweis auf Selbstgefährdung", action: "Sofort eskalieren: Beweise sichern, an die Plattform melden, die zuständige Person oder Behörde informieren" },
+];
+
+const faqItems = [
+  {
+    question: "Was ist Social Media Moderation?",
+    answer: "Social Media Moderation ist die Prüfung dessen, was andere auf Ihren Konten veröffentlichen, vor allem Kommentare und Antworten. Nach vorab festgelegten Regeln wird entschieden, was sichtbar bleibt, was ausgeblendet oder gelöscht wird und wer gesperrt wird. Das ist etwas anderes als Antworten, das Aufgabe des Community Managements ist.",
+  },
+  {
+    question: "Was macht ein Social Media Moderator?",
+    answer: "Er liest Kommentare und Antworten auf den Konten einer Marke, wendet die Moderationsregeln an (stehen lassen, ausblenden, löschen, sperren), eskaliert heikle Fälle wie Drohungen oder eine beginnende Krise und berichtet über das Geschehene. In kleinen Teams übernimmt das Community Management beides; in größeren ist Moderation eine eigene Rolle, oft unterstützt durch ein automatisches Tool.",
+  },
+  {
+    question: "Sollte ich negative Kommentare ausblenden oder löschen?",
+    answer: "Weder noch, wenn sie einfach nur negativ sind. Kritik verdient eine Antwort, und wer sie ausblendet, erntet oft das Gegenteil. Blenden Sie aus oder löschen Sie, was gegen Ihre Regeln verstößt: Beleidigungen, Hass, Spam, Betrug, persönliche Daten. Auf Facebook ist Ausblenden meist die bessere Standardaktion, weil der Verfasser seinen Kommentar weiter sieht.",
+  },
+  {
+    question: "Kann man Social Media automatisch moderieren?",
+    answer: "Teilweise mit den eingebauten Filtern jedes Netzwerks, die Stichwörter sperren. Ein spezialisiertes Tool geht weiter: Es liest jeden Kommentar im Kontext, wendet Ihre Regeln an, schickt unklare Fälle an einen Menschen und hält für jede Entscheidung eine Begründung fest. OpenModeration macht das für Facebook, Instagram, YouTube und Websites.",
+  },
+  {
+    question: "Moderiert OpenModeration TikTok, LinkedIn oder X?",
+    answer: "Nein. OpenModeration verbindet sich mit Facebook-Seiten, Instagram-Professional-Konten, YouTube-Kanälen, WordPress und Websites über seine API. Auf TikTok, LinkedIn und X sind Sie auf die Werkzeuge des jeweiligen Netzwerks und auf manuelle Moderation angewiesen.",
+  },
+  {
+    question: "Welche Zeiten sollte die Moderation abdecken?",
+    answer: "Idealerweise die Zeiten, in denen Ihre Community aktiv ist, oft also auch Abende und Wochenenden, und mindestens die 24 bis 48 Stunden nach einem gesponserten oder heiklen Beitrag. Automatische Moderation deckt die Stunden ohne Bereitschaft ab; das Team übernimmt die unklaren Fälle am nächsten Morgen.",
+  },
+  {
+    question: "Gilt der DSA für die Social-Media-Seiten einer Marke?",
+    answer: "Die zentralen Pflichten des DSA, etwa die Begründung von Entscheidungen und das Melde- und Abhilfeverfahren, treffen den Hostingdienst. Im sozialen Netzwerk ist das die Plattform selbst, auf Ihrer eigenen Website sind Sie es. Jede Entscheidung zu begründen und zu protokollieren ist auf Ihren Seiten gute Praxis und auf Ihrer Website Pflicht.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} ogType="article" jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Startseite", href: "/de" }, { label: "Blog", href: "/de/blog" }, { label: "Leitfaden Social Media Moderation" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-30">30. Oktober 2026</time>
+        <span>&middot;</span>
+        <span>11 Min. Lesezeit</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Social Media Moderation: der komplette Leitfaden für Marken, Medien und Verwaltungen</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Jedes Konto, das Sie in einem sozialen Netzwerk eröffnen, wird zu einem Raum, in dem andere unter
+        Ihrem Namen sprechen. Die meisten stellen Fragen, loben oder beschweren sich. Einige wenige
+        beleidigen, belästigen, spammen oder versuchen, Ihre Follower zu betrügen. Social Media Moderation
+        sorgt dafür, dass dieser Raum nutzbar bleibt, ohne berechtigte Kritik zum Schweigen zu bringen.
+        Dieser Leitfaden behandelt Methoden, die Besonderheiten der einzelnen Netzwerke, die Regeln, die Sie
+        aufschreiben sollten, die Organisation im Team, das Vorgehen in der Krise und die passenden Kennzahlen.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Das Wichtigste in Kürze</h2>
+      <ul>
+        <li><strong>Moderieren ist nicht Antworten.</strong> Moderieren heißt entscheiden, was sichtbar bleibt; Antworten heißt mit der Community sprechen. Beides ist nötig, oft durch verschiedene Personen.</li>
+        <li><strong>Zuerst die Regeln.</strong> Veröffentlichen Sie kurze Netiquette-Regeln und legen Sie für jede Art von Inhalt eine Aktion fest: stehen lassen, ausblenden, löschen, sperren, eskalieren.</li>
+        <li><strong>Jedes Netzwerk hat eigene Werkzeuge</strong> und eigene Aktionen: Facebook blendet aus, YouTube hält zur Prüfung zurück, X versteckt Antworten hinter einem Klick.</li>
+        <li><strong>Automatisierung und Menschen kombinieren.</strong> Filter oder ein KI-Tool bewältigen Menge und Nachtstunden; Menschen entscheiden unklare Fälle, antworten und steuern Krisen.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Was ist Social Media Moderation?</h2>
+      <p>
+        Social Media Moderation, also die Moderation sozialer Medien, ist die Prüfung von Inhalten, die andere auf Ihren Konten veröffentlichen:
+        Kommentare unter Ihren Beiträgen, Antworten auf Ihre Posts, manchmal auch Bewertungen, Erwähnungen
+        oder Direktnachrichten. Für jeden Inhalt fällt eine Entscheidung: online lassen, ausblenden,
+        löschen, den Verfasser sperren oder an jemand anderen weitergeben.
+      </p>
+      <p>
+        Das ist enger gefasst als die Moderation, die die Plattformen selbst betreiben. Meta, Google oder
+        TikTok setzen ihre Gemeinschaftsstandards im ganzen Netzwerk durch. Sie setzen Ihre eigenen Regeln
+        auf Ihren eigenen Konten durch. Ein Kommentar kann völlig legal und von Instagram erlaubt sein und
+        trotzdem nichts unter Ihrem Beitrag verloren haben: der Link eines Wettbewerbers, eine politische
+        Grundsatzdebatte unter einer Produktvorstellung, die Telefonnummer eines Kunden im Klartext.
+      </p>
+      <p>
+        Die Kommentarmoderation auf einer Website folgt derselben Logik, mit mehr Kontrolle. Unser
+        <a href="/de/blog/kommentarmoderation-leitfaden" class="text-brand-600 hover:text-brand-500">Leitfaden zur Kommentarmoderation</a> behandelt
+        beide Fälle; dieser hier konzentriert sich auf soziale Netzwerke.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Warum sollten Sie Ihre Social-Media-Kanäle moderieren?</h2>
+      <ul>
+        <li><strong>Um Ihre Community zu schützen.</strong> Wer unter Ihren Beiträgen Beleidigungen liest, kommentiert nicht mehr. Am Ende sprechen die Lautesten für alle.</li>
+        <li><strong>Um Ihre Marke zu schützen.</strong> Ein Betrugsversuch oder Hasskommentar unter Ihrem Logo wirkt wie Duldung. Ein Screenshot verbreitet sich schneller als jede Richtigstellung.</li>
+        <li><strong>Um Ihre Kunden zu schützen.</strong> Falsche Kundenservice-Konten, Fake-Gewinnspiele und Phishing-Links sprechen Ihre Follower in Ihren Kommentaren an, unter Ihrem Namen.</li>
+        <li><strong>Um Ihre Kampagnen zu schützen.</strong> Gesponserte Beiträge ziehen die meisten Kommentare an, und die schlimmsten. Unmoderiert beschädigen sie die Botschaft, für deren Reichweite Sie bezahlen.</li>
+        <li><strong>Um Ihr Team zu schützen.</strong> Wer den ganzen Tag Beleidigungen liest, brennt aus. Regeln und Tools nehmen dem Community Management einen Teil dieser Last ab.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Welche Moderationsmethoden gibt es?</h2>
+      <p>Die Methoden unterscheiden sich darin, wann entschieden wird und wer entscheidet.</p>
+      <ul>
+        <li><strong>Vorabmoderation.</strong> Nichts erscheint ohne Freigabe. Das ist die sicherste und langsamste Methode, und nur wenige Netzwerke erlauben sie: YouTube kann Kommentare zur Überprüfung zurückhalten, TikTok kann alle Kommentare bis zur Freigabe filtern.</li>
+        <li><strong>Nachträgliche Moderation.</strong> Kommentare erscheinen sofort und werden danach geprüft. Das hält die Diskussion lebendig, aber schädliche Inhalte bleiben sichtbar, bis jemand handelt.</li>
+        <li><strong>Reaktive Moderation.</strong> Sie handeln nur, wenn jemand einen Kommentar meldet oder Sie zufällig darauf stoßen. Das kostet wenig und lässt das meiste durch.</li>
+        <li><strong>Automatische Moderation.</strong> Stichwortfilter oder KI-Modelle bearbeiten jeden Kommentar, sobald er erscheint, rund um die Uhr.</li>
+        <li><strong>Hybride Moderation.</strong> Die Automatik erledigt die eindeutigen Fälle, Menschen entscheiden die unklaren. Dort landen fast alle Organisationen mit nennenswertem Volumen.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Wie moderiert man die einzelnen Netzwerke?</h2>
+      <p>Die Grundsätze sind überall gleich, die Werkzeuge und möglichen Aktionen nicht. Menüs ändern sich häufig, deshalb beschreiben wir Funktionen, die es seit Jahren gibt, statt genauer Klickpfade.</p>
+
+      <h3 class="text-lg font-semibold text-surface-900">Facebook</h3>
+      <p>
+        Eine Seite kann Stichwörter sperren, einen Filter für vulgäre Sprache aktivieren und Kommentare von
+        Hand ausblenden, löschen oder Nutzer sperren. Ausblenden ist die wichtigste Aktion: Der Kommentar
+        bleibt für den Verfasser und dessen Freunde sichtbar, der Verfasser merkt meist nichts. Kommentare
+        unter Anzeigen sind oft am schwersten im Griff zu behalten. Mehr dazu in unserem Leitfaden
+        <a href="/de/blog/facebook-kommentare-automatisch-ausblenden" class="text-brand-600 hover:text-brand-500">Facebook-Kommentare automatisch ausblenden</a>.
+      </p>
+
+      <h3 class="text-lg font-semibold text-surface-900">Instagram</h3>
+      <p>
+        Die Funktion „Verborgene Wörter“ filtert beleidigende Kommentare und nimmt Ihre eigene Wortliste
+        auf. Außerdem können Sie ein Konto einschränken, bei einer Angriffswelle Interaktionen begrenzen oder
+        die Kommentare eines Beitrags deaktivieren. Lesen Sie unseren Leitfaden
+        <a href="/de/blog/instagram-kommentare-moderieren" class="text-brand-600 hover:text-brand-500">Instagram-Kommentare moderieren</a>.
+      </p>
+
+      <h3 class="text-lg font-semibold text-surface-900">YouTube</h3>
+      <p>
+        YouTube geht am weitesten in Richtung Vorabmoderation: Möglicherweise unangemessene Kommentare
+        können zur Überprüfung zurückgehalten werden, und Sie können Wörter und Links blockieren, Nutzer in
+        Ihrem Kanal ausblenden und Moderatoren ernennen. Livechats brauchen eigene Aufmerksamkeit. Details in
+        unserem Leitfaden <a href="/de/blog/youtube-kommentare-moderieren" class="text-brand-600 hover:text-brand-500">YouTube-Kommentare moderieren</a>.
+      </p>
+
+      <h3 class="text-lg font-semibold text-surface-900">TikTok</h3>
+      <p>
+        TikTok bietet Filter für Spam und beleidigende Kommentare, einen Stichwortfilter, die Möglichkeit,
+        alle Kommentare vor dem Erscheinen freizugeben, und Einstellungen dazu, wer kommentieren darf. Die
+        Kommentarspalten sind schnell und oft von Trends getrieben. Mehr in unserem Leitfaden
+        <a href="/de/blog/tiktok-kommentare-moderieren" class="text-brand-600 hover:text-brand-500">TikTok-Kommentare moderieren</a>.
+      </p>
+
+      <h3 class="text-lg font-semibold text-surface-900">LinkedIn</h3>
+      <p>
+        Auf LinkedIn sind Kommentare selten beleidigend, aber oft Werbung in eigener Sache oder hitzige
+        Debatten. Die Werkzeuge sind einfach: löschen, melden, einschränken, wer einen Beitrag kommentieren
+        darf, oder Kommentare abschalten. Moderation bleibt hier weitgehend Handarbeit.
+      </p>
+
+      <h3 class="text-lg font-semibold text-surface-900">X (ehemals Twitter)</h3>
+      <p>
+        Auf X können Sie Antworten anderer nicht löschen. Sie können festlegen, wer auf einen Beitrag
+        antworten darf, Antworten ausblenden (sie bleiben hinter einem Klick erreichbar) und Konten
+        stummschalten, blockieren oder melden. Moderation auf X heißt, die Sichtbarkeit zu begrenzen, nicht
+        Inhalte zu entfernen.
+      </p>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Netzwerk</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Wichtigste eingebaute Werkzeuge</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Was mit einem moderierten Kommentar passiert</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">OpenModeration</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {networks.map((row) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{row.name}</td>
+              <td class="px-4 py-3 text-surface-600">{row.tools}</td>
+              <td class="px-4 py-3 text-surface-600">{row.action}</td>
+              <td class="px-4 py-3 text-surface-600">{row.om}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">Welche Regeln braucht Ihre Social Media Moderation?</h2>
+      <p>Ohne schriftliche Regeln hängt Moderation davon ab, wer gerade Dienst hat und wie dessen Tag läuft. Regeln machen Entscheidungen einheitlich und begründbar.</p>
+      <ol>
+        <li><strong>Veröffentlichen Sie eine kurze Netiquette.</strong> Ein paar Zeilen in der Bio, ein angehefteter Beitrag oder eine Seite auf Ihrer Website: Was willkommen ist, was entfernt wird, was zur Sperre führt. Der Verweis darauf beendet viele Diskussionen.</li>
+        <li><strong>Legen Sie die Kategorien fest, bei denen Sie eingreifen.</strong> Beleidigung und Belästigung, Hassrede, Spam und Betrug, persönliche Daten, strafbare Inhalte und Ihre eigenen Anwendungsfälle: Werbung für Wettbewerber, themenfremde Grundsatzdebatten, Spoiler, unbelegte Gesundheitsversprechen.</li>
+        <li><strong>Ordnen Sie jeder Kategorie eine Aktion zu.</strong> Stehen lassen, ausblenden, löschen, sperren, eskalieren. Ausblenden ist der Standard, wo das Netzwerk es erlaubt; Löschen bleibt Inhalten vorbehalten, die für alle verschwinden müssen.</li>
+        <li><strong>Geben Sie Beispiele.</strong> Zwei oder drei echte Kommentare pro Kategorie, auch Grenzfälle, helfen jedem Moderator, ob Mensch oder Maschine, die Grenze an derselben Stelle zu ziehen.</li>
+        <li><strong>Definieren Sie den Eskalationsweg.</strong> Wer wird bei einer Drohung, einer Rechtsfrage, einer Presseanfrage oder einer Krise informiert, und wie schnell?</li>
+      </ol>
+      <p>
+        Eine vollständige Methode und eine Vorlage finden Sie auf unserer Seite zu
+        <a href="/de/moderationsrichtlinien" class="text-brand-600 hover:text-brand-500">Moderationsrichtlinien</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Community Management oder Moderation: Wer macht was?</h2>
+      <p>
+        Das Community Management gestaltet: Es veröffentlicht, antwortet, bedankt sich, informiert und macht
+        aus einem verärgerten Kunden einen zufriedenen. Die Moderation filtert: Sie wendet die Regeln an,
+        blendet aus, was nicht dorthin gehört, sperrt Wiederholungstäter und meldet, was eskaliert werden
+        muss. In kleinen Teams macht eine Person beides, und an vollen Tagen bleibt die Moderation liegen.
+      </p>
+      <p>Sobald das Volumen wächst, sollten Sie die Arbeit ausdrücklich organisieren.</p>
+      <ul>
+        <li><strong>Abdeckungszeiten.</strong> Legen Sie fest, wann jemand Dienst hat und wer Abende, Wochenenden und die Stunden nach einem heiklen Beitrag abdeckt.</li>
+        <li><strong>Eine einzige Warteschlange.</strong> Konto für Konto in der App jedes Netzwerks zu moderieren kostet Zeit und hinterlässt Lücken. Bündeln Sie, was eine menschliche Entscheidung braucht.</li>
+        <li><strong>Klare Rollen.</strong> Wer darf sperren? Wer darf löschen? Wer spricht mit der Presse? Halten Sie es schriftlich fest.</li>
+        <li><strong>Gesundheit des Teams.</strong> Verteilen Sie die Belastung durch die schlimmsten Inhalte, erlauben Sie Pausen und automatisieren Sie die eindeutigen Fälle, damit Menschen weniger davon sehen.</li>
+        <li><strong>Agentur oder intern.</strong> Auslagern bringt Abdeckung in der Nacht, aber die Agentur braucht Ihre Regeln, Ihre Beispiele und einen direkten Draht für Eskalationen.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Antworten oder moderieren?</h2>
+      <p>
+        Der häufigste Fehler: moderieren, wo eine Antwort gefragt wäre. Wer eine berechtigte Beschwerde
+        ausblendet, erweckt den Eindruck, etwas verbergen zu wollen, und der Verfasser kommt lauter zurück.
+        Moderieren Sie, was gegen Ihre Regeln verstößt, und antworten Sie auf alles andere. Für schwierige
+        Fälle lesen Sie unseren Leitfaden zum
+        <a href="/de/blog/negative-kommentare-trolls-umgang" class="text-brand-600 hover:text-brand-500">Umgang mit negativen Kommentaren und Trolls</a>.
+      </p>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Art des Kommentars</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Was tun</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {responses.map((row) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{row.type}</td>
+              <td class="px-4 py-3 text-surface-600">{row.action}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">Wie geht man mit einem Shitstorm um?</h2>
+      <p>Eine Krise beginnt, wenn Kommentare schneller kommen, als Sie sie lesen können: ein umstrittener Beitrag, ein Produktrückruf, ein koordinierter Angriff, eine Nachricht, die Ihre Marke mit hineinzieht.</p>
+      <ol>
+        <li><strong>Trennen Sie die beiden Probleme.</strong> Beleidigungen und Spam werden wie gewohnt moderiert, eher strenger. Berechtigter Ärger bekommt eine Antwort, mit einer einheitlichen Botschaft.</li>
+        <li><strong>Nutzen Sie die Notfallhebel.</strong> Kommentarkreis einschränken, Kommentare zur Prüfung zurückhalten, Kommentare unter dem am stärksten betroffenen Beitrag abschalten. Sagen Sie öffentlich, dass Sie es tun und warum.</li>
+        <li><strong>Pausieren Sie gesponserte Beiträge,</strong> die den Sturm anziehen, damit Sie nicht für seine Reichweite bezahlen.</li>
+        <li><strong>Sichern Sie Beweise.</strong> Machen Sie Screenshots von Drohungen und koordinierten Nachrichten, bevor Sie sie ausblenden oder löschen.</li>
+        <li><strong>Halten Sie eine kurze tägliche Runde</strong> mit Kommunikation, Rechtsabteilung und Moderation ab, bis sich die Lage beruhigt, und passen Sie danach Ihre Regeln an.</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Wie misst man Social Media Moderation?</h2>
+      <p>Verfolgen Sie jeden Monat eine Handvoll Kennzahlen, pro Netzwerk und pro Beitrag.</p>
+      <ul>
+        <li><strong>Volumen:</strong> eingegangene Kommentare und der Anteil, der ausgeblendet, gelöscht oder eskaliert wurde.</li>
+        <li><strong>Zeit bis zur Aktion:</strong> wie lange ein schädlicher Kommentar sichtbar bleibt. Für Ihre Community ist das die wichtigste Zahl.</li>
+        <li><strong>Antwortzeit</strong> auf Fragen und Beschwerden, getrennt gemessen.</li>
+        <li><strong>Fehler:</strong> nach Prüfung wiederhergestellte Kommentare und Beschwerden von Nutzern, die sich zensiert fühlen. Viele davon heißen: Ihre Regeln sind zu weit gefasst.</li>
+        <li><strong>Rückstau:</strong> wie viele unklare Fälle auf einen Menschen warten, und seit wann.</li>
+        <li><strong>Brennpunkte:</strong> welche Beiträge, Themen oder Kampagnen die meisten Probleme anziehen, um die Abdeckung zu planen.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Was muss ein Social-Media-Moderationstool können? Die Checkliste</h2>
+      <ol>
+        <li>Sich über die offiziellen APIs mit den Netzwerken verbinden, die Sie tatsächlich nutzen.</li>
+        <li>Handeln, sobald ein Kommentar erscheint, nicht Stunden später.</li>
+        <li>Ihre Regeln und Ihre Anwendungsfälle anwenden, nicht nur generische Kategorien.</li>
+        <li>Kontext, absichtliche Falschschreibungen, Ironie und die Sprachen Ihrer Community verstehen.</li>
+        <li>Je Netzwerk die passende Aktion nutzen: ausblenden, zurückhalten, ablehnen, löschen.</li>
+        <li>Unklare Fälle in eine gemeinsame Prüf-Warteschlange schicken.</li>
+        <li>Jede Entscheidung schriftlich begründen und einen Audit-Trail führen.</li>
+        <li>Offenlegen, wo die Daten verarbeitet und gespeichert werden.</li>
+        <li>Mit Menschen kommen, die Ihnen beim Einrichten und Nachschärfen der Regeln helfen.</li>
+      </ol>
+      <p>
+        Die <a href="/de/social-media-moderation" class="text-brand-600 hover:text-brand-500">Social Media Moderation von OpenModeration</a> deckt
+        Facebook, Instagram, YouTube und Websites (einschließlich WordPress) in einer Konsole ab. Mit TikTok,
+        LinkedIn und X verbindet sie sich nicht: Dort bleiben die oben beschriebenen eingebauten Werkzeuge
+        Ihre wichtigste Option.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Was ändert der DSA für die Social Media Moderation?</h2>
+      <p>
+        Der Digital Services Act der EU verpflichtet Hostingdienste und Online-Plattformen, ihre
+        Moderationsentscheidungen zu begründen und einen Weg zur Meldung rechtswidriger Inhalte anzubieten.
+        In sozialen Netzwerken liegen diese Pflichten vor allem bei der Plattform, nicht bei der Marke, die
+        eine Seite betreibt. Auf Ihrer eigenen Website liegen sie bei Ihnen. In beiden Fällen ist eine
+        Begründung und ein Protokolleintrag pro Entscheidung der einfachste Weg, vorbereitet zu sein, wenn
+        ein Nutzer, eine Führungskraft oder eine Behörde wissen will, warum ein Kommentar verschwunden ist.
+      </p>
+    </div>
+
+    <div class="mt-12">
+      <FAQ title="Häufige Fragen" items={faqItems} />
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Weiterlesen</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/de/social-media-moderation" class="font-medium text-brand-600 hover:text-brand-500">Social Media Moderation mit OpenModeration &rarr;</a></li>
+        <li><a href="/de/blog/kommentarmoderation-leitfaden" class="font-medium text-brand-600 hover:text-brand-500">Der komplette Leitfaden zur Kommentarmoderation &rarr;</a></li>
+        <li><a href="/de/blog/negative-kommentare-trolls-umgang" class="font-medium text-brand-600 hover:text-brand-500">Umgang mit negativen Kommentaren und Trolls &rarr;</a></li>
+        <li><a href="/de/moderationsrichtlinien" class="font-medium text-brand-600 hover:text-brand-500">Moderationsrichtlinien schreiben &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

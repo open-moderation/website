@@ -1,0 +1,310 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import FAQ from '../../../components/FAQ.astro';
+
+const title = "Cos'è la moderazione dei contenuti: definizione e tipi";
+const description = "Cos'è la moderazione dei contenuti: cosa si modera, i 6 tipi, il lavoro del moderatore di contenuti, come funziona l'IA, il DSA e come scegliere l'approccio.";
+const linkClass = "text-brand-600 hover:text-brand-500";
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Cos'è la moderazione dei contenuti: definizione, tipi, IA e il ruolo del moderatore",
+  "description": description,
+  "inLanguage": "it",
+  "datePublished": "2026-10-30",
+  "dateModified": "2026-10-30",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/it/blog/cos-e-moderazione-contenuti" }
+};
+
+const types = [
+  { type: "Pre-moderazione", how: "Ogni contenuto viene controllato prima della pubblicazione.", pros: "Nulla di dannoso va mai online.", cons: "Lenta, costosa, spegne la conversazione in diretta." },
+  { type: "Post-moderazione", how: "Il contenuto va online subito e viene controllato dopo.", pros: "Veloce e fluida per gli utenti.", cons: "Ciò che è dannoso resta visibile finché qualcuno non lo controlla." },
+  { type: "Moderazione reattiva", how: "Si controllano solo i contenuti segnalati.", pros: "Economica, sfrutta gli occhi della community.", cons: "Dipende dalla voglia di segnalare." },
+  { type: "Moderazione distribuita", how: "La community vota, segnala o nasconde i contenuti.", pros: "Cresce con la community.", cons: "Effetto branco, attacchi coordinati, qualità disomogenea." },
+  { type: "Moderazione automatica", how: "Filtri o modelli di IA decidono su ogni contenuto.", pros: "Istantanea, 24 ore su 24, grandi volumi.", cons: "Errori di contesto, va supervisionata." },
+  { type: "Moderazione ibrida", how: "L'automazione gestisce i casi chiari, le persone quelli dubbi.", pros: "Velocità e giudizio.", cons: "Servono regole chiare e un buon strumento di revisione." },
+];
+
+const glossary = [
+  { term: "Contenuti generati dagli utenti (UGC)", def: "Tutto ciò che pubblicano gli utenti e non il servizio stesso: commenti, recensioni, post, foto, video, messaggi." },
+  { term: "Regole della community", def: "Le regole pubbliche che dicono cosa è permesso su un servizio. Si parla anche di policy di moderazione o netiquette." },
+  { term: "Falso positivo", def: "Un contenuto accettabile nascosto o rimosso per errore." },
+  { term: "Falso negativo", def: "Un contenuto dannoso lasciato online per errore." },
+  { term: "Human in the loop", def: "Un sistema in cui le persone rivedono le decisioni su cui l'automazione è incerta." },
+  { term: "Coda di revisione", def: "L'elenco dei contenuti segnalati o dubbi in attesa di una decisione umana." },
+  { term: "Meccanismo di segnalazione", def: "Il dispositivo previsto dal DSA che consente a chiunque di segnalare un contenuto illegale a un servizio di hosting, che deve gestire la segnalazione." },
+  { term: "Motivazione", def: "La spiegazione che un servizio deve dare all'utente di cui limita il contenuto, secondo il DSA." },
+  { term: "Audit trail", def: "Il registro di ogni decisione: cosa, quando, chi o quale sistema e perché." },
+  { term: "Trust & safety", def: "La funzione più ampia che si occupa della sicurezza degli utenti, di cui la moderazione dei contenuti è una parte." },
+];
+
+const faqItems = [
+  {
+    question: "Cos'è la moderazione dei contenuti in parole semplici?",
+    answer: "È il lavoro di controllare ciò che gli utenti pubblicano su un sito, un'app o una pagina social e decidere se può restare online, in base alla legge e alle regole del servizio. Ciò che viola le regole viene nascosto, rimosso o limitato.",
+  },
+  {
+    question: "Quali sono i tipi di moderazione dei contenuti?",
+    answer: "Di solito se ne distinguono sei: pre-moderazione (prima della pubblicazione), post-moderazione (dopo), moderazione reattiva (solo i contenuti segnalati), distribuita (dalla community), automatica (filtri e IA) e ibrida, che unisce automazione e revisione umana.",
+  },
+  {
+    question: "Cosa fa un moderatore di contenuti?",
+    answer: "Esamina i contenuti degli utenti alla luce di un insieme di regole e decide se approvarli, nasconderli, rimuoverli o inoltrarli. Gestisce segnalazioni, casi limite e reclami e aiuta a migliorare le regole. È un lavoro che richiede giudizio, conoscenza culturale e resistenza, perché alcuni contenuti sono disturbanti.",
+  },
+  {
+    question: "L'IA può sostituire i moderatori umani?",
+    answer: "Non del tutto. L'IA gestisce molto bene volumi e velocità e sa applicare regole tenendo conto del contesto, ma sbaglia ancora su ironia, riferimenti locali e nuove forme di abuso. La risposta abituale è ibrida: l'IA decide sui casi chiari e passa quelli dubbi alle persone.",
+  },
+  {
+    question: "La moderazione dei contenuti è censura?",
+    answer: "La moderazione applica regole pubbliche che gli utenti accettano quando si iscrivono, e nell'UE la legge impone di intervenire sui contenuti illegali. Fatta bene, è trasparente: gli utenti conoscono le regole, ricevono una motivazione quando il loro contenuto viene limitato e possono contestare la decisione.",
+  },
+  {
+    question: "Il DSA si applica al mio sito?",
+    answer: "Se ospiti contenuti pubblicati dagli utenti, come commenti o recensioni, il DSA molto probabilmente ti riguarda come servizio di hosting. Gli obblighi precisi dipendono dalla natura e dalle dimensioni del tuo servizio. Questa è un'informazione generale, non una consulenza legale.",
+  },
+  {
+    question: "Che differenza c'è tra moderazione dei contenuti e moderazione dei commenti?",
+    answer: "La moderazione dei contenuti riguarda tutto ciò che pubblicano gli utenti: post, recensioni, annunci, messaggi, immagini e video. La moderazione dei commenti ne è una parte, dedicata ai commenti sotto articoli, post e video.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} ogType="article" jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Home", href: "/it" }, { label: "Blog", href: "/it/blog" }, { label: "Cos'è la moderazione dei contenuti" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-30">30 ottobre 2026</time>
+        <span>&middot;</span>
+        <span>9 min di lettura</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Cos'è la moderazione dei contenuti: definizione, tipi, IA e il ruolo del moderatore</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Qualsiasi servizio che permette di pubblicare qualcosa, un commento, una recensione, una foto, un
+        annuncio, deve decidere cosa resta online. Questa decisione, ripetuta migliaia di volte al giorno, è
+        la moderazione dei contenuti. In questa guida trovi la definizione, i principali tipi di moderazione,
+        cosa fanno davvero i moderatori e l'IA, e cosa chiede la normativa europea.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">In breve</h2>
+      <ul>
+        <li><strong>La moderazione dei contenuti</strong> consiste nel controllare i contenuti degli utenti alla luce della legge e delle tue regole, e decidere se restano, vengono nascosti o rimossi.</li>
+        <li><strong>Esistono sei tipi:</strong> pre-moderazione, post-moderazione, reattiva, distribuita, automatica e ibrida. La maggior parte dei servizi ne combina diversi.</li>
+        <li><strong>L'IA</strong> si occupa di volumi e velocità; <strong>le persone</strong> dei casi limite, dei reclami e delle regole stesse.</li>
+        <li><strong>Nell'UE, il DSA</strong> chiede ai servizi di hosting di gestire le segnalazioni, motivare le decisioni e tenerne traccia.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Cos'è la moderazione dei contenuti? Definizione</h2>
+      <p>
+        La moderazione dei contenuti è il processo con cui si esaminano i contenuti creati dagli utenti e si
+        decide se rispettano la legge e le regole del servizio su cui sono pubblicati. Quando non le
+        rispettano, il contenuto viene nascosto, rimosso, limitato o etichettato, e a volte l'autore viene
+        avvisato o bloccato.
+      </p>
+      <p>Ci sono sempre tre elementi:</p>
+      <ul>
+        <li><strong>Regole.</strong> La legge (incitamento all'odio, minacce, truffe, diffamazione) e le regole proprie del servizio, che vanno oltre: niente spam, niente insulti, niente off-topic, niente link alla concorrenza.</li>
+        <li><strong>Una decisione.</strong> Approvare, nascondere, rimuovere, limitare, passare a una persona o sanzionare l'autore.</li>
+        <li><strong>Un processo.</strong> Chi decide, quando (prima o dopo la pubblicazione), con quali strumenti e come la decisione viene registrata e spiegata.</li>
+      </ul>
+      <p>
+        Moderare non significa solo togliere il peggio. Significa anche dare il tono a uno spazio: un
+        quotidiano locale, un videogioco per ragazzi e una squadra di Serie A non mettono il limite nello
+        stesso punto, ed è legittimo finché le regole sono pubbliche e applicate in modo coerente.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Quali contenuti si moderano?</h2>
+      <p>Tutto ciò che un utente può pubblicare sul tuo servizio. I formati più comuni sono:</p>
+      <ul>
+        <li><strong>Commenti</strong> sotto articoli, post sui social, video e inserzioni. È il formato con più volume per media e brand; la nostra <a href="/it/blog/moderazione-commenti-guida" class={linkClass}>guida alla moderazione dei commenti</a> lo approfondisce.</li>
+        <li><strong>Post e discussioni</strong> su forum, community e piattaforme social.</li>
+        <li><strong>Recensioni e valutazioni</strong> su e-commerce e siti di prenotazione, dove recensioni false e diffamazione sono i rischi principali.</li>
+        <li><strong>Annunci</strong> su marketplace e siti di annunci: contraffazioni, prodotti vietati, truffe.</li>
+        <li><strong>Messaggi</strong> in chat e messaggi privati: molestie, adescamento di minori, link di phishing.</li>
+        <li><strong>Immagini</strong> come foto profilo e file caricati: nudità, violenza, simboli d'odio.</li>
+        <li><strong>Video e dirette</strong>, i più difficili da controllare per la durata e il tempo reale.</li>
+        <li><strong>Profili e nomi utente</strong>, spesso il primo posto in cui compaiono insulti o furti d'identità.</li>
+      </ul>
+      <p>
+        Il testo resta il grosso del lavoro per la maggior parte delle organizzazioni, ed è lì che il contesto
+        conta di più: la stessa parola può essere un insulto, una citazione o una battuta tra amici.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Quali sono i tipi di moderazione dei contenuti?</h2>
+      <p>
+        I tipi si distinguono su due domande: <em>quando</em> il contenuto viene controllato (prima o dopo la
+        pubblicazione) e <em>chi</em> lo controlla (un team, la community o una macchina).
+      </p>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Tipo</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Come funziona</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Punto di forza</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Punto debole</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {types.map((row) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{row.type}</td>
+              <td class="px-4 py-3 text-surface-600">{row.how}</td>
+              <td class="px-4 py-3 text-surface-600">{row.pros}</td>
+              <td class="px-4 py-3 text-surface-600">{row.cons}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <p>Qualche parola su ciascuno:</p>
+      <ul>
+        <li><strong>La pre-moderazione</strong> è adatta agli spazi sensibili, come i servizi per minori o le recensioni di un prodotto appena lanciato. Non è adatta al dibattito in diretta: un commento approvato tre ore dopo non lo legge più nessuno.</li>
+        <li><strong>La post-moderazione</strong> è la norma sulla maggior parte dei siti. Il suo punto debole è l'intervallo tra pubblicazione e controllo, soprattutto di notte e nel weekend.</li>
+        <li><strong>La moderazione reattiva</strong> si basa sul pulsante «segnala». È indispensabile, e nell'UE un meccanismo di segnalazione è obbligatorio, ma da solo lascia online i contenuti dannosi finché qualcuno non si lamenta.</li>
+        <li><strong>La moderazione distribuita</strong> lascia che la community voti a favore o contro un contenuto, o lo nasconda dopo un certo numero di segnalazioni, come in molti forum e su Wikipedia. Funziona con una community coinvolta e un team pronto a intervenire.</li>
+        <li><strong>La moderazione automatica</strong> va dalle semplici liste di parole vietate ai modelli di IA che leggono il contenuto nel suo contesto. È l'unico modo per agire subito su grandi volumi.</li>
+        <li><strong>La moderazione ibrida</strong> unisce le due: l'automazione decide i casi chiari in tempo reale, quelli dubbi passano a una persona. Oggi è la soluzione più diffusa appena c'è un po' di volume.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Cosa fa un moderatore di contenuti?</h2>
+      <p>
+        Un moderatore di contenuti esamina ciò che pubblicano gli utenti e decide se rispetta le regole. Il
+        ruolo copre realtà molto diverse: dal social media manager che modera i canali di un brand tra un post
+        e l'altro ai team a tempo pieno che lavorano su turni per grandi piattaforme o agenzie specializzate.
+      </p>
+      <p>Nel lavoro di tutti i giorni, un moderatore:</p>
+      <ul>
+        <li>smaltisce una coda di contenuti: segnalati, evidenziati dall'automazione o, in pre-moderazione, tutti;</li>
+        <li>approva, nasconde, rimuove o inoltra ogni contenuto, e sanziona i recidivi;</li>
+        <li>decide i casi limite: satira, critica a un politico, una discussione accesa ma legittima;</li>
+        <li>gestisce le segnalazioni degli utenti e i reclami contro le decisioni;</li>
+        <li>riporta le tendenze a chi scrive le regole: un nuovo insulto in codice, un'ondata di truffe, un attacco coordinato.</li>
+      </ul>
+      <h3 class="text-lg font-semibold text-surface-900">Le difficoltà del mestiere</h3>
+      <ul>
+        <li><strong>L'esposizione a contenuti dannosi.</strong> Alcuni moderatori vedono ogni giorno materiale violento o d'odio. Supporto psicologico, rotazione e immagini sfocate di default non sono un optional.</li>
+        <li><strong>Volumi e urgenza.</strong> I picchi arrivano con le ultime notizie, un post virale o una campagna a pagamento, quasi mai in orario d'ufficio.</li>
+        <li><strong>Coerenza.</strong> Due persone possono giudicare diversamente lo stesso commento. Regole chiare con esempi riducono la distanza.</li>
+        <li><strong>Contesto e lingue.</strong> Ironia, gergo e riferimenti locali sono difficili da valutare senza conoscere la cultura, a partire dai dialetti.</li>
+        <li><strong>Responsabilità.</strong> Ogni decisione può essere contestata dall'autore, da un responsabile o da un'autorità, quindi deve poter essere spiegata.</li>
+      </ul>
+      <p>
+        Molte organizzazioni non hanno un team dedicato e si rivolgono a un'agenzia o a un software. La nostra
+        pagina su come <a href="/it/esternalizzare-moderazione" class={linkClass}>esternalizzare la moderazione</a> confronta le opzioni.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Come funziona la moderazione dei contenuti con l'IA?</h2>
+      <p>
+        La moderazione con l'IA usa modelli linguistici (e modelli di immagine per le foto) per leggere ogni
+        contenuto e decidere se viola una regola. In parole semplici:
+      </p>
+      <ol>
+        <li><strong>Il contenuto arriva</strong> appena pubblicato, tramite un'API o un collegamento alla piattaforma.</li>
+        <li><strong>Il modello lo legge nel contesto:</strong> il testo, a volte l'articolo o il post a cui risponde, e le regole del servizio.</li>
+        <li><strong>Restituisce una decisione</strong> (approvare, nascondere, rifiutare, passare a una persona) con un livello di confidenza e, nei sistemi migliori, una motivazione scritta.</li>
+        <li><strong>L'azione viene applicata</strong> in automatico per i casi chiari; quelli dubbi finiscono in una coda di revisione.</li>
+        <li><strong>Tutto viene registrato</strong>, così le decisioni si possono verificare, spiegare e correggere.</li>
+      </ol>
+      <p>
+        I sistemi più vecchi si basavano su liste di parole e punteggi semplici («questo testo è tossico
+        all'87%»). I modelli recenti sanno applicare regole scritte in linguaggio naturale, come «niente link
+        alla concorrenza» o «niente dati personali in pubblico», cosa che una lista di parole non può fare.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Punti di forza e limiti dell'IA</h3>
+      <ul>
+        <li><strong>Punti di forza:</strong> istantanea, a qualsiasi ora, coerente da un contenuto all'altro, capace di leggere errori voluti e più lingue, ed evita alle persone di vedere per prime i contenuti peggiori.</li>
+        <li><strong>Limiti:</strong> può non cogliere l'ironia o riferimenti molto locali, farsi ingannare da trucchi nuovi e portarsi dietro i bias dei dati di addestramento. Non conosce la tua community finché non le dai le tue regole.</li>
+      </ul>
+      <p>
+        Per questo la revisione umana resta necessaria. L'IA deve decidere quando è sicura, passare il resto a
+        una persona, e le sue decisioni devono poter essere verificate. Le nostre pagine sulla
+        <a href="/it/moderazione-automatica" class={linkClass}>moderazione automatica</a> e sul
+        <a href="/it/software-di-moderazione" class={linkClass}>software di moderazione</a> spiegano come lo fa
+        OpenModeration: le tue regole e i tuoi casi d'uso, i casi dubbi inviati alla revisione umana in
+        un'unica console, una motivazione scritta per ogni decisione.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Cosa dice la normativa europea? Il DSA in poche righe</h2>
+      <p>
+        Il Digital Services Act (DSA, regolamento sui servizi digitali) si applica a tutti gli intermediari
+        online dell'UE da febbraio 2024. Se ospiti contenuti pubblicati dagli utenti, sei un servizio di
+        hosting ai sensi del DSA. A grandi linee, ti chiede di:
+      </p>
+      <ul>
+        <li>pubblicare regole chiare su cosa è permesso e su come funziona la moderazione, compreso l'uso di strumenti automatizzati;</li>
+        <li>permettere a chiunque di segnalare contenuti illegali e gestire queste segnalazioni;</li>
+        <li>fornire una motivazione agli utenti di cui limiti i contenuti, indicando se sono stati usati mezzi automatizzati;</li>
+        <li>se sei una piattaforma online, offrire un modo per contestare le decisioni e conservarne traccia.</li>
+      </ul>
+      <p>
+        Gli obblighi precisi dipendono dalla natura e dalle dimensioni del tuo servizio. Questa è
+        un'informazione generale, non una consulenza legale. Trovi più dettagli nella nostra pagina sulla
+        <a href="/it/conformita-dsa" class={linkClass}>conformità al DSA</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Come scegliere l'approccio di moderazione?</h2>
+      <p>Di solito bastano cinque domande:</p>
+      <ol>
+        <li><strong>Quanti contenuti, e quando?</strong> Qualche decina di commenti al giorno si gestisce a mano. Migliaia, o picchi notturni, richiedono l'automazione.</li>
+        <li><strong>Quanto costa un errore?</strong> Un servizio per ragazzi tenderà alla pre-moderazione; una testata non può permettersi di ritardare il dibattito.</li>
+        <li><strong>Quali sono le tue regole?</strong> Scrivile prima di scegliere uno strumento. La nostra pagina sulla <a href="/it/policy-di-moderazione" class={linkClass}>policy di moderazione</a> ti aiuta.</li>
+        <li><strong>Chi decide i casi limite?</strong> Un team interno, un'agenzia o entrambi. Qualcuno deve avere l'ultima parola.</li>
+        <li><strong>Cosa devi poter dimostrare?</strong> Motivazioni, registri ed esportazioni contano per il DSA e per le tue verifiche interne.</li>
+      </ol>
+      <p>
+        Per la maggior parte di media, brand ed enti pubblici la risposta è ibrida: automazione su ogni
+        contenuto in tempo reale, revisione umana per i casi dubbi e una revisione periodica delle regole. Se
+        i social sono il tuo canale principale, leggi la nostra
+        <a href="/it/blog/moderazione-social-media-guida" class={linkClass}>guida alla moderazione dei social media</a>.
+        Per vedere come un modello di IA giudica i tuoi contenuti, <a href="/it/prova-moderazione" class={linkClass}>prova la demo</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Glossario della moderazione dei contenuti</h2>
+      <dl>
+        {glossary.map((item) => (
+          <>
+            <dt class="font-semibold text-surface-900">{item.term}</dt>
+            <dd class="mb-3">{item.def}</dd>
+          </>
+        ))}
+      </dl>
+    </div>
+
+    <div class="mt-12">
+      <FAQ title="Domande frequenti" items={faqItems} />
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Per approfondire</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/it/blog/moderazione-commenti-guida" class="font-medium text-brand-600 hover:text-brand-500">La guida completa alla moderazione dei commenti &rarr;</a></li>
+        <li><a href="/it/moderazione-automatica" class="font-medium text-brand-600 hover:text-brand-500">Come funziona la moderazione automatica &rarr;</a></li>
+        <li><a href="/it/software-di-moderazione" class="font-medium text-brand-600 hover:text-brand-500">Come scegliere un software di moderazione &rarr;</a></li>
+        <li><a href="/it/conformita-dsa" class="font-medium text-brand-600 hover:text-brand-500">Cosa chiede il DSA per le decisioni di moderazione &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

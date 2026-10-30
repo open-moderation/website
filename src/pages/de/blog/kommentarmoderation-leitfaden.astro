@@ -1,0 +1,418 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import FAQ from '../../../components/FAQ.astro';
+
+const pageTitle = "Kommentarmoderation: der komplette Leitfaden (2026)";
+const pageDescription = "Kommentare moderieren in der Praxis: Methoden im Vergleich, Regeln, Graubereiche, der DSA, die Wahl einer Moderationssoftware und 10 bewährte Grundsätze.";
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Kommentarmoderation: der komplette Leitfaden, um Kommentare richtig zu moderieren",
+  "description": pageDescription,
+  "inLanguage": "de",
+  "datePublished": "2026-10-30",
+  "dateModified": "2026-10-30",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/de/blog/kommentarmoderation-leitfaden" }
+};
+
+const methods = [
+  { name: "Vorabmoderation", how: "Jeder Kommentar wird geprüft, bevor er erscheint.", speed: "Langsam: die Veröffentlichung wartet auf einen Moderator", cost: "Hoch", risk: "Gering bei rechtswidrigen Inhalten, hoch für die Diskussion", scale: "Schlecht" },
+  { name: "Nachträgliche Moderation", how: "Kommentare erscheinen sofort und werden danach geprüft.", speed: "Sofort", cost: "Hoch", risk: "Mittel: Problematisches bleibt bis zur Prüfung sichtbar", scale: "Mittel" },
+  { name: "Reaktive Moderation", how: "Sie handeln nur auf Meldungen von Nutzern.", speed: "Sofort", cost: "Gering", risk: "Hoch: nichts fällt auf, bis jemand meldet", scale: "Gut, aber passiv" },
+  { name: "Automatische Filter", how: "Wortlisten, Linksperren, feste Regeln.", speed: "Sofort", cost: "Gering", risk: "Hoch: Fehlalarme bei Kritik und Ironie, verschleierte Beleidigungen rutschen durch", scale: "Gut" },
+  { name: "Hybrid: KI und Mensch", how: "Die KI wendet Ihre Regeln an, Zweifelsfälle gehen an ein Team.", speed: "Sekunden", cost: "Moderat", risk: "Gering bei gut abgestimmten Regeln und Schwellenwerten", scale: "Sehr gut" },
+];
+
+const actions = [
+  { action: "Ausblenden", what: "Der Kommentar ist öffentlich nicht mehr sichtbar. Auf Facebook sehen ihn der Verfasser und seine Freunde weiterhin.", when: "Beleidigungen, Spam, aggressive Off-Topic-Beiträge: der Normalfall, und umkehrbar." },
+  { action: "Löschen oder ablehnen", what: "Der Kommentar wird endgültig entfernt (oder gar nicht erst veröffentlicht).", when: "Eindeutig rechtswidrige Inhalte, Betrug, personenbezogene Daten Dritter." },
+  { action: "Sperren oder einschränken", what: "Der Verfasser kann nicht mehr kommentieren, befristet oder dauerhaft.", when: "Wiederholungstäter, gezielte Belästigung, Spam-Konten, koordinierte Shitstorms." },
+];
+
+const faqItems = [
+  {
+    question: "Was ist Kommentarmoderation?",
+    answer: "Kommentarmoderation umfasst die Regeln und Maßnahmen, mit denen Sie entscheiden, welche Kommentare unter Ihren Artikeln, Videos und Beiträgen sichtbar bleiben: veröffentlichen, ausblenden, löschen, zur Prüfung weiterleiten oder einen Verfasser einschränken, und die Entscheidung anschließend begründen.",
+  },
+  {
+    question: "Wie moderiert man Kommentare effektiv?",
+    answer: "Formulieren Sie klare Regeln mit Beispielen, automatisieren Sie die eindeutigen Fälle, geben Sie Zweifelsfälle an einen Menschen, begründen Sie jede Entscheidung gegenüber dem Verfasser, protokollieren Sie alles und überarbeiten Sie Ihre Regeln regelmäßig anhand der Fehler, die Sie beobachten.",
+  },
+  {
+    question: "Soll ich einen Kommentar ausblenden oder löschen?",
+    answer: "Ausblenden ist der sinnvolle Standard: Es lässt sich rückgängig machen und reicht, um die Diskussion zu schützen. Löschen Sie nur eindeutig rechtswidrige oder gefährliche Inhalte. In beiden Fällen sollten Sie die Entscheidung und ihre Begründung festhalten.",
+  },
+  {
+    question: "Gilt der DSA auch für die Kommentare auf meiner Website?",
+    answer: "Ja. Sobald Sie Inhalte Ihrer Nutzer speichern, etwa Kommentare, sind Sie im Sinne des DSA ein Hostingdienst. Welche Pflichten genau gelten, hängt von Art und Größe Ihres Dienstes ab. Das ist keine Rechtsberatung.",
+  },
+  {
+    question: "Kann man Kommentare automatisch moderieren?",
+    answer: "Ja. Eine KI kann jeden Kommentar im Kontext lesen, Ihre Regeln innerhalb von Sekunden anwenden und ausblenden, was dagegen verstößt. Über Zweifelsfälle sollte weiterhin ein Mensch entscheiden, und Verfasser sollten erfahren, wenn automatisierte Mittel eingesetzt wurden.",
+  },
+  {
+    question: "Sollte man negative Kommentare löschen?",
+    answer: "Nein. Kritik an Ihrer Marke, Ihrer Redaktion oder einem Produkt ist kein Grund zum Entfernen, auch wenn sie scharf formuliert ist. Wer negative Rückmeldungen löscht, beschädigt das Vertrauen stärker als der Kommentar selbst. Entfernt werden Beleidigungen, Hass, Drohungen, Spam und rechtswidrige Inhalte.",
+  },
+  {
+    question: "Worauf sollte ich bei einer Software für Kommentarmoderation achten?",
+    answer: "Auf Anbindungen an alle Ihre Plattformen, die Möglichkeit, eigene Regeln statt eines starren Rasters anzuwenden, eine gemeinsame Prüfwarteschlange für Zweifelsfälle, eine schriftliche Begründung für jede Entscheidung, ein Prüfprotokoll und Hosting in der EU, wenn für Sie die DSGVO gilt.",
+  },
+  {
+    question: "Was kostet Kommentarmoderation?",
+    answer: "Ein internes Team oder eine Agentur wird nach Zeit oder Volumen bezahlt. Ein automatisches Tool kostet einen Bruchteil davon, weil Menschen nur noch die Zweifelsfälle bearbeiten. Die aktuellen Tarife von OpenModeration finden Sie auf der Preisseite.",
+  },
+];
+
+const linkClass = "text-brand-600 hover:text-brand-500";
+---
+
+<BaseLayout title={pageTitle} description={pageDescription} ogType="article" jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Startseite", href: "/de" }, { label: "Blog", href: "/de/blog" }, { label: "Leitfaden Kommentarmoderation" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-30">30. Oktober 2026</time>
+        <span>&middot;</span>
+        <span>12 Min. Lesezeit</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Kommentarmoderation: der komplette Leitfaden, um Kommentare richtig zu moderieren</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Kommentare unter einem Artikel, einem YouTube-Video oder einem Facebook-Post können eine Community
+        zusammenbringen oder sie vertreiben. Dieser Leitfaden zeigt, wie Sie Kommentare in der Praxis
+        moderieren: welche Methoden es gibt, welche Regeln Sie schriftlich festhalten sollten, wie Sie mit
+        Graubereichen umgehen, was der Digital Services Act der EU verlangt und wie Sie zwischen internem
+        Team, Agentur und Moderationssoftware wählen.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Das Wichtigste in Kürze</h2>
+      <ul>
+        <li><strong>Moderieren heißt entscheiden,</strong> welche Kommentare sichtbar bleiben, nach vorab festgelegten Regeln, und jede Entscheidung begründen können.</li>
+        <li><strong>Was mit dem Volumen mitwächst,</strong> ist eine KI, die Ihre Regeln in Sekunden anwendet, plus ein Team für die Zweifelsfälle.</li>
+        <li><strong>Ihre Regeln zählen mehr als Ihr Tool:</strong> was entfernt wird, was bleibt (Kritik, Widerspruch) und wie Sie mit Ironie oder Politik umgehen.</li>
+        <li><strong>Der DSA</strong> verpflichtet Websites mit Kommentaren, Meldungen zu bearbeiten, Entscheidungen zu begründen und Widerspruch zu ermöglichen.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Was ist Kommentarmoderation und warum ist sie wichtig?</h2>
+      <p>
+        Kommentarmoderation umfasst alle Regeln und Maßnahmen, die festlegen, was in Ihren Kommentarbereichen
+        sichtbar bleibt: veröffentlichen, ausblenden, löschen, zur Prüfung weiterleiten, einen Verfasser
+        einschränken. Das betrifft Ihre Website und App, aber auch Ihre Facebook-Seiten, Instagram-Konten und
+        YouTube-Kanäle, auf denen Kommentare unter Ihrem Namen erscheinen.
+      </p>
+      <p>Sie ist aus vier Gründen wichtig.</p>
+      <ul>
+        <li><strong>Community.</strong> Eine Handvoll aggressiver Kommentatoren reicht, um alle anderen verstummen zu lassen. Ein gepflegter Raum lädt dazu ein, mitzureden, wiederzukommen und zu diskutieren.</li>
+        <li><strong>Markenimage.</strong> Ein Hasskommentar unter Ihrem Beitrag wirkt, als würden Sie ihn dulden. Ein Betrugskommentar unter einem gesponserten Post trifft direkt Ihre Kundinnen und Kunden.</li>
+        <li><strong>Werbekunden.</strong> Verlage wissen, dass Werbekunden auf das Umfeld ihrer Anzeigen achten. Ein außer Kontrolle geratener Kommentarbereich arbeitet gegen Sie.</li>
+        <li><strong>Rechtliches Risiko.</strong> Wer Kommentare hostet, hat Pflichten, sobald ihm rechtswidrige Inhalte gemeldet werden. Wer nichts tut oder nicht belegen kann, was er getan hat, macht sich angreifbar.</li>
+      </ul>
+      <p>
+        Redaktionen finden mehr auf unserer Seite zur <a href="/de/anwendungsfaelle/medien" class={linkClass}>Kommentarmoderation für Medien</a>,
+        Marken auf der Seite zur <a href="/de/anwendungsfaelle/marken-handel" class={linkClass}>Kommentarmoderation für Marken und Handel</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Welche Methoden der Kommentarmoderation gibt es?</h2>
+      <p>
+        Es gibt fünf grundlegende Ansätze. Sie lassen sich kombinieren, aber jeder gewichtet Tempo, Kosten
+        und Risiko anders.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Vorabmoderation</h3>
+      <p>
+        Jeder Kommentar wartet auf die Freigabe durch einen Moderator. Nichts Schädliches erscheint, aber die
+        Diskussion stockt: Ein Kommentar von 22 Uhr ist womöglich erst am nächsten Morgen zu sehen. Das
+        lohnt sich bei sehr sensiblen Themen oder geringem Volumen.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Nachträgliche Moderation</h3>
+      <p>
+        Kommentare erscheinen sofort und werden später geprüft. Die Diskussion läuft, aber problematische
+        Inhalte bleiben sichtbar, bis jemand sie sieht. Abends, am Wochenende oder bei einer Eilmeldung ist
+        das Team schnell überlastet.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Reaktive Moderation (Nutzermeldungen)</h3>
+      <p>
+        Sie greifen nur ein, wenn jemand einen Kommentar meldet. Das ist günstig, überlässt die Suche nach
+        Problemen aber Ihrem Publikum. Ein Meldebutton bleibt unverzichtbar, weil der DSA ihn verlangt, kann
+        aber nicht Ihre einzige Verteidigungslinie sein.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Automatische Moderation</h3>
+      <p>
+        Klassische Tools arbeiten mit Wortlisten und festen Regeln. Sie sind schnell, blockieren aber
+        berechtigte Kritik und lassen Ironie, verschleierte Beleidigungen und Betrugsversuche durch. Moderne
+        KI liest den Kommentar dagegen im Kontext. Mehr dazu auf unserer Seite zur
+        <a href="/de/automatische-moderation" class={linkClass}>automatischen Kommentarmoderation</a>.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Hybride Moderation: KI und Mensch</h3>
+      <p>
+        Die KI wendet Ihre Regeln auf jeden Kommentar in Sekunden an. Was eindeutig passt, wird veröffentlicht,
+        was eindeutig verstößt, wird ausgeblendet, und der Graubereich landet in einer Prüfwarteschlange, in
+        der Ihr Team entscheidet. Nur diese Methode bewältigt Volumen, Tempo und Urteilsvermögen zugleich.
+      </p>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Methode</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">So funktioniert sie</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Tempo</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Kosten</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Risiko</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Skalierung</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {methods.map((m) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{m.name}</td>
+              <td class="px-4 py-3 text-surface-600">{m.how}</td>
+              <td class="px-4 py-3 text-surface-600">{m.speed}</td>
+              <td class="px-4 py-3 text-surface-600">{m.cost}</td>
+              <td class="px-4 py-3 text-surface-600">{m.risk}</td>
+              <td class="px-4 py-3 text-surface-600">{m.scale}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">Welche Regeln braucht Ihre Kommentarmoderation?</h2>
+      <p>
+        Vor jedem Tool brauchen Sie Regeln. Sie sollten so genau sein, dass jeder Moderator, Mensch oder KI,
+        beim selben Kommentar zur selben Entscheidung kommt. Unser Leitfaden zum
+        <a href="/de/moderationsrichtlinien" class={linkClass}>Erstellen von Moderationsrichtlinien</a> beschreibt
+        die Methode ausführlich, hier das Wesentliche.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Was entfernt wird</h3>
+      <ul>
+        <li>Beleidigungen und persönliche Angriffe, ob gegen andere Kommentatoren, Ihre Journalistinnen oder Ihre Mitarbeitenden.</li>
+        <li>Hass aufgrund von Herkunft, Religion, Geschlecht, sexueller Orientierung oder Behinderung.</li>
+        <li>Drohungen und Aufrufe zur Gewalt.</li>
+        <li>Belästigung, auch wiederholte Nachrichten an dieselbe Person.</li>
+        <li>Spam, Betrugslinks, gefälschte Gewinnspiele und Konten, die sich als Ihre Marke ausgeben.</li>
+        <li>Personenbezogene Daten Dritter (Adressen, Telefonnummern) und eindeutig rechtswidrige Inhalte.</li>
+      </ul>
+      <h3 class="text-lg font-semibold text-surface-900">Was bleibt</h3>
+      <p>
+        Schreiben Sie es ausdrücklich hin: <strong>Kritik und Widerspruch sind kein Grund zum Entfernen.</strong>
+        Eine Leserin, die einen Artikel infrage stellt, ein Kunde, der sich über eine Lieferung ärgert, jemand,
+        der Ihr Argument zerlegt: Das alles gehört dazu. Eine Moderation, die negative Rückmeldungen
+        verschwinden lässt, verspielt das Vertrauen ihres Publikums schneller als jeder Troll.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Graubereiche</h3>
+      <ul>
+        <li><strong>Ironie und Sarkasmus.</strong> „Toll, mal wieder ein journalistisches Meisterwerk“ ist Kritik, keine Beleidigung. Umgekehrt kann ein ironisches Lob einen Angriff transportieren.</li>
+        <li><strong>Codes und Chiffren.</strong> Zahlen statt Buchstaben, Emojis, Spitznamen oder Anspielungen auf eine Gruppe: Wortlisten übersehen sie, der Kontext nicht.</li>
+        <li><strong>Politik.</strong> Eine deutliche Meinung zu einer Partei oder einem Gesetz ist legitim. Die Wähler einer Seite als Menschen herabzuwürdigen, womöglich nicht. Legen Sie die Grenze vor dem Wahlkampf fest, nicht mittendrin.</li>
+        <li><strong>Off-Topic.</strong> Unter einem Markenpost kein Problem, unter einem Artikel über ein Unglück unpassend. Die Regel darf vom Umfeld abhängen.</li>
+      </ul>
+      <h3 class="text-lg font-semibold text-surface-900">Immer mit Beispielen</h3>
+      <p>Jede Regel funktioniert besser mit konkreten Fällen auf beiden Seiten der Grenze.</p>
+      <ul>
+        <li>„Der Artikel ist einseitig und schlecht recherchiert“: <strong>bleibt</strong>, das ist Kritik.</li>
+        <li>„Der Autor dieses Artikels ist ein Vollidiot“: <strong>ausblenden</strong>, das ist ein persönlicher Angriff.</li>
+        <li>„Ihr Kundenservice antwortet nie, ich bin enttäuscht“: <strong>bleibt</strong>, und verdient eine Antwort.</li>
+        <li>„Gratis-iPhone gewinnen, hier klicken“ unter Ihrem Post: <strong>ausblenden</strong>, das ist Betrug.</li>
+        <li>„Wieder ein Genie in der Regierung“: <strong>bleibt</strong>, das ist politischer Sarkasmus.</li>
+      </ul>
+      <p>
+        Mit einem Tool wie OpenModeration formulieren Sie diese Regeln in normaler Sprache, so wie Sie sie
+        einem Moderator erklären würden, ohne Wortlisten pflegen zu müssen. Die Beispiele dienen anschließend
+        dazu, die Moderation an Ihren echten Kommentaren zu testen, bevor sie live geht.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Ausblenden, löschen oder sperren: was tun mit einem Kommentar?</h2>
+      <p>
+        Nicht jede Entscheidung wiegt gleich schwer. Passen Sie die Reaktion an die Schwere des Verstoßes und an
+        Wiederholungen an.
+      </p>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Maßnahme</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Wirkung</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Wann sinnvoll</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {actions.map((a) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{a.action}</td>
+              <td class="px-4 py-3 text-surface-600">{a.what}</td>
+              <td class="px-4 py-3 text-surface-600">{a.when}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <p>
+        Ausblenden lässt sich rückgängig machen, was bei einem Widerspruch wichtig ist. Nicht jede Plattform
+        bietet dieselben Maßnahmen: In OpenModeration werden abgelehnte Inhalte auf Facebook und Instagram
+        ausgeblendet und auf YouTube abgelehnt.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Entscheidungen gegenüber dem Verfasser begründen</h3>
+      <p>
+        Ein Kommentar, der kommentarlos verschwindet, nährt das Gefühl von Zensur. Eine klare Begründung
+        dagegen vermittelt die Regel und entschärft die meisten Beschwerden. Eine gute Begründung nennt:
+      </p>
+      <ul>
+        <li>was geschehen ist (ausgeblendet, gelöscht, Konto eingeschränkt);</li>
+        <li>welche Regel gilt, in einfachen Worten;</li>
+        <li>ob die Entscheidung automatisiert oder von einem Moderator getroffen wurde;</li>
+        <li>wie man widersprechen kann.</li>
+      </ul>
+      <p>
+        Das ist mehr als Höflichkeit: Der DSA nennt es Begründung (Statement of Reasons).
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Was verlangt das EU-Recht? Der DSA und die Kommentarmoderation</h2>
+      <p>
+        Der Digital Services Act (DSA) gilt seit 2024 vollständig. In Deutschland hat er das frühere NetzDG
+        weitgehend abgelöst, in Österreich das Kommunikationsplattformen-Gesetz in weiten Teilen verdrängt.
+        Schweizer Anbieter betrifft er, soweit sie ihre Dienste Nutzern in der EU anbieten. Eine Website, die
+        Kommentare ihrer Nutzer speichert, ist im Sinne des DSA ein Hostingdienst. In der Praxis prägen vier
+        Artikel Ihre Moderation.
+      </p>
+      <ul>
+        <li>
+          <strong>Artikel 16, Melde- und Abhilfeverfahren.</strong> Jede Person muss Inhalte, die sie für
+          rechtswidrig hält, einfach und elektronisch melden können. Sie bearbeiten die Meldung sorgfältig und
+          objektiv und teilen der meldenden Person Ihre Entscheidung mit.
+          Mehr dazu unter <a href="/de/dsa-konformitaet/meldeverfahren" class={linkClass}>Melde- und Abhilfeverfahren nach dem DSA (Artikel 16)</a>.
+        </li>
+        <li>
+          <strong>Artikel 17, Begründung.</strong> Wenn Sie Inhalte ausblenden oder entfernen, teilen Sie dem
+          Verfasser mit, was entschieden wurde, auf welcher Tatsachengrundlage, auf welcher Basis (Gesetz oder
+          Ihre Nutzungsbedingungen), ob automatisierte Mittel eingesetzt wurden und welche Rechtsbehelfe es gibt.
+          Siehe <a href="/de/dsa-konformitaet/begruendung" class={linkClass}>die Begründung nach dem DSA, mit Beispiel</a>.
+        </li>
+        <li>
+          <strong>Artikel 20, internes Beschwerdemanagement.</strong> Online-Plattformen müssen ein internes
+          Beschwerdesystem anbieten, damit Kommentierende eine Entscheidung anfechten und überprüfen lassen
+          können, und zwar nicht ausschließlich automatisiert.
+        </li>
+        <li>
+          <strong>Artikel 15, Transparenz.</strong> Die betroffenen Dienste veröffentlichen regelmäßig Berichte
+          über ihre Moderation: Zahl der Meldungen, getroffene Entscheidungen, Einsatz von Automatisierung,
+          eingegangene Beschwerden.
+        </li>
+      </ul>
+      <p>
+        Nicht jede Pflicht gilt für alle gleich: Das hängt von Art und Größe Ihres Dienstes ab. Unsere
+        <a href="/de/dsa-konformitaet" class={linkClass}>Seite zur DSA-Konformität</a> und der
+        <a href="/de/blog/dsa-leitfaden-kmu" class={linkClass}>DSA-Leitfaden für KMU</a> gehen weiter ins Detail.
+      </p>
+      <p class="text-sm text-surface-400">
+        Diese Zusammenfassung ist keine Rechtsberatung. Was genau für Ihren Dienst gilt, klären Sie bitte mit einer Anwältin oder einem Anwalt.
+      </p>
+      <p>
+        Entscheidend ist: Für jede Entscheidung sollten Sie zeigen können, wann sie getroffen wurde, von wem
+        oder wodurch, nach welcher Regel und mit welcher Begründung. Ohne Protokoll können Sie weder auf eine
+        Beschwerde noch auf eine Prüfung antworten.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Internes Team, Agentur oder Software für Kommentarmoderation?</h2>
+      <h3 class="text-lg font-semibold text-surface-900">Ein internes Team</h3>
+      <p>
+        Ihre Moderatoren kennen Ihre redaktionelle Linie und Ihr Publikum. Aber ohne Aufstockung deckt ein Team
+        weder Nächte noch Wochenenden noch Nachrichtenspitzen ab, die Qualität schwankt von Person zu Person,
+        und der ständige Kontakt mit Hass und Gewalt belastet die Menschen, die diese Arbeit machen.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Eine Moderationsagentur</h3>
+      <p>
+        Eine Agentur fängt das Volumen ab, rechnet aber nach Menge oder Zeit ab, mit Verzögerungen nachts und
+        am Wochenende. Externe Moderatoren auf Ihre Regeln zu schulen dauert, und Ihre redaktionelle Linie kennen
+        sie nicht. Vergleichen Sie mit unserer Seite zur <a href="/de/moderation-auslagern" class={linkClass}>Alternative zur ausgelagerten Moderation</a>.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Software für Kommentarmoderation</h3>
+      <p>
+        Eine Software wendet dieselben Regeln auf jeden Kommentar an, Tag und Nacht, in Sekunden, zu einem
+        Bruchteil der Kosten manueller Moderation. Ihr Team bearbeitet nur noch die Fälle, die einen Menschen
+        brauchen. Der Haken: Ein generisches Tool ohne Begleitung wendet ein Raster an, das nicht Ihres ist.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">So wählen Sie eine Moderationssoftware aus</h3>
+      <ul>
+        <li><strong>Anbindungen:</strong> Sie verbindet Ihre Website (API, WordPress) und Ihre Facebook-, Instagram- und YouTube-Präsenzen, damit Sie nicht zwischen Oberflächen wechseln.</li>
+        <li><strong>Ihre Regeln und Ihre Anwendungsfälle:</strong> Sie formulieren sie in normaler Sprache, statt mit einem starren Raster zu leben oder Wortlisten zu pflegen.</li>
+        <li><strong>Kontext:</strong> Jeder Kommentar wird mit dem Thema des Artikels oder Beitrags und in seiner Sprache gelesen, um Ironie und verschleierte Beleidigungen zu erkennen.</li>
+        <li><strong>Einstellbare Schwellenwerte:</strong> Sie entscheiden pro Kategorie, was automatisch ausgeblendet, veröffentlicht oder zur Prüfung geschickt wird.</li>
+        <li><strong>Eine Prüfwarteschlange:</strong> Zweifelsfälle aller Plattformen landen an einem Ort, mit der betroffenen Regel.</li>
+        <li><strong>Eine schriftliche Begründung für jede Entscheidung:</strong> eine, die Sie dem Verfasser ebenso zeigen können wie einer Behörde.</li>
+        <li><strong>Prüfprotokoll:</strong> Jede Entscheidung, automatisch oder menschlich, wird erfasst und lässt sich für Transparenzberichte exportieren.</li>
+        <li><strong>Integrierte Meldungen:</strong> Ihr Meldebutton speist dieselbe Warteschlange wie die automatische Moderation.</li>
+        <li><strong>Hosting und DSGVO:</strong> wo die Daten liegen und wie lange.</li>
+        <li><strong>Begleitung:</strong> Jemand hilft Ihnen, Ihre Regeln in Anweisungen zu übersetzen und an Ihren echten Kommentaren zu testen, bevor es losgeht.</li>
+        <li><strong>Test:</strong> Sie können das Tool an Ihren eigenen Kommentaren ausprobieren, bevor Sie sich festlegen.</li>
+      </ul>
+      <p>
+        Nach genau dieser Liste haben wir die <a href="/de/moderationssoftware" class={linkClass}>Moderationssoftware OpenModeration</a>
+        gebaut: eine KI, die Ihre Regeln und Ihre Anwendungsfälle anwendet, zwei Schwellenwerte pro Kategorie
+        mit einem Graubereich für die menschliche Prüfung, eine gemeinsame <a href="/de/moderationskonsole" class={linkClass}>Moderationskonsole</a>,
+        eine schriftliche Begründung für jede Entscheidung und ein Prüfprotokoll. OpenModeration wird in der
+        Europäischen Union entwickelt und gehostet, und unser Team richtet die Moderation gemeinsam mit Ihnen ein.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Kommentare moderieren: 10 bewährte Grundsätze als Checkliste</h2>
+      <ol>
+        <li><strong>Veröffentlichen Sie Ihre Regeln</strong> in klaren Worten, dort, wo kommentiert wird.</li>
+        <li><strong>Schützen Sie Kritik und Widerspruch</strong> ausdrücklich in diesen Regeln.</li>
+        <li><strong>Unterlegen Sie jede Regel mit Beispielen</strong> dafür, was entfernt wird und was bleibt.</li>
+        <li><strong>Automatisieren Sie die eindeutigen Fälle,</strong> damit Beleidigungen und Betrug in Sekunden verschwinden, auch um drei Uhr nachts.</li>
+        <li><strong>Lassen Sie Menschen über den Graubereich entscheiden:</strong> Ironie, Politik, sensible Themen.</li>
+        <li><strong>Blenden Sie im Zweifel aus, statt zu löschen,</strong> damit Sie Ihre Meinung noch ändern können.</li>
+        <li><strong>Begründen Sie jede Entscheidung</strong> gegenüber dem Verfasser, mit der betroffenen Regel und einer Widerspruchsmöglichkeit.</li>
+        <li><strong>Bearbeiten Sie jede Meldung</strong> und sagen Sie der meldenden Person, was passiert ist.</li>
+        <li><strong>Protokollieren Sie alles:</strong> Entscheidung, Begründung, Mensch oder Automatisierung, Datum.</li>
+        <li><strong>Überarbeiten Sie Ihre Regeln regelmäßig</strong> anhand von Fehlern und Widersprüchen, vor allem wenn sich Ihre Themen oder Ihr Publikum ändern.</li>
+      </ol>
+      <p>
+        Wer Facebook oder Instagram betreut, findet die plattformspezifischen Details in unseren Leitfäden
+        <a href="/de/blog/facebook-kommentare-automatisch-ausblenden" class={linkClass}>Facebook-Kommentare automatisch ausblenden</a> und
+        <a href="/de/blog/instagram-kommentare-moderieren" class={linkClass}>Instagram-Kommentare moderieren</a>.
+        Und wie eine begründete Entscheidung aussieht, sehen Sie, wenn Sie einen Kommentar in unsere
+        <a href="/de/moderation-testen" class={linkClass}>Moderations-Demo</a> einfügen: Entscheidung und
+        Begründung erscheinen in Sekunden, ohne Anmeldung.
+      </p>
+    </div>
+
+    <div class="mt-12">
+      <FAQ title="Häufige Fragen zur Kommentarmoderation" items={faqItems} />
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Weiterlesen</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/de/moderationsrichtlinien" class="font-medium text-brand-600 hover:text-brand-500">Moderationsrichtlinien erstellen, mit Vorlage &rarr;</a></li>
+        <li><a href="/de/automatische-moderation" class="font-medium text-brand-600 hover:text-brand-500">Automatische Kommentarmoderation mit KI &rarr;</a></li>
+        <li><a href="/de/moderation-auslagern" class="font-medium text-brand-600 hover:text-brand-500">Moderation auslagern ohne Agenturkosten &rarr;</a></li>
+        <li><a href="/de/dsa-konformitaet" class="font-medium text-brand-600 hover:text-brand-500">Was der DSA von Websites mit Kommentaren verlangt &rarr;</a></li>
+        <li><a href="/de/anwendungsfaelle/medien" class="font-medium text-brand-600 hover:text-brand-500">Kommentarmoderation für Medien &rarr;</a></li>
+        <li><a href="/de/anwendungsfaelle/marken-handel" class="font-medium text-brand-600 hover:text-brand-500">Kommentarmoderation für Marken &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

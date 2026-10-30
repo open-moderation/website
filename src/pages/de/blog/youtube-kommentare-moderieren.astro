@@ -1,0 +1,306 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import FAQ from '../../../components/FAQ.astro';
+
+const title = "YouTube-Kommentare moderieren: Tools und Grenzen";
+const description = "YouTube-Kommentare moderieren: zurückgehaltene Kommentare, blockierte Wörter und Links, genehmigte und ausgeblendete Nutzer, Livechat, Automatisierung.";
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "YouTube-Kommentare moderieren: die Werkzeuge in YouTube Studio, ihre Grenzen und wann sich Automatisierung lohnt",
+  "description": description,
+  "inLanguage": "de",
+  "datePublished": "2026-10-30",
+  "dateModified": "2026-10-30",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/de/blog/youtube-kommentare-moderieren" }
+};
+
+const levels = [
+  { level: "Keine Kommentare zurückhalten", effect: "Alles wird veröffentlicht. Sie greifen nur nachträglich ein.", fit: "Kleine Kanäle mit ruhigem, bekanntem Publikum" },
+  { level: "Potenziell unangemessene Kommentare zurückhalten", effect: "Der automatische Filter von YouTube hält zurück, was er für riskant hält; der Rest geht online.", fit: "Die sinnvolle Standardeinstellung für die meisten Kanäle" },
+  { level: "Strengeres Zurückhalten", effect: "YouTube hält ein breiteres Spektrum zurück: mehr Spam und Beleidigungen, aber auch mehr harmlose Kommentare.", fit: "Kanäle, die Trolle anziehen oder gerade einen Shitstorm erleben" },
+  { level: "Alle Kommentare zurückhalten", effect: "Nichts erscheint ohne manuelle Freigabe.", fit: "Heikle Videos, kurze Zeiträume, geringe Mengen" },
+];
+
+const comparison = [
+  { need: "Eine bekannte Beleidigung oder ein verbotenes Wort stoppen", builtin: "Ja, mit blockierten Wörtern, wenn die Schreibweise nah genug ist", tool: "Ja, auch Varianten und Umgehungsversuche" },
+  { need: "Ironie, Kontext und Codes verstehen", builtin: "Teilweise: Der YouTube-Filter ist generisch und nicht anpassbar", tool: "Ja, jeder Kommentar wird im Kontext gelesen" },
+  { need: "Regeln für Ihren Kanal anwenden", builtin: "Nein, nur Wörter, Links und eine Strenge-Stufe", tool: "Ja, Ihre Regeln und Ihre Anwendungsfälle in Alltagssprache" },
+  { need: "Die Warteschlange zurückgehaltener Kommentare abarbeiten", builtin: "Nein, jemand muss sie öffnen und entscheiden", tool: "Ja, eindeutige Fälle werden entschieden, nur unklare landen bei einem Menschen" },
+  { need: "Eine schriftliche Begründung für jede Entscheidung", builtin: "Nein", tool: "Ja, für jeden zurückgehaltenen oder abgelehnten Kommentar" },
+  { need: "Protokoll der Entscheidungen", builtin: "Kein exportierbarer Verlauf", tool: "Ja, jede Entscheidung wird protokolliert" },
+  { need: "Mehrere Kanäle und Netzwerke an einem Ort", builtin: "Nein, Kanal für Kanal", tool: "Ja: YouTube, Facebook, Instagram, WordPress und Ihre Website" },
+];
+
+const faqItems = [
+  {
+    question: "Was bedeutet „Zur Überprüfung zurückgehalten“ bei YouTube?",
+    answer: "Der Kommentar wurde nicht veröffentlicht. Er wartet in YouTube Studio, wo der Kanalinhaber oder ein Moderator ihn freigeben, löschen oder liegen lassen kann. YouTube hält Kommentare wegen Ihrer blockierten Wörter oder Links zurück, weil der automatische Filter sie für potenziell unangemessen hält, oder weil Sie alles zurückhalten lassen. Zurückgehaltene Kommentare bleiben nur begrenzt erhalten (laut YouTube-Hilfe bis zu 60 Tage) und verschwinden dann, wenn niemand handelt.",
+  },
+  {
+    question: "Erfährt der Verfasser, dass sein YouTube-Kommentar zurückgehalten wurde?",
+    answer: "Nein. YouTube schickt keine Benachrichtigung, wenn ein Kommentar zurückgehalten wird, und teilt einem Nutzer auch nicht mit, dass er ausgeblendet wurde. Das vermeidet viele „Zensur!“-Reaktionen, Sie sollten die Entscheidung aber erklären können, wenn jemand nachfragt.",
+  },
+  {
+    question: "Wie funktionieren blockierte Wörter bei YouTube?",
+    answer: "Sie hinterlegen in den Moderationseinstellungen des Kanals eine Liste von Wörtern und Wendungen. Kommentare, die sie enthalten oder ihnen sehr ähneln, werden zur Überprüfung zurückgehalten statt veröffentlicht, und dieselbe Liste gilt im Livechat. Genehmigte Nutzer sind davon ausgenommen, und der Filter versteht keine Bedeutung: Eine verschleierte oder ironische Beleidigung kommt trotzdem durch.",
+  },
+  {
+    question: "Was ist der Unterschied zwischen genehmigten und ausgeblendeten Nutzern?",
+    answer: "Kommentare genehmigter Nutzer werden ohne Ihre Filter veröffentlicht, praktisch für Stammzuschauer oder Partner. Kommentare und Chatnachrichten ausgeblendeter Nutzer sehen alle anderen auf Ihrem Kanal nicht mehr, ohne dass die Betroffenen informiert werden. Das ist das Werkzeug für hartnäckige Trolle und Spam-Konten.",
+  },
+  {
+    question: "Kann ich die Moderation abgeben, ohne mein Konto zu teilen?",
+    answer: "Ja. Sie können Moderatoren für Ihren Kanal ernennen. Standardmoderatoren prüfen zurückgehaltene Kommentare und handeln im Livechat; verwaltende Moderatoren können zusätzlich bestimmte Listen pflegen, etwa Standardmoderatoren und genehmigte Nutzer. Für einen breiteren Zugang zu YouTube Studio laden Sie Personen über die Kanalberechtigungen mit einer Rolle ein, statt ein Passwort weiterzugeben.",
+  },
+  {
+    question: "Lassen sich YouTube-Kommentare automatisch moderieren?",
+    answer: "Der YouTube-Filter hält bereits einige Kommentare zurück, wendet aber nicht Ihre Regeln an und überlässt Ihnen die Warteschlange. Ein Tool, das über die offizielle YouTube Data API angebunden ist, kann jeden Kommentar nach Ihren Regeln veröffentlichen, zur Überprüfung zurückhalten oder ablehnen. Genau das macht OpenModeration, mit einer schriftlichen Begründung für jede Entscheidung.",
+  },
+  {
+    question: "Gilt das auch für YouTube Shorts?",
+    answer: "Kommentare unter Shorts gehören zu den Kommentaren Ihres Kanals und folgen denselben Einstellungen: blockierte Wörter, blockierte Links, ausgeblendete Nutzer und die Stufe des Zurückhaltens. Der Chat eines Livestreams ist ein eigener Strom mit eigenen Werkzeugen wie dem Slow Mode und Timeouts.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} ogType="article" jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Startseite", href: "/de" }, { label: "Blog", href: "/de/blog" }, { label: "YouTube-Kommentare moderieren" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-30">30. Oktober 2026</time>
+        <span>&middot;</span>
+        <span>9 Min. Lesezeit</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">YouTube-Kommentare moderieren: YouTube Studio richtig nutzen und wissen, wann Sie automatisieren sollten</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Kommentare unter einem YouTube-Video bleiben jahrelang stehen, und oft scrollen Zuschauer als Erstes
+        dorthin. Für ein Medienhaus oder eine Marke reichen ein paar Beleidigungen, Betrugslinks oder
+        Bot-Antworten unter einem Video, um den Eindruck vom ganzen Kanal zu verändern. Dieser Leitfaden zeigt,
+        wie Sie YouTube-Kommentare mit den Werkzeugen moderieren, die YouTube Studio bereits mitbringt, wo diese
+        an ihre Grenzen stoßen und wie ein automatisches Moderationstool den wiederkehrenden Teil übernimmt.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Das Wichtigste in Kürze</h2>
+      <ul>
+        <li><strong>Beginnen Sie mit YouTube Studio.</strong> Legen Sie eine Stufe für das Zurückhalten fest, eine Liste blockierter Wörter, blockierte Links sowie genehmigte und ausgeblendete Nutzer. Das kostet nichts und fängt die offensichtlichen Fälle ab.</li>
+        <li><strong>„Zur Überprüfung zurückgehalten“ ist eine Warteschlange, keine Entscheidung.</strong> Jemand muss jeden Kommentar freigeben oder löschen, und was niemand prüft, verfällt irgendwann.</li>
+        <li><strong>Die eingebauten Filter vergleichen Wörter und folgen dem generischen Urteil von YouTube.</strong> Sie kennen weder Ihre Regeln noch Ihre Themen noch Ihre Marke.</li>
+        <li><strong>Ein automatisches Tool</strong> über die YouTube Data API veröffentlicht, hält zurück oder lehnt jeden Kommentar nach Ihren Regeln ab und begründet jede Entscheidung schriftlich.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Wie moderiert man YouTube-Kommentare?</h2>
+      <p>
+        YouTube gibt einem Kanal drei Arten von Kontrolle: Einstellungen, die festlegen, was sofort erscheint,
+        Listen von Personen und Wörtern, und manuelle Aktionen auf jeden einzelnen Kommentar. Zusätzlich lassen
+        sich Kommentare pro Video aktivieren, zurückhalten oder deaktivieren, und bei Videos, die als „speziell
+        für Kinder“ markiert sind, deaktiviert YouTube die Kommentare selbst.
+      </p>
+      <p>
+        Manuelle Aktionen erledigen Sie auf der Kommentarseite in YouTube Studio oder direkt unter dem Video.
+        Bei jedem Kommentar kann der Kanalinhaber antworten, ihn mit „Mag ich“ markieren, oben anpinnen,
+        löschen, melden oder den Nutzer auf dem Kanal ausblenden. Die Menünamen ändern sich hin und wieder,
+        die Funktionen gibt es aber seit Jahren.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Welche Kommentar-Einstellungen bietet YouTube?</h2>
+      <p>
+        Die wichtigste Einstellung ist, wie viele Kommentare YouTube vor der Veröffentlichung zur Überprüfung
+        zurückhält. Sie legen einen Standard für den Kanal fest und können ihn für jedes Video ändern. Es gibt
+        vier Stufen.
+      </p>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Einstellung</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Was passiert</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Geeignet für</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {levels.map((row) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{row.level}</td>
+              <td class="px-4 py-3 text-surface-600">{row.effect}</td>
+              <td class="px-4 py-3 text-surface-600">{row.fit}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <p>
+        Das Zurückhalten potenziell unangemessener Kommentare beruht auf dem Klassifikator von YouTube. Sie
+        erfahren nicht, warum er einen Kommentar zurückgehalten hat, und Sie können ihm nicht sagen, worauf es
+        auf Ihrem Kanal ankommt. Die strengere Stufe fängt mehr ab, erzeugt aber auch mehr Fehlalarme, die
+        jemand von Hand freigeben muss.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Wie funktionieren blockierte Wörter und blockierte Links?</h2>
+      <ul>
+        <li>
+          <strong>Blockierte Wörter.</strong> Sie listen Wörter und Wendungen auf, die Sie unter Ihren Videos
+          nicht sehen wollen. Kommentare, die sie enthalten oder ihnen sehr ähneln, werden zur Überprüfung
+          zurückgehalten. Dieselbe Liste blockiert passende Nachrichten im Livechat.
+        </li>
+        <li>
+          <strong>Blockierte Links.</strong> Ist die Option aktiv, werden Kommentare mit einer URL zurückgehalten
+          statt veröffentlicht, und Links werden im Livechat blockiert. Das ist der einfachste Schutz gegen
+          Phishing, falsche Gewinnspiele und Krypto-Betrug, die sich gern in den Antworten unter beliebten Videos
+          verstecken.
+        </li>
+      </ul>
+      <p>
+        Kommentare des Inhabers, der Moderatoren und genehmigter Nutzer werden von diesen Filtern nicht erfasst.
+        Das ist bequem, bedeutet aber auch: Ein gehacktes oder nachgeahmtes „vertrauenswürdiges“ Konto kommt
+        ungeprüft durch.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Genehmigte Nutzer, ausgeblendete Nutzer und Moderatoren</h2>
+      <ul>
+        <li><strong>Genehmigte Nutzer.</strong> Ihre Kommentare erscheinen, ohne blockierte Wörter, blockierte Links oder die Stufe des Zurückhaltens zu durchlaufen. Halten Sie diese Liste kurz: Stammkommentatoren, Partner, Ihr eigenes Team.</li>
+        <li><strong>Ausgeblendete Nutzer.</strong> Ihre Kommentare und Chatnachrichten sind für alle anderen auf Ihrem Kanal unsichtbar. Sie werden darüber nicht informiert. So begegnet YouTube hartnäckigen Trollen und Spam-Konten.</li>
+        <li><strong>Moderatoren.</strong> Sie können Vertrauenspersonen Moderationsrechte geben. Standardmoderatoren prüfen zurückgehaltene Kommentare und helfen im Livechat; verwaltende Moderatoren können außerdem bestimmte Listen pflegen, etwa Standardmoderatoren und genehmigte Nutzer. Für weitergehenden Zugriff auf YouTube Studio nutzen Sie die Kanalberechtigungen, statt ein Passwort zu teilen.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Wie moderiert man den YouTube-Livechat?</h2>
+      <p>Im Livechat geht es viel schneller zu als in den Kommentaren. Deshalb hat YouTube dafür eigene Werkzeuge.</p>
+      <ul>
+        <li><strong>Nachricht entfernen, Nutzer per Timeout pausieren oder ausblenden</strong> für den Rest des Streams und auf dem Kanal.</li>
+        <li><strong>Der Slow Mode</strong> begrenzt, wie oft jede Person schreiben darf.</li>
+        <li><strong>Chat nur für Abonnenten oder nur für Mitglieder</strong> schränkt ein, wer mitschreiben kann.</li>
+        <li><strong>Blockierte Wörter, blockierte Links und das Zurückhalten potenziell unangemessener Nachrichten</strong> gelten auch im Chat.</li>
+        <li><strong>Moderatoren</strong> sind unverzichtbar: Planen Sie mindestens einen pro Livestream ein, zwei bei großen Events.</li>
+      </ul>
+      <p>
+        Bereiten Sie die Einstellungen vor dem Stream vor. Während der Übertragung hat niemand Zeit, eine Wortliste
+        zu pflegen.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Warum reichen die YouTube-Werkzeuge für Medien und Marken nicht aus?</h2>
+      <p>YouTube Studio ist für Creator gedacht, die ihren eigenen Kanal betreuen. Medienhäuser und Marken stoßen schnell an Grenzen.</p>
+      <ul>
+        <li><strong>Die Warteschlange wächst schneller, als man sie lesen kann.</strong> Ein Nachrichtenvideo zu einem polarisierenden Thema oder eine Werbekampagne kann über Nacht Hunderte zurückgehaltener Kommentare erzeugen. Was niemand prüft, verfällt irgendwann, auch legitime Beiträge.</li>
+        <li><strong>Wortlisten übersehen das Wesentliche.</strong> „Vollid1ot“, eine Beleidigung mit Leerzeichen, Ironie unter einem Produktlaunch oder ein Code aus der rechten Szene enthalten kein Wort Ihrer Liste.</li>
+        <li><strong>Der YouTube-Filter ist generisch.</strong> Er kennt Ihre Regeln nicht: keine Werbung für Wettbewerber, keine personenbezogenen Daten, keine Politikdebatte unter einem Rezeptvideo, keine ehrverletzenden Behauptungen über Personen aus einem Bericht.</li>
+        <li><strong>Mehrere Sprachen.</strong> Ein Kanal für Deutschland, Österreich und die Schweiz bekommt Kommentare in Dialekt, auf Englisch oder in weiteren Sprachen. Eine Liste deckt nur die Wörter ab, an die Sie gedacht haben.</li>
+        <li><strong>Keine Begründung, kein Verlauf.</strong> YouTube zeigt nicht, welche Regel gegriffen hat, und führt kein exportierbares Protokoll darüber, wer was entschieden hat. Interne Prüfungen und der DSA verlangen genau das.</li>
+        <li><strong>Kanal für Kanal.</strong> Ein Verlag mit mehreren Kanälen, Facebook-Seiten und Instagram-Konten hat ebenso viele Einstellungsseiten, die zueinander passen müssen.</li>
+      </ul>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Was Sie brauchen</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">YouTube Studio</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Automatisches Moderationstool</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {comparison.map((row) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{row.need}</td>
+              <td class="px-4 py-3 text-surface-600">{row.builtin}</td>
+              <td class="px-4 py-3 text-surface-600">{row.tool}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">Best Practices für die Moderation auf YouTube</h2>
+      <ol>
+        <li><strong>Veröffentlichen Sie Ihre Regeln.</strong> Ein paar Zeilen in der Kanalbeschreibung oder ein angepinnter Kommentar unter heiklen Videos setzen Erwartungen und geben Ihnen eine Grundlage, auf die Sie verweisen können.</li>
+        <li><strong>Halten Sie potenziell unangemessene Kommentare standardmäßig zurück</strong> und wechseln Sie nur bei Videos, die Ärger anziehen, auf die strengere Stufe.</li>
+        <li><strong>Blockieren Sie Links,</strong> sofern Ihre Community sie nicht wirklich braucht.</li>
+        <li><strong>Pflegen Sie Ihre blockierten Wörter</strong> mit Varianten, Spitznamen für angegriffene Personen und den Betrugsformeln, die Sie in den Antworten sehen.</li>
+        <li><strong>Prüfen Sie die Warteschlange täglich.</strong> Legitime Kommentare freizugeben ist genauso wichtig wie schlechte zu entfernen: Kritik ist keine Beleidigung.</li>
+        <li><strong>Blenden Sie aus, statt zu diskutieren.</strong> Das Ausblenden ist leise und stoppt die Eskalation. Unser Leitfaden zum <a href="/de/blog/negative-kommentare-trolls-umgang" class="text-brand-600 hover:text-brand-500">Umgang mit negativen Kommentaren und Trollen</a> zeigt, welche Antworten sich lohnen.</li>
+        <li><strong>Schalten Sie Kommentare nur im Notfall ab.</strong> Ein geschlossener Kommentarbereich sendet ebenfalls eine Botschaft.</li>
+        <li><strong>Dokumentieren Sie,</strong> was Sie entfernen und warum, vor allem bei Nachrichten- und Markenkanälen.</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Wie moderiert ein automatisches Tool YouTube-Kommentare?</h2>
+      <p>
+        YouTube bietet eine offizielle Schnittstelle, die YouTube Data API. Über sie kann eine autorisierte
+        Anwendung die Kommentare eines Kanals lesen und ihren Moderationsstatus ändern. Ein automatisches Tool
+        nutzt sie in drei Schritten: Es ruft neue Kommentare ab, analysiert jeden einzelnen und veröffentlicht ihn
+        dann, hält ihn zur Überprüfung zurück oder lehnt ihn ab. Es sind dieselben Aktionen wie in YouTube Studio,
+        nur auf jeden Kommentar angewendet, ohne dass erst jemand die Warteschlange öffnen muss.
+      </p>
+      <p>
+        So arbeitet <a href="/de/integrationen/youtube-moderation" class="text-brand-600 hover:text-brand-500">die YouTube-Integration von OpenModeration</a>.
+        Sie verbinden Ihren Kanal und beschreiben Ihre Regeln und Ihre Anwendungsfälle in Alltagssprache.
+        Eindeutige Fälle werden automatisch entschieden, unklare gehen in einer einzigen Konsole an die menschliche
+        Prüfung, und jede Entscheidung wird schriftlich begründet und protokolliert. Dieselbe Konsole deckt Ihre
+        Facebook-Seiten, Instagram-Konten, WordPress-Sites und Ihre eigene Website ab, damit überall dieselben
+        Regeln gelten.
+      </p>
+      <ul>
+        <li><strong>Für Medien:</strong> Die Debatte unter Nachrichtenvideos bleibt offen, während Verleumdung, Angriffe auf Journalistinnen und Journalisten und koordinierte Kampagnen zurückgehalten werden. Mehr zur <a href="/de/anwendungsfaelle/medien" class="text-brand-600 hover:text-brand-500">Moderation für Medien</a>.</li>
+        <li><strong>Für Marken:</strong> Launch-Videos und Werbekampagnen sind vor Betrug, Spam und Wettbewerberwerbung geschützt, ohne echte Kundenbeschwerden zu verstecken. Mehr zur <a href="/de/anwendungsfaelle/marken-handel" class="text-brand-600 hover:text-brand-500">Moderation für Marken und Handel</a>.</li>
+        <li><strong>Für die Compliance:</strong> Jede Entscheidung ist begründet und dokumentiert, was bei den <a href="/de/dsa-konformitaet" class="text-brand-600 hover:text-brand-500">Anforderungen des DSA</a> hilft. Die Daten werden in der EU gehostet.</li>
+      </ul>
+      <p>
+        Unser Team richtet die Moderation gemeinsam mit Ihnen ein: die Regeln, Beispiele aus Ihren eigenen
+        Kommentaren und die Schwelle, ab der ein Mensch entscheiden soll. Wie Ihre Kommentare beurteilt würden,
+        sehen Sie, wenn Sie <a href="/de/moderation-testen" class="text-brand-600 hover:text-brand-500">die Moderation live testen</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Woran erkennt man ein gutes YouTube-Moderationstool?</h2>
+      <ol>
+        <li><strong>Offizielle API.</strong> Die Anbindung erfolgt über die YouTube Data API mit Ihrer Autorisierung, nie mit Ihrem Passwort.</li>
+        <li><strong>Die richtigen Aktionen.</strong> Veröffentlichen, zurückhalten und ablehnen, je nach Regel.</li>
+        <li><strong>Ihre Regeln.</strong> Können Sie Regeln für Ihren Kanal formulieren oder nur generische Kategorien an- und abschalten?</li>
+        <li><strong>Kontext und Sprachen.</strong> Erkennt das Tool Ironie, Umgehungen und die Sprachen Ihres Publikums?</li>
+        <li><strong>Menschliche Prüfung.</strong> Gibt es eine gemeinsame Warteschlange für unklare Fälle?</li>
+        <li><strong>Begründungen und Protokoll.</strong> Hat jede Entscheidung eine Begründung, und lässt sich der Verlauf exportieren?</li>
+        <li><strong>Weitere Netzwerke.</strong> Gelten dieselben Regeln auch für Facebook, Instagram und Ihre Website?</li>
+        <li><strong>Begleitung.</strong> Hilft Ihnen jemand bei der Einrichtung?</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Und über YouTube hinaus?</h2>
+      <p>
+        YouTube ist ein Kanal unter vielen. Die allgemeine Methode beschreibt unser <a href="/de/blog/kommentarmoderation-leitfaden" class="text-brand-600 hover:text-brand-500">Leitfaden zur Kommentarmoderation</a>.
+      </p>
+    </div>
+
+    <div class="mt-12">
+      <FAQ title="Häufige Fragen" items={faqItems} />
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Weiterlesen</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/de/integrationen/youtube-moderation" class="font-medium text-brand-600 hover:text-brand-500">YouTube-Kommentare moderieren mit OpenModeration &rarr;</a></li>
+        <li><a href="/de/blog/instagram-kommentare-moderieren" class="font-medium text-brand-600 hover:text-brand-500">Instagram-Kommentare moderieren &rarr;</a></li>
+        <li><a href="/de/dsa-konformitaet" class="font-medium text-brand-600 hover:text-brand-500">Was der DSA von Moderationsentscheidungen verlangt &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

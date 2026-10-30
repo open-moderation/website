@@ -1,0 +1,301 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CTASection from '../../components/CTASection.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
+
+const title = "YouTube Comment Moderation: Studio Tools and Limits";
+const description = "How to moderate YouTube comments: held for review, blocked words and links, approved and hidden users, moderators, live chat, and when to automate.";
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "YouTube comment moderation: how to use YouTube Studio's tools and when to automate",
+  "description": description,
+  "inLanguage": "en",
+  "datePublished": "2026-10-30",
+  "dateModified": "2026-10-30",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/blog/youtube-comment-moderation" }
+};
+
+const levels = [
+  { level: "Don't hold any comments", effect: "Everything is published. You only act after the fact.", fit: "Small channels with a calm, known audience" },
+  { level: "Hold potentially inappropriate comments", effect: "YouTube's automatic system holds comments it considers risky; the rest goes live.", fit: "The sensible default for most channels" },
+  { level: "Stricter holding", effect: "A broader range of comments is held, so more spam and abuse is caught, but also more innocent comments.", fit: "Channels that attract trolls or are under a raid" },
+  { level: "Hold all comments", effect: "Nothing is published until someone approves it.", fit: "Sensitive videos, short periods, small volumes" },
+];
+
+const comparison = [
+  { need: "Stop a known insult or banned word", builtin: "Yes, with blocked words, if the spelling is close enough", tool: "Yes, including variants and workarounds" },
+  { need: "Understand sarcasm, context and coded language", builtin: "Partly: YouTube's filter is generic and you cannot tune it", tool: "Yes, each comment is read in context" },
+  { need: "Apply rules specific to your channel", builtin: "No, only words, links and a strictness level", tool: "Yes, your rules and your use cases in plain language" },
+  { need: "Handle the backlog of held comments", builtin: "No, someone has to open the queue and decide", tool: "Yes, clear cases are decided, only doubtful ones reach a person" },
+  { need: "Written reason for each decision", builtin: "No", tool: "Yes, for every held or rejected comment" },
+  { need: "Audit trail of decisions", builtin: "No exportable history", tool: "Yes, every decision is logged" },
+  { need: "Several channels and other networks in one place", builtin: "No, channel by channel", tool: "Yes, YouTube, Facebook, Instagram, WordPress and your website" },
+];
+
+const faqItems = [
+  {
+    question: "What does \"held for review\" mean on YouTube?",
+    answer: "The comment was not published. It waits in the Held for review area of YouTube Studio, where the channel owner or a moderator can approve it, delete it or leave it there. YouTube holds comments because of your blocked words or links, because its automatic filter thought they might be inappropriate, or because you chose to hold everything. Held comments are kept for a limited time (YouTube's help centre currently says up to 60 days) and then disappear if nobody acts.",
+  },
+  {
+    question: "Does the author know their YouTube comment was held?",
+    answer: "No. YouTube does not send the author a notification when a comment is held, and it does not tell a hidden user that they have been hidden. That discretion avoids many \"you censored me\" replies, but it also means you owe the author an explanation if they ask.",
+  },
+  {
+    question: "How do blocked words work on YouTube?",
+    answer: "You add a list of words and phrases in your channel's community or comment settings. Comments that contain them, or closely match them, are held for review instead of being published, and the same list applies to live chat. Approved users bypass the list, and the filter does not understand meaning, so a disguised or sarcastic insult still gets through.",
+  },
+  {
+    question: "What is the difference between an approved user and a hidden user?",
+    answer: "An approved user's comments are published without going through your filters, which suits regular fans or partners. A hidden user's comments and live chat messages are hidden from everyone else on your channel, without telling them. Use hidden users for persistent trolls and spam accounts.",
+  },
+  {
+    question: "Can I give someone moderation rights without sharing my account?",
+    answer: "Yes. You can add moderators to your channel. Standard moderators can review held comments and act on live chat; managing moderators can also manage lists such as other standard moderators and approved users. For full channel management, YouTube's channel permissions let you invite people with a role instead of sharing a password.",
+  },
+  {
+    question: "Can comments be moderated automatically on YouTube?",
+    answer: "YouTube's own filter holds some comments automatically, but it does not apply your rules and it leaves the queue to you. A tool connected through the official YouTube Data API can publish, hold for review or reject each comment according to your rules. That is what OpenModeration does, with a written reason for every decision.",
+  },
+  {
+    question: "Does this also cover YouTube Shorts?",
+    answer: "Comments on Shorts are part of your channel's comments and follow the same settings: blocked words, blocked links, hidden users and the holding level all apply. Live chat during a stream is a separate flow, with its own tools such as slow mode and timeouts.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} ogType="article" jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Blog", href: "/blog" }, { label: "YouTube comment moderation" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-30">October 30, 2026</time>
+        <span>&middot;</span>
+        <span>9 min read</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">YouTube comment moderation: how to use YouTube Studio's tools, and when to automate</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Comments under a YouTube video stay there for years, and they are often the first thing a viewer
+        scrolls to. For a media outlet or a brand, a few insults, scam links or bot replies under a video
+        are enough to change how the whole channel looks. This guide explains how to moderate YouTube
+        comments with the tools YouTube Studio already gives you, where those tools stop, and how an
+        automatic moderation tool takes over the repetitive part.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">In short</h2>
+      <ul>
+        <li><strong>Start with YouTube Studio.</strong> Set a holding level, a list of blocked words, blocked links, approved users and hidden users. It is free and catches the obvious cases.</li>
+        <li><strong>"Held for review" is a queue, not a decision.</strong> Someone still has to approve or delete each held comment, and held comments expire if nobody does.</li>
+        <li><strong>The built-in filters match words and use YouTube's generic judgement.</strong> They do not know your rules, your topics or your brand.</li>
+        <li><strong>An automatic tool</strong> connected through the YouTube Data API publishes, holds or rejects each comment according to your rules and records a reason for every decision.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">How do you moderate YouTube comments?</h2>
+      <p>
+        YouTube gives a channel three kinds of control: settings that decide which comments are published
+        straight away, lists of people and words, and manual actions on each comment. On top of that,
+        each video can have comments turned on, held or turned off, and videos made for kids have comments
+        disabled by YouTube.
+      </p>
+      <p>
+        Manual actions are available from YouTube Studio's comments page and directly under the video.
+        On any comment, the channel owner can reply, like, pin it to the top, delete it, report it or
+        hide the user from the channel. Menu names change from time to time, but these features have
+        been stable for years.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">What are YouTube's comment settings?</h2>
+      <p>
+        The most important setting is how many comments YouTube holds for review before publishing them.
+        You can set a default for the channel and change it on each video. There are four levels.
+      </p>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Setting</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">What happens</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Good for</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {levels.map((row) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{row.level}</td>
+              <td class="px-4 py-3 text-surface-600">{row.effect}</td>
+              <td class="px-4 py-3 text-surface-600">{row.fit}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <p>
+        "Hold potentially inappropriate comments" relies on YouTube's own classifier. You cannot see why it
+        held a comment, and you cannot tell it what matters to your channel. The stricter level catches
+        more, at the cost of more false positives that someone will have to approve by hand.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">How do blocked words and blocked links work?</h2>
+      <ul>
+        <li>
+          <strong>Blocked words.</strong> You list words and phrases you do not want under your videos.
+          Comments that contain them, or closely match them, are held for review. The same list blocks
+          matching messages in live chat.
+        </li>
+        <li>
+          <strong>Blocked links.</strong> When this is on, comments that contain a URL are held instead of
+          published, and links are blocked in live chat. It is the simplest protection against phishing,
+          fake giveaways and crypto scams, which love the replies under popular videos.
+        </li>
+      </ul>
+      <p>
+        Comments from you, your moderators and your approved users are not caught by these filters. That
+        is convenient, but it also means a compromised or impersonated "trusted" account goes straight
+        through.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Approved users, hidden users and moderators</h2>
+      <ul>
+        <li><strong>Approved users.</strong> Their comments are published without going through blocked words, blocked links or the holding level. Keep this list short: regular contributors, partners, your own team.</li>
+        <li><strong>Hidden users.</strong> Their comments and live chat messages are hidden from everyone else on your channel. They are not told. This is YouTube's answer to persistent trolls and spam accounts.</li>
+        <li><strong>Moderators.</strong> You can give trusted people moderation rights. Standard moderators review held comments and help in live chat; managing moderators can also manage some lists, such as standard moderators and approved users. For broader access to YouTube Studio, use channel permissions rather than sharing a password.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">How do you moderate YouTube live chat?</h2>
+      <p>Live chat moves much faster than comments, so YouTube gives it its own tools.</p>
+      <ul>
+        <li><strong>Remove a message, put a user in timeout or hide them</strong> for the rest of the stream and the channel.</li>
+        <li><strong>Slow mode</strong> limits how often each person can post.</li>
+        <li><strong>Subscribers-only or members-only chat</strong> restricts who can write.</li>
+        <li><strong>Blocked words, blocked links and holding of potentially inappropriate messages</strong> apply to the chat too.</li>
+        <li><strong>Moderators</strong> are essential: plan at least one per live stream, two for a big event.</li>
+      </ul>
+      <p>
+        For a live stream, prepare the settings beforehand. During the broadcast, nobody has time to update
+        a word list.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Why YouTube's tools are not enough for media and brands</h2>
+      <p>YouTube Studio is built for a creator managing their own channel. Media and brands hit its limits quickly.</p>
+      <ul>
+        <li><strong>The held queue grows faster than you can read it.</strong> A news video on a divisive topic or an ad campaign can produce hundreds of held comments overnight. Held comments that nobody reviews eventually expire, including legitimate ones.</li>
+        <li><strong>Word lists miss what matters.</strong> "Id10t", an insult spelled with spaces, sarcasm under a product launch or a coded slur contains no word from your list.</li>
+        <li><strong>YouTube's filter is generic.</strong> It does not know your rules: no competitor promotion, no personal data, no off-topic political debate under a recipe video, no defamation of named people under a news report.</li>
+        <li><strong>Several languages.</strong> International channels receive comments in several languages. A word list only covers the words you thought to add, language by language.</li>
+        <li><strong>No reason, no history.</strong> YouTube does not tell you which rule applied to a comment and keeps no exportable log of who decided what. Internal reviews and the DSA both ask for that.</li>
+        <li><strong>Channel by channel.</strong> A group with several channels, Facebook Pages and Instagram accounts has as many settings screens to keep in line.</li>
+      </ul>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">What you need</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">YouTube Studio</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Automatic moderation tool</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {comparison.map((row) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{row.need}</td>
+              <td class="px-4 py-3 text-surface-600">{row.builtin}</td>
+              <td class="px-4 py-3 text-surface-600">{row.tool}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">YouTube comment moderation best practices</h2>
+      <ol>
+        <li><strong>Publish your rules.</strong> A short note in the channel description or a pinned comment on sensitive videos sets expectations and gives you something to point to.</li>
+        <li><strong>Hold potentially inappropriate comments by default,</strong> and switch to the stricter level only on videos that attract trouble.</li>
+        <li><strong>Block links</strong> unless your community really needs to share them.</li>
+        <li><strong>Maintain your blocked words</strong> with variants, nicknames of people who are targeted, and the scam phrases you see in replies.</li>
+        <li><strong>Review the held queue every day.</strong> Approving legitimate comments matters as much as removing bad ones: criticism is not abuse.</li>
+        <li><strong>Hide users rather than arguing</strong> with them. Hiding is silent and stops the escalation. Our guide to <a href="/blog/handle-negative-comments-trolls" class="text-brand-600 hover:text-brand-500">handling negative comments and trolls</a> covers the replies worth writing.</li>
+        <li><strong>Turn comments off only as a last resort.</strong> An empty comment section also sends a message.</li>
+        <li><strong>Keep a record</strong> of what you removed and why, especially for news and brand channels.</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">How does an automatic tool moderate YouTube comments?</h2>
+      <p>
+        YouTube offers an official API, the YouTube Data API, which lets an authorised application read a
+        channel's comments and set their moderation status. An automatic tool uses it in three steps:
+        it retrieves new comments, analyses each one, then publishes it, holds it for review or rejects it.
+        These are the same actions you have in YouTube Studio, applied to every comment without waiting
+        for someone to open the queue.
+      </p>
+      <p>
+        This is how <a href="/integrations/youtube" class="text-brand-600 hover:text-brand-500">OpenModeration's YouTube integration</a> works.
+        You connect your channel, then describe your rules and your use cases in plain language. Clear cases
+        are handled automatically, doubtful ones go to human review in one console, and every decision
+        comes with a written reason and is logged. The same console covers your Facebook Pages, Instagram
+        accounts, WordPress sites and your own website, so your rules stay the same everywhere.
+      </p>
+      <ul>
+        <li><strong>For media:</strong> keep debate open under news videos while holding defamation, harassment of journalists and coordinated campaigns. See the <a href="/use-cases/news-publishers" class="text-brand-600 hover:text-brand-500">news publishers use case</a>.</li>
+        <li><strong>For brands:</strong> protect launch videos and ad campaigns from scams, spam and competitor promotion, without hiding genuine customer complaints.</li>
+        <li><strong>For compliance:</strong> each decision is explained and recorded, which helps with the <a href="/dsa-compliance" class="text-brand-600 hover:text-brand-500">DSA requirements</a>. Data is hosted in the EU.</li>
+      </ul>
+      <p>
+        Our team sets up the moderation with you: rules, examples from your own comments, and the threshold
+        at which a person should decide. To see how your own comments would be judged, <a href="/demo" class="text-brand-600 hover:text-brand-500">try the live demo</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">How to choose a YouTube moderation tool</h2>
+      <ol>
+        <li><strong>Official API.</strong> It should connect through the YouTube Data API with your authorisation, never with your password.</li>
+        <li><strong>The right actions.</strong> Publish, hold for review and reject, chosen per rule.</li>
+        <li><strong>Your rules.</strong> Can you write rules for your channel, or only switch generic categories on and off?</li>
+        <li><strong>Context and languages.</strong> Does it catch sarcasm, workarounds and the languages your audience uses?</li>
+        <li><strong>Human review.</strong> Is there a shared queue for doubtful comments?</li>
+        <li><strong>Explanations and audit log.</strong> Does every decision come with a reason, and can you export the history?</li>
+        <li><strong>Other networks.</strong> Can you apply the same rules to Facebook, Instagram and your website?</li>
+        <li><strong>Support.</strong> Will someone help you set it up?</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Going further</h2>
+      <p>
+        YouTube is one channel among others. For the general method, read our <a href="/blog/comment-moderation-guide" class="text-brand-600 hover:text-brand-500">complete guide to comment moderation</a>.
+      </p>
+    </div>
+
+    <div class="mt-12">
+      <FAQ title="FAQ" items={faqItems} />
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Keep exploring</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/integrations/youtube" class="font-medium text-brand-600 hover:text-brand-500">YouTube comment moderation with OpenModeration &rarr;</a></li>
+        <li><a href="/blog/instagram-comment-moderation" class="font-medium text-brand-600 hover:text-brand-500">How to moderate Instagram comments &rarr;</a></li>
+        <li><a href="/use-cases/brands-retail" class="font-medium text-brand-600 hover:text-brand-500">Comment moderation for brands and retail &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>
