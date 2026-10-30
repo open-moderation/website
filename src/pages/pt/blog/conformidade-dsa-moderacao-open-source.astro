@@ -1,0 +1,127 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+import { bookingUrl } from '../../../i18n/ui';
+
+const locale = getLocale(Astro.url.pathname);
+const BOOKING_URL = bookingUrl(locale);
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Conformidade com o DSA na moderação de comentários, sem complicação",
+  "description": "Como cumprir as exigências do Regulamento dos Serviços Digitais (DSA) na moderação de comentários: motivos por escrito, trilha de auditoria completa, relatórios de transparência e hospedagem na UE.",
+  "inLanguage": "pt",
+  "datePublished": "2026-06-08",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/pt/blog/conformidade-dsa-moderacao-open-source" },
+  "dateModified": "2026-06-08"
+};
+---
+
+<BaseLayout title="Conformidade com o DSA na moderação de comentários" description="Como cumprir o DSA europeu na moderação de comentários: motivos por escrito, trilha de auditoria completa, relatórios de transparência e hospedagem na UE." jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Início", href: localizePath("/", locale) }, { label: "Blog", href: localizePath("/blog", locale) }, { label: "Conformidade com o DSA sem complicação" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-06-08">8 de junho de 2026</time>
+        <span>&middot;</span>
+        <span>6 min de leitura</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Conformidade com o DSA na moderação de comentários, sem complicação</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        O Regulamento dos Serviços Digitais da UE (DSA, na sigla em inglês) entrou plenamente em vigor em 2024, e as plataformas
+        ainda estão se adaptando. Todo serviço que hospeda conteúdo de usuários para pessoas na UE, onde quer que tenha
+        sede, precisa agir sobre as notificações de conteúdo ilegal, explicar as suas decisões de moderação
+        e permitir que os usuários as contestem. As multas podem chegar a 6% do faturamento anual global.
+      </p>
+      <p>
+        Para muitas plataformas, a parte difícil é provar aos reguladores que o seu sistema de moderação
+        funciona. Isso exige três coisas: um pipeline de moderação automatizado,
+        uma trilha de auditoria completa e a capacidade de gerar relatórios de transparência.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">As exigências do DSA, simplificadas</h2>
+      <p>O DSA não impõe uma tecnologia específica. Ele exige resultados:</p>
+      <ul>
+        <li><strong>Notificação e ação (art. 16):</strong> os usuários precisam poder denunciar conteúdo. As plataformas precisam agir sobre as notificações.</li>
+        <li><strong>Relatórios de transparência (art. 15):</strong> as plataformas precisam publicar relatórios sobre as suas atividades de moderação de conteúdo.</li>
+        <li><strong>Exposição de motivos (art. 17):</strong> cada remoção ou restrição precisa ser explicada ao usuário, indicando inclusive se foram usados meios automatizados.</li>
+        <li><strong>Sistema de reclamações (art. 20):</strong> os usuários precisam poder recorrer das decisões de moderação.</li>
+        <li><strong>Avaliação de riscos (art. 34):</strong> as plataformas de muito grande dimensão (mais de 45 milhões de usuários mensais na UE) precisam avaliar os riscos sistêmicos.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Por que decisões explicadas importam para a conformidade</h2>
+      <p>
+        Os responsáveis pela conformidade com o DSA deveriam fazer uma pergunta simples. Se a sua ferramenta de moderação é
+        uma caixa-preta, como você vai mostrar a um regulador o que ela faz?
+      </p>
+      <p>
+        Uma ferramenta que só devolve "removido" ou "mantido" obriga você a confiar no que ela afirma, e essa
+        confiança pode não bastar para um regulador. Você precisa ver por que cada decisão foi tomada.
+      </p>
+      <p>
+        Com o OpenModeration, cada decisão vem com um motivo escrito em linguagem simples e
+        fica registrada em uma trilha de auditoria completa. Você vê em tempo real exatamente qual regra foi
+        aplicada, quais critérios foram usados e para onde vão os resultados.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Como montar um pipeline de moderação em conformidade com o DSA</h2>
+      <p>Veja como fica uma configuração em conformidade com o DSA usando o OpenModeration:</p>
+      <ol>
+        <li><strong>Ingestão do conteúdo:</strong> receba o conteúdo pela API, por webhook ou pelos conectores de redes sociais. Cada item recebe um ID único e é armazenado com criptografia.</li>
+        <li><strong>Moderação por IA:</strong> a nossa própria IA de moderação analisa o conteúdo, e outros modelos de IA verificam os casos delicados. Os resultados incluem scores por categoria e uma decisão de sinalizado/não sinalizado.</li>
+        <li><strong>Avaliação das regras:</strong> as suas regras combinam palavras proibidas para bloqueio imediato, limites por categoria para decisões automáticas e as suas próprias regras escritas em linguagem natural.</li>
+        <li><strong>Registro de auditoria:</strong> cada etapa é registrada: conteúdo, scores, regra acionada, ação aplicada, horário.</li>
+        <li><strong>Exportação para transparência:</strong> GET /v1/analytics/usage fornece os dados necessários para os relatórios de transparência do DSA.</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Como atender a exigências específicas do DSA</h2>
+      <p>
+        <strong>Trilha de auditoria:</strong> o OpenModeration registra cada moderação com a latência, os scores e a decisão.
+        Os dados são retidos conforme a política que você configurar (por padrão, 7 dias para o texto de entrada e 90 dias para os logs).
+        Tudo pode ser exportado para auditorias regulatórias.
+      </p>
+      <p>
+        <strong>Relatórios de transparência:</strong> a API de análise fornece os dados de uso por período e categoria.
+        Ela cobre o total de requisições, as taxas de sinalização e as ações aplicadas, que é o que os relatórios de transparência do DSA pedem.
+      </p>
+      <p>
+        <strong>Soberania dos dados:</strong> os dados ficam hospedados na UE e você pode exportá-los a qualquer momento.
+        Isso importa para a conformidade com o RGPD e para as avaliações de risco do DSA. A implantação on-premise é
+        possível mediante solicitação: <a href={BOOKING_URL} class="text-brand-600 hover:text-brand-500">vamos conversar</a>.
+      </p>
+      <p>
+        <strong>Revisão humana:</strong> os casos duvidosos, as denúncias e as contestações são tratados pela nossa equipe,
+        atendendo às exigências do DSA sobre o tratamento de reclamações e recursos. Você vê cada decisão em tempo real e pode intervir quando quiser.
+      </p>
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Continue explorando</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath("/dsa-compliance", locale)} class="font-medium text-brand-600 hover:text-brand-500">Conformidade com o DSA: trilhas de auditoria e relatórios de transparência &rarr;</a></li>
+        <li><a href={localizePath("/product/transparency", locale)} class="font-medium text-brand-600 hover:text-brand-500">Cada comentário ocultado vem com um motivo por escrito &rarr;</a></li>
+        <li><a href={localizePath("/pricing", locale)} class="font-medium text-brand-600 hover:text-brand-500">Comece grátis e evolua conforme crescer &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

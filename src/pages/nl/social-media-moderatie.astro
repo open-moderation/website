@@ -1,0 +1,168 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CharterSupport from '../../components/CharterSupport.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import CTASection from '../../components/CTASection.astro';
+import BrowserFrame from '../../components/BrowserFrame.astro';
+import ModerationVerdict from '../../components/ModerationVerdict.astro';
+import ClientLogos from '../../components/ClientLogos.astro';
+import FAQ from '../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/nl/social-media-moderatie",
+  "url": "https://www.openmoderation.com/nl/social-media-moderatie",
+  "name": "Social media moderatie met AI: Facebook, Instagram, YouTube",
+  "description": "Een tool voor social media moderatie die haatdragende reacties, spam en oplichting op Facebook, Instagram en YouTube automatisch verbergt volgens je regels, met een schriftelijke reden bij elke beslissing.",
+  "inLanguage": "nl",
+  "about": { "@id": "https://www.openmoderation.com/#software" }
+};
+
+const platforms = [
+  { name: "Facebook", href: localizePath('/integrations/facebook', locale), text: "Reacties onder de posts van je pagina worden geanalyseerd zodra ze binnenkomen. Reacties die je regels overtreden, worden automatisch verborgen." },
+  { name: "Instagram", href: localizePath('/integrations/instagram', locale), text: "Reacties onder je Instagram-posts worden op dezelfde manier geanalyseerd en verborgen als ze je regels overtreden." },
+  { name: "YouTube", href: localizePath('/integrations/youtube', locale), text: "Elke reactie onder je video's wordt gepubliceerd, vastgehouden voor beoordeling of afgewezen, rechtstreeks via de YouTube API." },
+  { name: "WordPress", href: localizePath('/integrations/wordpress', locale), text: "Reacties op je site worden goedgekeurd, vastgehouden voor moderatie of als spam gemarkeerd, zonder dat je een plug-in hoeft te bouwen." },
+];
+
+const steps = [
+  { title: "Koppel je accounts", text: "Facebook, Instagram, YouTube of WordPress koppel je in een paar klikken, zonder ontwikkelaar." },
+  { title: "Schrijf je regels", text: "Je moderatiebeleid in gewone taal, verboden woorden en een drempel per categorie. Met een uitgebalanceerde standaardinstelling kun je meteen beginnen." },
+  { title: "De AI past je regels toe", text: "Wat je regels duidelijk overtreedt, wordt verborgen, acceptabele reacties blijven online en grensgevallen worden afgehandeld door ons team." },
+  { title: "Elke beslissing wordt uitgelegd", text: "Bij elke beslissing, automatisch of menselijk, hoort een schriftelijke reden die in het audittraject bewaard blijft." },
+];
+
+const faqItems = [
+  {
+    question: "Welke sociale netwerken kan OpenModeration modereren?",
+    answer: "Facebook, Instagram en YouTube, en daarnaast WordPress-sites, via kant-en-klare connectoren. Voor andere bronnen kun je content via de REST API of webhooks insturen. TikTok, X en LinkedIn hebben vandaag geen kant-en-klare connector.",
+  },
+  {
+    question: "Moet ik kunnen programmeren om mijn social media met OpenModeration te modereren?",
+    answer: "Nee. Je koppelt je accounts, schrijft je regels in gewone taal, en wij doen de rest. In de console zie je elke beslissing en kun je met één klik ingrijpen. De API is alleen nuttig als je een eigen platform wilt aansluiten.",
+  },
+  {
+    question: "Worden reacties verwijderd of verborgen?",
+    answer: "Op Facebook en Instagram worden reacties die je regels overtreden verborgen. Op YouTube worden ze afgewezen of vastgehouden voor beoordeling. Op WordPress worden ze vastgehouden voor moderatie of als spam gemarkeerd. In alle gevallen blijven de beslissing en de reden in het audittraject bewaard.",
+  },
+  {
+    question: "Wat kost een tool voor social media moderatie zoals OpenModeration?",
+    answer: "Het gratis abonnement dekt tot 1.000 verzoeken per maand, zo'n 30 reacties per dag. Het Pro-abonnement kost € 99 per maand voor 10.000 verzoeken. Een on-premise installatie is op aanvraag mogelijk.",
+  },
+  {
+    question: "Waar worden de gegevens gehost?",
+    answer: "OpenModeration wordt ontwikkeld en gehost in de Europese Unie en voldoet aan de AVG. Een on-premise installatie is mogelijk op aanvraag: laten we het bespreken.",
+  },
+];
+---
+
+<BaseLayout title="Social media moderatie met AI, zonder code" description="Verberg haatdragende reacties, spam en oplichting op Facebook, Instagram en YouTube automatisch, volgens je regels. Elke beslissing uitgelegd. Gratis starten." jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: "Social media moderatie" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Facebook • Instagram • YouTube • WordPress
+      </div>
+      <h1 class="mx-auto max-w-4xl text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Social media moderatie, automatisch en uitgelegd</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Beledigingen, spam en oplichting stapelen zich op onder je posts, op elk uur van de dag. OpenModeration verbergt ze automatisch volgens je regels, op al je accounts tegelijk, en legt schriftelijk vast waarom elke reactie is verwijderd.
+      </p>
+      <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">Probeer het gratis</a>
+        <a href={localizePath('/how-it-works', locale)} class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">Bekijk hoe het werkt</a>
+      </div>
+      <p class="mt-4 text-sm text-surface-400">Geen creditcard nodig</p>
+      <div class="mt-10">
+        <ClientLogos />
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-3xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Wat OpenModeration op elk netwerk doet</h2>
+        <p class="mt-4 text-lg text-surface-500">Eén console en dezelfde regels voor al je accounts. Welke actie wordt uitgevoerd, hangt af van wat elk platform toestaat.</p>
+      </div>
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        {platforms.map((p) => (
+          <a href={p.href} class="block rounded-xl border border-surface-200 bg-white p-6 transition hover:-translate-y-0.5 hover:shadow-md">
+            <h3 class="text-lg font-semibold text-surface-900">{p.name}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-surface-500">{p.text}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Vier stappen, geen regel code</h2>
+          <ol class="mt-8 space-y-4">
+            {steps.map((s, i) => (
+              <li class="flex items-start gap-4 rounded-lg border border-surface-200 bg-white p-4">
+                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-100 text-sm font-semibold text-brand-700">{i + 1}</span>
+                <div>
+                  <p class="text-sm font-medium text-surface-900">{s.title}</p>
+                  <p class="mt-1 text-sm text-surface-500">{s.text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+        <BrowserFrame caption="Een verborgen reactie, de overtreden regel en de schriftelijke reden, zichtbaar voor je hele team.">
+          <ModerationVerdict slot="content" />
+        </BrowserFrame>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Waarom een speciale tool beter werkt dan de ingebouwde filters</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Context, niet alleen trefwoorden</h3>
+          <p class="mt-2 text-sm text-surface-500">Een lijst met geblokkeerde woorden mist sarcasme, verhulde beledigingen en goed opgezette oplichting. AI-modellen lezen de hele zin en beoordelen die aan de hand van je moderatiebeleid.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Eén console voor al je accounts</h3>
+          <p class="mt-2 text-sm text-surface-500">Niet meer van het ene netwerk naar het andere springen: beslissingen voor Facebook, Instagram, YouTube en je website staan allemaal in dezelfde console, en ons team handelt de grensgevallen af.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Beslissingen die je kunt verantwoorden</h3>
+          <p class="mt-2 text-sm text-surface-500">Bij elke verwijderde reactie blijven de regel en de schriftelijke reden bewaard. Als een volger bezwaar maakt, weet je wat je moet zeggen, en het audittraject is klaar voor de DSA.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Social media moderatie: veelgestelde vragen" items={faqItems} />
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Verder lezen</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/content-moderation-policy', locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderatiebeleid: gids en voorbeeld &rarr;</a></li>
+        <li><a href={localizePath('/use-cases/news-publishers', locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderatie van reacties voor nieuwsuitgevers &rarr;</a></li>
+        <li><a href={localizePath('/alternatives/bodyguard', locale)} class="font-medium text-brand-600 hover:text-brand-500">OpenModeration vs Bodyguard: de vergelijking &rarr;</a></li>
+        <li><a href={localizePath('/dsa-compliance/statement-of-reasons', locale)} class="font-medium text-brand-600 hover:text-brand-500">De motivering die de DSA vereist &rarr;</a></li>
+        <li><a href={localizePath('/pricing', locale)} class="font-medium text-brand-600 hover:text-brand-500">Prijzen &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <CTASection title="Bescherm je social media in 5 minuten." subtitle="Koppel je accounts en schrijf je regels in gewone taal: bij elke verborgen reactie hoort een schriftelijke reden." />
+</BaseLayout>

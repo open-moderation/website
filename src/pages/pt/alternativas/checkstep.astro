@@ -1,0 +1,131 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+const L = (p: string) => localizePath(p, locale);
+
+const comparisonJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/pt/alternativas/checkstep",
+  "name": "Alternativa ao Checkstep: comparativo com o OpenModeration",
+  "description": "Compare o OpenModeration e o Checkstep para a moderação de conteúdo com IA: console de revisão completo, motor de regras automático, recursos do DSA, hospedagem na UE e uma IA de moderação própria verificada por outros modelos de IA.",
+  "inLanguage": "pt"
+};
+
+const comparisonPoints = [
+  { feature: "Alcance da moderação", checkstep: "Tecnologia proprietária", openmod: "IA de moderação própria + casos duvidosos tratados pela nossa equipe, com um console onde você vê tudo" },
+  { feature: "Modelos de IA", checkstep: "Proprietários; detalhes não especificados neste comparativo", openmod: "IA de moderação própria, verificada por outros modelos de IA; novos modelos integrados assim que são lançados" },
+  { feature: "Interface operacional", checkstep: "API + interface básica", openmod: "Console completo incluído: você vê cada decisão em tempo real e pode intervir quando quiser" },
+  { feature: "Motor de regras", checkstep: "Lógica proprietária", openmod: "Três camadas integradas: filtros de palavras, limites de pontuação e regras da comunidade em linguagem natural" },
+  { feature: "Soberania dos dados", checkstep: "SaaS apenas na nuvem", openmod: "Hospedado na UE, com registro de auditoria completo, o que facilita cumprir o RGPD e o DSA" },
+  { feature: "Modelo de preços", checkstep: "Faturamento SaaS por requisição", openmod: "Grátis até 1.000 requisições/mês, Pro a 99 €/mês para 10 mil requisições, Enterprise sob consulta" }
+];
+---
+
+<BaseLayout
+  title="Alternativa ao Checkstep: comparativo com o OpenModeration"
+  description="Checkstep ou OpenModeration? Compare console de revisão, motor de regras, registro DSA, hospedagem na UE e modelos de IA, com preços públicos a partir de 0 €."
+  jsonLd={comparisonJsonLd}
+>
+  <Breadcrumb items={[{ label: "Início", href: L('/') }, { label: "Alternativas", href: L('/alternatives') }, { label: "Checkstep" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">Comparativo</div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Alternativa ao Checkstep: OpenModeration vs Checkstep</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        O Checkstep oferece boas APIs de moderação com IA, mas montar um fluxo de moderação completo exige bastante trabalho de engenharia. O OpenModeration entrega a API <strong>e</strong> tudo o que é preciso ao redor dela: console de revisão, regras automáticas e registro para o DSA.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-4xl">
+        <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">Checkstep vs OpenModeration</h2>
+        <div class="mt-8 overflow-hidden rounded-xl border border-surface-200">
+          <table class="w-full text-left text-sm">
+            <thead>
+              <tr class="bg-surface-50">
+                <th class="px-6 py-4 font-semibold text-surface-900">Recurso</th>
+                <th class="px-6 py-4 font-semibold text-surface-500">Checkstep</th>
+                <th class="px-6 py-4 font-semibold text-brand-700">OpenModeration</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-surface-200 bg-white">
+              {comparisonPoints.map((row) => (
+                <tr>
+                  <td class="px-6 py-4 font-medium text-surface-900">{row.feature}</td>
+                  <td class="px-6 py-4 text-surface-600">{row.checkstep}</td>
+                  <td class="px-6 py-4 font-medium text-accent-600">{row.openmod}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="mt-16 grid gap-8 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-8">
+          <h3 class="text-xl font-bold text-surface-900">O custo oculto de uma moderação que é "só uma API"</h3>
+          <p class="mt-4 text-surface-600">
+            Integrar o Checkstep é o primeiro passo. Para que funcione em produção, a sua equipe de engenharia ainda precisa construir:
+          </p>
+          <ul class="mt-4 space-y-3 text-sm text-surface-600">
+            <li class="flex items-start gap-2"><span class="text-red-500">✕</span> Um console para que os moderadores humanos revisem os casos-limite</li>
+            <li class="flex items-start gap-2"><span class="text-red-500">✕</span> Um motor de regras que transforme as pontuações da IA em ações automáticas (ocultar, excluir, sinalizar)</li>
+            <li class="flex items-start gap-2"><span class="text-red-500">✕</span> Sistemas de registro de auditoria para comprovar o cumprimento do DSA perante os reguladores</li>
+          </ul>
+        </div>
+        <div class="rounded-xl border border-brand-200 bg-brand-50 p-8 shadow-sm">
+          <h3 class="text-xl font-bold text-brand-700">A vantagem do OpenModeration</h3>
+          <p class="mt-4 text-surface-700">
+            O OpenModeration reúne a IA de moderação e tudo o que é necessário para moderar no dia a dia:
+          </p>
+          <ul class="mt-4 space-y-3 text-sm text-surface-700">
+            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> O console está pronto desde o primeiro dia: você vê cada decisão e o seu motivo em tempo real.</li>
+            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> As regras são configuradas sem código com três ferramentas: palavras proibidas, limites por categoria e as regras da sua comunidade.</li>
+            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> Cada decisão vem com um motivo por escrito, e a nossa equipe trata os casos duvidosos.</li>
+            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> Cada decisão, da IA ou humana, fica em um registro de auditoria completo.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mx-auto mt-16 max-w-3xl">
+        <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">Um motor de IA que acompanha o progresso dos modelos</h2>
+        <p class="mt-4 text-surface-600">O OpenModeration usa a sua própria IA de moderação e, nos casos delicados, outros modelos de IA verificam as suas decisões. O motor não depende de nenhum modelo: quando sai um melhor ou mais barato, a nossa equipe o integra rapidamente, sem que você precise mudar nada. Assim, a sua moderação acompanha o progresso do mercado de IA em vez de ficar congelada em um único algoritmo.</p>
+        <h2 class="mt-12 text-2xl font-bold text-surface-900 sm:text-3xl">Preços: Checkstep vs OpenModeration</h2>
+        <p class="mt-4 text-surface-600">O Checkstep fatura o seu SaaS por requisição. Os preços do OpenModeration são públicos: grátis até 1.000 requisições por mês, Pro a 99 €/mês para 10 mil requisições e Enterprise sob consulta; a implantação on-premise é possível sob consulta. <a href={L('/pricing')} class="font-medium text-brand-600 hover:text-brand-500">Os preços do OpenModeration &rarr;</a></p>
+        <p class="mt-4 text-surface-600">Quer comparar com os seus próprios comentários? <a href={L('/book-a-call')} class="font-medium text-brand-600 hover:text-brand-500">Agende uma reunião com a nossa equipe &rarr;</a></p>
+      </div>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection
+    title="Não construa as suas próprias ferramentas de moderação."
+    subtitle="O OpenModeration já traz a IA de moderação, as regras automáticas, uma equipe que trata os casos duvidosos e um console onde você vê tudo."
+    buttonText="Teste grátis"
+    buttonHref="https://app.openmoderation.com/signup"
+  />
+
+  <section class="border-t border-surface-100 bg-surface-50 py-16">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold text-surface-900">Compare outras soluções</h2>
+      <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+        <a href={L('/alternatives/openai-moderation')} class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">OpenAI Moderation</a>
+        <a href={L('/alternatives/azure-content-safety')} class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Azure Content Safety</a>
+        <a href={L('/alternatives/mistral-moderation')} class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Mistral Moderation</a>
+        <a href={L('/alternatives/perspective-api')} class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Perspective API</a>
+        <a href={L('/alternatives/hive-moderation')} class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Hive Moderation</a>
+        <a href={L('/moderation-software')} class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Software de moderação</a>
+        <a href={L('/alternatives')} class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Todos os comparativos</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

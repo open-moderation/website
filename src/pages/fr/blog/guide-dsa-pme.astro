@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
 import Breadcrumb from '../../../components/Breadcrumb.astro';
 
 const articleJsonLd = {
@@ -104,13 +105,13 @@ const articleJsonLd = {
         Avec OpenModeration, la mise en place prend moins d'une heure :
       </p>
       <ol>
-        <li>Déployez avec Docker Compose : docker compose up</li>
-        <li>Choisissez un fournisseur (OpenAI, Azure, HuggingFace, Mistral ou un LLM auto-hébergé)</li>
-        <li>Configurez les seuils dans le tableau de bord : définissez les niveaux d'acceptation et de rejet par catégorie</li>
-        <li>Mettez en place une file de modération manuelle pour les contenus en zone grise</li>
+        <li>Créez votre compte et connectez votre plateforme par l'API ou un connecteur</li>
+        <li>Définissez avec nous vos règles et vos cas d'usage : notre propre IA s'y adapte, et d'autres modèles d'IA arbitrent les cas délicats</li>
+        <li>Réglez les seuils dans le tableau de bord : définissez les niveaux d'acceptation et de rejet par catégorie</li>
+        <li>Laissez notre équipe traiter les contenus en zone grise : vous voyez chaque décision en temps réel et pouvez intervenir quand vous voulez</li>
       </ol>
       <p>
-        Vous obtenez ainsi un système conforme à l'article 17 : chaque décision indique le fournisseur,
+        Vous obtenez ainsi un système conforme à l'article 17 : chaque décision indique le modèle utilisé,
         les scores, la règle déclenchée et l'action effectuée.
       </p>
 
@@ -124,12 +125,12 @@ const articleJsonLd = {
       </p>
       <ul>
         <li>L'identifiant et le texte du contenu (haché ou stocké selon votre politique de conservation)</li>
-        <li>Le fournisseur utilisé et le temps de réponse</li>
+        <li>Le modèle utilisé et le temps de réponse</li>
         <li>Les scores par catégorie (haine, harcèlement, violence, etc.)</li>
         <li>La règle déclenchée et l'action effectuée (autoriser, masquer, supprimer, signaler)</li>
         <li>L'horodatage en UTC</li>
         <li>Le signalement de l'utilisateur, si l'action fait suite à une notification</li>
-        <li>Le modérateur humain et sa décision, pour les revues manuelles</li>
+        <li>Le modérateur humain de notre équipe et sa décision, pour les revues manuelles</li>
       </ul>
       <p>
         Ces journaux sont stockés dans PostgreSQL et exportables par API. Pour un audit DSA, vous pouvez
@@ -144,13 +145,13 @@ const articleJsonLd = {
       <ul>
         <li><strong>Point d'entrée pour les notifications :</strong> exposez une API ou une interface permettant aux utilisateurs de signaler un contenu, avec l'identifiant du contenu, la catégorie du motif et une explication facultative.</li>
         <li><strong>Nouvelle évaluation par la modération :</strong> à réception d'une notification, modérez à nouveau le contenu et consignez le résultat en le rattachant à la notification.</li>
-        <li><strong>Point d'entrée pour les recours :</strong> permettez aux utilisateurs de demander une revue humaine des décisions automatiques, et dirigez ces demandes vers votre file de modération manuelle.</li>
+        <li><strong>Point d'entrée pour les recours :</strong> permettez aux utilisateurs de demander une revue humaine des décisions automatiques, et dirigez ces demandes vers une revue humaine (avec OpenModeration, c'est notre équipe qui s'en charge).</li>
         <li><strong>Information des utilisateurs :</strong> informez les utilisateurs des décisions dans les délais prévus par le DSA (en général rapidement : aucun délai ferme n'est fixé pour les PME, mais la norme est « sans retard injustifié »).</li>
       </ul>
       <p>
-        Le moteur d'actions d'OpenModeration prend ce workflow en charge nativement. Vous pouvez configurer
-        des règles qui envoient un contenu en revue humaine lorsqu'une notification arrive, et le journal
-        d'audit suit tout le cycle de vie, de la notification à la décision.
+        OpenModeration prend ce workflow en charge nativement : quand une notification ou une demande de recours arrive,
+        le contenu part en revue humaine auprès de notre équipe, et le journal d'audit suit tout le cycle de vie,
+        de la notification à la décision. Vous suivez tout en temps réel et pouvez intervenir quand vous voulez.
       </p>
 
       <h2 class="text-xl font-bold text-surface-900">Étape 4 : produire les rapports de transparence</h2>
@@ -221,6 +222,8 @@ const articleJsonLd = {
       </ul>
     </div>
   </section>
+
+  <GuideComparisons />
 
   <CTASection />
 </BaseLayout>

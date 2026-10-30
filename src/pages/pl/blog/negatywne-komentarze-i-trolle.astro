@@ -1,0 +1,316 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const title = "Negatywne komentarze i trolle: jak reagować (2026)";
+const description = "Jak radzić sobie z negatywnymi komentarzami i trollami: krytyka a hejt, kiedy odpowiadać, ukrywać, usuwać lub banować, wzory odpowiedzi, naloty i kryzysy.";
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Jak radzić sobie z negatywnymi komentarzami i trollami w mediach społecznościowych i na stronie internetowej",
+  "description": description,
+  "inLanguage": "pl",
+  "datePublished": "2026-10-30",
+  "dateModified": "2026-10-30",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/pl/blog/negatywne-komentarze-i-trolle" }
+};
+
+const decisions = [
+  { situation: "Klient skarży się na spóźnione zamówienie, błąd lub złe doświadczenie", action: "Odpowiedz", why: "Odpowiedz publicznie, a szczegóły przenieś do wiadomości prywatnych. Inni czytelnicy oceniają Cię po tym, jak odpowiadasz." },
+  { situation: "Ostra, ale merytoryczna opinia o produkcie, artykule lub decyzji", action: "Zostaw (i odpowiedz, jeśli warto)", why: "Krytyka jest częścią rozmowy. Jej usunięcie kosztuje więcej zaufania, niż pozwala zachować." },
+  { situation: "Błąd w faktach lub rozprzestrzeniająca się plotka", action: "Odpowiedz faktami", why: "Jedno spokojne sprostowanie ze źródłem pomaga każdemu, kto przeczyta wątek później." },
+  { situation: "Obelga, atak osobisty, wyzwisko lub prowokacja bez treści do dyskusji", action: "Ukryj", why: "Komentarz przestaje zaśmiecać wątek, a jego autor rzadko to zauważa." },
+  { situation: "Spam, linki do oszustw, cudze dane osobowe", action: "Usuń", why: "Takie treści nie mogą pozostać online w żadnej formie, nawet dla autora." },
+  { situation: "Recydywista, fałszywe konto, skoordynowany nalot", action: "Zbanuj lub zablokuj", why: "Gdy wzorzec jest jasny, działaj na koncie, a nie na każdym komentarzu z osobna." },
+  { situation: "Groźby, nawoływanie do przemocy, wykorzystywanie dzieci, inne ewidentnie nielegalne treści", action: "Zgłoś (i zachowaj dowody)", why: "Zgłoś platformie, a gdy ktoś jest w niebezpieczeństwie, także policji. Przed usunięciem zrób zrzuty ekranu." },
+];
+
+const faqItems = [
+  {
+    question: "Czy należy usuwać negatywne komentarze?",
+    answer: "Nie, jeśli są krytyką. Negatywny, ale kulturalny komentarz o produkcie, usłudze lub treści powinien pozostać widoczny, najlepiej z odpowiedzią. Usunięcie wygląda na cenzurę i często sprawia, że autor wraca, jeszcze bardziej rozgniewany. Usuwanie zostaw dla spamu, oszustw, danych osobowych i treści nielegalnych, a obelgi i ataki osobiste ukrywaj.",
+  },
+  {
+    question: "Jak odpowiedzieć na negatywny komentarz w mediach społecznościowych?",
+    answer: "Odpowiedz szybko, podziękuj, przyznaj, że problem istnieje, bez wdawania się w spór, wskaż konkretny następny krok, a jeśli potrzebne są dane osobowe, przenieś rozmowę do wiadomości prywatnych. Pisz jak człowiek, podpisz się imieniem, jeśli marka tak robi, i nigdy nie wklejaj tego samego zdania pod każdą reklamacją.",
+  },
+  {
+    question: "Jak najlepiej radzić sobie z trollami?",
+    answer: "Nie karmić ich. Troll chce reakcji, więc publiczna kłótnia zwykle go nagradza. Ukryj prowokację, nie odpowiadaj na nią i zbanuj konto, jeśli wróci. Odpowiadaj tylko wtedy, gdy komentarz trolla zawiera nieprawdziwe twierdzenie, w które mogą uwierzyć inni czytelnicy, i wtedy zwracaj się do czytelników, a nie do trolla.",
+  },
+  {
+    question: "Czym różni się troll od niezadowolonego klienta?",
+    answer: "Niezadowolony klient mówi o problemie i zwykle chce, żeby go rozwiązać. Troll mówi o Tobie lub o innych komentujących i chce uwagi albo konfliktu. Patrz na treść: czy w komentarzu jest fakt, pytanie lub doświadczenie? Jeśli tak, potraktuj go jako opinię zwrotną, niezależnie od tego, jak niegrzeczny jest ton.",
+  },
+  {
+    question: "Co robić podczas nalotu na komentarze?",
+    answer: "Spowolnij wątek: ukrywaj nowe obraźliwe komentarze, ogranicz lub wstrzymaj komentarze pod atakowanym postem, jeśli platforma na to pozwala, banuj konta, które dołączają tylko po to, by atakować, i rób zrzuty ekranu. Poinformuj zespół, co się dzieje, w razie potrzeby opublikuj jedno spokojne oświadczenie i poczekaj, aż fala minie, zanim ponownie otworzysz komentarze.",
+  },
+  {
+    question: "Czy trzeba wyjaśniać, dlaczego komentarz został usunięty?",
+    answer: "Na własnej stronie internetowej lub w aplikacji akt o usługach cyfrowych (DSA) wymaga od usług hostingowych przekazania autorowi uzasadnienia, gdy treść zostaje usunięta lub ograniczona. W sieciach społecznościowych ten obowiązek spoczywa na platformie, ale prowadzenie krótkiego zapisu każdej decyzji i tak jest dobrą praktyką na wypadek pytań autora, przełożonego lub dziennikarza.",
+  },
+  {
+    question: "Kiedy zautomatyzować moderację komentarzy?",
+    answer: "Gdy komentarze napływają szybciej, niż zespół jest w stanie je przeczytać, gdy hejt pojawia się nocą lub w weekendy albo gdy te same obelgi wciąż wracają. Narzędzie może ukrywać oczywiste nadużycia w czasie rzeczywistym, stosować Twoje zasady i przypadki użycia oraz przekazywać wątpliwe przypadki człowiekowi, tak aby zespół poświęcał czas na odpowiedzi, a nie na sprzątanie.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} ogType="article" jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Strona główna", href: localizePath('/', locale) }, { label: "Blog", href: localizePath('/blog', locale) }, { label: "Negatywne komentarze i trolle" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-30">30 października 2026</time>
+        <span>&middot;</span>
+        <span>9 min czytania</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Jak radzić sobie z negatywnymi komentarzami i trollami: praktyczny poradnik dla mediów społecznościowych i stron internetowych</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Każda marka, redakcja i strona publiczna dostaje negatywne komentarze. Niektóre są uczciwe i przydatne,
+        inne niegrzeczne, ale szczere, a jeszcze inne pochodzą od osób, które chcą tylko zranić lub sprowokować.
+        Trudność nie polega na tym, by wiedzieć, że trolle istnieją. Chodzi o to, by przy każdym komentarzu
+        zdecydować, co zrobić: odpowiedzieć, zostawić, ukryć, usunąć, zbanować autora czy go zgłosić. Ten poradnik
+        daje prostą metodę, wzory odpowiedzi i plan na gorsze dni.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">W skrócie</h2>
+      <ul>
+        <li><strong>Krytyka pozostaje widoczna.</strong> Negatywny, ale kulturalny komentarz to opinia zwrotna. Odpowiedz na niego zamiast go usuwać.</li>
+        <li><strong>Hejt się ukrywa, a nie z nim dyskutuje.</strong> Obelgi, nękanie i prowokacje są ukrywane; spam, oszustwa i dane osobowe usuwane; treści nielegalne zgłaszane.</li>
+        <li><strong>Trolle chcą reakcji.</strong> Nie dawaj im jej. Banuj recydywistów i przygotuj plan na naloty i kryzysy.</li>
+        <li><strong>Chroń ludzi i prowadź dokumentację.</strong> Zadbaj o zespół, który czyta komentarze, i zapisuj krótkie uzasadnienie każdego usunięcia.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Krytyka czy hejt? Jak odróżnić jedno od drugiego</h2>
+      <p>
+        Pierwsze pytanie nie brzmi „czy ten komentarz jest negatywny?”, lecz „czy jest w nim coś do omówienia?”.
+        Przydatny test: odrzuć ton i zobacz, co zostaje.
+      </p>
+      <ul>
+        <li><strong>Krytyka</strong> dotyczy tego, co robisz: produktu, ceny, artykułu, decyzji, opóźnienia. Może być gniewna, sarkastyczna lub niesprawiedliwa, ale zawiera fakt, doświadczenie lub pytanie.</li>
+        <li><strong>Hejt</strong> dotyczy tego, kim ktoś jest: obelgi, wyzwiska, groźby, szydzenie z czyjegoś ciała, pochodzenia, płci lub religii. Po odrzuceniu tonu nic nie zostaje.</li>
+        <li><strong>Trolling</strong> ma wywołać reakcję: prowokacje nie na temat, przynęty, ta sama wiadomość wklejana raz za razem, udawane oburzenie.</li>
+        <li><strong>Spam i oszustwa</strong> dotyczą zupełnie czegoś innego: linków, fałszywych konkursów, podszywania się pod Twoją markę.</li>
+      </ul>
+      <p>
+        „Dostawa trwała trzy tygodnie i nikt nie odpisał na moje maile, żenada” to krytyka z niegrzecznym słowem.
+        „Tylko idioci kupują od tych klaunów” to hejt bez treści. Pierwszy komentarz zasługuje na odpowiedź,
+        drugi można ukryć.
+      </p>
+
+      <h3 class="text-lg font-semibold text-surface-900">Dlaczego krytyka powinna pozostać widoczna</h3>
+      <p>
+        Kusi, żeby wyczyścić każdy negatywny komentarz. Nie warto. Czytelnicy zauważają, gdy w sekcji komentarzy
+        są same pochwały, i ufają jej mniej. Reklamacja, która znika, często wraca głośniejsza, czasem ze zrzutem
+        ekranu i słowem „cenzura”. Dobrze obsłużona reklamacja pokazuje natomiast każdemu czytelnikowi, że ktoś
+        słucha. Zasady powinny chronić ludzi przed hejtem, a nie markę przed niezgodą. Zapisz to rozróżnienie
+        w swojej <a href={localizePath('/content-moderation-policy', locale)} class="text-brand-600 hover:text-brand-500">polityce moderacji</a>, aby wszyscy w zespole wyznaczali granicę w tym samym miejscu.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Co zrobić z negatywnym komentarzem? Tabela decyzji</h2>
+      <p>
+        Większość platform oferuje ten sam zestaw działań pod różnymi nazwami: odpowiedź, ukrycie, usunięcie,
+        ban lub blokada oraz zgłoszenie. W przypadku hejtu ukrycie jest zwykle najlepszym wyborem domyślnym:
+        na przykład na stronie na Facebooku ukryty komentarz pozostaje widoczny dla autora i jego znajomych, więc
+        autor rzadko to zauważa. Potraktuj tę tabelę jako punkt wyjścia i dostosuj ją do swoich zasad i przypadków użycia.
+      </p>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Sytuacja</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Działanie</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Dlaczego</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {decisions.map((row) => (
+            <tr>
+              <td class="px-4 py-3 text-surface-600">{row.situation}</td>
+              <td class="px-4 py-3 font-medium text-surface-900">{row.action}</td>
+              <td class="px-4 py-3 text-surface-600">{row.why}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <p>
+        Tabelę uzupełniają dwie praktyczne zasady. Najpierw działaj na treści, dopiero potem na ludziach: jeden
+        niegrzeczny komentarz wymaga ukrycia, powtarzający się wzorzec wymaga bana. A gdy wahasz się między dwoma
+        działaniami, wybierz to, które da się cofnąć. Ukryty komentarz można odkryć; usuniętego nie da się przywrócić.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Jak odpowiadać na negatywne komentarze: wzory do dostosowania</h2>
+      <p>
+        Dobra odpowiedź jest szybka, krótka, ludzka i konkretna. Dziękuje, przyznaje rację tam, gdzie trzeba,
+        wskazuje następny krok i w razie potrzeby przenosi rozmowę do wiadomości prywatnych. Nigdy nie kłóć się
+        publicznie, nie obwiniaj klienta i nie wklejaj tego samego zdania pod dwudziestoma reklamacjami: ludzie
+        to porównują.
+      </p>
+      <p><strong>Reklamacja dotycząca produktu lub usługi</strong></p>
+      <blockquote>
+        „Dzień dobry, Pani Anno, dziękujemy za sygnał i przepraszamy za trzy tygodnie oczekiwania: nie tego
+        obiecujemy. Czy może Pani przesłać nam numer zamówienia w wiadomości prywatnej? Jeszcze dziś sprawdzimy,
+        co się stało, i wrócimy z odpowiedzią. Tomek, zespół obsługi klienta”
+      </blockquote>
+      <p><strong>Ostra opinia, z którą się nie zgadzasz</strong></p>
+      <blockquote>
+        „Dziękujemy za opinię, Panie Marku. Podjęliśmy tę decyzję, ponieważ [krótki, szczery powód]. Rozumiemy, że
+        nie każdemu to odpowiada, i czytamy wszystkie komentarze na ten temat.”
+      </blockquote>
+      <p><strong>Błąd w faktach lub plotka</strong></p>
+      <blockquote>
+        „Dla jasności wobec wszystkich czytających: ten produkt nie został wycofany. Wycofanie ogłoszone [data]
+        dotyczy [inny produkt], a szczegóły są tutaj: [link]. Jeśli mają Państwo pytanie dotyczące własnego
+        zamówienia, nasz zespół jest dostępny w wiadomościach prywatnych.”
+      </blockquote>
+      <p><strong>Przypomnienie zasad, gdy wątek robi się gorący</strong></p>
+      <blockquote>
+        „Dyskusja jest tu mile widziana, ataki osobiste nie. Ukryliśmy kilka komentarzy, które przekroczyły
+        granicę. Zasady naszej społeczności są tutaj: [link].”
+      </blockquote>
+      <p>
+        Dostosuj ton do marki. Bank i marka streetwearowa nie będą mówić w ten sam sposób, ale obie powinny brzmieć
+        jak człowiek, a nie jak dział prawny.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Jak radzić sobie z trollami (i nalotami trolli)</h2>
+      <p>
+        „Nie karm trolla” to stara rada i wciąż najlepsza. Troll szuka publiczności i reakcji. Długa publiczna
+        odpowiedź daje mu jedno i drugie.
+      </p>
+      <ul>
+        <li><strong>Rozpoznaj wzorzec.</strong> Prowokacja nie na temat, nowe lub anonimowe konto, ta sama wiadomość pod kilkoma postami, odpowiedzi skierowane do innych komentujących, a nie do Ciebie.</li>
+        <li><strong>Ukrywaj, nie dyskutuj.</strong> Ukryj prowokację i odpowiedzi, które wywołała. Milczenie to nie słabość; odbiera trollowi scenę.</li>
+        <li><strong>Prostuj, ale dla czytelników.</strong> Jeśli troll rozpowszechnia fałszywe twierdzenie, w które inni mogą uwierzyć, opublikuj jedno rzeczowe sprostowanie skierowane do wszystkich i na tym poprzestań.</li>
+        <li><strong>Banuj recydywistów.</strong> Po dwóch lub trzech ukrytych komentarzach z tego samego konta zablokuj je lub zbanuj. Zapisz powód w jednym zdaniu.</li>
+        <li><strong>Nigdy nie ujawniaj danych osobowych</strong> i nie wchodź w interakcje z osobami, które grożą pracownikom. Zachowaj dowody i zgłoś sprawę.</li>
+      </ul>
+      <p>
+        Nalot to coś innego: dziesiątki lub setki kont pojawiają się w krótkim czasie pod tym samym postem, często
+        ściągnięte z innego forum, grupy lub kanału. Wtedy obsługuj falę, a nie każdy komentarz z osobna. Ukrywaj
+        nowe obraźliwe komentarze na bieżąco, ogranicz lub tymczasowo wyłącz komentarze pod atakowanym postem, jeśli
+        platforma na to pozwala, banuj konta założone lub zmobilizowane wyłącznie do ataku i rób zrzuty ekranu z
+        datami. Poinformuj społeczność w jednej krótkiej wiadomości, że komentarze są przez jakiś czas moderowane
+        bardziej rygorystycznie.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Co robić, gdy negatywne komentarze przeradzają się w kryzys</h2>
+      <p>
+        Czasem negatywne komentarze to nie nalot, lecz prawdziwy problem: wada produktu, niefortunna kampania,
+        artykuł prasowy o firmie. Wtedy moderacja nie może stać się sposobem na ukrycie kryzysu. Pomaga prosta
+        sekwencja działań.
+      </p>
+      <ol>
+        <li><strong>Wstrzymaj zaplanowane posty.</strong> Radosny post promocyjny w środku kryzysu tylko pogarsza sytuację.</li>
+        <li><strong>Eskaluj.</strong> Powiadom osoby decyzyjne: komunikację, zarząd, dział prawny, obsługę klienta. Ustalcie, kto zabiera głos.</li>
+        <li><strong>Opublikuj jeden jasny komunikat.</strong> Co się stało, co wiadomo, co robicie, kiedy przekażecie więcej informacji. Przypnij go i linkuj do niego w odpowiedziach.</li>
+        <li><strong>Zostaw krytykę widoczną.</strong> Ukrywaj hejt i groźby jak zwykle, ale gniewne, uzasadnione komentarze zostaw online. Usuwanie ich w czasie kryzysu to najszybszy sposób na wywołanie drugiego.</li>
+        <li><strong>Odpowiadaj partiami.</strong> Nie da się odpowiedzieć każdemu z osobna. Odpowiedz na najbardziej widoczne i najbardziej reprezentatywne komentarze i odsyłaj do głównego komunikatu.</li>
+        <li><strong>Podsumuj po wszystkim.</strong> O co ludzie pytali najczęściej? Które decyzje były trudne? Zaktualizuj zasady i wzory odpowiedzi.</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Jak chronić dobrostan zespołu</h2>
+      <p>
+        Czytanie przez cały dzień nienawiści, gróźb i obelg odbija się na ludziach, nawet jeśli są wymierzone w markę,
+        a nie w osobę, która je czyta. Community managerowie często pracują sami, wieczorami, na własnym telefonie.
+        Zasługuje to na taką samą uwagę jak każde inne ryzyko w zakresie BHP.
+      </p>
+      <ul>
+        <li><strong>Dzielcie obciążenie.</strong> Rotujcie osoby obsługujące najtrudniejsze kolejki i nigdy nie zostawiajcie nikogo samego w obliczu nalotu.</li>
+        <li><strong>Ustalcie godziny.</strong> Uzgodnijcie, co dzieje się w nocy i w weekendy, zamiast zostawiać to temu, kto akurat zajrzy.</li>
+        <li><strong>Ograniczajcie ekspozycję.</strong> Filtrujcie najbardziej brutalne treści, zanim zobaczy je człowiek, i domyślnie rozmywajcie obrazy, jeśli narzędzia na to pozwalają.</li>
+        <li><strong>Wspierajcie ludzi.</strong> Jasno komunikujcie, że moderator, który ukrywa hejt, stosuje zasady, a kierownictwo stoi za tą decyzją.</li>
+        <li><strong>Rozmawiajcie o tym.</strong> Krótkie omówienie po trudnym dniu i dostęp do wsparcia, gdy ktoś staje się celem ataków osobiście.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Jak dokumentować decyzje moderacyjne</h2>
+      <p>
+        Gdy autor pyta „dlaczego mój komentarz został usunięty?”, „bo tak” nie jest odpowiedzią. Prowadź krótki
+        zapis każdej decyzji: co zrobiono, dlaczego i kto lub co to zrobiło. Chroni to zespół, zapewnia spójność
+        decyzji i pozwala poprawiać błędy.
+      </p>
+      <p>
+        Na własnej stronie internetowej lub w aplikacji to także kwestia prawna. Zgodnie z aktem o usługach cyfrowych
+        (DSA) usługa hostingowa, która usuwa lub ogranicza treść, musi przekazać autorowi uzasadnienie. W kilku
+        zdaniach określa ono:
+      </p>
+      <ul>
+        <li>co zrobiono (usunięcie, ukrycie, zawieszenie konta) i z jaką treścią;</li>
+        <li>fakty, na których opiera się decyzja;</li>
+        <li>czy do wykrycia lub podjęcia decyzji użyto środków zautomatyzowanych;</li>
+        <li>zasadę lub przepis, który został naruszony;</li>
+        <li>jak autor może zakwestionować decyzję.</li>
+      </ul>
+      <p>
+        Zapis może być tak prosty jak: „Komentarz ukryty 30 października o 21:42. Powód: obelga wobec innego
+        użytkownika, punkt 3 zasad naszej społeczności. Wykryty automatycznie, potwierdzony przez moderatora. Możesz
+        zakwestionować tę decyzję, odpowiadając na tę wiadomość.” Szczegóły znajdziesz na naszej stronie poświęconej
+        <a href={localizePath('/dsa-compliance/statement-of-reasons', locale)} class="text-brand-600 hover:text-brand-500">uzasadnieniu decyzji zgodnie z DSA</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Kiedy zautomatyzować moderację?</h2>
+      <p>
+        Wszystko powyżej da się robić ręcznie na małej stronie. Przestaje to działać, gdy komentarze napływają
+        szybciej, niż zespół jest w stanie je czytać, gdy najgorsze pojawiają się o 2 w nocy albo gdy te same obelgi
+        wracają w kilkunastu wariantach pisowni. Wtedy narzędzie do automatycznej moderacji zaczyna się opłacać.
+      </p>
+      <p>
+        Dobre narzędzie nie zastępuje Twojego osądu. Stosuje Twoje zasady i przypadki użycia do każdego komentarza
+        w czasie rzeczywistym, ukrywa ewidentny hejt, spam i oszustwa, zostawia krytykę online i przekazuje wątpliwe
+        przypadki człowiekowi. Dzięki temu zespół poświęca czas na odpowiedzi, a nie na sprzątanie. Tak działa
+        OpenModeration na stronach internetowych, stronach na Facebooku, kontach profesjonalnych na Instagramie,
+        kanałach YouTube i w WordPressie: każda decyzja ma pisemne uzasadnienie i jest zapisywana, a nasz zespół
+        konfiguruje moderację i zajmuje się wątpliwymi przypadkami. Przeczytaj, jak działa <a href={localizePath('/automatic-comment-moderation', locale)} class="text-brand-600 hover:text-brand-500">automatyczna moderacja komentarzy</a>,
+        lub zobacz, jak <a href={localizePath('/use-cases/brands-retail', locale)} class="text-brand-600 hover:text-brand-500">marki i sieci handlowe</a> chronią swoje strony i kampanie.
+      </p>
+      <p>
+        Szerszy obraz daje nasz <a href={localizePath('/blog/comment-moderation-guide', locale)} class="text-brand-600 hover:text-brand-500">kompletny poradnik moderacji komentarzy</a> oraz
+        <a href={localizePath('/blog/social-media-moderation-guide', locale)} class="text-brand-600 hover:text-brand-500">poradnik moderacji mediów społecznościowych</a>.
+      </p>
+    </div>
+
+    <div class="mt-12">
+      <FAQ title="Najczęstsze pytania" items={faqItems} />
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Czytaj dalej</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/automatic-comment-moderation', locale)} class="font-medium text-brand-600 hover:text-brand-500">Automatyczna moderacja komentarzy z OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/use-cases/brands-retail', locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderacja komentarzy dla marek i handlu &rarr;</a></li>
+        <li><a href={localizePath('/blog/hide-facebook-comments-automatically', locale)} class="font-medium text-brand-600 hover:text-brand-500">Jak automatycznie ukrywać komentarze na Facebooku &rarr;</a></li>
+        <li><a href={localizePath('/dsa-compliance/statement-of-reasons', locale)} class="font-medium text-brand-600 hover:text-brand-500">Co musi zawierać uzasadnienie zgodnie z DSA &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

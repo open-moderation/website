@@ -1,0 +1,150 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+const L = (p: string) => localizePath(p, locale);
+
+const alternativesJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "@id": "https://www.openmoderation.com/pt/alternativas",
+  "name": "Alternativas de moderação de conteúdo | OpenModeration",
+  "description": "Compare o OpenModeration com 35 ferramentas de moderação de conteúdo: APIs de IA, suítes de redes sociais, sistemas de comentários e serviços terceirizados.",
+  "inLanguage": "pt"
+};
+
+const arrow = "M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4";
+
+const comparisons = [
+  { slug: "activefence", title: "ActiveFence", tagline: "Trust & safety para grandes plataformas", description: "ActiveFence (agora Alice) ou OpenModeration? Comparativo com fontes para mídia e marcas: oferta, conectores, modelos de IA, DSA, preço e hospedagem na UE." },
+  { slug: "agorapulse", title: "Agorapulse", tagline: "Suíte de redes sociais", description: "Agorapulse ou OpenModeration para moderar comentários? Regras por palavras-chave ou IA, preços, modelos de IA, ferramentas para o DSA e como usar os dois juntos." },
+  { slug: "arwen", title: "Arwen", tagline: "Moderação de redes sociais", description: "Arwen ou OpenModeration? Comparativo com fontes: redes cobertas, comentários do seu site, preços públicos, hospedagem na UE e motivo de cada decisão." },
+  { slug: "azure-content-safety", title: "Azure Content Safety", tagline: "Uma API ou uma moderação pronta", description: "O Azure Content Safety é uma API da Microsoft que devolve pontuações. O OpenModeration aplica as decisões, deixa os casos duvidosos com a nossa equipe e hospeda na UE." },
+  { slug: "besedo", title: "Besedo", tagline: "Moderação humana terceirizada", description: "Besedo ou OpenModeration? Comparativo com fontes: moderação humana terceirizada ou software com IA, conectores sociais, preços públicos e DSA." },
+  { slug: "bodyguard", title: "Bodyguard", tagline: "Preços públicos, comece grátis", description: "A Bodyguard é uma empresa francesa de moderação com IA cujo plano de entrada começa em 1.000 €/mês. O OpenModeration publica os seus preços e explica cada decisão por escrito." },
+  { slug: "checkstep", title: "Checkstep", tagline: "Plataforma de trust & safety", description: "Checkstep ou OpenModeration? Uma plataforma de trust & safety ou uma moderação de comentários com preços públicos, motivo escrito e hospedagem na UE." },
+  { slug: "cinder", title: "Cinder", tagline: "Ferramenta para equipes de trust & safety", description: "Cinder ou OpenModeration? Comparativo com fontes da filtragem automática de comentários: oferta, conectores, modelos de IA, DSA, preço e hospedagem na UE." },
+  { slug: "comments-news", title: "Comments News", tagline: "Sistema de comentários com IA", description: "Plataforma de comentários para veículos da Argentina e da Bolívia, a partir de 49 USD/mês. O OpenModeration modera os seus comentários atuais e as suas redes sem trocar de sistema." },
+  { slug: "community-sift", title: "Community Sift", tagline: "Situação e alternativa", description: "Procurando uma alternativa ao Community Sift? Situação, oferta, preços e modelos de IA comparados ao OpenModeration, a moderação de comentários hospedada na UE." },
+  { slug: "conversario", title: "Conversario", tagline: "Gestão do diálogo", description: "Conversario ou OpenModeration? Comparativo com fontes para veículos de mídia: canais, preços públicos, hospedagem na UE e explicação por escrito de cada decisão." },
+  { slug: "coral", title: "Coral", tagline: "Sistema de comentários para mídia", description: "Coral ou OpenModeration? Um sistema de comentários ou uma camada de moderação com IA para o seu site e as suas redes sociais." },
+  { slug: "digitaller", title: "Digitaller", tagline: "Serviço gerenciado para jornais", description: "Agência do Grupo Raíz Digital: filtro de IA e equipe humana para jornais regionais espanhóis. Sem tarifas publicadas nem explicação de cada decisão." },
+  { slug: "fanpage-karma", title: "Fanpage Karma", tagline: "Filtro de ódio de uma suíte social", description: "Fanpage Karma ou OpenModeration? O filtro de ódio de uma suíte social ou uma moderação dedicada ao seu site e às suas redes, com preços." },
+  { slug: "ferret-go", title: "Ferret Go", tagline: "A editora do Conversario", description: "Procurando uma alternativa ao Ferret Go? Comparativo com fontes com o OpenModeration: preços públicos, motivo de cada decisão, hospedagem na UE e muito mais." },
+  { slug: "ferret-go-vs-conversario", title: "Ferret Go e Conversario", tagline: "A mesma empresa", description: "Ferret Go ou Conversario? Os dois pertencem à ferret go GmbH. O que cada oferta cobre e como o OpenModeration se compara como alternativa aos dois." },
+  { slug: "hive-moderation", title: "Hive Moderation", tagline: "Visual primeiro, comentários depois", description: "O Hive se destaca na moderação de imagens e vídeos com pontuações para a sua equipe técnica. O OpenModeration entrega a moderação de comentários pronta, com revisão humana e DSA." },
+  { slug: "interactora", title: "Interactora", tagline: "Moderação humana terceirizada", description: "Empresa espanhola que modera comentários de leitores com uma equipe humana e filtros automáticos. Não publica tarifas nem menciona redes sociais ou registro para o DSA." },
+  { slug: "lasso-moderation", title: "Lasso Moderation", tagline: "Comunidades, chat e games", description: "Lasso Moderation ou OpenModeration? Comparativo com fontes: integrações, Facebook e Instagram, preços públicos, DSA e hospedagem na UE das duas ferramentas." },
+  { slug: "mistral-moderation", title: "Mistral Moderation", tagline: "Uma API de pontuações", description: "A API da Mistral classifica o texto em 11 categorias fixas. O OpenModeration aplica as suas regras, deixa os casos duvidosos com a nossa equipe e explica cada decisão." },
+  { slug: "moderation-api", title: "Moderation API", tagline: "API para desenvolvedores", description: "Moderation API (moderationapi.com) ou OpenModeration? Comparativo com fontes: implementação, integrações, revisão humana, DSA, UE, IA e preços." },
+  { slug: "napoleoncat", title: "NapoleonCat", tagline: "Suíte social com automoderação", description: "Uma suíte de gestão de redes sociais. A ocultação automática começa no plano Expert, a 139 €/mês. Não indica explicação escrita, registro DSA nem comentários no site." },
+  { slug: "netino", title: "Netino", tagline: "Moderação terceirizada", description: "Serviço da Concentrix que modera em nome de marcas e veículos com IA e equipes humanas. Sem tarifas publicadas. Com o OpenModeration, você vê cada decisão em tempo real." },
+  { slug: "openai-moderation", title: "OpenAI Moderation", tagline: "Uma API ou uma moderação pronta", description: "O endpoint de moderação da OpenAI devolve pontuações. O OpenModeration traz regras automáticas, revisão humana, motivo escrito para cada decisão e registro DSA." },
+  { slug: "openweb", title: "OpenWeb", tagline: "Plataforma de comunidade", description: "OpenWeb ou OpenModeration? Comparativo com fontes para veículos de mídia: plataforma de comunidade com publicidade ou moderação por assinatura com preços públicos." },
+  { slug: "perspective-api", title: "Perspective API", tagline: "Migração antes do fim de 2026", description: "A Perspective API do Google será encerrada no fim de 2026. Migre o seu fórum ou a sua comunidade para uma moderação hospedada na UE antes que ela seja desligada." },
+  { slug: "respondology", title: "Respondology", tagline: "Moderação de redes sociais", description: "Respondology ou OpenModeration? Comparativo com fontes: redes cobertas, preço a partir de 999 US$ ou plano gratuito, comentários do site e hospedagem na UE." },
+  { slug: "sightengine", title: "Sightengine", tagline: "Imagens ou comentários", description: "Sightengine ou OpenModeration? Comparativo com fontes: imagens ou comentários, idiomas, revisão humana, DSA, hospedagem na UE, IA e preços públicos." },
+  { slug: "smart-moderation", title: "Smart Moderation", tagline: "Moderação de redes sociais", description: "Procurando uma alternativa ao Smart Moderation? Compare plataformas, preços, modelos de IA, ferramentas para o DSA e hospedagem na UE com o OpenModeration." },
+  { slug: "swat-io", title: "Swat.io", tagline: "Suíte de redes sociais", description: "Swat.io ou OpenModeration? Comparativo com fontes: suíte de redes sociais ou moderação dedicada ao seu site e às suas redes, com preços públicos e DSA." },
+  { slug: "tremau", title: "Tremau", tagline: "Plataforma de trust & safety", description: "Tremau (Nima) ou OpenModeration? Comparativo com fontes para mídia, marcas e setor público: oferta, conectores, modelos de IA, DSA, preço e hospedagem." },
+  { slug: "trollwall", title: "TrollWall AI", tagline: "Moderação de redes sociais", description: "TrollWall AI ou OpenModeration? Comparativo com fontes: redes cobertas, comentários do seu site, preços públicos, hospedagem na UE e registro DSA." },
+  { slug: "utopia", title: "Utopia AI Moderator", tagline: "Modelo treinado no histórico", description: "Utopia AI Moderator ou OpenModeration? Comparativo com fontes: modelo sob medida ou IA verificada, conectores sociais, preços públicos e DSA na UE." },
+  { slug: "viafoura", title: "Viafoura", tagline: "Suíte de comentários para mídia", description: "Uma suíte completa de comentários e engajamento para veículos, com moderação por IA e humana. Sem preços públicos. O OpenModeration modera o sistema de comentários que você já tem." },
+  { slug: "webpurify", title: "WebPurify", tagline: "Filtro de palavrões ou moderação", description: "WebPurify ou OpenModeration? Comparativo com fontes: filtro de palavrões ou moderação com IA, revisão humana, DSA, hospedagem na UE, IA e preços públicos." },
+];
+
+const tableRows = [
+  { feature: "Modelos de IA", them: "Um único modelo, o do fornecedor", openmod: "IA de moderação própria, verificada por outros modelos de IA; novos modelos integrados assim que são lançados" },
+  { feature: "Ações automáticas", them: "Só pontuações: a lógica fica por sua conta", openmod: "Violações claras ocultadas, crítica legítima visível, casos duvidosos tratados pela nossa equipe" },
+  { feature: "Revisão humana", them: "Você precisa criar a sua própria fila", openmod: "Feita pela nossa equipe; você vê tudo no console" },
+  { feature: "Explicação e registro para o DSA", them: "Limitado ou inexistente", openmod: "Um motivo por escrito e um registro para cada decisão, números exportáveis" },
+  { feature: "Implantação", them: "Nuvem do fornecedor", openmod: "Hospedado na UE, RGPD; on-premise sob consulta" },
+];
+---
+
+<BaseLayout title="Alternativas de moderação de conteúdo: comparativos" description="Compare o OpenModeration com 35 ferramentas de moderação: APIs de IA, suítes de redes sociais, sistemas de comentários e serviços terceirizados. Com fontes." jsonLd={alternativesJsonLd}>
+  <Breadcrumb items={[{ label: "Início", href: L('/') }, { label: "Alternativas" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">Comparativos de alternativas</div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Compare o OpenModeration com as alternativas</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        A maioria das ferramentas de moderação oferece uma API ou um serviço. O OpenModeration modera os seus comentários com a sua própria IA, verificada por outros modelos de IA, conforme as suas regras e os seus casos de uso, com revisão humana, um motivo por escrito para cada decisão e um registro pronto para o DSA.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {comparisons.map((comparison) => (
+          <a href={L(`/alternatives/${comparison.slug}`)} class="group rounded-xl border border-surface-200 bg-surface-50 p-8 transition hover:border-brand-300 hover:shadow-md">
+            <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-100 text-brand-600">
+              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={arrow}/></svg>
+            </div>
+            <h2 class="text-xl font-semibold text-surface-900 group-hover:text-brand-600">{comparison.title}</h2>
+            <p class="mt-1 text-xs font-medium uppercase tracking-wide text-surface-400">{comparison.tagline}</p>
+            <p class="mt-3 text-sm text-surface-500">{comparison.description}</p>
+            <span class="mt-4 inline-flex items-center gap-1 text-sm font-medium text-brand-600 group-hover:text-brand-700">
+              Ler o comparativo
+              <svg class="h-3.5 w-3.5 transition group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-4xl">
+        <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">Por que as equipes migram para o OpenModeration</h2>
+        <p class="mt-3 text-lg text-surface-500">O padrão se repete em todos os comparativos: com uma API de pontuações, é a sua equipe que precisa construir a camada operacional. E com um único modelo, a sua moderação fica parada enquanto o mercado de IA avança.</p>
+        <div class="mt-8 overflow-hidden rounded-xl border border-surface-200">
+          <table class="w-full text-left text-sm">
+            <thead>
+              <tr class="bg-white">
+                <th class="px-6 py-4 font-semibold text-surface-900">Critério</th>
+                <th class="px-6 py-4 font-semibold text-surface-500">API de moderação típica</th>
+                <th class="px-6 py-4 font-semibold text-brand-700">OpenModeration</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-surface-200 bg-white">
+              {tableRows.map((row) => (
+                <tr>
+                  <td class="px-6 py-4 font-medium text-surface-900">{row.feature}</td>
+                  <td class="px-6 py-4 text-surface-600">{row.them}</td>
+                  <td class="px-6 py-4 font-medium text-accent-600">{row.openmod}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p class="mt-6 text-surface-600">Quando sai um modelo de IA melhor ou mais barato, a nossa equipe o integra rapidamente, sem nada a mudar do seu lado: a sua moderação aproveita o progresso dos modelos de IA. <a href={L('/book-a-call')} class="font-medium text-brand-600 hover:text-brand-500">Agende uma reunião com a nossa equipe &rarr;</a></p>
+      </div>
+    </div>
+  </section>
+
+  <CTASection
+    title="Não construa as suas próprias ferramentas de moderação."
+    subtitle="O OpenModeration já traz as regras automáticas, a revisão humana pela nossa equipe e um console onde você vê tudo. Grátis até 1.000 requisições por mês."
+    buttonText="Teste grátis"
+    buttonHref="https://app.openmoderation.com/signup"
+  />
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold text-surface-900">Continue explorando</h2>
+      <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+        <a href={L('/moderation-software')} class="rounded-full border border-surface-200 bg-surface-50 px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Software de moderação</a>
+        <a href={L('/features')} class="rounded-full border border-surface-200 bg-surface-50 px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Funcionalidades</a>
+        <a href={L('/how-it-works')} class="rounded-full border border-surface-200 bg-surface-50 px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Como funciona</a>
+        <a href={L('/pricing')} class="rounded-full border border-surface-200 bg-surface-50 px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Preços</a>
+        <a href={L('/blog/comment-moderation-guide')} class="rounded-full border border-surface-200 bg-surface-50 px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Guia de moderação de comentários</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

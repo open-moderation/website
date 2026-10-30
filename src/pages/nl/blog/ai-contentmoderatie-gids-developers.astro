@@ -1,0 +1,132 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
+import CodeBlock from '../../../components/CodeBlock.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Contentmoderatie voor AI-toepassingen: een gids voor developers",
+  "description": "Zo filter je de input en de output van toepassingen die op een LLM draaien.",
+  "inLanguage": "nl",
+  "datePublished": "2026-06-05",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/nl/blog/ai-contentmoderatie-gids-developers" },
+  "dateModified": "2026-06-05"
+};
+
+const pattern1 = `Gebruikersinput -> Inputmoderatie -> { indien gemarkeerd -> weigeren } -> LLM
+LLM-output -> Outputmoderatie -> { indien gemarkeerd -> fallback-antwoord } -> Gebruiker`;
+
+const pattern2 = `Gebruikersinput -> Inputmoderatie + LLM (parallel)
+-> Wacht op het moderatieresultaat
+-> Indien gemarkeerd -> LLM-antwoord weggooien en foutmelding tonen
+-> Indien niet gemarkeerd -> LLM-antwoord tonen na outputmoderatie`;
+---
+
+<BaseLayout title="Contentmoderatie voor AI-apps: gids voor developers" description="Zo filter je de input en output van toepassingen die op een LLM draaien. Best practices tegen prompt injection en voor veilige content in je AI-product." jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: "Blog", href: localizePath('/blog', locale) }, { label: "Contentmoderatie voor AI-toepassingen" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-06-05">5 juni 2026</time>
+        <span>&middot;</span>
+        <span>10 min lezen</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Contentmoderatie voor AI-toepassingen: een gids voor developers</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Elke toepassing die op een LLM draait, heeft contentmoderatie nodig. Compliance is één reden.
+        Veiligheid, het vertrouwen van je gebruikers en de bescherming van je model tegen kwaadwillige input zijn de andere.
+      </p>
+      <p>
+        In deze gids behandelen we de twee kanten van AI-contentmoderatie: filteren wat gebruikers
+        naar je LLM sturen, en filteren wat je LLM terugstuurt naar gebruikers.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">De twee filters die elke AI-app nodig heeft</h2>
+
+      <h3 class="text-lg font-semibold text-surface-900">1. Inputfiltering</h3>
+      <p>
+        Voordat gebruikersinput je LLM bereikt, controleer je op:
+      </p>
+      <ul>
+        <li><strong>Schadelijke content:</strong> haatzaaiende taal, intimidatie, bedreigingen, seksuele content</li>
+        <li><strong>Prompt injection:</strong> pogingen om de systeemprompt te omzeilen of het model te jailbreaken</li>
+        <li><strong>Illegale verzoeken:</strong> instructies voor illegale activiteiten, het maken van drugs, enzovoort</li>
+        <li><strong>Lekken van persoonsgegevens:</strong> gebruikers die per ongeluk persoonlijke informatie delen</li>
+      </ul>
+
+      <h3 class="text-lg font-semibold text-surface-900">2. Outputfiltering</h3>
+      <p>
+        Voordat de output van het model je gebruikers bereikt, controleer je op:
+      </p>
+      <ul>
+        <li><strong>Schadelijke gegenereerde content:</strong> het model dat haatzaaiende taal, geweld enzovoort produceert</li>
+        <li><strong>Gegenereerde persoonsgegevens:</strong> het model dat per ongeluk echte of verzonnen persoonsgegevens genereert</li>
+        <li><strong>Gehallucineerde gevaarlijke informatie:</strong> medisch, juridisch of financieel advies</li>
+        <li><strong>Overtredingen van je beleid:</strong> content die indruist tegen de gebruiksvoorwaarden van je toepassing</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Implementatiepatronen</h2>
+
+<p><strong>Patroon 1: sequentieel filteren (aanbevolen voor de meeste apps)</strong></p>
+<CodeBlock code={pattern1} lang="text" />
+
+<p><strong>Patroon 2: parallel filteren (bij strenge eisen aan de latency)</strong></p>
+<CodeBlock code={pattern2} lang="text" />
+
+      <h2 class="text-xl font-bold text-surface-900">Defense in depth met meerdere providers</h2>
+      <p>
+        Wie op één moderatieprovider vertrouwt, heeft één single point of failure en blinde vlekken.
+        Meerdere providers combineren is robuuster:
+      </p>
+      <ul>
+        <li>Gebruik <strong>OpenAI Moderation</strong> voor de algemene detectie van schadelijke content</li>
+        <li>Gebruik <strong>Llama Guard</strong> (zelf gehost) om gevoelige input zonder kosten en zonder datalek te filteren</li>
+        <li>Gebruik een <strong>LLM als classifier</strong> met GPT-4o of Claude om je eigen beleid te handhaven, met een goed begrip van de context</li>
+      </ul>
+      <p>
+        Met OpenModeration krijg je een gelaagde aanpak in één enkele API-call: onze eigen moderatie-AI
+        analyseert de content, en andere AI-modellen controleren de lastige gevallen vóór de eindbeslissing.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Best practices</h2>
+      <ol>
+        <li><strong>Modereer altijd zowel input als output.</strong> Elk van beide vangt een ander soort risico op.</li>
+        <li><strong>Gebruik context voor meer nauwkeurigheid.</strong> Geef de gespreksgeschiedenis en informatie over de auteur mee, zodat de moderatiebeslissing beter onderbouwd is.</li>
+        <li><strong>Kies passende drempels.</strong> Lage drempels voor categorieën met een hoog risico (minderjarigen, zelfbeschadiging), hogere voor categorieën met een laag risico (spam).</li>
+        <li><strong>Log alles voor audits.</strong> Je moet kunnen aantonen dat je moderatie werkt, zeker in gereguleerde sectoren.</li>
+        <li><strong>Test met kwaadwillige input.</strong> Haal bekende jailbreakprompts regelmatig door je moderatiepijplijn.</li>
+      </ol>
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Lees verder</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/use-cases/ai-applications', locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderatie voor AI-toepassingen &rarr;</a></li>
+        <li><a href={localizePath('/how-it-works', locale)} class="font-medium text-brand-600 hover:text-brand-500">Zo werkt de moderatiepijplijn &rarr;</a></li>
+        <li><a href={localizePath('/features', locale)} class="font-medium text-brand-600 hover:text-brand-500">Eén integratie, alle functies &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

@@ -1,0 +1,238 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const title = "Alternatywa dla Swat.io: porównanie z OpenModeration";
+const description = "Swat.io czy OpenModeration? Porównanie ze źródłami: pakiet do social media albo dedykowana moderacja strony i mediów społecznościowych, z jawnymi cenami.";
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/pl/alternatywy/swat-io",
+  "name": title,
+  "description": description,
+  "inLanguage": "pl",
+  "about": {
+    "@id": "https://www.openmoderation.com/#software"
+  }
+};
+
+const rows = [
+  {
+    "feature": "Rodzaj produktu",
+    "them": "Pakiet do zarządzania mediami społecznościowymi: publikacja, skrzynka odbiorcza i raporty, z moderacją AI w Inboksie",
+    "openmod": "Narzędzie przeznaczone wyłącznie do moderacji komentarzy"
+  },
+  {
+    "feature": "Kanały",
+    "them": "Inbox: Instagram, Facebook, LinkedIn, YouTube, TikTok, Google Business Profile, WhatsApp, Messenger, Bluesky, Threads",
+    "openmod": "Strony internetowe (API), WordPress, strony na Facebooku, konta profesjonalne na Instagramie i kanały YouTube"
+  },
+  {
+    "feature": "Komentarze na Twojej stronie",
+    "them": "Nie figurują wśród kanałów Inboksu",
+    "openmod": "Tak, przez WordPressa lub API"
+  },
+  {
+    "feature": "Moderacja AI",
+    "them": "Ukrywanie z pomocą AI w pakietach Medium i Large Inboksu; Community Agent w wersji beta dla Large i Custom",
+    "openmod": "Rdzeń produktu, we wszystkich planach, także darmowym"
+  },
+  {
+    "feature": "Cena",
+    "them": "Kwoty planów nie są podane w tekście strony. Dodatki: 20 € za użytkownika, 25 € za konto społecznościowe, 30 € za przestrzeń roboczą miesięcznie. Okres próbny 21 dni",
+    "openmod": "Jawna: za darmo do 1000 zapytań miesięcznie, Pro za 99 € miesięcznie (10 000 zapytań), Enterprise – wycena indywidualna"
+  },
+  {
+    "feature": "Hosting danych",
+    "them": "Serwery w Niemczech",
+    "openmod": "Hosting w UE, zgodność z RODO"
+  },
+  {
+    "feature": "Pisemne uzasadnienie każdej decyzji",
+    "them": "Nie podano na stronie",
+    "openmod": "Tak, pisemne uzasadnienie każdej decyzji"
+  },
+  {
+    "feature": "DSA",
+    "them": "Nie podano na stronie",
+    "openmod": "Zgłoszenia i działania, uzasadnienie decyzji, weryfikacja zakwestionowanych decyzji przez człowieka, eksportowalne dane i pełny dziennik aktywności"
+  },
+  {
+    "feature": "Modele AI",
+    "them": "Nie podano; funkcja „AI Connect” pozwala podłączyć wybrany LLM",
+    "openmod": "Własna AI do moderacji, weryfikowana przez inne modele AI; nowe modele podłączane na bieżąco, gdy się pojawiają"
+  }
+];
+
+const faqItems = [
+  {
+    "question": "Jaka jest najlepsza alternatywa dla Swat.io?",
+    "answer": "Najlepszą alternatywą dla Swat.io w moderacji komentarzy jest narzędzie dedykowane: OpenModeration moderuje media społecznościowe i Twoją stronę według tych samych zasad, przekazuje wątpliwe przypadki do weryfikacji naszemu zespołowi i pisemnie uzasadnia każdą decyzję. Jeśli potrzebujesz też publikacji, wspólnej skrzynki odbiorczej i analityki w jednym narzędziu, Swat.io to zapewnia, a OpenModeration nie."
+  },
+  {
+    "question": "Ile kosztuje Swat.io?",
+    "answer": "Cennik Swat.io przedstawia plany Small, Medium i Large, bezpłatny okres próbny 21 dni oraz dodatki w planie Large (20 € za użytkownika, 25 € za konto społecznościowe i 30 € za przestrzeń roboczą miesięcznie); kwot samych planów nie ma w tekście strony. OpenModeration jest bezpłatne do 1000 zapytań miesięcznie, a plan Pro kosztuje 99 € miesięcznie za 10 000 zapytań; Enterprise – wycena indywidualna."
+  },
+  {
+    "question": "Swat.io czy OpenModeration: co wybrać?",
+    "answer": "Wybierz Swat.io, jeśli chcesz mieć publikację, wspólną skrzynkę odbiorczą i analitykę w jednym narzędziu. Wybierz OpenModeration, jeśli problemem do rozwiązania jest moderacja, a resztę zapewnia już Twój pakiet do social media, jeśli zależy Ci na jawnych cenach i pisemnym uzasadnieniu każdej decyzji oraz na zespole, który konfiguruje moderację razem z Tobą według Twoich zasad i przypadków użycia."
+  },
+  {
+    "question": "Czy można przetestować OpenModeration, nie rezygnując ze Swat.io?",
+    "answer": "Tak. W trybie sandbox OpenModeration analizuje Twoje prawdziwe komentarze, niczego nie ukrywając. Swat.io działa dalej, a obie serie decyzji porównujesz komentarz po komentarzu, zanim cokolwiek zmienisz."
+  },
+  {
+    "question": "Jakich modeli AI używa OpenModeration?",
+    "answer": "OpenModeration działa na własnej AI do moderacji, a w trudnych przypadkach jej decyzję weryfikują inne modele AI. Gdy pojawia się lepszy lub tańszy model, zespół szybko go podłącza, bez żadnych zmian po Twojej stronie: Twoja moderacja korzysta z postępu modeli AI."
+  },
+  {
+    "question": "Czy mogę publikować w Swat.io, a moderować w OpenModeration?",
+    "answer": "Tak. OpenModeration zajmuje się wyłącznie moderacją, więc działa obok narzędzia, którego Twój zespół już używa do publikacji i raportów."
+  }
+];
+---
+
+<BaseLayout title={title} description={description} jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Strona główna", href: localizePath('/', locale) }, { label: "Alternatywy", href: localizePath('/alternatives', locale) }, { label: "Swat.io" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Porównanie
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Alternatywa dla Swat.io: porównanie z OpenModeration</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Najlepszą alternatywą dla Swat.io w moderacji komentarzy jest narzędzie dedykowane: OpenModeration moderuje media społecznościowe i Twoją stronę według tych samych zasad, przekazuje wątpliwe przypadki do weryfikacji naszemu zespołowi i pisemnie uzasadnia każdą decyzję. Jeśli potrzebujesz też publikacji, wspólnej skrzynki odbiorczej i analityki w jednym narzędziu, Swat.io to zapewnia, a OpenModeration nie.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold tracking-tight text-surface-900">Dla kogo jest Swat.io?</h2>
+      <p class="mt-4 text-surface-600">Swat.io to austriacki pakiet do zarządzania mediami społecznościowymi: zespół publikuje treści, odpowiada na wiadomości i przegląda raporty. Według cennika AI może ukrywać niestosowne komentarze w skrzynce odbiorczej (Inbox) w pakietach Medium i Large, a Community Agent, w zamkniętej wersji beta dla Large i Custom, zamienia zasady zapisane zwykłym językiem na działania.</p>
+      <p class="mt-4 text-surface-600">OpenModeration moderuje z pomocą AI komentarze mediów, marek i instytucji publicznych: na ich stronach, stronach na Facebooku, kontach na Instagramie i kanałach YouTube. Automatycznie ukrywa oczywiste naruszenia, zostawia widoczną uzasadnioną krytykę, a wątpliwe przypadki przekazuje naszemu zespołowi w jednej konsoli. Zespół Logora, działający w Paryżu od 2019 roku, konfiguruje ją razem z Tobą według Twoich zasad i przypadków użycia.</p>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Swat.io i OpenModeration punkt po punkcie</h2>
+      <p class="mt-4 text-surface-500">Informacje o Swat.io pochodzą z jego strony swat.io (dostęp: 30 października 2026).</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Kryterium</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Swat.io</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.them}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Wybierz OpenModeration, jeśli…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>problemem do rozwiązania jest moderacja, a resztę zapewnia już Twój pakiet do social media;</li>
+          <li>Twoi czytelnicy komentują też na Twojej stronie;</li>
+          <li>potrzebujesz pisemnego uzasadnienia każdego ukrytego komentarza i dziennika na potrzeby DSA;</li>
+          <li>chcesz, aby wątpliwe przypadki rozstrzygał nasz zespół, a Ty widział(a) wszystko w jednej konsoli.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">Swat.io może lepiej pasować, jeśli…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>chcesz mieć publikację, wspólną skrzynkę odbiorczą i analitykę w jednym narzędziu;</li>
+          <li>działasz na LinkedInie, TikToku, WhatsAppie, Threads, Bluesky lub w Google Business Profile;</li>
+          <li>masz umiarkowaną liczbę komentarzy i wystarcza Ci moderacja w Inboksie.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h2 class="text-xl font-bold text-surface-900">AI, która nadąża za postępem modeli</h2>
+          <p class="mt-3 text-sm text-surface-600">OpenModeration działa na własnej AI do moderacji, a w trudnych przypadkach jej decyzję weryfikują inne modele AI. Gdy pojawia się lepszy lub tańszy model, zespół szybko go podłącza, bez żadnych zmian po Twojej stronie. Moderacja podąża za postępem rynku AI, zamiast tkwić przy jednym algorytmie. Swat.io nie podaje na swojej stronie, jakich modeli AI używa; jego funkcja „AI Connect” pozwala podłączyć wybrany LLM.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h2 class="text-xl font-bold text-surface-900">Cennik: Swat.io a OpenModeration</h2>
+          <p class="mt-3 text-sm text-surface-600">Cennik Swat.io przedstawia plany Small, Medium i Large, bezpłatny okres próbny 21 dni oraz dodatki w planie Large (20 € za użytkownika, 25 € za konto społecznościowe i 30 € za przestrzeń roboczą miesięcznie); kwot samych planów nie ma w tekście strony. OpenModeration jest bezpłatne do 1000 zapytań miesięcznie, a plan Pro kosztuje 99 € miesięcznie za 10 000 zapytań; Enterprise – wycena indywidualna. Wdrożenie on-premise jest możliwe na życzenie. <a href={localizePath('/book-a-call', locale)} class="font-medium text-brand-600 hover:text-brand-500">Umów rozmowę</a>, aby policzyć koszt w Twoim przypadku.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Przejście ze Swat.io na OpenModeration w 3 krokach</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">1. Test w trybie sandbox</h3>
+          <p class="mt-2 text-sm text-surface-600">Podłącz stronę, WordPressa lub strony na Facebooku, Instagramie i YouTube. OpenModeration analizuje prawdziwe komentarze, niczego nie ukrywając, a Swat.io działa dalej.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">2. Dopracowanie z zespołem Logora</h3>
+          <p class="mt-2 text-sm text-surface-600">Porównujemy decyzje z decyzjami obecnego narzędzia i dopasowujemy moderację do Twoich zasad i przypadków użycia, z pisemnym uzasadnieniem każdej decyzji na widoku.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">3. Włączanie kanał po kanale</h3>
+          <p class="mt-2 text-sm text-surface-600">Włącz moderację w jednym kanale, potem w kolejnych. Wątpliwymi przypadkami zajmuje się nasz zespół, a każda decyzja zostaje w dzienniku aktywności.</p>
+        </div>
+      </div>
+      <p class="mt-8 text-center text-surface-600">Chcesz zobaczyć to na własnych komentarzach? <a href={localizePath('/book-a-call', locale)} class="font-medium text-brand-600 hover:text-brand-500">Umów rozmowę z zespołem</a>.</p>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Najczęściej zadawane pytania" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        Swat.io jest znakiem towarowym swojego właściciela. Źródła: <a href="https://swat.io/de/preise/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">swat.io/de/preise/</a>, <a href="https://help.swat.io/en/articles/16311151-community-agent" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">help.swat.io/en/articles/16311151-community-agent</a> (dostęp: 30 października 2026). Widzisz błąd? Napisz do nas: <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Dowiedz się więcej</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/social-media-moderation', locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderacja mediów społecznościowych z OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/integrations/youtube', locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderacja komentarzy na YouTube &rarr;</a></li>
+        <li><a href={localizePath('/blog/social-media-moderation-guide', locale)} class="font-medium text-brand-600 hover:text-brand-500">Poradnik moderacji mediów społecznościowych &rarr;</a></li>
+        <li><a href={localizePath('/moderation-software', locale)} class="font-medium text-brand-600 hover:text-brand-500">Oprogramowanie do moderacji OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/pricing', locale)} class="font-medium text-brand-600 hover:text-brand-500">Cennik OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/alternatives', locale)} class="font-medium text-brand-600 hover:text-brand-500">Wszystkie porównania &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Porównaj obecną moderację z OpenModeration." subtitle="Przetestuj OpenModeration w trybie sandbox na własnych komentarzach, niczego nie ukrywając. Za darmo do 1000 zapytań miesięcznie." buttonText="Umów rozmowę" buttonHref={localizePath('/book-a-call', locale)} />
+</BaseLayout>

@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import CTASection from '../../components/CTASection.astro';
+import RelatedComparisons from '../../components/RelatedComparisons.astro';
 import CodeBlock from '../../components/CodeBlock.astro';
 import FAQ from '../../components/FAQ.astro';
 
@@ -10,7 +11,7 @@ const openai = new OpenAI({ apiKey: 'sk-...' });
 const mod = await openai.moderations.create({ input: text });
 // Result: OpenAI-specific format, 13 categories, no thresholds
 
-# OpenModeration (unified)
+# OpenModeration
 const result = await fetch('https://api.openmoderation.com/v1/moderation', {
   method: 'POST',
   headers: { 'Authorization': 'Bearer om_key_...' },
@@ -20,45 +21,45 @@ const result = await fetch('https://api.openmoderation.com/v1/moderation', {
     threshold: 0.5
   })
 });
-// Plus: pre-filter, double threshold, auto-actions, audit trail, team dashboard`;
+// Plus: pre-filter, double threshold, auto-actions, audit trail, real-time dashboard`;
 
 const comparisonJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
   "name": "OpenAI Moderation API Pricing & Alternatives",
-  "description": "OpenModeration is an OpenAI Moderation API alternative that gives you several providers through a single API, with automated rules, human review and DSA audit trails for enterprise compliance.",
+  "description": "OpenModeration is an OpenAI Moderation API alternative that runs its own moderation AI, cross-checked by other AI models, with automated rules, human review by our team and DSA audit trails for enterprise compliance.",
 };
 
 const comparisonPoints = [
-  { feature: "Providers", openai: "OpenAI only (single provider)", openmod: "10 providers: OpenAI, Azure, Mistral, HuggingFace, LLMs (GPT-4o, Claude), Cohere, and more" },
-  { feature: "API format", openai: "Proprietary OpenAI format", openmod: "Standardized format across all providers. Switch providers with zero code changes." },
-  { feature: "Pre-filtering", openai: "Not available. Every request hits the API", openmod: "Built-in word filter blocks obvious content before any API call, saving costs" },
-  { feature: "Decision logic", openai: "Binary flagged/not flagged per category", openmod: "Dual threshold: auto-approve, send the grey zone to human review, or auto-reject" },
-  { feature: "Moderation Console", openai: "API only. No dashboard, no review UI.", openmod: "Full dashboard: moderation queue, team roles, analytics, provider health" },
+  { feature: "AI engine", openai: "One OpenAI model", openmod: "Our own moderation AI, cross-checked by other AI models on delicate cases" },
+  { feature: "API format", openai: "Proprietary OpenAI format", openmod: "Standardized format. When we plug in a better AI model, nothing changes in your code." },
+  { feature: "Pre-filtering", openai: "Not available. Every request hits the API", openmod: "Built-in word filter blocks obvious content before any AI call" },
+  { feature: "Decision logic", openai: "Binary flagged/not flagged per category", openmod: "Dual threshold: auto-approve, grey zone reviewed by our team, or auto-reject" },
+  { feature: "Moderation Console", openai: "API only. No dashboard, no review UI.", openmod: "Full dashboard: every decision in real time, team roles, analytics" },
   { feature: "Automated rules", openai: "Must build your own integration", openmod: "Included. Define rules once and the Action Engine enforces them automatically" },
-  { feature: "Human review", openai: "Must build your own review UI", openmod: "Built-in review queue with context, assignment, approve/reject" },
+  { feature: "Human review", openai: "Must build your own review UI", openmod: "Doubtful cases handled by our team; you can step in or override at any moment" },
   { feature: "Audit trail", openai: "Limited to API logs", openmod: "Full audit trail: every AI and human decision logged, exportable for DSA" },
-  { feature: "Vendor lock-in", openai: "Full lock-in to OpenAI ecosystem", openmod: "None. BYOK, self-hostable, AGPL v3 open source" },
-  { feature: "Data sovereignty", openai: "Data processed on OpenAI servers", openmod: "Self-host on your infrastructure. EU cloud option available." },
-  { feature: "Pricing", openai: "Free endpoint (scores only)", openmod: "Free self-hosted. Managed cloud from €99/mo (10K req included)." },
-  { feature: "Max input length", openai: "32,000 characters", openmod: "Up to 32,000 chars (provider-dependent) + batch processing for larger volumes" },
+  { feature: "Vendor lock-in", openai: "Full lock-in to OpenAI ecosystem", openmod: "None. Model-agnostic engine, and you can export your data at any time" },
+  { feature: "Data sovereignty", openai: "Data processed on OpenAI servers", openmod: "Hosted in the EU. On-premise deployment possible on request." },
+  { feature: "Pricing", openai: "Free endpoint (scores only)", openmod: "Free up to 1,000 requests/mo. Managed cloud from €99/mo (10K req included)." },
+  { feature: "Max input length", openai: "32,000 characters", openmod: "Long texts supported + batch processing for larger volumes" },
 ];
 
 const reasons = [
   {
-    title: "You're locked into one provider's accuracy",
+    title: "You're locked into one model's accuracy",
     icon: "lock",
-    description: "OpenAI Moderation works very well on English, less so on other languages or niche categories, and it gives you no backup. With OpenModeration, you pick the provider for each request: OpenAI for English toxicity, Mistral for multilingual spam, LLMs for custom categories."
+    description: "OpenAI Moderation works very well on English, less so on other languages or niche categories, and it gives you no second opinion. OpenModeration runs its own moderation AI and has delicate cases cross-checked by other AI models. When a better model comes out, we plug it in."
   },
   {
     title: "An API call is not a moderation workflow",
     icon: "api",
-    description: "A toxicity score from OpenAI is only the start. You still have to decide which score triggers which action, build a review UI for grey-area cases, log every decision for audits and manage your team's access. OpenModeration ships all of this."
+    description: "A toxicity score from OpenAI is only the start. You still have to decide which score triggers which action, review grey-area cases, log every decision for audits and manage your team's access. OpenModeration handles all of this, and our team reviews the doubtful cases."
   },
   {
     title: "Every comment goes to the API without pre-filtering",
     icon: "cost",
-    description: "The OpenAI endpoint is free, but every comment still makes a round trip to it, even obvious spam or forbidden words. OpenModeration's pre-filter blocks these before they reach any provider, which also cuts costs on the paid providers you add."
+    description: "The OpenAI endpoint is free, but every comment still makes a round trip to it, even obvious spam or forbidden words. OpenModeration's pre-filter blocks these before they reach any AI model."
   },
   {
     title: "DSA compliance requires more than an API",
@@ -69,7 +70,7 @@ const reasons = [
 
 const verticals = [
   { name: "Social Platforms", desc: "Moderate user comments and posts with context-aware AI and community-specific policies." },
-  { name: "AI Applications", desc: "Filter both user inputs and LLM outputs. Use LLM-based moderation for custom, evolving categories." },
+  { name: "AI Applications", desc: "Filter both user inputs and LLM outputs. Define your own categories as they evolve." },
   { name: "Gaming", desc: "Real-time chat moderation across multiple languages with sub-250ms latency and automated actions." },
   { name: "Marketplaces", desc: "Flag spam listings, hate speech in reviews, and PII leaks before they go live." },
 ];
@@ -85,11 +86,11 @@ const faqItems = [
   },
   {
     question: "How much does OpenAI Moderation API cost vs OpenModeration?",
-    answer: "OpenAI's moderation endpoint is free, but it only returns scores: no dashboard, no rules, no human review and no audit trail. OpenModeration is free to self-host and keeps using omni-moderation-latest underneath; the managed cloud starts at €99/month for 10K requests."
+    answer: "OpenAI's moderation endpoint is free, but it only returns scores: no dashboard, no rules, no human review and no audit trail. OpenModeration has a free plan up to 1,000 requests a month; the managed cloud starts at €99/month for 10K requests."
   },
   {
-    question: "Can I keep using OpenAI as a provider?",
-    answer: "Yes. Bring your own OpenAI key (BYOK) and keep omni-moderation-latest. Adding Mistral, Azure or Llama Guard as a fallback is a config change, with no code to rewrite."
+    question: "Which AI does OpenModeration use?",
+    answer: "Its own moderation AI, set up on your rules and your use cases. On delicate cases, other AI models arbitrate the decision before it is applied. The engine is model-agnostic: when a better or cheaper model comes out, we plug it in, with no code to rewrite on your side."
   },
   {
     question: "How long does migration take?",
@@ -97,19 +98,15 @@ const faqItems = [
   },
   {
     question: "What do I gain beyond raw scores?",
-    answer: "You get the rest of the workflow: a pre-filter, dual thresholds (auto-approve, human review, auto-reject), a moderation dashboard, team roles and a DSA-ready audit trail with exportable reports."
-  },
-  {
-    question: "Is it open source?",
-    answer: "Yes, AGPL v3. Self-host with Docker, keep all data on your infrastructure, or use the EU-hosted managed cloud."
+    answer: "You get the rest of the workflow: a pre-filter, dual thresholds (auto-approve, review by our team, auto-reject), a dashboard where you see every decision in real time, team roles and a DSA-ready audit trail with exportable reports."
   },
   {
     question: "Which moderation API is best for enterprise compliance?",
-    answer: "For enterprise compliance, you need more than raw scores: documented decisions, role-based access, audit trails and exportable reports. OpenModeration covers all of it. Every AI and human decision is logged, rules are enforced automatically, and the audit trail exports in one click for DSA transparency reports. Self-hosting or the EU cloud keeps data under your control."
+    answer: "For enterprise compliance, you need more than raw scores: documented decisions, role-based access, audit trails and exportable reports. OpenModeration covers all of it. Every AI and human decision is logged, rules are enforced automatically, and the audit trail exports in one click for DSA transparency reports. EU hosting keeps data under your control, and on-premise deployment is possible on request."
   },
   {
-    question: "Does OpenModeration work with OpenAI's omni-moderation-latest model?",
-    answer: "Yes. Bring your own OpenAI key and route all requests to omni-moderation-latest as your primary model. Responses are standardized across providers, and adding Mistral, Azure or HuggingFace as a fallback is a config change, with no code to rewrite."
+    question: "Do I have to change my code when OpenModeration changes AI models?",
+    answer: "No. Responses keep the same standardized format. When a better or cheaper AI model comes out, our team plugs it in quickly, and nothing changes on your side."
   },
 ];
 ---
@@ -129,12 +126,12 @@ const faqItems = [
         OpenAI Moderation API Alternative
       </div>
       <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">
-        OpenAI Moderation is one provider.<br/>OpenModeration is the platform.
+        OpenAI Moderation is one model.<br/>OpenModeration is the platform.
       </h1>
       <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
-        OpenAI's Moderation API gives you toxicity scores. OpenModeration gives your Trust & Safety team 
-        10 providers through one API, pre-filtering, automated rules, human review and DSA-compliant 
-        audit trails. It is open source, you can host it yourself, and you can leave whenever you want.
+        OpenAI's Moderation API gives you toxicity scores. OpenModeration gives you its own moderation AI, 
+        cross-checked by other models, pre-filtering, automated rules, human review by our team and DSA-compliant 
+        audit trails. It is hosted in the EU, and you can export your data and leave whenever you want.
       </p>
       <div class="mt-8 flex items-center justify-center gap-4">
         <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm">Try OpenModeration free</a>
@@ -158,7 +155,7 @@ const faqItems = [
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="mx-auto mb-12 max-w-2xl text-center">
         <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Why teams switch from OpenAI Moderation</h2>
-        <p class="mt-4 text-lg text-surface-500">OpenAI's API is a good moderation engine. Your team still needs everything that goes around it.</p>
+        <p class="mt-4 text-lg text-surface-500">OpenAI's API is a good moderation engine. A moderation service needs everything that goes around it.</p>
       </div>
       <div class="grid gap-8 md:grid-cols-2">
         {reasons.map((r) => (
@@ -184,7 +181,7 @@ const faqItems = [
         <div>
           <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700">
             <span class="flex h-1.5 w-1.5 animate-pulse-dot rounded-full bg-brand-500" />
-            One integration, many providers
+            One integration, an AI that keeps improving
           </div>
           <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">
             Same text moderation, more control
@@ -197,15 +194,15 @@ const faqItems = [
           <div class="mt-6 space-y-3">
             <div class="flex items-start gap-3">
               <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <p class="text-sm text-surface-600"><strong>Keep using OpenAI</strong> as a provider through OpenModeration with your own API keys (BYOK).</p>
+              <p class="text-sm text-surface-600"><strong>Our own moderation AI</strong>, set up on your rules and your use cases.</p>
             </div>
             <div class="flex items-start gap-3">
               <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <p class="text-sm text-surface-600"><strong>Add a backup</strong> by routing to Mistral, Azure or HuggingFace when OpenAI is slow or down.</p>
+              <p class="text-sm text-surface-600"><strong>A second opinion</strong>: other AI models cross-check delicate cases before a decision is applied.</p>
             </div>
             <div class="flex items-start gap-3">
               <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <p class="text-sm text-surface-600"><strong>Compare providers</strong> on the same analytics across all your moderation traffic.</p>
+              <p class="text-sm text-surface-600"><strong>No frozen model</strong>: better or cheaper models are plugged in as they come out, with nothing to change on your side.</p>
             </div>
           </div>
         </div>
@@ -261,23 +258,23 @@ const faqItems = [
             <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Build your own dashboard for human moderators to review edge cases</li>
             <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Build your own rule engine to translate scores into actions</li>
             <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Build your own audit logging system for DSA compliance</li>
-            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> No fallback if OpenAI is slow or unavailable</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> No second opinion on delicate cases</li>
             <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Vendor lock-in to OpenAI ecosystem</li>
           </ul>
         </div>
         <div class="rounded-xl border border-brand-200 bg-brand-50 p-8 shadow-sm">
           <h3 class="flex items-center gap-2 text-xl font-semibold text-brand-700">
             <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-            OpenModeration (with OpenAI as a provider)
+            OpenModeration
           </h3>
           <ul class="mt-6 space-y-3 text-sm text-surface-700">
-            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Obvious spam and forbidden words are blocked before any API call, which saves 10-30% on costs</li>
-            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Two configurable thresholds decide what is approved, rejected or sent to human review</li>
-            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> A dashboard where your Trust & Safety team can start reviewing comments on day one</li>
-            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Rules set with three tools (forbidden words, category thresholds and your community charter), with no code</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Obvious spam and forbidden words are blocked before any AI call</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Two configurable thresholds decide what is approved, rejected or reviewed by our team</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Nothing to do on your side: you see every decision in real time and can step in whenever you want</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Rules set with three tools (forbidden words, category thresholds and your own rules in plain language), with no code</li>
             <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> A full audit trail, exportable reports and configurable data retention</li>
-            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Automatic fallback to Mistral, Azure or HuggingFace when OpenAI is slow</li>
-            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> No lock-in: the code is open source (AGPL v3), you can host it yourself and bring your own keys</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Delicate cases cross-checked by other AI models</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> No frozen model: better models plugged in as they come out, and you can export your data</li>
           </ul>
         </div>
       </div>
@@ -289,7 +286,7 @@ const faqItems = [
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="mx-auto mb-12 max-w-2xl text-center">
         <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Built for every content moderation use case</h2>
-        <p class="mt-4 text-lg text-surface-500">You can replace OpenAI's API with OpenModeration or keep it as one of your providers.</p>
+        <p class="mt-4 text-lg text-surface-500">You can replace OpenAI's API with OpenModeration in under an hour.</p>
       </div>
       <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {verticals.map((v) => (
@@ -306,22 +303,22 @@ const faqItems = [
   <section class="border-t border-surface-100 bg-white py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="mx-auto mb-12 max-w-2xl text-center">
-        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Works with OpenAI's omni-moderation-latest and 9 more models</h2>
-        <p class="mt-4 text-lg text-surface-500">Keep the OpenAI moderation model you already trust as your primary engine, and add the workflow around it.</p>
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Moving from omni-moderation-latest to OpenModeration</h2>
+        <p class="mt-4 text-lg text-surface-500">Keep your integration simple and get the whole workflow around the score.</p>
         <p class="mt-2 text-sm"><a href="/blog/openai-moderation-api-guide" class="font-medium text-brand-600 hover:text-brand-500">How the OpenAI Moderation API works: categories, pricing and limits &rarr;</a></p>
       </div>
       <div class="grid gap-6 md:grid-cols-3">
         <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-          <h3 class="font-semibold text-surface-900">Keep omni-moderation-latest</h3>
-          <p class="mt-2 text-sm text-surface-500">Use your own OpenAI key (BYOK) and route every request to omni-moderation-latest. Same model, standardized response format.</p>
+          <h3 class="font-semibold text-surface-900">Replace one call</h3>
+          <p class="mt-2 text-sm text-surface-500">One POST /v1/moderation call replaces openai.moderations.create, with a standardized response format.</p>
         </div>
         <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-          <h3 class="font-semibold text-surface-900">Add fallback models</h3>
-          <p class="mt-2 text-sm text-surface-500">If OpenAI is slow or down, requests automatically route to Mistral, Azure or HuggingFace, with no code change and no downtime.</p>
+          <h3 class="font-semibold text-surface-900">Cross-checked decisions</h3>
+          <p class="mt-2 text-sm text-surface-500">On delicate cases, other AI models arbitrate the decision, and doubtful cases are handled by our team.</p>
         </div>
         <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-          <h3 class="font-semibold text-surface-900">Track every model</h3>
-          <p class="mt-2 text-sm text-surface-500">Unified analytics show accuracy and cost per provider, so you always know which model handles your traffic best.</p>
+          <h3 class="font-semibold text-surface-900">An AI that keeps improving</h3>
+          <p class="mt-2 text-sm text-surface-500">When a better or cheaper AI model comes out, we plug it in quickly. Nothing changes on your side.</p>
         </div>
       </div>
     </div>
@@ -337,7 +334,7 @@ const faqItems = [
   <!-- Other alternatives -->
   <section class="border-t border-surface-100 bg-surface-50 py-16">
     <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-      <h2 class="text-2xl font-bold text-surface-900">Compare other providers</h2>
+      <h2 class="text-2xl font-bold text-surface-900">Compare other alternatives</h2>
       <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
         <a href="/alternatives/azure-content-safety" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Azure Content Safety</a>
         <a href="/alternatives/mistral-moderation" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Mistral Moderation</a>
@@ -348,9 +345,11 @@ const faqItems = [
     </div>
   </section>
 
+  <RelatedComparisons />
+
   <CTASection 
     title="Moderate with more than a single API."
-    subtitle="Get 10 providers, pre-filtering, automated rules and a human review dashboard, all open source. Keep using OpenAI with BYOK, or add more providers."
+    subtitle="Get our own cross-checked AI, pre-filtering, automated rules and human review by our team, hosted in the EU. You see every decision in real time."
     buttonText="Try it for free"
     buttonHref="https://app.openmoderation.com/signup"
   />

@@ -1,0 +1,313 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const title = "Wat is contentmoderatie? Definitie en soorten";
+const description = "Wat contentmoderatie is: wat er wordt gemodereerd, de 6 soorten, het werk van een contentmoderator, hoe AI-moderatie werkt, de DSA en hoe je een aanpak kiest.";
+const linkClass = "text-brand-600 hover:text-brand-500";
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Wat is contentmoderatie? Definitie, soorten, AI en de rol van de contentmoderator",
+  "description": description,
+  "inLanguage": "nl",
+  "datePublished": "2026-10-30",
+  "dateModified": "2026-10-30",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/nl/blog/wat-is-contentmoderatie" }
+};
+
+const types = [
+  { type: "Premoderatie", how: "Elk item wordt gecontroleerd voordat het online komt.", pros: "Er wordt nooit iets schadelijks gepubliceerd.", cons: "Traag, duur, doodt het live gesprek." },
+  { type: "Postmoderatie", how: "Content gaat direct online en wordt achteraf beoordeeld.", pros: "Snel en soepel voor gebruikers.", cons: "Schadelijke content is zichtbaar tot iemand hem beoordeelt." },
+  { type: "Reactieve moderatie", how: "Alleen content die gebruikers melden, wordt beoordeeld.", pros: "Goedkoop, gebruikt de ogen van de community.", cons: "Hangt ervan af of mensen de moeite nemen om te melden." },
+  { type: "Gedistribueerde moderatie", how: "De community stemt, markeert of verbergt content zelf.", pros: "Schaalt mee met de community.", cons: "Meerderheidsbias, brigading, wisselende kwaliteit." },
+  { type: "Geautomatiseerde moderatie", how: "Filters of AI-modellen beslissen over elk item.", pros: "Direct, 24/7, kan grote volumes aan.", cons: "Fouten bij context, heeft toezicht nodig." },
+  { type: "Hybride moderatie", how: "Automatisering handelt duidelijke gevallen af, mensen de twijfelgevallen.", pros: "Snelheid plus oordeelsvermogen.", cons: "Vraagt om duidelijke regels en een goede beoordelingstool." },
+];
+
+const glossary = [
+  { term: "Door gebruikers gemaakte content (UGC)", def: "Alles wat gebruikers plaatsen in plaats van de dienst zelf: reacties, reviews, posts, foto's, video's, berichten." },
+  { term: "Communityrichtlijnen", def: "De openbare regels die bepalen wat er op een dienst mag. Ook moderatiebeleid of huisregels genoemd." },
+  { term: "Vals positief", def: "Acceptabele content die ten onrechte is verwijderd of verborgen." },
+  { term: "Vals negatief", def: "Schadelijke content die ten onrechte online is gebleven." },
+  { term: "Human in the loop", def: "Een opzet waarin mensen de beslissingen beoordelen waarover de automatisering twijfelt." },
+  { term: "Beoordelingswachtrij", def: "De lijst met gemarkeerde of twijfelachtige items die op een menselijke beslissing wachten." },
+  { term: "Melding en actie", def: "Het DSA-mechanisme waarmee iedereen illegale content kan melden bij een hostingdienst, die de melding dan moet verwerken." },
+  { term: "Motivering", def: "De uitleg die een dienst onder de DSA aan een gebruiker moet geven als hij diens content beperkt." },
+  { term: "Audittrail", def: "De log van elke moderatiebeslissing: wat, wanneer, door wie of door welk systeem, en waarom." },
+  { term: "Trust and safety", def: "De bredere functie die verantwoordelijk is voor de veiligheid van gebruikers, waarvan contentmoderatie één onderdeel is." },
+];
+
+const faqItems = [
+  {
+    question: "Wat is contentmoderatie in eenvoudige woorden?",
+    answer: "Het is het werk van controleren wat gebruikers op een website, app of sociale pagina plaatsen en beslissen of het online mag blijven, op basis van de wet en de eigen regels van de dienst. Content die de regels overtreedt, wordt verborgen, verwijderd of beperkt.",
+  },
+  {
+    question: "Wat zijn de belangrijkste soorten contentmoderatie?",
+    answer: "Meestal onderscheidt men zes soorten: premoderatie (gecontroleerd vóór publicatie), postmoderatie (gecontroleerd erna), reactieve moderatie (alleen gemelde content), gedistribueerde moderatie (door de community), geautomatiseerde moderatie (filters en AI) en hybride moderatie, die automatisering combineert met menselijke beoordeling.",
+  },
+  {
+    question: "Wat doet een contentmoderator?",
+    answer: "Een contentmoderator beoordeelt content van gebruikers aan de hand van een set regels en besluit die goed te keuren, te verbergen, te verwijderen of op te schalen. Hij behandelt meldingen, grijze zones en bezwaren, en helpt vaak de regels te verbeteren. Het werk vraagt om oordeelsvermogen, culturele kennis en veerkracht, want sommige content is schokkend.",
+  },
+  {
+    question: "Kan AI menselijke contentmoderators vervangen?",
+    answer: "Niet helemaal. AI kan heel goed overweg met volume en snelheid en kan regels in context toepassen, maar maakt nog fouten bij ironie, lokale verwijzingen en nieuwe vormen van misbruik. Het gangbare antwoord is hybride: AI beslist over duidelijke gevallen en stuurt twijfelgevallen naar mensen.",
+  },
+  {
+    question: "Is contentmoderatie censuur?",
+    answer: "Moderatie past openbare regels toe die gebruikers accepteren als ze zich bij een dienst aansluiten, en in de EU verplicht de wet diensten om op te treden tegen illegale content. Goed uitgevoerd is ze transparant: gebruikers kennen de regels, krijgen een reden als hun content wordt beperkt en kunnen de beslissing aanvechten.",
+  },
+  {
+    question: "Geldt de DSA voor mijn website?",
+    answer: "Host je content die gebruikers plaatsen, zoals reacties of reviews, dan geldt de DSA zeer waarschijnlijk voor je als hostingdienst. De precieze verplichtingen hangen af van het type en de omvang van je dienst. Dit is algemene informatie, geen juridisch advies.",
+  },
+  {
+    question: "Wat is het verschil tussen contentmoderatie en reactiemoderatie?",
+    answer: "Contentmoderatie omvat elk soort gebruikerscontent: posts, reviews, advertenties, berichten, afbeeldingen en video. Reactiemoderatie is één onderdeel daarvan, gericht op de reacties onder artikelen, posts en video's.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} ogType="article" jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: "Blog", href: localizePath('/blog', locale) }, { label: "Wat is contentmoderatie?" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-30">30 oktober 2026</time>
+        <span>&middot;</span>
+        <span>9 min lezen</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Wat is contentmoderatie? Definitie, soorten, AI en de rol van de contentmoderator</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Elke dienst waar mensen iets kunnen plaatsen, een reactie, een review, een foto, een productadvertentie,
+        moet beslissen wat er online blijft. Die beslissing, duizenden keren per dag herhaald, is contentmoderatie.
+        Deze gids definieert het begrip, loopt de belangrijkste soorten door, legt uit wat contentmoderators
+        en AI echt doen en vat samen wat het Europese recht verwacht.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">In het kort</h2>
+      <ul>
+        <li><strong>Contentmoderatie</strong> is gebruikerscontent toetsen aan de wet en aan je eigen regels, en dan beslissen of die blijft, wordt verborgen of wordt verwijderd.</li>
+        <li><strong>Er zijn zes soorten:</strong> pre-, post-, reactieve, gedistribueerde, geautomatiseerde en hybride moderatie. De meeste diensten combineren er meerdere.</li>
+        <li><strong>AI</strong> neemt volume en snelheid voor zijn rekening; <strong>mensen</strong> de grijze zones, de bezwaren en de regels zelf.</li>
+        <li><strong>In de EU vraagt de DSA</strong> hostingdiensten om meldingen te verwerken, hun beslissingen uit te leggen en ze bij te houden.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Wat is contentmoderatie? Een definitie</h2>
+      <p>
+        Contentmoderatie is het proces waarin je content van gebruikers beoordeelt en beslist of die
+        voldoet aan de wet en aan de regels van de dienst waarop hij is geplaatst. Is dat niet zo, dan wordt de
+        content verborgen, verwijderd, beperkt of gelabeld, en soms krijgt de auteur een waarschuwing of een ban.
+      </p>
+      <p>Er zijn altijd drie elementen:</p>
+      <ul>
+        <li><strong>Regels.</strong> De wet (illegale haatzaaiende taal, bedreigingen, fraude, materiaal van kindermisbruik) en de eigen regels van de dienst, die verder gaan: geen spam, geen beledigingen, geen berichten buiten het onderwerp, geen links naar concurrenten.</li>
+        <li><strong>Een beslissing.</strong> Goedkeuren, verbergen, verwijderen, beperken, opschalen naar een mens of de auteur sanctioneren.</li>
+        <li><strong>Een proces.</strong> Wie beslist, wanneer (vóór of na publicatie), met welke tools, en hoe de beslissing wordt vastgelegd en uitgelegd.</li>
+      </ul>
+      <p>
+        Moderatie gaat niet alleen over het weghalen van de ergste content. Ze bepaalt ook de toon van een community:
+        een nieuwssite, een kinderspel en een modemerk trekken de grens niet op dezelfde plek, en
+        dat is legitiem zolang de regels openbaar zijn en consequent worden toegepast.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Wat wordt er gemodereerd?</h2>
+      <p>Alle content die een gebruiker op je dienst kan publiceren, valt eronder. De meest voorkomende vormen zijn:</p>
+      <ul>
+        <li><strong>Reacties</strong> onder artikelen, socialemediaposts, video's en advertenties. Voor media en merken is dit de vorm met het grootste volume: onze <a href={localizePath('/blog/comment-moderation-guide', locale)} class={linkClass}>gids over reactiemoderatie</a> gaat er uitgebreid op in.</li>
+        <li><strong>Posts en threads</strong> op forums, community's en sociale platforms.</li>
+        <li><strong>Reviews en beoordelingen</strong> op webshops en boekingsplatforms, waar nepreviews en smaad de grootste risico's zijn.</li>
+        <li><strong>Advertenties</strong> op marktplaatsen en zoekertjessites: namaak, verboden producten, oplichting.</li>
+        <li><strong>Berichten</strong> in chats en privéberichten, vanwege intimidatie, grooming en phishinglinks.</li>
+        <li><strong>Afbeeldingen</strong> zoals profielfoto's en uploads: naakt, geweld, haatsymbolen.</li>
+        <li><strong>Video en livestreams</strong>, het moeilijkst te beoordelen door hun lengte en hun realtime karakter.</li>
+        <li><strong>Profielen en gebruikersnamen</strong>, vaak de eerste plek waar beledigingen of imitatie opduiken.</li>
+      </ul>
+      <p>
+        Voor de meeste organisaties is tekst nog altijd het grootste deel van het werk, en daar telt context het zwaarst:
+        hetzelfde woord kan een belediging zijn, een citaat of een grap tussen vrienden.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Welke soorten contentmoderatie zijn er?</h2>
+      <p>
+        De soorten moderatie verschillen op twee vragen: <em>wanneer</em> content wordt gecontroleerd (vóór of nadat hij online
+        komt) en <em>wie</em> hem controleert (medewerkers, de community of een machine).
+      </p>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Soort</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Hoe het werkt</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Sterk punt</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Zwak punt</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {types.map((row) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{row.type}</td>
+              <td class="px-4 py-3 text-surface-600">{row.how}</td>
+              <td class="px-4 py-3 text-surface-600">{row.pros}</td>
+              <td class="px-4 py-3 text-surface-600">{row.cons}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <p>Een paar woorden over elke soort:</p>
+      <ul>
+        <li><strong>Premoderatie</strong> past bij gevoelige omgevingen, zoals diensten voor kinderen of de productreviews van een merk bij een lancering. Ze past niet bij een live debat: een reactie die drie uur later wordt goedgekeurd, leest niemand meer.</li>
+        <li><strong>Postmoderatie</strong> is op de meeste sites de standaard. Het zwakke punt is de tijd tussen publicatie en beoordeling, vooral 's nachts en in het weekend.</li>
+        <li><strong>Reactieve moderatie</strong> leunt op de meldknop. Die is onmisbaar, en in de EU is een meldmechanisme verplicht, maar op zichzelf laat ze schadelijke content online tot iemand klaagt.</li>
+        <li><strong>Gedistribueerde moderatie</strong> laat de community content omhoog of omlaag stemmen, of verbergen na genoeg meldingen, zoals op veel forums en op Wikipedia. Ze werkt het best met een betrokken community en medewerkers die kunnen ingrijpen.</li>
+        <li><strong>Geautomatiseerde moderatie</strong> loopt van eenvoudige trefwoordenlijsten tot AI-modellen die content in context lezen. Het is de enige manier om bij grote volumes direct op te treden.</li>
+        <li><strong>Hybride moderatie</strong> combineert beide: automatisering beslist realtime over duidelijke gevallen, twijfelgevallen gaan naar een mens. Het is inmiddels de meest gebruikte opzet bij organisaties met echte volumes.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Wat doet een contentmoderator?</h2>
+      <p>
+        Een contentmoderator beoordeelt content van gebruikers en beslist of die aan de regels voldoet. De functietitel
+        dekt heel verschillende werkelijkheden, van een communitymanager die tussen twee posts door de pagina's van een merk modereert
+        tot fulltime teams die in ploegen werken voor grote platforms of gespecialiseerde bureaus.
+      </p>
+      <p>Dagelijks doet een contentmoderator het volgende:</p>
+      <ul>
+        <li>items in een wachtrij beoordelen: gemelde content, content die de automatisering heeft gemarkeerd, of alles bij premoderatie;</li>
+        <li>elk item goedkeuren, verbergen, verwijderen of opschalen, en notoire overtreders sanctioneren;</li>
+        <li>grijze zones behandelen: satire, kritiek op een publiek figuur, een verhitte maar legitieme discussie;</li>
+        <li>meldingen van gebruikers en bezwaren tegen beslissingen verwerken;</li>
+        <li>trends doorgeven aan het team dat de regels schrijft: een nieuw scheldwoord, een golf van oplichting, een gecoördineerde aanval.</li>
+      </ul>
+      <h3 class="text-lg font-semibold text-surface-900">De uitdagingen van het vak</h3>
+      <ul>
+        <li><strong>Blootstelling aan schadelijke content.</strong> Sommige moderators zien elke dag gewelddadig of haatdragend materiaal. Psychologische ondersteuning, rotatie en tools die afbeeldingen standaard vervagen zijn geen luxe.</li>
+        <li><strong>Volume en snelheid.</strong> Pieken komen met breaking news, een virale post of een betaalde campagne, zelden tijdens kantooruren.</li>
+        <li><strong>Consistentie.</strong> Twee mensen kunnen dezelfde reactie verschillend beoordelen. Duidelijke regels met voorbeelden verkleinen dat verschil.</li>
+        <li><strong>Context en talen.</strong> Ironie, straattaal en lokale verwijzingen zijn moeilijk te beoordelen zonder de cultuur te kennen.</li>
+        <li><strong>Verantwoording.</strong> Elke beslissing kan worden aangevochten door de auteur, een leidinggevende of een toezichthouder, dus ze moet uit te leggen zijn.</li>
+      </ul>
+      <p>
+        Veel organisaties hebben geen volledig team en kiezen daarom voor een bureau of voor software. Onze
+        pagina over <a href={localizePath('/outsourced-moderation', locale)} class={linkClass}>moderatie uitbesteden</a> vergelijkt de opties.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Hoe werkt AI-contentmoderatie?</h2>
+      <p>
+        AI-moderatie gebruikt taalmodellen (en beeldmodellen voor afbeeldingen) om elk stuk content te lezen
+        en te beslissen of het een regel overtreedt. In eenvoudige woorden ziet het proces er zo uit:
+      </p>
+      <ol>
+        <li><strong>De content komt binnen</strong> zodra hij is geplaatst, via een API of een koppeling met het platform.</li>
+        <li><strong>Het model leest hem in context:</strong> de tekst, soms de post of het artikel waarop hij reageert, en de regels van de dienst.</li>
+        <li><strong>Het geeft een beslissing terug</strong> (goedkeuren, verbergen, weigeren, naar een mens sturen) met een betrouwbaarheidsniveau en, in goede systemen, een schriftelijke reden.</li>
+        <li><strong>De actie wordt toegepast,</strong> automatisch bij duidelijke gevallen; twijfelgevallen gaan naar een beoordelingswachtrij.</li>
+        <li><strong>Alles wordt gelogd,</strong> zodat beslissingen kunnen worden gecontroleerd, uitgelegd en gecorrigeerd.</li>
+      </ol>
+      <p>
+        Oudere systemen leunden op trefwoordenlijsten en eenvoudige scores ("deze tekst is voor 87% toxisch"). Recente modellen
+        kunnen regels in gewone taal toepassen, zoals "geen links naar concurrenten" of "geen persoonsgegevens
+        in het openbaar", wat trefwoordenlijsten niet kunnen.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Sterke punten en grenzen van AI-moderatie</h3>
+      <ul>
+        <li><strong>Sterke punten:</strong> direct, de klok rond, consistent van het ene item tot het volgende, kan spelfouten en meerdere talen lezen, en bespaart mensen het om de ergste content als eersten te zien.</li>
+        <li><strong>Grenzen:</strong> AI kan ironie en heel lokale verwijzingen missen, kan door nieuwe trucs worden misleid en kan vooroordelen uit zijn trainingsdata meedragen. Hij kent je community niet, tenzij je hem je regels vertelt.</li>
+      </ul>
+      <p>
+        Daarom blijft menselijke beoordeling nodig. AI hoort te beslissen waar hij zeker is en de
+        rest aan een mens door te geven, en zijn beslissingen moeten controleerbaar zijn. Onze pagina's over
+        <a href={localizePath('/automatic-comment-moderation', locale)} class={linkClass}>automatische moderatie</a> en
+        <a href={localizePath('/moderation-software', locale)} class={linkClass}>moderatiesoftware</a> beschrijven hoe OpenModeration
+        dit toepast: je regels en je use cases, twijfelgevallen die ons team behandelt, elke beslissing in realtime zichtbaar in één console, een
+        schriftelijke reden bij elke beslissing.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Wat zegt het Europese recht? De DSA in een paar regels</h2>
+      <p>
+        De Digital Services Act (DSA) geldt sinds februari 2024 voor alle online tussenhandelsdiensten in de EU.
+        Host je content die gebruikers plaatsen, dan ben je onder de DSA een hostingdienst. In grote lijnen
+        verwacht de DSA dat je:
+      </p>
+      <ul>
+        <li>duidelijke regels publiceert over wat er mag en hoe moderatie werkt, inclusief het gebruik van geautomatiseerde tools;</li>
+        <li>iedereen illegale content laat melden en die meldingen verwerkt (melding en actie);</li>
+        <li>gebruikers van wie je content beperkt een motivering geeft, met vermelding of er geautomatiseerde middelen zijn gebruikt;</li>
+        <li>als onlineplatform een manier biedt om beslissingen aan te vechten en ze bijhoudt.</li>
+      </ul>
+      <p>
+        De precieze verplichtingen hangen af van de aard en de omvang van je dienst. Dit is algemene informatie,
+        geen juridisch advies. Meer details vind je op onze <a href={localizePath('/dsa-compliance', locale)} class={linkClass}>pagina over DSA-compliance</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Hoe kies je een aanpak voor contentmoderatie?</h2>
+      <p>Vijf vragen geven meestal de doorslag:</p>
+      <ol>
+        <li><strong>Hoeveel content, en wanneer?</strong> Een paar dozijn reacties per dag kun je met de hand aan. Duizenden, of pieken 's nachts, vragen om automatisering.</li>
+        <li><strong>Hoe riskant is een fout?</strong> Een dienst voor kinderen neigt naar premoderatie; een nieuwssite kan het zich niet veroorloven het debat te vertragen.</li>
+        <li><strong>Wat zijn je regels?</strong> Schrijf ze op voordat je een tool kiest. Onze gids over <a href={localizePath('/content-moderation-policy', locale)} class={linkClass}>moderatiebeleid</a> helpt daarbij.</li>
+        <li><strong>Wie beoordeelt de grijze zones?</strong> Een eigen team, een bureau of een mix. Iemand moet eigenaar zijn van de eindbeslissing.</li>
+        <li><strong>Wat moet je kunnen aantonen?</strong> Redenen, logs en exporteerbare gegevens tellen voor de DSA en voor je eigen interne evaluaties.</li>
+      </ol>
+      <p>
+        Voor de meeste media, merken en overheidsinstanties wordt het antwoord uiteindelijk hybride: automatisering op elk item in
+        realtime, menselijke beoordeling van twijfelgevallen en regelmatig een blik op de regels. Zijn sociale netwerken
+        je belangrijkste kanaal, lees dan onze <a href={localizePath('/blog/social-media-moderation-guide', locale)} class={linkClass}>gids over social media modereren</a>.
+        Wil je zien hoe een AI-model je eigen content beoordeelt, <a href={localizePath('/demo', locale)} class={linkClass}>probeer dan de live demo</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Begrippenlijst contentmoderatie</h2>
+      <dl>
+        {glossary.map((item) => (
+          <>
+            <dt class="font-semibold text-surface-900">{item.term}</dt>
+            <dd class="mb-3">{item.def}</dd>
+          </>
+        ))}
+      </dl>
+    </div>
+
+    <div class="mt-12">
+      <FAQ title="Veelgestelde vragen" items={faqItems} />
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Lees verder</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/blog/comment-moderation-guide', locale)} class="font-medium text-brand-600 hover:text-brand-500">De complete gids over reactiemoderatie &rarr;</a></li>
+        <li><a href={localizePath('/automatic-comment-moderation', locale)} class="font-medium text-brand-600 hover:text-brand-500">Zo werkt automatische moderatie &rarr;</a></li>
+        <li><a href={localizePath('/moderation-software', locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderatiesoftware kiezen &rarr;</a></li>
+        <li><a href={localizePath('/dsa-compliance', locale)} class="font-medium text-brand-600 hover:text-brand-500">Wat de DSA eist van moderatiebeslissingen &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

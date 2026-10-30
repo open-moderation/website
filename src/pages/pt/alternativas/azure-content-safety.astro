@@ -1,0 +1,207 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+const L = (p: string) => localizePath(p, locale);
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/pt/alternativas/azure-content-safety",
+  "name": "Alternativa ao Azure Content Safety: comparativo e preços",
+  "description": "Azure Content Safety ou OpenModeration? Uma API de moderação da Microsoft ou uma moderação de comentários pronta, com console, motivo escrito e dados na UE.",
+  "inLanguage": "pt",
+  "about": {
+    "@id": "https://www.openmoderation.com/#software"
+  }
+};
+
+const rows = [
+  { feature: "O que é", azure: "Uma API de moderação com IA do ecossistema Microsoft Azure", openmod: "Uma moderação de comentários com IA, adaptada às suas regras e aos seus casos de uso, configurada com você pela equipe da Logora" },
+  { feature: "Categorias", azure: "4 categorias: ódio, automutilação, conteúdo sexual, violência", openmod: "Definidas com você a partir das suas regras e dos seus casos de uso" },
+  { feature: "Modelos de IA", azure: "Os modelos da Microsoft", openmod: "IA de moderação própria, verificada por outros modelos de IA; novos modelos integrados assim que são lançados" },
+  { feature: "Interface de trabalho", azure: "Só API: você constrói a sua própria interface de revisão", openmod: "Console de moderação com fila de revisão humana incluída" },
+  { feature: "Regras e ações", azure: "A lógica personalizada é construída e mantida internamente", openmod: "Violações claras ocultadas automaticamente, crítica legítima visível, casos duvidosos tratados pela nossa equipe" },
+  { feature: "Conectores", azure: "API (implantação por região do Azure)", openmod: "Sites (API), páginas do Facebook, contas profissionais do Instagram, canais do YouTube, WordPress" },
+  { feature: "Explicação de cada decisão", azure: "Pontuações por categoria, sem explicação por escrito", openmod: "Um motivo por escrito para cada decisão, no console e via API" },
+  { feature: "DSA", azure: "A construir pela sua equipe", openmod: "Notificação e ação, exposição de motivos, revisão humana de decisões contestadas, números exportáveis, registro de atividade completo" },
+  { feature: "Dados", azure: "Processados na infraestrutura da Microsoft", openmod: "Hospedado na UE, RGPD; on-premise possível sob consulta" },
+  { feature: "Preço", azure: "Por 1.000 registros de texto (até 1.000 caracteres cada), com nível gratuito de 5.000 registros/mês; tarifa conforme a região", openmod: "Grátis até 1.000 requisições/mês; Pro a 99 €/mês para 10 mil requisições; Enterprise sob consulta" },
+];
+
+const faqItems = [
+  {
+    question: "Qual é a melhor alternativa ao Azure Content Safety?",
+    answer: "Para moderar os comentários de um veículo de mídia, de uma marca ou de uma instituição pública, o OpenModeration é uma alternativa direta: em vez de pontuações para interpretar, ele aplica as decisões, deixa os casos duvidosos com a nossa equipe, mostra tudo num console e explica cada decisão por escrito. Se a sua equipe técnica já trabalha no Azure e quer integrar uma API de classificação no próprio produto, o Azure Content Safety foi pensado para isso.",
+  },
+  {
+    question: "Quanto custa o Azure Content Safety?",
+    answer: "O Azure AI Content Safety cobra por 1.000 registros de texto (um registro equivale a no máximo 1.000 caracteres), a partir de um nível gratuito de 5.000 registros por mês, com uma tarifa que depende da sua região do Azure. O OpenModeration é grátis até 1.000 requisições por mês, e o Pro custa 99 €/mês para 10 mil requisições, com Enterprise sob consulta.",
+  },
+  {
+    question: "Azure Content Safety vs OpenModeration: qual é a diferença?",
+    answer: "O Azure Content Safety é uma API: ele devolve pontuações em quatro categorias e a sua equipe constrói o resto (console, regras, ações, registro para o DSA). O OpenModeration é uma ferramenta de moderação de comentários completa, com conectores, decisões automáticas, casos duvidosos tratados pela nossa equipe, um motivo por escrito para cada decisão e hospedagem na UE.",
+  },
+  {
+    question: "O que eu ganho além das pontuações do Azure?",
+    answer: "Decisões aplicadas diretamente nas suas plataformas, uma zona cinzenta enviada para revisão humana, um console com papéis de equipe, um motivo por escrito para cada decisão e um registro de atividade com números exportáveis para o DSA.",
+  },
+  {
+    question: "Posso evitar que os meus dados passem pela nuvem da Microsoft?",
+    answer: "O OpenModeration é hospedado na UE e guarda um registro completo de cada decisão, o que facilita cumprir o RGPD e o DSA. Uma implantação on-premise é possível sob consulta: vamos conversar.",
+  },
+  {
+    question: "Posso testar o OpenModeration sem desligar o Azure Content Safety?",
+    answer: "Sim. Em modo sandbox, o OpenModeration analisa os seus comentários reais sem ocultar nada. A sua integração atual continua funcionando e você compara as decisões comentário por comentário.",
+  },
+];
+---
+
+<BaseLayout title="Alternativa ao Azure Content Safety: comparativo e preços" description="Azure Content Safety ou OpenModeration? Uma API de moderação da Microsoft ou uma moderação de comentários pronta, com console, motivo escrito e dados na UE." jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Início", href: L('/') }, { label: "Alternativas", href: L('/alternatives') }, { label: "Azure Content Safety" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Comparativo
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Alternativa ao Azure Content Safety: comparativo com o OpenModeration</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        O Azure Content Safety é uma boa API de moderação, mas montar com ela uma moderação completa exige muito trabalho de engenharia. Para os comentários de um veículo de mídia, de uma marca ou de uma instituição pública, o OpenModeration é a alternativa mais direta: decisões aplicadas, casos duvidosos tratados pela nossa equipe, um console onde você vê tudo, um motivo por escrito para cada decisão e hospedagem na UE.
+      </p>
+      <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a href={L('/book-a-call')} class="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-500">Agendar uma reunião</a>
+        <a href="#comparativo" class="inline-flex items-center gap-2 rounded-lg border border-surface-200 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">Ver o comparativo</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold tracking-tight text-surface-900 sm:text-3xl">Para quem é o Azure Content Safety?</h2>
+      <p class="mt-4 text-surface-600">O Azure AI Content Safety é o serviço de moderação da Microsoft. A sua API de texto devolve pontuações em quatro categorias (ódio, automutilação, conteúdo sexual e violência), é implantada por região do Azure e cobrada por registro de texto. É uma ferramenta para equipes técnicas que já estão no ecossistema Azure e integram a moderação no próprio produto.</p>
+      <p class="mt-4 text-surface-600">Integrar a API é só o primeiro passo. Para que ela funcione em produção, a sua equipe ainda precisa construir um console para os moderadores humanos revisarem os casos limítrofes, um motor de regras que transforme as pontuações em ações (ocultar, apagar, sinalizar) e um registro das decisões para demonstrar o cumprimento do DSA.</p>
+      <p class="mt-4 text-surface-600">O OpenModeration traz tudo isso pronto. Ele modera com IA os comentários de veículos de mídia, marcas e instituições públicas, no site e nas páginas do Facebook, contas do Instagram e canais do YouTube, e a equipe da Logora, em Paris desde 2019, o configura com você conforme as suas regras e os seus casos de uso.</p>
+    </div>
+  </section>
+
+  <section id="comparativo" class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Azure Content Safety e OpenModeration, ponto a ponto</h2>
+      <p class="mt-4 text-surface-500">Informações sobre o Azure Content Safety extraídas da documentação e da página de preços da Microsoft. Quando algo não é especificado, indicamos.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Critério</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Azure Content Safety</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.azure}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Escolha o OpenModeration se…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>você modera os comentários de um veículo de mídia, de uma marca ou de uma instituição pública;</li>
+          <li>você não quer construir e manter um console, um motor de regras e um registro de auditoria;</li>
+          <li>você precisa de um motivo por escrito para cada decisão e dos elementos do DSA;</li>
+          <li>você quer conectores prontos para Facebook, Instagram, YouTube e WordPress;</li>
+          <li>os seus dados precisam ficar hospedados na UE, com preços públicos.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">O Azure Content Safety pode ser melhor para você se…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>a sua infraestrutura já está no Azure e você quer ficar nesse ecossistema;</li>
+          <li>a sua equipe técnica quer pontuações brutas para construir a própria lógica;</li>
+          <li>a moderação faz parte do seu produto, e não de uma redação ou de uma equipe de comunidade.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">O motor de IA: acompanhar o progresso dos modelos</h2>
+      <p class="mt-4 text-surface-600">Com o Azure Content Safety, a sua moderação depende dos modelos da Microsoft. O OpenModeration usa a sua própria IA de moderação, e as decisões nos casos delicados são verificadas por outros modelos de IA. O motor não depende de nenhum modelo: quando sai um melhor ou mais barato, a nossa equipe o integra rapidamente, sem que você precise mudar nada. Assim, a sua moderação acompanha o progresso do mercado de IA em vez de ficar presa a um único fornecedor.</p>
+      <h2 class="mt-16 text-3xl font-bold tracking-tight text-surface-900">Preço: Azure Content Safety vs OpenModeration</h2>
+      <p class="mt-4 text-surface-600">O Azure Content Safety cobra por 1.000 registros de texto, com um nível gratuito de 5.000 registros por mês e uma tarifa que varia conforme a região, sem contar o custo de construir as ferramentas em volta. Os preços do OpenModeration são públicos e incluem o console: grátis até 1.000 requisições por mês, Pro a 99 €/mês para 10 mil requisições, Enterprise sob consulta, e implantação on-premise disponível sob consulta. <a href={L('/pricing')} class="font-medium text-brand-600 hover:text-brand-500">Os preços do OpenModeration &rarr;</a></p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Do Azure Content Safety ao OpenModeration em 3 etapas</h2>
+      <ol class="mt-8 grid gap-6 md:grid-cols-3">
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">1</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Conecte as suas fontes e compartilhe as suas regras</h3>
+          <p class="mt-2 text-sm text-surface-600">Conecte o seu site via API, as suas páginas do Facebook, contas profissionais do Instagram, canais do YouTube ou o WordPress. A nossa equipe adapta com você a moderação às suas regras e aos seus casos de uso.</p>
+        </li>
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">2</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Teste em modo sandbox com comentários reais</h3>
+          <p class="mt-2 text-sm text-surface-600">O OpenModeration analisa os seus comentários reais sem ocultar nada. A sua integração com o Azure continua funcionando enquanto você compara as decisões, cada uma com o seu motivo por escrito.</p>
+        </li>
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">3</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Ative a moderação automática</h3>
+          <p class="mt-2 text-sm text-surface-600">As violações claras são ocultadas automaticamente, a nossa equipe trata os casos duvidosos, você acompanha tudo no console, e o registro de atividade e os números exportáveis ficam prontos para o DSA.</p>
+        </li>
+      </ol>
+      <p class="mt-8 text-surface-600">Quer ver antes com os seus próprios comentários? <a href={L('/book-a-call')} class="font-medium text-brand-600 hover:text-brand-500">Agende uma reunião com a nossa equipe &rarr;</a></p>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Perguntas frequentes" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        Azure e Azure AI Content Safety são marcas da Microsoft. As informações vêm da documentação pública da Microsoft; o que não consta é indicado como não especificado. Viu algum erro? Escreva para <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+      <p class="mx-auto mt-4 max-w-3xl text-center text-sm text-surface-400">
+        Fontes: <a href="https://azure.microsoft.com/products/ai-services/ai-content-safety" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">azure.microsoft.com</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Para saber mais</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={L('/book-a-call')} class="font-medium text-brand-600 hover:text-brand-500">Agende uma reunião com a equipe do OpenModeration &rarr;</a></li>
+        <li><a href={L('/moderation-software')} class="font-medium text-brand-600 hover:text-brand-500">O software de moderação OpenModeration &rarr;</a></li>
+        <li><a href={L('/text-moderation-api')} class="font-medium text-brand-600 hover:text-brand-500">A API de moderação de texto &rarr;</a></li>
+        <li><a href={L('/blog/dsa-compliance-sme-guide')} class="font-medium text-brand-600 hover:text-brand-500">Guia do DSA para pequenas e médias empresas &rarr;</a></li>
+        <li><a href={L('/alternatives')} class="font-medium text-brand-600 hover:text-brand-500">Todos os comparativos &rarr;</a></li>
+        <li><a href={L('/pricing')} class="font-medium text-brand-600 hover:text-brand-500">Os preços do OpenModeration &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Não construa as suas próprias ferramentas de moderação." subtitle="O OpenModeration já traz as regras automáticas, a revisão humana pela nossa equipe e o registro para o DSA. Teste com os seus próprios comentários, grátis para começar." />
+</BaseLayout>

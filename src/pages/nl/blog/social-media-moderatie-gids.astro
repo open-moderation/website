@@ -1,0 +1,352 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const title = "Social media modereren: de complete gids (2026)";
+const description = "Zo modereer je social media: methodes, regels, wat er per netwerk anders is (Facebook, Instagram, YouTube, TikTok, LinkedIn, X), team, crises en tools.";
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Social media modereren: de complete gids voor merken, media en publieke organisaties",
+  "description": description,
+  "inLanguage": "nl",
+  "datePublished": "2026-10-30",
+  "dateModified": "2026-10-30",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/nl/blog/social-media-moderatie-gids" }
+};
+
+const networks = [
+  { name: "Facebook", tools: "Trefwoorden blokkeren, filter voor grof taalgebruik, verbergen, verwijderen, verbannen", action: "Verborgen (nog zichtbaar voor de auteur en diens vrienden) of verwijderd", om: "Ja" },
+  { name: "Instagram", tools: "Verborgen woorden, eigen woordenlijst, beperken, interacties limiteren, reacties uitzetten", action: "Verborgen of verwijderd", om: "Ja" },
+  { name: "YouTube", tools: "Ter beoordeling vasthouden, geblokkeerde woorden, links blokkeren, verborgen gebruikers, kanaalmoderators", action: "Ter beoordeling vastgehouden, verwijderd, of de gebruiker voor het kanaal verborgen", om: "Ja" },
+  { name: "TikTok", tools: "Filter voor spam en beledigende reacties, trefwoordfilter, alle reacties goedkeuren, wie mag reageren", action: "Gefilterd voor goedkeuring of verwijderd", om: "Geen eigen connector" },
+  { name: "LinkedIn", tools: "Verwijderen, rapporteren, beperken wie mag reageren, reacties op een post uitzetten", action: "Verwijderd", om: "Geen eigen connector" },
+  { name: "X", tools: "Instellingen voor antwoorden, antwoorden verbergen, negeren, blokkeren, rapporteren", action: "Antwoord verborgen achter een klik, of het account genegeerd of geblokkeerd", om: "Geen eigen connector" },
+];
+
+const responses = [
+  { type: "Klacht of kritiek, ook als die hard is", action: "Antwoord in het openbaar en ga naar privéberichten als er persoonsgegevens nodig zijn" },
+  { type: "Vraag over een product, een dienst of een artikel", action: "Antwoord, tijdens een campagne het liefst binnen het uur" },
+  { type: "Buiten het onderwerp maar onschuldig", action: "Laat staan, of verberg als je regels dat zeggen" },
+  { type: "Belediging, intimidatie, haatzaaiende taal", action: "Verberg, verban notoire overtreders, ga nooit in discussie" },
+  { type: "Spam, oplichting, nepwinactie, phishinglink", action: "Verberg of verwijder, verban het account, waarschuw je publiek als het zich verspreidt" },
+  { type: "Persoonsgegevens openbaar geplaatst", action: "Verwijder en neem daarna privé contact op met de persoon" },
+  { type: "Bedreiging, illegale content, signaal van zelfbeschadiging", action: "Schaal direct op: bewaar bewijs, meld het bij het platform, waarschuw de juiste persoon of instantie" },
+];
+
+const faqItems = [
+  {
+    question: "Wat is social media moderatie?",
+    answer: "Het is het werk van beoordelen wat mensen op je socialemedia-accounts plaatsen, vooral reacties en antwoorden, en beslissen wat zichtbaar blijft, wat wordt verborgen of verwijderd en wie wordt verbannen, volgens regels die je vooraf hebt vastgelegd. Het is iets anders dan antwoorden, wat het werk van de communitymanager is.",
+  },
+  {
+    question: "Wat doet een social media moderator?",
+    answer: "Een social media moderator leest reacties en antwoorden op de accounts van een merk, past de moderatieregels toe (verbergen, verwijderen, verbannen, online laten), schaalt gevoelige gevallen zoals bedreigingen of een crisis op en rapporteert over wat er is gebeurd. In kleine teams doet de communitymanager beide; in grotere teams is moderatie een aparte rol, vaak ondersteund door een automatische tool.",
+  },
+  {
+    question: "Moet ik negatieve reacties verbergen of verwijderen?",
+    answer: "Geen van beide, als ze alleen negatief zijn. Kritiek verdient een antwoord, en verbergen werkt vaak averechts. Verberg of verwijder reacties die je regels overtreden: beledigingen, haat, spam, oplichting, persoonsgegevens. Op Facebook is verbergen meestal de betere standaard, omdat de auteur zijn reactie nog ziet.",
+  },
+  {
+    question: "Kan ik social media automatisch modereren?",
+    answer: "Deels met de ingebouwde filters van elk netwerk, die trefwoorden blokkeren. Een speciale tool gaat verder: hij leest elke reactie in context, past je regels toe, stuurt twijfelgevallen naar een mens en legt bij elke beslissing een reden vast. OpenModeration doet dit voor Facebook, Instagram, YouTube en websites.",
+  },
+  {
+    question: "Modereert OpenModeration TikTok, LinkedIn of X?",
+    answer: "Nee. OpenModeration koppelt met Facebook-pagina's, professionele Instagram-accounts, YouTube-kanalen, WordPress en websites via zijn API. Op TikTok, LinkedIn en X ben je aangewezen op de eigen tools van elk netwerk en op handmatige moderatie.",
+  },
+  {
+    question: "Welke uren moet social media moderatie dekken?",
+    answer: "Idealiter de uren waarop je publiek actief is, vaak inclusief avonden en weekenden, en minstens de 24 tot 48 uur na een gesponsorde post of een gevoelige publicatie. Automatische moderatie dekt de uren waarop niemand dienst heeft; mensen nemen de twijfelgevallen de volgende ochtend over.",
+  },
+  {
+    question: "Geldt de DSA voor de socialemediapagina's van een merk?",
+    answer: "De belangrijkste DSA-verplichtingen, zoals motivering en melding en actie, liggen bij de hostingdienst. Op sociale netwerken is dat het platform zelf; op je eigen website ben jij dat. Een reden bij elke beslissing geven en een log bijhouden blijft goede praktijk op je pagina's, en is verplicht op je eigen site.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} ogType="article" jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: "Blog", href: localizePath('/blog', locale) }, { label: "Gids social media modereren" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-30">30 oktober 2026</time>
+        <span>&middot;</span>
+        <span>11 min lezen</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Social media modereren: de complete gids voor merken, media en publieke organisaties</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Elk account dat je op een sociaal netwerk opent, is een plek waar anderen onder jouw naam spreken.
+        De meesten stellen vragen, geven complimenten of klagen. Een paar beledigen, intimideren, spammen of proberen je
+        volgers op te lichten. Social media moderatie is hoe je die plek bruikbaar houdt zonder terechte
+        kritiek het zwijgen op te leggen. Deze gids behandelt de methodes, wat er per netwerk anders is, de regels die je opstelt, hoe
+        je een team organiseert, wat je doet in een crisis en hoe je het resultaat meet.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">In het kort</h2>
+      <ul>
+        <li><strong>Modereren is niet antwoorden.</strong> Modereren betekent beslissen wat zichtbaar blijft; antwoorden betekent met je publiek praten. Beide zijn nodig, vaak door verschillende mensen.</li>
+        <li><strong>Schrijf eerst je regels.</strong> Publiceer korte huisregels en bepaal daarna welke actie (laten staan, verbergen, verwijderen, verbannen, opschalen) bij elk soort content hoort.</li>
+        <li><strong>Elk netwerk heeft eigen tools</strong> en eigen acties: Facebook verbergt, YouTube houdt ter beoordeling vast, X verbergt antwoorden achter een klik.</li>
+        <li><strong>Combineer automatisering en mensen.</strong> Filters of een AI-tool nemen het volume en de nachturen voor hun rekening; mensen de twijfelgevallen, de antwoorden en de crises.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Wat is social media moderatie?</h2>
+      <p>
+        Social media moderatie is het beoordelen van content die anderen op je accounts publiceren:
+        reacties onder je posts, antwoorden op je berichten, soms reviews, vermeldingen of privéberichten.
+        Voor elk stuk content wordt een beslissing genomen: online laten, verbergen, verwijderen,
+        de auteur verbannen of opschalen naar iemand anders.
+      </p>
+      <p>
+        Het is een smallere taak dan de moderatie door de platforms zelf. Meta, Google of TikTok
+        handhaven hun communityrichtlijnen op het hele netwerk. Jij handhaaft je eigen regels op je
+        eigen accounts. Een reactie kan volkomen legaal zijn en door Instagram toegestaan, en toch niet thuishoren
+        onder je post: een link van een concurrent, een politieke tirade onder een productlancering, het telefoonnummer
+        van een klant dat openbaar wordt geplaatst.
+      </p>
+      <p>
+        Reactiemoderatie op een website volgt dezelfde logica, met meer controle. Onze
+        <a href={localizePath('/blog/comment-moderation-guide', locale)} class="text-brand-600 hover:text-brand-500">gids over reactiemoderatie</a> behandelt
+        beide gevallen; deze gids richt zich op sociale netwerken.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Waarom modereer je je socialemedia-accounts?</h2>
+      <ul>
+        <li><strong>Bescherm je publiek.</strong> Mensen die beledigingen of intimidatie onder je posts zien, stoppen met reageren. De luidste stemmen gaan dan namens je hele community spreken.</li>
+        <li><strong>Bescherm je merk.</strong> Een oplichterij of een haatdragende reactie onder je logo oogt als gedogen. Screenshots reizen sneller dan correcties.</li>
+        <li><strong>Bescherm je klanten.</strong> Nepaccounts van klantenservice, nepwinacties en phishinglinks richten zich in je reacties op je volgers, met jouw naam.</li>
+        <li><strong>Bescherm je campagnes.</strong> Gesponsorde posts trekken de meeste en de ergste reacties. Ongemodereerde reacties onder een advertentie beschadigen de boodschap waarvoor je hebt betaald.</li>
+        <li><strong>Bescherm je team.</strong> Communitymanagers die de hele dag misbruik lezen, raken opgebrand. Moderatieregels en tools nemen een deel van die last over.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Welke methodes van social media moderatie zijn er?</h2>
+      <p>Moderatiemethodes verschillen in wanneer de beslissing wordt genomen en door wie.</p>
+      <ul>
+        <li><strong>Premoderatie.</strong> Niets verschijnt voordat het is goedgekeurd. Het is de veiligste en de traagste methode, en weinig netwerken staan het toe: YouTube kan reacties ter beoordeling vasthouden, TikTok kan alle reacties filteren voor goedkeuring.</li>
+        <li><strong>Postmoderatie.</strong> Reacties verschijnen direct en worden achteraf beoordeeld. Het gesprek blijft levendig, maar schadelijke content is zichtbaar tot iemand ingrijpt.</li>
+        <li><strong>Reactieve moderatie.</strong> Je grijpt alleen in als iemand een reactie meldt of als je haar toevallig ziet. Het kost weinig en mist de meeste problemen.</li>
+        <li><strong>Automatische moderatie.</strong> Trefwoordfilters of AI-modellen handelen elke reactie af zodra ze is geplaatst, dag en nacht.</li>
+        <li><strong>Hybride moderatie.</strong> Automatisering handelt duidelijke gevallen af, en mensen beslissen over twijfelgevallen. Daar komen de meeste organisaties met echte volumes uiteindelijk op uit.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Hoe modereer je elk sociaal netwerk?</h2>
+      <p>De principes zijn overal hetzelfde; de tools en de beschikbare acties niet. Menu's veranderen vaak, dus we beschrijven functies die al jaren bestaan in plaats van exacte paden.</p>
+
+      <h3 class="text-lg font-semibold text-surface-900">Facebook</h3>
+      <p>
+        Een pagina kan trefwoorden blokkeren, een filter voor grof taalgebruik aanzetten en met de hand verbergen, verwijderen of verbannen. Verbergen is
+        de belangrijkste actie: de reactie blijft zichtbaar voor de auteur en diens vrienden, dus de auteur merkt het zelden.
+        Reacties onder advertenties zijn vaak het moeilijkst bij te houden. Zie onze gids over
+        <a href={localizePath('/blog/hide-facebook-comments-automatically', locale)} class="text-brand-600 hover:text-brand-500">Facebook-reacties automatisch verbergen</a>.
+      </p>
+
+      <h3 class="text-lg font-semibold text-surface-900">Instagram</h3>
+      <p>
+        Met de functie Verborgen woorden filtert Instagram beledigende reacties en kun je je eigen woorden toevoegen. Je
+        kunt ook een account beperken, interacties limiteren tijdens een golf van misbruik of reacties op een
+        post uitzetten. Lees onze gids over <a href={localizePath('/blog/instagram-comment-moderation', locale)} class="text-brand-600 hover:text-brand-500">Instagram-reacties modereren</a>.
+      </p>
+
+      <h3 class="text-lg font-semibold text-surface-900">YouTube</h3>
+      <p>
+        YouTube is het netwerk dat het verst gaat richting premoderatie: mogelijk ongepaste reacties
+        kunnen ter beoordeling worden vastgehouden, en je kunt woorden en links blokkeren, gebruikers voor je kanaal verbergen en moderators
+        aanstellen. Livechats vragen eigen aandacht. Details in onze gids over
+        <a href={localizePath('/blog/youtube-comment-moderation', locale)} class="text-brand-600 hover:text-brand-500">YouTube-reacties modereren</a>.
+      </p>
+
+      <h3 class="text-lg font-semibold text-surface-900">TikTok</h3>
+      <p>
+        TikTok biedt filters voor spam en beledigende reacties, een trefwoordfilter, de optie om alle
+        reacties goed te keuren voordat ze verschijnen en instellingen voor wie er mag reageren. Reactiesecties gaan snel en worden
+        vaak door trends gedreven. Meer in onze gids over <a href={localizePath('/blog/tiktok-comment-moderation', locale)} class="text-brand-600 hover:text-brand-500">TikTok-reacties modereren</a>.
+      </p>
+
+      <h3 class="text-lg font-semibold text-surface-900">LinkedIn</h3>
+      <p>
+        Reacties op LinkedIn zijn zelden beledigend, maar kunnen commerciële spam of verhitte discussies zijn. De tools zijn
+        eenvoudig: verwijderen, rapporteren, beperken wie op een post mag reageren of reacties uitzetten. Moderatie is vooral
+        handwerk.
+      </p>
+
+      <h3 class="text-lg font-semibold text-surface-900">X (Twitter)</h3>
+      <p>
+        Op X kun je antwoorden van anderen niet verwijderen. Je kunt kiezen wie op een post mag antwoorden,
+        antwoorden verbergen (ze blijven bereikbaar achter een klik) en accounts negeren, blokkeren of rapporteren. Moderatie op X
+        draait om het beperken van zichtbaarheid, niet om het weghalen van content.
+      </p>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Netwerk</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Belangrijkste ingebouwde tools</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Wat er met een gemodereerde reactie gebeurt</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">OpenModeration</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {networks.map((row) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{row.name}</td>
+              <td class="px-4 py-3 text-surface-600">{row.tools}</td>
+              <td class="px-4 py-3 text-surface-600">{row.action}</td>
+              <td class="px-4 py-3 text-surface-600">{row.om}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">Welke regels volgt je social media moderatie?</h2>
+      <p>Moderatie zonder geschreven regels hangt af van wie er dienst heeft en van diens humeur die dag. Regels maken beslissingen consistent en verdedigbaar.</p>
+      <ol>
+        <li><strong>Publiceer korte huisregels.</strong> Een paar regels in je bio, een vastgezette post of een pagina op je site: wat welkom is, wat wordt weggehaald, wat tot een ban leidt. Ernaar verwijzen beslecht veel discussies.</li>
+        <li><strong>Zet de categorieën op een rij waarop je ingrijpt.</strong> Beledigingen en intimidatie, haatzaaiende taal, spam en oplichting, persoonsgegevens, illegale content, en de use cases die specifiek voor jou zijn: promotie van concurrenten, discussies buiten het onderwerp, spoilers, ongefundeerde gezondheidsclaims.</li>
+        <li><strong>Koppel aan elke categorie een actie.</strong> Laten staan, verbergen, verwijderen, verbannen, opschalen. Verbergen is de standaard op netwerken die het toestaan; verwijderen is voor content die voor iedereen moet verdwijnen.</li>
+        <li><strong>Geef voorbeelden.</strong> Twee of drie echte reacties per categorie, inclusief grensgevallen, helpen elke moderator, mens of machine, de grens op dezelfde plek te trekken.</li>
+        <li><strong>Leg de opschaalroute vast.</strong> Wie wordt erbij gehaald bij een bedreiging, een juridische kwestie, een vraag van een journalist of een crisis, en hoe snel.</li>
+      </ol>
+      <p>
+        Een volledige methode en een sjabloon vind je op onze pagina over het opstellen van een
+        <a href={localizePath('/content-moderation-policy', locale)} class="text-brand-600 hover:text-brand-500">moderatiebeleid</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Communitymanagement of moderatie: wie doet wat?</h2>
+      <p>
+        De communitymanager brengt leven in de brouwerij: publiceert, antwoordt, bedankt, beantwoordt vragen, maakt van een boze
+        klant een tevreden klant. De moderator filtert: past de regels toe, verbergt wat er niet thuishoort,
+        verbant notoire overtreders, signaleert wat opgeschaald moet worden. In een klein team doet één persoon beide,
+        en op een drukke dag is moderatie meestal wat erbij inschiet.
+      </p>
+      <p>Zodra het volume groeit, organiseer je het werk expliciet.</p>
+      <ul>
+        <li><strong>Dekkingsuren.</strong> Bepaal wanneer iemand dienst heeft, en wie de avonden, weekenden en de uren na een gevoelige post dekt.</li>
+        <li><strong>Eén wachtrij.</strong> Account per account modereren in de app van elk netwerk kost tijd en laat gaten. Centraliseer wat een menselijke beslissing nodig heeft.</li>
+        <li><strong>Duidelijke rollen.</strong> Wie mag verbannen? Wie mag verwijderen? Wie staat de pers te woord? Schrijf het op.</li>
+        <li><strong>Welzijn.</strong> Wissel de blootstelling aan de ergste content af, laat mensen even afstand nemen en automatiseer de duidelijke gevallen, zodat mensen er minder van zien.</li>
+        <li><strong>Bureau of eigen team.</strong> Uitbesteden geeft nachtdekking, maar het bureau heeft je regels, je voorbeelden en een directe lijn voor opschaling nodig.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Antwoorden of modereren?</h2>
+      <p>
+        De meest gemaakte fout is modereren wat beantwoord had moeten worden. Een terechte klacht verbergen
+        vertelt iedereen dat je iets te verbergen hebt, en de auteur komt luider terug. Gebruik moderatie voor
+        wat je regels overtreedt, en antwoorden voor al het andere. Voor lastige gevallen lees je onze gids over
+        <a href={localizePath('/blog/handle-negative-comments-trolls', locale)} class="text-brand-600 hover:text-brand-500">omgaan met negatieve reacties en trolls</a>.
+      </p>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Soort reactie</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Wat je doet</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {responses.map((row) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{row.type}</td>
+              <td class="px-4 py-3 text-surface-600">{row.action}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">Hoe ga je om met een moderatiecrisis op social media?</h2>
+      <p>Een crisis is wanneer reacties sneller binnenkomen dan je ze kunt lezen: een controversiële post, een terugroepactie, een gecoördineerde raid, een nieuwsgebeurtenis waarin je merk wordt meegesleurd.</p>
+      <ol>
+        <li><strong>Scheid de twee problemen.</strong> Misbruik en spam modereer je zoals gewoonlijk, zelfs strenger. Terechte boosheid beantwoord je, met één consistente boodschap.</li>
+        <li><strong>Gebruik de noodknoppen.</strong> Beperk wie mag reageren, houd reacties ter beoordeling vast, zet reacties uit op de meest blootgestelde post. Zeg openbaar dat je het doet en waarom.</li>
+        <li><strong>Pauzeer gesponsorde posts</strong> die de storm aantrekken, zodat je niet betaalt om hem te verspreiden.</li>
+        <li><strong>Bewaar bewijs.</strong> Maak screenshots van bedreigingen en gecoördineerde berichten voordat je ze verbergt of verwijdert.</li>
+        <li><strong>Houd een korte dagelijkse evaluatie</strong> met communicatie, juridische zaken en de moderators tot het rustig wordt, en werk daarna je regels bij met wat je hebt geleerd.</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Hoe meet je social media moderatie?</h2>
+      <p>Volg elke maand een handvol indicatoren, per netwerk en per post.</p>
+      <ul>
+        <li><strong>Volume:</strong> ontvangen reacties, en het aandeel dat is verborgen, verwijderd of opgeschaald.</li>
+        <li><strong>Tijd tot actie:</strong> hoe lang een schadelijke reactie zichtbaar blijft. Dit is het cijfer dat voor je publiek het zwaarst weegt.</li>
+        <li><strong>Reactietijd</strong> op vragen en klachten, apart gemeten.</li>
+        <li><strong>Fouten:</strong> reacties die na beoordeling zijn hersteld, en klachten van gebruikers die zich gecensureerd voelen. Te veel betekent dat je regels te breed zijn.</li>
+        <li><strong>Beoordelingsachterstand:</strong> hoeveel twijfelgevallen op een mens wachten, en hoe lang.</li>
+        <li><strong>Brandhaarden:</strong> welke posts, onderwerpen of campagnes de meeste problemen trekken, om de dekking te plannen.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Wat moet een tool voor social media moderatie doen? Een checklist</h2>
+      <ol>
+        <li>Koppelen met de netwerken die je echt gebruikt, via hun officiële API's.</li>
+        <li>Ingrijpen zodra een reactie is geplaatst, niet uren later.</li>
+        <li>Je regels en je use cases toepassen, niet alleen generieke categorieën.</li>
+        <li>Context, spelfouten, sarcasme en de talen van je publiek begrijpen.</li>
+        <li>Per netwerk de juiste actie gebruiken: verbergen, vasthouden, weigeren, verwijderen.</li>
+        <li>Twijfelgevallen door mensen laten behandelen en je elke beslissing in realtime laten zien.</li>
+        <li>Bij elke beslissing een schriftelijke reden geven en een audittrail bijhouden.</li>
+        <li>Je vertellen waar gegevens worden verwerkt en opgeslagen.</li>
+        <li>Mensen meeleveren die je helpen de regels op te zetten en bij te stellen.</li>
+      </ol>
+      <p>
+        <a href={localizePath('/social-media-moderation', locale)} class="text-brand-600 hover:text-brand-500">De social media moderatie van OpenModeration</a> dekt
+        Facebook, Instagram, YouTube en websites (inclusief WordPress) in één console. Ze koppelt niet met TikTok, LinkedIn of X:
+        op die netwerken blijven de ingebouwde tools hierboven je belangrijkste optie.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Wat verandert de DSA voor social media moderatie?</h2>
+      <p>
+        De Europese Digital Services Act verplicht hostingdiensten en onlineplatforms om hun
+        moderatiebeslissingen met een motivering toe te lichten en een manier te bieden om illegale content te melden. Op
+        sociale netwerken liggen die verplichtingen vooral bij het platform, niet bij het merk dat een pagina beheert.
+        Op je eigen website liggen ze bij jou. In beide gevallen is een reden en een vastlegging bij elke
+        beslissing de eenvoudigste manier om voorbereid te zijn als een gebruiker, een leidinggevende of een toezichthouder vraagt waarom een reactie
+        is verdwenen.
+      </p>
+    </div>
+
+    <div class="mt-12">
+      <FAQ title="Veelgestelde vragen" items={faqItems} />
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Lees verder</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/social-media-moderation', locale)} class="font-medium text-brand-600 hover:text-brand-500">Social media modereren met OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/blog/comment-moderation-guide', locale)} class="font-medium text-brand-600 hover:text-brand-500">De complete gids over reactiemoderatie &rarr;</a></li>
+        <li><a href={localizePath('/blog/handle-negative-comments-trolls', locale)} class="font-medium text-brand-600 hover:text-brand-500">Omgaan met negatieve reacties en trolls &rarr;</a></li>
+        <li><a href={localizePath('/content-moderation-policy', locale)} class="font-medium text-brand-600 hover:text-brand-500">Zo stel je een moderatiebeleid op &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

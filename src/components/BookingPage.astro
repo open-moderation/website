@@ -1,0 +1,342 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from './Breadcrumb.astro';
+import ClientLogos from './ClientLogos.astro';
+import FAQ from './FAQ.astro';
+import TeamSection from './TeamSection.astro';
+import { getLocale, localizePath } from '../i18n/routes';
+import { bookingUrl } from '../i18n/ui';
+
+const BOOKING_URL = bookingUrl(getLocale(Astro.url.pathname));
+const locale = getLocale(Astro.url.pathname);
+
+const copyAll = {
+  en: {
+    contact: { label: 'Your call is with', name: 'Jesús Morillo', role: 'Product owner at Logora', note: '', photo: '/images/team/jesus-morillo.jpg' },
+    title: 'Book a Call: See AI Moderation on Your Comments',
+    description: 'A 60-minute call, free and without commitment: we look at your comments, test the moderation on real examples and size the setup with you.',
+    home: 'Home', crumb: 'Book a call',
+    eyebrow: '60 minutes · free · no commitment',
+    h1: 'See what OpenModeration would do on your comments',
+    intro: 'Bring a few real comments from your site or your pages. We test the moderation on them live, list your rules and use cases together, and you leave with a clear setup plan.',
+    agendaTitle: 'What happens during the call',
+    agenda: [
+      { emoji: '🎯', title: 'Your situation', text: 'Your platforms, your volumes, what goes wrong today and what you cannot afford to miss.' },
+      { emoji: '🧪', title: 'A live test on your comments', text: 'We run the moderation on real examples you bring and look at each decision and its written reason.' },
+      { emoji: '✍️', title: 'Your rules and use cases', text: 'What to hide, what to keep visible, what our team should look at: we sketch them with you.' },
+      { emoji: '🚀', title: 'Setup and budget', text: 'How we set it up and run it for you, and an estimate for your volumes.' },
+    ],
+    forTitle: 'For whom',
+    forList: ['News sites and newsrooms', 'Brands, retailers and luxury houses', 'Public bodies and local authorities', 'Platforms and communities that host comments'],
+    bring: 'Tip: bring 10 to 20 comments that gave your team trouble. That is where the demo is the most telling.',
+    trust: ['DSA-compliant', 'Hosted in the EU', 'GDPR', 'A Logora product'],
+    calTitle: 'Pick a slot',
+    calFallback: 'The calendar does not load? Open it in a new tab',
+    faqTitle: 'Before you book',
+    faq: [
+      { question: 'Is the call free?', answer: 'Yes. The call is free and without commitment. It is used to see whether OpenModeration fits your comments and your rules.' },
+      { question: 'What should I prepare?', answer: 'Nothing is required. If you can, bring a few real comments that were hard to handle, and tell us which platforms you moderate: your website, Facebook, Instagram, YouTube or WordPress.' },
+      { question: 'Who will I talk to?', answer: 'Someone from the OpenModeration team at Logora, who sets the moderation up with clients and can answer product, compliance and budget questions.' },
+      { question: 'Can we test before committing?', answer: 'Yes. In sandbox mode, OpenModeration analyses your real comments and shows what it would have decided, without hiding or deleting anything.' },
+      { question: 'Do you handle the DSA side?', answer: 'Every decision comes with a written reason and is logged, user reports and appeals are handled by our team, and figures for your transparency report can be exported. We go through your obligations during the call.' },
+    ],
+  },
+  fr: {
+    contact: { label: 'Vous parlerez avec', name: 'Pierre Laburthe-Tolra', role: 'Cofondateur de Logora', note: '', photo: '/images/team/pierre-laburthe-tolra.jpg' },
+    title: 'Prendre rendez-vous : la modération sur vos commentaires',
+    description: "Un rendez-vous de 60 minutes, gratuit et sans engagement : on regarde vos commentaires, on teste la modération sur de vrais exemples et on dimensionne l'offre.",
+    home: 'Accueil', crumb: 'Prendre rendez-vous',
+    eyebrow: '60 minutes · gratuit · sans engagement',
+    h1: 'Voyez ce que ferait OpenModeration sur vos commentaires',
+    intro: "Apportez quelques vrais commentaires de votre site ou de vos pages. On teste la modération dessus en direct, on liste ensemble vos règles et vos cas d'usage, et vous repartez avec un plan de mise en place clair.",
+    agendaTitle: 'Ce qui se passe pendant le rendez-vous',
+    agenda: [
+      { emoji: '🎯', title: 'Votre situation', text: "Vos plateformes, vos volumes, ce qui coince aujourd'hui et ce que vous ne pouvez pas laisser passer." },
+      { emoji: '🧪', title: 'Un test en direct sur vos commentaires', text: 'On lance la modération sur de vrais exemples que vous apportez et on regarde chaque décision et son explication écrite.' },
+      { emoji: '✍️', title: "Vos règles et vos cas d'usage", text: 'Ce qu’il faut masquer, ce qui doit rester visible, ce que notre équipe doit examiner : on les esquisse avec vous.' },
+      { emoji: '🚀', title: 'Mise en place et budget', text: "Comment nous mettons tout en place et faisons tourner la modération pour vous, et une estimation pour vos volumes." },
+    ],
+    forTitle: 'Pour qui',
+    forList: ["Sites d'information et rédactions", 'Marques, enseignes et maisons de luxe', 'Collectivités et organismes publics', 'Plateformes et communautés qui hébergent des commentaires'],
+    bring: "Astuce : apportez 10 à 20 commentaires qui ont posé problème à votre équipe. C'est là que la démo est la plus parlante.",
+    trust: ['Conforme au DSA', "Hébergé dans l'UE", 'RGPD', 'Une solution Logora'],
+    calTitle: 'Choisissez un créneau',
+    calFallback: "L'agenda ne s'affiche pas ? Ouvrez-le dans un nouvel onglet",
+    faqTitle: 'Avant de réserver',
+    faq: [
+      { question: 'Le rendez-vous est-il gratuit ?', answer: "Oui. Le rendez-vous est gratuit et sans engagement. Il sert à voir si OpenModeration convient à vos commentaires et à vos règles." },
+      { question: 'Que faut-il préparer ?', answer: 'Rien d’obligatoire. Si vous le pouvez, apportez quelques vrais commentaires difficiles à traiter et dites-nous quelles plateformes vous modérez : votre site, Facebook, Instagram, YouTube ou WordPress.' },
+      { question: 'Avec qui vais-je parler ?', answer: "Avec une personne de l'équipe OpenModeration chez Logora, qui met en place la modération avec les clients et peut répondre aux questions produit, conformité et budget." },
+      { question: "Peut-on tester avant de s'engager ?", answer: "Oui. En mode bac à sable, OpenModeration analyse vos vrais commentaires et montre ce qu'il aurait décidé, sans rien masquer ni supprimer." },
+      { question: 'Vous gérez la partie DSA ?', answer: 'Chaque décision est accompagnée d’une explication écrite et enregistrée, les signalements et les contestations sont traités par notre équipe et les chiffres de votre rapport de transparence sont exportables. On passe en revue vos obligations pendant le rendez-vous.' },
+    ],
+  },
+  es: {
+    contact: { label: 'Hablarás con', name: 'Jesús Morillo', role: 'Product owner de Logora', note: 'En español, su lengua materna.', photo: '/images/team/jesus-morillo.jpg' },
+    title: 'Reserva una llamada: la moderación en tus comentarios',
+    description: 'Una llamada de 60 minutos, gratuita y sin compromiso: revisamos tus comentarios, probamos la moderación con ejemplos reales y dimensionamos la oferta.',
+    home: 'Inicio', crumb: 'Reservar una llamada',
+    eyebrow: '60 minutos · gratis · sin compromiso',
+    h1: 'Mira lo que haría OpenModeration con tus comentarios',
+    intro: 'Trae algunos comentarios reales de tu web o de tus páginas. Probamos la moderación con ellos en directo, definimos juntos tus reglas y casos de uso, y te llevas un plan de puesta en marcha claro.',
+    agendaTitle: 'Qué pasa durante la llamada',
+    agenda: [
+      { emoji: '🎯', title: 'Tu situación', text: 'Tus plataformas, tus volúmenes, lo que falla hoy y lo que no puedes dejar pasar.' },
+      { emoji: '🧪', title: 'Una prueba en directo con tus comentarios', text: 'Lanzamos la moderación sobre ejemplos reales que traigas y revisamos cada decisión y su explicación por escrito.' },
+      { emoji: '✍️', title: 'Tus reglas y casos de uso', text: 'Qué ocultar, qué dejar visible, qué revisa nuestro equipo: lo esbozamos contigo.' },
+      { emoji: '🚀', title: 'Puesta en marcha y presupuesto', text: 'Cómo lo ponemos en marcha y lo gestionamos por ti, y una estimación para tus volúmenes.' },
+    ],
+    forTitle: 'Para quién',
+    forList: ['Medios y redacciones', 'Marcas, retail y casas de lujo', 'Administraciones y organismos públicos', 'Plataformas y comunidades que alojan comentarios'],
+    bring: 'Consejo: trae entre 10 y 20 comentarios que hayan dado problemas a tu equipo. Ahí es donde la demo es más reveladora.',
+    trust: ['Conforme a la DSA', 'Alojado en la UE', 'RGPD', 'Una solución de Logora'],
+    calTitle: 'Elige un horario',
+    calFallback: '¿No se carga el calendario? Ábrelo en una pestaña nueva',
+    faqTitle: 'Antes de reservar',
+    faq: [
+      { question: '¿La llamada es gratuita?', answer: 'Sí. La llamada es gratuita y sin compromiso. Sirve para ver si OpenModeration encaja con tus comentarios y tus reglas.' },
+      { question: '¿Qué tengo que preparar?', answer: 'Nada obligatorio. Si puedes, trae algunos comentarios reales difíciles de gestionar y dinos qué plataformas moderas: tu web, Facebook, Instagram, YouTube o WordPress.' },
+      { question: '¿Con quién hablaré?', answer: 'Con alguien del equipo de OpenModeration en Logora, que pone en marcha la moderación con los clientes y responde a preguntas de producto, cumplimiento y presupuesto.' },
+      { question: '¿Se puede probar antes de comprometerse?', answer: 'Sí. En modo sandbox, OpenModeration analiza tus comentarios reales y muestra lo que habría decidido, sin ocultar ni borrar nada.' },
+      { question: '¿Os ocupáis de la parte de la DSA?', answer: 'Cada decisión lleva una explicación por escrito y queda registrada, nuestro equipo gestiona las denuncias y las reclamaciones y las cifras de tu informe de transparencia se pueden exportar. Repasamos tus obligaciones durante la llamada.' },
+    ],
+  },
+  de: {
+    contact: { label: 'Sie sprechen mit', name: 'Sylvia Guie-Mien', role: 'Business Development bei Logora', note: 'Auf Deutsch, ihrer Muttersprache.', photo: null },
+    title: 'Termin vereinbaren: KI-Moderation für Ihre Kommentare',
+    description: 'Ein 60-minütiger Termin, kostenlos und unverbindlich: Wir sehen uns Ihre Kommentare an, testen die Moderation an echten Beispielen und planen mit Ihnen.',
+    home: 'Startseite', crumb: 'Termin vereinbaren',
+    eyebrow: '60 Minuten · kostenlos · unverbindlich',
+    h1: 'Sehen Sie, was OpenModeration mit Ihren Kommentaren machen würde',
+    intro: 'Bringen Sie einige echte Kommentare von Ihrer Website oder Ihren Seiten mit. Wir testen die Moderation live daran, halten gemeinsam Ihre Regeln und Anwendungsfälle fest, und Sie gehen mit einem klaren Einführungsplan.',
+    agendaTitle: 'Was im Termin passiert',
+    agenda: [
+      { emoji: '🎯', title: 'Ihre Ausgangslage', text: 'Ihre Plattformen, Ihre Volumen, was heute nicht funktioniert und was Sie auf keinen Fall durchlassen dürfen.' },
+      { emoji: '🧪', title: 'Ein Live-Test mit Ihren Kommentaren', text: 'Wir lassen die Moderation über echte Beispiele laufen und sehen uns jede Entscheidung mit ihrer schriftlichen Begründung an.' },
+      { emoji: '✍️', title: 'Ihre Regeln und Anwendungsfälle', text: 'Was ausgeblendet wird, was sichtbar bleibt, was unser Team prüft: Wir skizzieren es mit Ihnen.' },
+      { emoji: '🚀', title: 'Einführung und Budget', text: 'Wie wir alles einrichten und für Sie betreiben, und eine Schätzung für Ihre Volumen.' },
+    ],
+    forTitle: 'Für wen',
+    forList: ['Nachrichtenseiten und Redaktionen', 'Marken, Händler und Luxushäuser', 'Behörden und öffentliche Einrichtungen', 'Plattformen und Communities mit Kommentaren'],
+    bring: 'Tipp: Bringen Sie 10 bis 20 Kommentare mit, die Ihrem Team Probleme gemacht haben. Dort ist die Demo am aussagekräftigsten.',
+    trust: ['DSA-konform', 'In der EU gehostet', 'DSGVO', 'Eine Lösung von Logora'],
+    calTitle: 'Wählen Sie einen Termin',
+    calFallback: 'Der Kalender lädt nicht? In neuem Tab öffnen',
+    faqTitle: 'Vor der Buchung',
+    faq: [
+      { question: 'Ist der Termin kostenlos?', answer: 'Ja. Der Termin ist kostenlos und unverbindlich. Er dient dazu, zu prüfen, ob OpenModeration zu Ihren Kommentaren und Regeln passt.' },
+      { question: 'Was sollte ich vorbereiten?', answer: 'Nichts ist Pflicht. Wenn möglich, bringen Sie einige schwierige echte Kommentare mit und sagen Sie uns, welche Plattformen Sie moderieren: Website, Facebook, Instagram, YouTube oder WordPress.' },
+      { question: 'Mit wem spreche ich?', answer: 'Mit einer Person aus dem OpenModeration-Team bei Logora, die die Moderation mit Kunden einrichtet und Fragen zu Produkt, Compliance und Budget beantwortet.' },
+      { question: 'Kann man vorher testen?', answer: 'Ja. Im Sandbox-Modus analysiert OpenModeration Ihre echten Kommentare und zeigt, wie es entschieden hätte, ohne etwas auszublenden oder zu löschen.' },
+      { question: 'Kümmern Sie sich um den DSA?', answer: 'Jede Entscheidung wird schriftlich begründet und protokolliert, Meldungen und Widersprüche bearbeitet unser Team und die Zahlen für Ihren Transparenzbericht sind exportierbar. Ihre Pflichten gehen wir im Termin gemeinsam durch.' },
+    ],
+  },
+  it: {
+    contact: { label: 'Parlerai con', name: 'Jesús Morillo', role: 'Product owner di Logora', note: '', photo: '/images/team/jesus-morillo.jpg' },
+    title: 'Prenota una call: la moderazione sui tuoi commenti',
+    description: 'Una call di 60 minuti, gratuita e senza impegno: guardiamo i tuoi commenti, testiamo la moderazione su esempi reali e dimensioniamo l’offerta con te.',
+    home: 'Home', crumb: 'Prenota una call',
+    eyebrow: '60 minuti · gratis · senza impegno',
+    h1: 'Scopri cosa farebbe OpenModeration con i tuoi commenti',
+    intro: 'Porta qualche commento reale dal tuo sito o dalle tue pagine. Testiamo la moderazione in diretta, definiamo insieme le tue regole e i tuoi casi d’uso, e riparti con un piano di avvio chiaro.',
+    agendaTitle: 'Cosa succede durante la call',
+    agenda: [
+      { emoji: '🎯', title: 'La tua situazione', text: 'Le tue piattaforme, i tuoi volumi, cosa non funziona oggi e cosa non puoi lasciar passare.' },
+      { emoji: '🧪', title: 'Un test dal vivo sui tuoi commenti', text: 'Lanciamo la moderazione su esempi reali che porti e guardiamo ogni decisione con la sua motivazione scritta.' },
+      { emoji: '✍️', title: 'Le tue regole e i tuoi casi d’uso', text: 'Cosa nascondere, cosa lasciare visibile, cosa verifica il nostro team: lo abbozziamo con te.' },
+      { emoji: '🚀', title: 'Avvio e budget', text: 'Come impostiamo e gestiamo la moderazione per te, e una stima per i tuoi volumi.' },
+    ],
+    forTitle: 'Per chi',
+    forList: ['Testate e redazioni', 'Brand, retail e maison del lusso', 'Pubblica amministrazione ed enti pubblici', 'Piattaforme e community che ospitano commenti'],
+    bring: 'Consiglio: porta 10–20 commenti che hanno messo in difficoltà il tuo team. È lì che la demo è più convincente.',
+    trust: ['Conforme al DSA', 'Ospitato nell’UE', 'GDPR', 'Una soluzione Logora'],
+    calTitle: 'Scegli un orario',
+    calFallback: 'Il calendario non si carica? Aprilo in una nuova scheda',
+    faqTitle: 'Prima di prenotare',
+    faq: [
+      { question: 'La call è gratuita?', answer: 'Sì. La call è gratuita e senza impegno. Serve a capire se OpenModeration è adatto ai tuoi commenti e alle tue regole.' },
+      { question: 'Cosa devo preparare?', answer: 'Niente di obbligatorio. Se puoi, porta qualche commento reale difficile da gestire e dicci quali piattaforme moderi: il tuo sito, Facebook, Instagram, YouTube o WordPress.' },
+      { question: 'Con chi parlerò?', answer: 'Con una persona del team OpenModeration di Logora, che avvia la moderazione con i clienti e risponde a domande su prodotto, conformità e budget.' },
+      { question: 'Si può provare prima di impegnarsi?', answer: 'Sì. In modalità sandbox, OpenModeration analizza i tuoi commenti reali e mostra cosa avrebbe deciso, senza nascondere né eliminare nulla.' },
+      { question: 'Vi occupate della parte DSA?', answer: 'Ogni decisione ha una motivazione scritta ed è registrata, le segnalazioni e i reclami vengono gestiti dal nostro team e i dati per il report di trasparenza sono esportabili. Durante la call esaminiamo i tuoi obblighi.' },
+    ],
+  },
+  pt: {
+    contact: { label: 'Você vai conversar com', name: 'Jesús Morillo', role: 'Product owner na Logora', note: '', photo: '/images/team/jesus-morillo.jpg' },
+    title: 'Agende uma conversa: a moderação com IA nos seus comentários',
+    description: 'Uma conversa de 60 minutos, gratuita e sem compromisso: olhamos seus comentários, testamos a moderação com exemplos reais e dimensionamos a implantação com você.',
+    home: 'Início', crumb: 'Agendar uma conversa',
+    eyebrow: '60 minutos · grátis · sem compromisso',
+    h1: 'Veja o que a OpenModeration faria com os seus comentários',
+    intro: 'Traga alguns comentários reais do seu site ou das suas páginas. Testamos a moderação com eles ao vivo, listamos juntos as suas regras e os seus casos de uso, e você sai com um plano de implantação claro.',
+    agendaTitle: 'O que acontece na conversa',
+    agenda: [
+      { emoji: '🎯', title: 'A sua situação', text: 'Suas plataformas, seus volumes, o que não funciona hoje e o que você não pode deixar passar.' },
+      { emoji: '🧪', title: 'Um teste ao vivo com os seus comentários', text: 'Rodamos a moderação em exemplos reais que você trouxer e olhamos cada decisão com a sua justificativa por escrito.' },
+      { emoji: '✍️', title: 'Suas regras e seus casos de uso', text: 'O que ocultar, o que manter visível, o que a nossa equipe analisa: esboçamos tudo com você.' },
+      { emoji: '🚀', title: 'Implantação e orçamento', text: 'Como a gente implanta e cuida da moderação por você, e uma estimativa para os seus volumes.' },
+    ],
+    forTitle: 'Para quem',
+    forList: ['Sites de notícias e redações', 'Marcas, varejistas e casas de luxo', 'Órgãos públicos e prefeituras', 'Plataformas e comunidades que recebem comentários'],
+    bring: 'Dica: traga de 10 a 20 comentários que deram trabalho para a sua equipe. É aí que a demo fica mais reveladora.',
+    trust: ['Em conformidade com o DSA', 'Hospedado na UE', 'RGPD', 'Um produto Logora'],
+    calTitle: 'Escolha um horário',
+    calFallback: 'A agenda não carrega? Abra em uma nova aba',
+    faqTitle: 'Antes de agendar',
+    faq: [
+      { question: 'A conversa é gratuita?', answer: 'Sim. A conversa é gratuita e sem compromisso. Ela serve para ver se a OpenModeration se encaixa nos seus comentários e nas suas regras.' },
+      { question: 'O que preciso preparar?', answer: 'Nada é obrigatório. Se puder, traga alguns comentários reais que foram difíceis de tratar e conte quais plataformas você modera: seu site, Facebook, Instagram, YouTube ou WordPress.' },
+      { question: 'Com quem vou falar?', answer: 'Com alguém da equipe da OpenModeration na Logora, que implanta a moderação com os clientes e pode responder às perguntas sobre produto, conformidade e orçamento.' },
+      { question: 'Dá para testar antes de fechar?', answer: 'Sim. No modo sandbox, a OpenModeration analisa seus comentários reais e mostra o que teria decidido, sem ocultar nem excluir nada.' },
+      { question: 'Vocês cuidam da parte do DSA?', answer: 'Cada decisão vem com uma justificativa por escrito e fica registrada, as denúncias de usuários e as contestações são tratadas pela nossa equipe e os números do seu relatório de transparência podem ser exportados. Revisamos as suas obrigações durante a conversa.' },
+    ],
+  },
+  pl: {
+    contact: { label: 'Rozmowę poprowadzi', name: 'Jesús Morillo', role: 'Product owner w Logora', note: '', photo: '/images/team/jesus-morillo.jpg' },
+    title: 'Umów rozmowę: moderacja AI na Państwa komentarzach',
+    description: '60-minutowa rozmowa, bezpłatna i bez zobowiązań: przeglądamy komentarze, testujemy moderację na prawdziwych przykładach i wspólnie planujemy wdrożenie.',
+    home: 'Strona główna', crumb: 'Umów rozmowę',
+    eyebrow: '60 minut · bezpłatnie · bez zobowiązań',
+    h1: 'Zobacz, co OpenModeration zrobiłby z Państwa komentarzami',
+    intro: 'Przygotuj kilka prawdziwych komentarzy ze swojej strony lub profili. Przetestujemy na nich moderację na żywo, wspólnie spiszemy reguły i przypadki użycia, a po rozmowie zostanie jasny plan wdrożenia.',
+    agendaTitle: 'Przebieg rozmowy',
+    agenda: [
+      { emoji: '🎯', title: 'Punkt wyjścia', text: 'Platformy, wolumeny, co dziś nie działa i czego nie można przepuścić.' },
+      { emoji: '🧪', title: 'Test na żywo na prawdziwych komentarzach', text: 'Uruchamiamy moderację na przyniesionych przykładach i omawiamy każdą decyzję wraz z pisemnym uzasadnieniem.' },
+      { emoji: '✍️', title: 'Reguły i przypadki użycia', text: 'Co ukrywać, co zostawić widoczne, co trafia do naszego zespołu: szkicujemy to wspólnie.' },
+      { emoji: '🚀', title: 'Wdrożenie i budżet', text: 'Jak wdrażamy i prowadzimy moderację za Państwa, oraz wycena dla danych wolumenów.' },
+    ],
+    forTitle: 'Dla kogo',
+    forList: ['Portale informacyjne i redakcje', 'Marki, sieci handlowe i domy luksusowe', 'Instytucje publiczne i samorządy', 'Platformy i społeczności z komentarzami'],
+    bring: 'Wskazówka: przygotuj 10–20 komentarzy, z którymi zespół miał problem. Na nich demo pokazuje najwięcej.',
+    trust: ['Zgodność z DSA', 'Hosting w UE', 'RODO', 'Produkt firmy Logora'],
+    calTitle: 'Wybierz termin',
+    calFallback: 'Kalendarz się nie ładuje? Otwórz go w nowej karcie',
+    faqTitle: 'Przed rezerwacją',
+    faq: [
+      { question: 'Czy rozmowa jest bezpłatna?', answer: 'Tak. Rozmowa jest bezpłatna i bez zobowiązań. Służy sprawdzeniu, czy OpenModeration pasuje do Państwa komentarzy i reguł.' },
+      { question: 'Co warto przygotować?', answer: 'Nic nie jest obowiązkowe. Jeśli to możliwe, przygotuj kilka prawdziwych komentarzy, które sprawiły trudność, i daj znać, jakie platformy są moderowane: strona internetowa, Facebook, Instagram, YouTube czy WordPress.' },
+      { question: 'Z kim będę rozmawiać?', answer: 'Z osobą z zespołu OpenModeration w Logora, która wdraża moderację u klientów i odpowie na pytania o produkt, zgodność z przepisami i budżet.' },
+      { question: 'Czy można przetestować przed podjęciem decyzji?', answer: 'Tak. W trybie sandbox OpenModeration analizuje prawdziwe komentarze i pokazuje, jaką decyzję by podjął, niczego nie ukrywając ani nie usuwając.' },
+      { question: 'Czy zajmujecie się kwestiami DSA?', answer: 'Każda decyzja ma pisemne uzasadnienie i jest rejestrowana, zgłoszenia użytkowników i odwołania rozpatruje nasz zespół, a dane do raportu przejrzystości można wyeksportować. Podczas rozmowy omawiamy Państwa obowiązki.' },
+    ],
+  },
+  nl: {
+    contact: { label: 'Je spreekt met', name: 'Jesús Morillo', role: 'Product owner bij Logora', note: '', photo: '/images/team/jesus-morillo.jpg' },
+    title: 'Plan een gesprek: AI-moderatie op je eigen reacties',
+    description: 'Een gesprek van 60 minuten, gratis en vrijblijvend: we bekijken je reacties, testen de moderatie op echte voorbeelden en bepalen samen de opzet.',
+    home: 'Home', crumb: 'Plan een gesprek',
+    eyebrow: '60 minuten · gratis · vrijblijvend',
+    h1: 'Zie wat OpenModeration met jouw reacties zou doen',
+    intro: "Neem een paar echte reacties mee van je website of je pagina's. We testen de moderatie er live op, zetten samen je regels en use cases op een rij, en je gaat weg met een helder implementatieplan.",
+    agendaTitle: 'Wat er in het gesprek gebeurt',
+    agenda: [
+      { emoji: '🎯', title: 'Jouw situatie', text: 'Je platforms, je volumes, wat er nu misgaat en wat je absoluut niet wilt missen.' },
+      { emoji: '🧪', title: 'Een live test op je reacties', text: 'We laten de moderatie los op echte voorbeelden die je meeneemt en bekijken elke beslissing met de schriftelijke toelichting.' },
+      { emoji: '✍️', title: 'Je regels en use cases', text: 'Wat verborgen wordt, wat zichtbaar blijft, wat ons team bekijkt: we schetsen het samen met je.' },
+      { emoji: '🚀', title: 'Implementatie en budget', text: 'Hoe wij het inrichten en voor je draaien, en een schatting voor jouw volumes.' },
+    ],
+    forTitle: 'Voor wie',
+    forList: ['Nieuwssites en redacties', 'Merken, retailers en luxehuizen', 'Overheden en gemeenten', 'Platforms en community’s met reacties'],
+    bring: 'Tip: neem 10 tot 20 reacties mee waar je team moeite mee had. Daar zegt de demo het meest.',
+    trust: ['DSA-conform', 'Gehost in de EU', 'AVG', 'Een product van Logora'],
+    calTitle: 'Kies een tijdstip',
+    calFallback: 'Laadt de agenda niet? Open hem in een nieuw tabblad',
+    faqTitle: 'Voordat je boekt',
+    faq: [
+      { question: 'Is het gesprek gratis?', answer: 'Ja. Het gesprek is gratis en vrijblijvend. Het is bedoeld om te zien of OpenModeration past bij je reacties en je regels.' },
+      { question: 'Wat moet ik voorbereiden?', answer: 'Niets is verplicht. Neem als het kan een paar lastige echte reacties mee en vertel ons welke platforms je modereert: je website, Facebook, Instagram, YouTube of WordPress.' },
+      { question: 'Met wie spreek ik?', answer: 'Met iemand van het OpenModeration-team bij Logora, die de moderatie samen met klanten inricht en vragen over product, compliance en budget kan beantwoorden.' },
+      { question: 'Kunnen we eerst testen?', answer: 'Ja. In sandboxmodus analyseert OpenModeration je echte reacties en laat het zien wat het zou hebben besloten, zonder iets te verbergen of te verwijderen.' },
+      { question: 'Regelen jullie ook het DSA-deel?', answer: 'Elke beslissing krijgt een schriftelijke toelichting en wordt vastgelegd, meldingen van gebruikers en bezwaren handelt ons team af en de cijfers voor je transparantieverslag zijn exporteerbaar. We lopen je verplichtingen tijdens het gesprek samen door.' },
+    ],
+  },
+};
+const copy = copyAll[locale as keyof typeof copyAll] ?? copyAll.en;
+
+const embed = `${BOOKING_URL}?embed_domain=www.openmoderation.com&embed_type=Inline&hide_gdpr_banner=1&primary_color=7c3aed`;
+const tones = ['bg-violet-500', 'bg-rose-500', 'bg-sun-400', 'bg-mint-500'];
+const pageJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: copy.h1,
+  description: copy.description,
+  inLanguage: locale,
+  potentialAction: { '@type': 'ScheduleAction', target: BOOKING_URL, name: copy.crumb },
+  about: { '@id': 'https://www.openmoderation.com/#organization' },
+};
+---
+
+<BaseLayout title={copy.title} description={copy.description} jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: copy.home, href: localizePath('/', locale) }, { label: copy.crumb }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white pb-16 pt-12">
+    <div class="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[1fr_1.05fr] lg:px-8">
+      <div>
+        <p class="mb-5 inline-flex items-center gap-2 rounded-full border border-violet-200 bg-white/80 px-4 py-1.5 text-sm font-semibold text-violet-700 shadow-sm">📅 {copy.eyebrow}</p>
+        <h1 class="text-4xl font-extrabold leading-[1.08] tracking-tight text-surface-900 sm:text-5xl">{copy.h1}</h1>
+        <p class="mt-5 text-lg leading-relaxed text-surface-600">{copy.intro}</p>
+        <div class="mt-7 flex items-center gap-4 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-violet-100">
+          {copy.contact.photo ? (
+            <img src={copy.contact.photo} alt={copy.contact.name} width="64" height="64" class="h-16 w-16 rounded-full object-cover ring-4 ring-violet-100" />
+          ) : (
+            <span class="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-violet-400 to-rose-400 font-display text-xl font-bold text-white ring-4 ring-violet-100" aria-hidden="true">{copy.contact.name.split(' ').map((w) => w[0]).join('')}</span>
+          )}
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wider text-violet-600">{copy.contact.label}</p>
+            <p class="font-display text-lg font-bold text-surface-900">{copy.contact.name}</p>
+            <p class="text-sm text-surface-600">{copy.contact.role}{copy.contact.note && <span class="font-semibold text-mint-600"> · {copy.contact.note}</span>}</p>
+          </div>
+        </div>
+
+        <h2 class="mt-10 text-xl font-bold text-surface-900">{copy.agendaTitle}</h2>
+        <ol class="mt-5 space-y-4">
+          {copy.agenda.map((step, i) => (
+            <li class="flex gap-4">
+              <span class={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-xl shadow-md ${tones[i]}`} aria-hidden="true">{step.emoji}</span>
+              <div>
+                <p class="font-semibold text-surface-900">{step.title}</p>
+                <p class="mt-0.5 text-sm leading-relaxed text-surface-600">{step.text}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+
+        <div class="mt-8 rounded-2xl border border-sun-300 bg-sun-50 p-4 text-sm font-medium text-surface-800">💡 {copy.bring}</div>
+
+        <h2 class="mt-10 text-xl font-bold text-surface-900">{copy.forTitle}</h2>
+        <ul class="mt-4 grid gap-2 sm:grid-cols-2">
+          {copy.forList.map((item) => (
+            <li class="flex items-start gap-2 text-sm text-surface-700"><span class="mt-0.5 text-mint-500">✓</span>{item}</li>
+          ))}
+        </ul>
+        <div class="mt-8 flex flex-wrap gap-2">
+          {copy.trust.map((item) => (
+            <span class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-surface-700 shadow-sm ring-1 ring-surface-200">{item}</span>
+          ))}
+        </div>
+      </div>
+
+      <div class="lg:sticky lg:top-24 lg:self-start">
+        <div class="overflow-hidden rounded-3xl bg-white shadow-[0_30px_60px_-24px_rgba(76,29,149,0.35)] ring-1 ring-violet-100">
+          <div class="bg-gradient-to-r from-brand-600 via-violet-600 to-rose-500 px-6 py-4 text-white">
+            <p class="font-display text-lg font-bold">{copy.calTitle}</p>
+          </div>
+          <iframe src={embed} title={copy.calTitle} loading="lazy" class="block h-[720px] w-full border-0"></iframe>
+        </div>
+        <p class="mt-3 text-center text-sm"><a href={BOOKING_URL} target="_blank" rel="noopener" data-no-popup class="font-semibold text-violet-700 underline underline-offset-2">{copy.calFallback} &rarr;</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-14">
+    <ClientLogos />
+  </section>
+
+  <TeamSection />
+
+  <section class="bg-gradient-to-br from-violet-50 via-white to-sun-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title={copy.faqTitle} items={copy.faq} />
+    </div>
+  </section>
+</BaseLayout>

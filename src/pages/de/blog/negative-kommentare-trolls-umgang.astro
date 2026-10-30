@@ -1,0 +1,316 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import FAQ from '../../../components/FAQ.astro';
+
+const title = "Mit negativen Kommentaren und Trollen umgehen: Leitfaden";
+const description = "Umgang mit negativen Kommentaren und Trollen: Kritik oder Hass, antworten, ausblenden, löschen oder sperren, Vorlagen, Shitstorm, Krise und Team-Schutz.";
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Mit negativen Kommentaren und Trollen umgehen: Social Media und Website",
+  "description": description,
+  "inLanguage": "de",
+  "datePublished": "2026-10-30",
+  "dateModified": "2026-10-30",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/de/blog/negative-kommentare-trolls-umgang" }
+};
+
+const decisions = [
+  { situation: "Eine Kundin beschwert sich über eine verspätete Lieferung, einen Fehler oder schlechten Service", action: "Antworten", why: "Antworten Sie öffentlich und klären Sie Details per Direktnachricht. Mitlesende beurteilen Sie nach Ihrer Antwort." },
+  { situation: "Eine harte, aber sachbezogene Meinung zu Ihrem Produkt, Artikel oder Ihrer Entscheidung", action: "Stehen lassen (und bei Bedarf antworten)", why: "Kritik gehört zum Gespräch. Wer sie entfernt, verliert mehr Vertrauen, als er gewinnt." },
+  { situation: "Eine falsche Behauptung oder ein Gerücht, das sich verbreitet", action: "Mit Fakten antworten", why: "Eine ruhige Richtigstellung mit Quelle hilft allen, die den Thread später lesen." },
+  { situation: "Beleidigung, persönlicher Angriff, Hassrede, Provokation ohne Inhalt", action: "Ausblenden", why: "Der Kommentar stört den Thread nicht mehr, und der Verfasser merkt es meist nicht." },
+  { situation: "Spam, Betrugslinks, personenbezogene Daten Dritter", action: "Löschen", why: "Solche Inhalte dürfen in keiner Form online bleiben, auch nicht für den Verfasser." },
+  { situation: "Wiederholungstäter, Fake-Accounts, koordinierter Angriff", action: "Sperren oder blockieren", why: "Sobald das Muster klar ist, handeln Sie beim Konto statt bei jedem einzelnen Kommentar." },
+  { situation: "Drohungen, Aufrufe zur Gewalt, Darstellungen von Kindesmissbrauch, andere klar rechtswidrige Inhalte", action: "Melden (und Beweise sichern)", why: "Melden Sie den Inhalt der Plattform und, wenn Menschen in Gefahr sind, der Polizei. Machen Sie vor dem Entfernen Screenshots." },
+];
+
+const faqItems = [
+  {
+    question: "Sollte man negative Kommentare löschen?",
+    answer: "Nicht, wenn es Kritik ist. Ein negativer, aber sachlicher Kommentar zu Ihrem Produkt, Service oder Inhalt sollte sichtbar bleiben, am besten mit einer Antwort. Löschen wirkt wie Zensur und bringt den Verfasser oft verärgert zurück. Löschen Sie Spam, Betrug, personenbezogene Daten und rechtswidrige Inhalte, und blenden Sie Beleidigungen aus.",
+  },
+  {
+    question: "Wie antwortet man auf negative Kommentare in Social Media?",
+    answer: "Antworten Sie schnell, bedanken Sie sich, erkennen Sie das Problem an, ohne zu diskutieren, nennen Sie einen konkreten nächsten Schritt und wechseln Sie für persönliche Daten in die Direktnachricht. Schreiben Sie wie ein Mensch, unterschreiben Sie mit Vornamen, wenn Ihre Marke das so hält, und kopieren Sie nie denselben Satz unter jede Beschwerde.",
+  },
+  {
+    question: "Wie geht man am besten mit Trollen um?",
+    answer: "Füttern Sie sie nicht. Ein Troll will eine Reaktion, und eine öffentliche Diskussion belohnt ihn. Blenden Sie die Provokation aus, antworten Sie nicht und sperren Sie das Konto, wenn es wiederkommt. Antworten Sie nur, wenn der Kommentar eine falsche Behauptung enthält, die andere glauben könnten, und richten Sie sich dann an die Mitlesenden, nicht an den Troll.",
+  },
+  {
+    question: "Was unterscheidet einen Troll von einem unzufriedenen Kunden?",
+    answer: "Ein unzufriedener Kunde spricht über ein Problem und will meist, dass es gelöst wird. Ein Troll spricht über Sie oder über andere Kommentierende und sucht Aufmerksamkeit oder Streit. Achten Sie auf den Inhalt: Gibt es eine Tatsache, eine Frage oder eine Erfahrung? Dann ist es Feedback, auch wenn der Ton unangenehm ist.",
+  },
+  {
+    question: "Was tun bei einem Shitstorm oder Troll-Angriff?",
+    answer: "Bremsen Sie den Thread: Blenden Sie neue beleidigende Kommentare aus, schränken Sie die Kommentare unter dem betroffenen Beitrag ein oder pausieren Sie sie, wenn die Plattform das erlaubt, sperren Sie Konten, die nur zum Angreifen kommen, und sichern Sie datierte Screenshots. Informieren Sie Ihr Team, veröffentlichen Sie bei Bedarf eine ruhige Stellungnahme und warten Sie, bis die Welle abebbt.",
+  },
+  {
+    question: "Muss man begründen, warum ein Kommentar entfernt wurde?",
+    answer: "Auf Ihrer eigenen Website oder App verlangt der Digital Services Act (DSA) von Hostingdiensten, dem Verfasser eine Begründung zu geben, wenn Inhalte entfernt oder eingeschränkt werden. In sozialen Netzwerken trägt die Plattform diese Pflicht, eine kurze Dokumentation jeder Entscheidung ist aber trotzdem gute Praxis.",
+  },
+  {
+    question: "Wann lohnt es sich, die Kommentarmoderation zu automatisieren?",
+    answer: "Wenn Kommentare schneller eintreffen, als Ihr Team sie lesen kann, wenn Hass nachts und am Wochenende kommt oder wenn dieselben Beleidigungen immer wieder auftauchen. Ein Tool blendet eindeutige Fälle in Echtzeit aus, wendet Ihre Regeln und Ihre Anwendungsfälle an und lässt Zweifelsfälle von einem Menschen entscheiden. Bei OpenModeration übernimmt das unser Team, und Sie sehen jede Entscheidung in Echtzeit.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} ogType="article" jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Startseite", href: "/de" }, { label: "Blog", href: "/de/blog" }, { label: "Umgang mit negativen Kommentaren und Trollen" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-30">30. Oktober 2026</time>
+        <span>&middot;</span>
+        <span>9 Min. Lesezeit</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Mit negativen Kommentaren und Trollen umgehen: ein Praxisleitfaden für Social Media und Websites</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Jede Marke, jedes Medium und jede öffentliche Seite bekommt negative Kommentare. Manche sind berechtigt und
+        hilfreich, manche unhöflich, aber ehrlich gemeint, und manche stammen von Menschen, die nur verletzen oder
+        provozieren wollen. Schwierig ist nicht die Erkenntnis, dass es Trolle gibt. Schwierig ist die Entscheidung,
+        Kommentar für Kommentar: antworten, stehen lassen, ausblenden, löschen, sperren oder melden? Dieser Leitfaden gibt
+        Ihnen eine einfache Methode, Antwortvorlagen und einen Plan für schlechte Tage.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Das Wichtigste in Kürze</h2>
+      <ul>
+        <li><strong>Kritik bleibt sichtbar.</strong> Ein negativer, aber sachlicher Kommentar ist Feedback. Beantworten Sie ihn, statt ihn zu entfernen.</li>
+        <li><strong>Hass wird ausgeblendet, nicht diskutiert.</strong> Beleidigungen ausblenden; Spam, Betrug und personenbezogene Daten löschen; Rechtswidriges melden.</li>
+        <li><strong>Trolle wollen eine Reaktion.</strong> Geben Sie ihnen keine. Sperren Sie Wiederholungstäter und legen Sie einen Plan für Shitstorms und Krisen fest.</li>
+        <li><strong>Team schützen, Entscheidungen dokumentieren.</strong> Achten Sie auf die Menschen, die die Kommentare lesen, und begründen Sie jede Entfernung kurz.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Kritik oder Hass: Wie erkennt man den Unterschied?</h2>
+      <p>
+        Die erste Frage lautet nicht „Ist dieser Kommentar negativ?“, sondern „Gibt es hier etwas zu besprechen?“. Ein
+        einfacher Test: Ziehen Sie den Ton ab und schauen Sie, was übrig bleibt.
+      </p>
+      <ul>
+        <li><strong>Kritik</strong> betrifft, was Sie tun: ein Produkt, einen Preis, einen Artikel, eine Entscheidung, eine Verzögerung. Sie kann wütend, ironisch oder unfair sein, enthält aber eine Tatsache, eine Erfahrung oder eine Frage.</li>
+        <li><strong>Hass und Beleidigung</strong> betreffen, wer jemand ist: Beschimpfungen, Hassrede, Drohungen, Spott über Aussehen, Herkunft, Geschlecht oder Religion. Ohne den Ton bleibt nichts übrig.</li>
+        <li><strong>Trollen</strong> zielt auf eine Reaktion: Provokationen ohne Bezug zum Thema, Köder, dieselbe Nachricht immer wieder, gespielte Empörung.</li>
+        <li><strong>Spam und Betrug</strong> haben mit dem Thema nichts zu tun: Links, falsche Gewinnspiele, Konten, die sich als Ihre Marke ausgeben.</li>
+      </ul>
+      <p>
+        „Drei Wochen Lieferzeit und keine Antwort auf meine Mails, einfach peinlich“ ist Kritik mit einem harten Wort. „Nur
+        Vollidioten kaufen bei diesen Clowns“ ist eine Beleidigung ohne Inhalt. Das Erste verdient eine Antwort, das Zweite
+        kann ausgeblendet werden.
+      </p>
+
+      <h3 class="text-lg font-semibold text-surface-900">Warum Kritik sichtbar bleiben sollte</h3>
+      <p>
+        Es ist verlockend, jeden negativen Kommentar wegzuräumen. Widerstehen Sie. Leserinnen und Leser merken, wenn ein
+        Kommentarbereich nur Lob enthält, und glauben ihm weniger. Eine Beschwerde, die verschwindet, kommt oft lauter
+        zurück, manchmal mit Screenshot und dem Wort „Zensur“. Eine gut beantwortete Beschwerde zeigt dagegen allen, dass
+        jemand zuhört. Ihre Regeln sollen Menschen vor Hass schützen, nicht die Marke vor Widerspruch. Halten Sie diese
+        Unterscheidung in Ihren <a href="/de/moderationsrichtlinien" class="text-brand-600 hover:text-brand-500">Moderationsrichtlinien</a> fest, damit das ganze Team die Grenze an derselben Stelle zieht.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Was tun mit einem negativen Kommentar? Die Entscheidungstabelle</h2>
+      <p>
+        Die meisten Plattformen bieten dieselben Aktionen unter verschiedenen Namen: antworten, ausblenden, löschen, sperren
+        oder blockieren und melden. Für Beleidigungen ist Ausblenden meist die beste Standardaktion: Auf einer Facebook-Seite
+        zum Beispiel bleibt ein ausgeblendeter Kommentar für den Verfasser und seine Freunde sichtbar, sodass der Verfasser
+        es kaum bemerkt. Nehmen Sie die Tabelle als Ausgangspunkt und passen Sie sie an Ihre Regeln und Ihre
+        Anwendungsfälle an.
+      </p>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Situation</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Aktion</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Warum</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {decisions.map((row) => (
+            <tr>
+              <td class="px-4 py-3 text-surface-600">{row.situation}</td>
+              <td class="px-4 py-3 font-medium text-surface-900">{row.action}</td>
+              <td class="px-4 py-3 text-surface-600">{row.why}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <p>
+        Zwei Faustregeln ergänzen die Tabelle. Handeln Sie zuerst beim Inhalt und erst dann bei der Person: Ein beleidigender
+        Kommentar wird ausgeblendet, ein wiederkehrendes Muster führt zur Sperre. Und wenn Sie zwischen zwei Aktionen
+        schwanken, wählen Sie die umkehrbare. Ein ausgeblendeter Kommentar lässt sich wieder einblenden, ein gelöschter ist
+        weg.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Wie antwortet man auf negative Kommentare? Vorlagen zum Anpassen</h2>
+      <p>
+        Eine gute Antwort ist schnell, kurz, menschlich und konkret. Sie bedankt sich, erkennt das Problem an, nennt den
+        nächsten Schritt und verlagert das Gespräch bei Bedarf in die Direktnachricht. Diskutieren Sie nie öffentlich,
+        schieben Sie die Schuld nicht auf die Kundschaft und kopieren Sie nicht denselben Satz unter zwanzig Beschwerden:
+        Die Leute vergleichen.
+      </p>
+      <p><strong>Eine Beschwerde über ein Produkt oder einen Service</strong></p>
+      <blockquote>
+        „Hallo Anna, danke für den Hinweis, und entschuldigen Sie die drei Wochen Wartezeit, so war das nicht versprochen.
+        Schicken Sie uns Ihre Bestellnummer bitte per Direktnachricht? Wir prüfen heute noch, was passiert ist, und melden
+        uns bei Ihnen. Markus, Kundenservice“
+      </blockquote>
+      <p><strong>Eine harte Meinung, die Sie nicht teilen</strong></p>
+      <blockquote>
+        „Danke für Ihr Feedback. Wir haben uns so entschieden, weil [kurzer, ehrlicher Grund]. Wir verstehen, dass das nicht
+        allen gefällt, und lesen alle Kommentare zu dem Thema.“
+      </blockquote>
+      <p><strong>Eine falsche Behauptung oder ein Gerücht</strong></p>
+      <blockquote>
+        „Zur Klarstellung für alle Mitlesenden: Dieses Produkt wurde nicht zurückgerufen. Der Rückruf vom [Datum] betrifft
+        [anderes Produkt], alle Informationen finden Sie hier: [Link]. Bei Fragen zu Ihrer Bestellung hilft Ihnen unser
+        Team per Direktnachricht.“
+      </blockquote>
+      <p><strong>Eine Erinnerung an die Regeln, wenn die Diskussion hochkocht</strong></p>
+      <blockquote>
+        „Diskussionen sind hier willkommen, persönliche Angriffe nicht. Wir haben einige Kommentare ausgeblendet, die
+        die Grenze überschritten haben. Unsere Netiquette finden Sie hier: [Link].“
+      </blockquote>
+      <p>
+        Passen Sie den Ton an Ihre Marke an. Eine Bank und ein Streetwear-Label klingen unterschiedlich, und mancher Kanal
+        duzt seine Community. Beide sollten aber wie ein Mensch klingen, nicht wie eine Rechtsabteilung.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Umgang mit Trollen (und Troll-Angriffen)</h2>
+      <p>
+        „Don't feed the troll“ ist ein alter Rat, und immer noch der beste. Ein Troll sucht Publikum und Reaktion. Eine
+        lange öffentliche Antwort liefert ihm beides.
+      </p>
+      <ul>
+        <li><strong>Erkennen Sie das Muster.</strong> Provokation ohne Themenbezug, neues oder anonymes Konto, dieselbe Nachricht unter mehreren Beiträgen, Antworten, die sich an andere Kommentierende richten statt an Sie.</li>
+        <li><strong>Ausblenden statt diskutieren.</strong> Blenden Sie die Provokation und die ausgelösten Antworten aus. Schweigen ist keine Schwäche, es nimmt die Bühne weg.</li>
+        <li><strong>Richtigstellen, aber für die Mitlesenden.</strong> Verbreitet ein Troll eine glaubwürdige Falschbehauptung, veröffentlichen Sie eine einzige sachliche Richtigstellung an alle und lassen es dabei.</li>
+        <li><strong>Wiederholungstäter sperren.</strong> Nach zwei oder drei ausgeblendeten Kommentaren desselben Kontos wird es gesperrt. Notieren Sie den Grund in einer Zeile.</li>
+        <li><strong>Geben Sie nie persönliche Daten preis</strong> und lassen Sie sich nicht auf Menschen ein, die Ihr Team bedrohen. Sichern Sie Beweise und melden Sie den Vorfall.</li>
+      </ul>
+      <p>
+        Ein Troll-Angriff ist etwas anderes: Dutzende oder Hunderte Konten tauchen innerhalb kurzer Zeit unter demselben
+        Beitrag auf, oft aus einem Forum, einer Gruppe oder einem Kanal heraus mobilisiert. Dann behandeln Sie die Welle,
+        nicht jeden Kommentar einzeln. Blenden Sie neue beleidigende Kommentare laufend aus, schränken Sie die Kommentare
+        unter dem betroffenen Beitrag ein oder schalten Sie sie vorübergehend ab, wenn die Plattform das erlaubt, sperren
+        Sie die mobilisierten Konten und sichern Sie datierte Screenshots. Sagen Sie Ihrer Community in einer kurzen
+        Nachricht, dass für eine Weile strenger moderiert wird. Wenn Mitarbeitende persönlich angegriffen werden,
+        unterstützen spezialisierte Beratungsstellen wie HateAid Betroffene von digitaler Gewalt.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Was tun, wenn aus negativen Kommentaren eine Krise wird?</h2>
+      <p>
+        Manchmal sind negative Kommentare kein Angriff, sondern das Zeichen eines echten Problems: ein Produktfehler, eine
+        missglückte Kampagne, ein Bericht über Ihr Unternehmen. Dann darf Moderation nicht dazu dienen, die Krise zu
+        verstecken. Eine einfache Abfolge hilft.
+      </p>
+      <ol>
+        <li><strong>Geplante Beiträge pausieren.</strong> Ein fröhlicher Werbepost mitten in der Krise macht alles schlimmer.</li>
+        <li><strong>Eskalieren.</strong> Informieren Sie die Entscheider: Kommunikation, Geschäftsführung, Rechtsabteilung, Kundenservice. Legen Sie fest, wer spricht.</li>
+        <li><strong>Eine klare Stellungnahme veröffentlichen.</strong> Was ist passiert, was wissen Sie, was tun Sie, wann sagen Sie mehr. Pinnen Sie sie an und verlinken Sie sie in Ihren Antworten.</li>
+        <li><strong>Kritik sichtbar lassen.</strong> Blenden Sie Beleidigungen und Drohungen wie gewohnt aus, lassen Sie wütende, berechtigte Kommentare aber stehen. Wer sie in der Krise entfernt, löst am schnellsten die nächste aus.</li>
+        <li><strong>Gebündelt antworten.</strong> Sie können nicht allen einzeln antworten. Beantworten Sie die sichtbarsten und typischsten Kommentare und verweisen Sie auf die Stellungnahme.</li>
+        <li><strong>Nachbereiten.</strong> Welche Fragen kamen am häufigsten? Welche Entscheidungen waren schwierig? Aktualisieren Sie Regeln und Vorlagen.</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Wie schützt man das Team?</h2>
+      <p>
+        Den ganzen Tag Hass, Drohungen und Beleidigungen zu lesen, zehrt, auch wenn sie sich gegen die Marke richten und
+        nicht gegen die Person, die sie liest. Social-Media-Teams arbeiten oft allein, abends, auf dem eigenen Handy. Das
+        verdient dieselbe Aufmerksamkeit wie jedes andere Risiko am Arbeitsplatz.
+      </p>
+      <ul>
+        <li><strong>Last verteilen.</strong> Wechseln Sie sich bei den härtesten Warteschlangen ab, und lassen Sie niemanden allein vor einem Shitstorm sitzen.</li>
+        <li><strong>Zeiten festlegen.</strong> Klären Sie, was nachts und am Wochenende passiert, statt es dem zu überlassen, der gerade aufs Handy schaut.</li>
+        <li><strong>Belastung reduzieren.</strong> Filtern Sie die gewalttätigsten Inhalte, bevor ein Mensch sie sieht, und lassen Sie Bilder standardmäßig unscharf anzeigen, wenn Ihre Tools das können.</li>
+        <li><strong>Rückendeckung geben.</strong> Machen Sie klar, dass wer Hass ausblendet, die Regeln anwendet, und dass die Führung dahintersteht.</li>
+        <li><strong>Darüber reden.</strong> Ein kurzes Debriefing nach einem harten Tag, und Unterstützung, wenn jemand persönlich angegriffen wird.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Wie dokumentiert man Moderationsentscheidungen?</h2>
+      <p>
+        Wenn jemand fragt „Warum wurde mein Kommentar entfernt?“, ist „weil“ keine Antwort. Halten Sie jede Entscheidung
+        kurz fest: was getan wurde, warum, und von wem oder womit. Das schützt das Team, macht Entscheidungen einheitlich und
+        erlaubt es, Fehler zu korrigieren.
+      </p>
+      <p>
+        Auf Ihrer eigenen Website oder App ist das auch eine Rechtsfrage. Nach dem DSA muss ein Hostingdienst, der Inhalte
+        entfernt oder einschränkt, dem Verfasser eine Begründung geben. In wenigen Zeilen nennt sie:
+      </p>
+      <ul>
+        <li>was getan wurde (Entfernung, Ausblendung, Kontosperre) und welcher Inhalt betroffen ist;</li>
+        <li>die Tatsachen, auf denen die Entscheidung beruht;</li>
+        <li>ob automatisierte Mittel bei Erkennung oder Entscheidung eingesetzt wurden;</li>
+        <li>die verletzte Regel oder das verletzte Gesetz;</li>
+        <li>wie der Verfasser die Entscheidung anfechten kann.</li>
+      </ul>
+      <p>
+        Eine Dokumentation kann in einen Satz passen: „Kommentar am 30. Oktober um 21:42 Uhr ausgeblendet. Grund:
+        Beleidigung eines anderen Nutzers, Punkt 3 unserer Netiquette. Automatisch erkannt, von einem Moderator bestätigt.
+        Sie können diese Entscheidung anfechten, indem Sie auf diese Nachricht antworten.“ Einzelheiten finden Sie auf unserer
+        Seite zur <a href="/de/dsa-konformitaet/begruendung" class="text-brand-600 hover:text-brand-500">Begründungspflicht nach dem DSA</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Wann lohnt sich automatische Moderation?</h2>
+      <p>
+        All das lässt sich auf einer kleinen Seite von Hand erledigen. Es funktioniert nicht mehr, wenn Kommentare schneller
+        kommen, als Ihr Team sie lesen kann, wenn die schlimmsten um zwei Uhr nachts erscheinen oder wenn dieselben
+        Beleidigungen in einem Dutzend Schreibweisen wiederkehren. Dann hat ein automatisches Moderationstool seinen Platz.
+      </p>
+      <p>
+        Ein gutes Tool ersetzt Ihr Urteil nicht. Es wendet Ihre Regeln und Ihre Anwendungsfälle in Echtzeit auf jeden
+        Kommentar an, blendet eindeutigen Hass, Spam und Betrug aus und lässt Kritik stehen. So verbringt Ihr Team seine
+        Zeit mit Antworten statt mit Aufräumen. OpenModeration arbeitet genau so auf Websites, Facebook-Seiten,
+        Instagram-Professional-Konten, YouTube-Kanälen und WordPress: Sie verbinden Ihre Seiten, den Rest übernehmen wir.
+        Zweifelsfälle und Meldungen bearbeitet unser Team, jede Entscheidung wird schriftlich begründet und protokolliert,
+        und Sie sehen alles in Echtzeit und können jederzeit eingreifen. Lesen Sie,
+        wie die <a href="/de/automatische-moderation" class="text-brand-600 hover:text-brand-500">automatische Kommentarmoderation</a> funktioniert, oder wie
+        <a href="/de/anwendungsfaelle/marken-handel" class="text-brand-600 hover:text-brand-500">Marken und Händler</a> ihre Seiten und Kampagnen schützen.
+      </p>
+      <p>
+        Den Überblick gibt unser <a href="/de/blog/kommentarmoderation-leitfaden" class="text-brand-600 hover:text-brand-500">Leitfaden zur Kommentarmoderation</a> und
+        unser <a href="/de/blog/social-media-moderation-leitfaden" class="text-brand-600 hover:text-brand-500">Leitfaden zur Social-Media-Moderation</a>.
+      </p>
+    </div>
+
+    <div class="mt-12">
+      <FAQ title="Häufige Fragen" items={faqItems} />
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Weiterlesen</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/de/automatische-moderation" class="font-medium text-brand-600 hover:text-brand-500">Automatische Moderation mit OpenModeration &rarr;</a></li>
+        <li><a href="/de/anwendungsfaelle/marken-handel" class="font-medium text-brand-600 hover:text-brand-500">Kommentarmoderation für Marken und Handel &rarr;</a></li>
+        <li><a href="/de/blog/facebook-kommentare-automatisch-ausblenden" class="font-medium text-brand-600 hover:text-brand-500">Facebook-Kommentare automatisch ausblenden &rarr;</a></li>
+        <li><a href="/de/dsa-konformitaet/begruendung" class="font-medium text-brand-600 hover:text-brand-500">Was eine DSA-Begründung enthalten muss &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

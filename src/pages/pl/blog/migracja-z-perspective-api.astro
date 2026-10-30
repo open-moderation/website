@@ -1,0 +1,173 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Koniec Google Perspective API: przewodnik migracji dla forów",
+  "description": "Perspective API zostanie wyłączone pod koniec 2026 roku. Sprawdź, co to oznacza dla Twojego forum i jak przejść na OpenModeration przed upływem terminu.",
+  "inLanguage": "pl",
+  "datePublished": "2026-06-12",
+  "dateModified": "2026-10-20",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/pl/blog/migracja-z-perspective-api" }
+};
+---
+
+<BaseLayout title="Koniec Perspective API: przewodnik migracji dla forów" description="Perspective API zostanie wyłączone pod koniec 2026 roku. Sprawdź, co to oznacza dla Twojego forum i jak przejść na OpenModeration przed upływem terminu." jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Strona główna", href: localizePath('/', locale) }, { label: "Blog", href: localizePath('/blog', locale) }, { label: "Migracja z Perspective API" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-06-12">12 czerwca 2026</time>
+        <span>&middot;</span>
+        <span>Aktualizacja: 20 października 2026</span>
+        <span>&middot;</span>
+        <span>7 min czytania</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Koniec Google Perspective API: przewodnik migracji dla forów</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Jigsaw, jednostka Google odpowiedzialna za Perspective API, ogłosiła wycofanie usługi:
+        będzie ona działać do 31 grudnia 2026 roku. Dla tysięcy forów, systemów komentarzy
+        i platform wydawniczych, które z niej korzystają, oznacza to konieczność znalezienia
+        alternatywy dla Perspective API przed upływem terminu.
+      </p>
+      <p>
+        Ten przewodnik wyjaśnia, co się zmienia, co to oznacza w praktyce i jak przejść na
+        OpenModeration przy jak najmniejszych zakłóceniach.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Co się dzieje i kiedy</h2>
+      <p>
+        Perspective API było jednym z pierwszych powszechnie dostępnych API do wykrywania
+        toksyczności. Uruchomione przez Jigsaw (inkubator Google) w 2017 roku, wspierało moderację
+        na platformach takich jak The New York Times, Disqus i niezliczone społeczności forowe.
+      </p>
+      <p>
+        Według <a href="https://perspectiveapi.com/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">oficjalnej strony Perspective API</a>:
+      </p>
+      <ul>
+        <li><strong>Do lutego 2026:</strong> wnioski o zwiększenie limitu były jeszcze rozpatrywane. Po tym terminie nowe wnioski nie są przyjmowane.</li>
+        <li><strong>31 grudnia 2026:</strong> ostatni dzień działania usługi. Po 2026 roku API nie będzie już dostępne.</li>
+        <li><strong>Migracja:</strong> Jigsaw zapowiada, że nie zapewni bezpośredniego wsparcia przy migracji.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Dlaczego Perspective API jest wyłączane</h2>
+      <p>
+        Jigsaw podaje jeden powód: możliwości AI się rozwinęły i zapotrzebowanie na samodzielne
+        narzędzie przeznaczone wyłącznie do tego zadania jest dziś mniejsze. Rzeczywiście, zespoły
+        mogą obecnie wybierać spośród wielu modeli moderacji, od OpenAI przez HuggingFace po Mistral,
+        a większość platform chce decyzji uwzględniających kontekst, a nie pojedynczego wskaźnika toksyczności.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Co to oznacza dla Twojego forum</h2>
+      <p>
+        Jeśli korzystasz dziś z Perspective API, Twój proces moderacji przestanie działać w momencie
+        wyłączenia usługi. Komentarze i posty, które opierają się na automatycznej ocenie toksyczności,
+        pozostaną bez moderacji. W zależności od głębokości integracji czeka Cię jeden z trzech scenariuszy:
+      </p>
+      <ul>
+        <li><strong>Integracja bezpośrednia:</strong> jeśli aplikacja wywołuje Perspective API bezpośrednio, żądania zaczną kończyć się błędem. Kolejka moderacji przestanie działać.</li>
+        <li><strong>Przez warstwę pośrednią:</strong> jeśli korzystasz z platformy moderacji opartej na Perspective, sprawdź, czy oferuje ścieżkę migracji.</li>
+        <li><strong>Przez narzędzie do mediów społecznościowych:</strong> niektóre narzędzia do zarządzania mediami społecznościowymi używają Perspective do filtrowania komentarzy. Sprawdź ich plany.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Jak ocenić alternatywy dla Perspective API</h2>
+      <p>
+        Na co zwrócić uwagę przy wyborze zamiennika:
+      </p>
+      <ul>
+        <li><strong>Zakres kategorii:</strong> Perspective wykrywa toksyczność, poważną toksyczność, ataki na tożsamość, obelgi, wulgaryzmy, groźby i treści o charakterze seksualnym. Zamiennik powinien obejmować te kategorie i więcej.</li>
+        <li><strong>Brak zamrożonego modelu:</strong> poleganie na modelu jednego dostawcy oznacza powtórkę tej migracji, gdy następnym razem zmieni on strategię. Szukaj usługi, która ulepsza swoją AI bez wymagania zmian w Twoim kodzie.</li>
+        <li><strong>Opóźnienie:</strong> moderacja na forum musi nastąpić, zanim treść się pojawi. Celuj w czas odpowiedzi poniżej sekundy.</li>
+        <li><strong>Kontrola nad danymi:</strong> jeśli przetwarzasz treści użytkowników z UE, liczy się RODO. Szukaj hostingu w UE i możliwości eksportu danych.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Lista kontrolna migracji</h2>
+      <p>Aby odejść od Perspective API, wykonaj następujące kroki:</p>
+      <ol>
+        <li><strong>Przeanalizuj obecne użycie.</strong> Policz dzienną liczbę wywołań API, ustal, z których kategorii korzystasz, i zmierz wymagania dotyczące opóźnień. To punkt odniesienia dla nowej konfiguracji.</li>
+        <li><strong>Wybierz architekturę zamiennika.</strong> Platforma moderacji, taka jak OpenModeration, pozwala zachować stabilną integrację, podczas gdy AI w tle stale się poprawia.</li>
+        <li><strong>Zmapuj kategorie.</strong> Przypisz obecne kategorie Perspective do odpowiedników u nowego dostawcy. Na przykład TOXICITY z Perspective odpowiada w większości nowoczesnych systemów kategoriom takim jak mowa nienawiści i nękanie.</li>
+        <li><strong>Dostrój progi.</strong> Różni dostawcy oceniają w różny sposób. Uruchom oba systemy równolegle na tydzień, aby skalibrować progi.</li>
+        <li><strong>Zaktualizuj integrację.</strong> Zastąp wywołanie Perspective API nowym punktem końcowym. W OpenModeration to pojedyncze wywołanie POST /v1/moderation.</li>
+        <li><strong>Przełącz ruch.</strong> Skieruj ruch produkcyjny do nowego systemu. Na okres przejściowy zachowaj Perspective jako rozwiązanie zapasowe.</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Migracja do OpenModeration</h2>
+      <p>
+        OpenModeration to najprostsza ścieżka migracji z Perspective API. Udostępnia jedno API
+        oparte na własnej AI do moderacji, a trudne przypadki weryfikują inne modele AI. Gdy pojawia się
+        lepszy model, podłączamy go bez żadnych zmian w Twoim kodzie.
+      </p>
+      <p>
+        Tak wygląda migracja z OpenModeration:
+      </p>
+      <p>
+        <strong>Przed (Perspective API):</strong> kod wykonuje bezpośrednie wywołanie
+        commentanalyzer.googleapis.com z określonym kluczem API. Zwracane są oceny atrybutów.
+        Progi są zakodowane na sztywno. Zmiana dostawcy API oznacza przepisanie tej integracji.
+      </p>
+      <p>
+        <strong>Po (OpenModeration):</strong> kod wywołuje POST /v1/moderation z treścią tekstu.
+        OpenModeration analizuje go własną AI do moderacji, weryfikuje trudne przypadki
+        i zwraca odpowiedź w spójnym formacie. Gdy ulepszamy AI, zmiany w kodzie
+        nie są potrzebne.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Co zyskujesz poza samą migracją</h2>
+      <p>
+        Odejście od Perspective API to wymuszona modernizacja. OpenModeration daje możliwości,
+        których Perspective nigdy nie miało:
+      </p>
+      <ul>
+        <li><strong>Action Engine:</strong> definiowanie reguł za pomocą trzech narzędzi (zakazane słowa, progi i własne zasady opisane zwykłym językiem) bez pisania własnego kodu.</li>
+        <li><strong>Ścieżka audytu:</strong> każda decyzja moderacyjna jest zapisywana z pełnym kontekstem. Możliwość eksportu na potrzeby raportowania zgodności.</li>
+        <li><strong>Analityka:</strong> panel pokazujący wolumen moderacji, odsetek oznaczonych treści, podjęte działania i podział na kategorie.</li>
+        <li><strong>Gotowość na DSA:</strong> dzienniki audytu i dane dotyczące przejrzystości potrzebne do zgodności z unijnym aktem o usługach cyfrowych.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Harmonogram i kolejne kroki</h2>
+      <p>
+        Termin wyłączenia Perspective API przez Google to koniec 2026 roku. Im wcześniej rozpoczniesz
+        migrację, tym więcej czasu zostanie na kalibrację progów i testy na produkcji. Zalecamy
+        rozpoczęcie procesu co najmniej 90 dni przed planowaną datą przełączenia.
+      </p>
+      <p>
+        Pełny przewodnik po konfiguracji OpenModeration znajdziesz w naszej dokumentacji.
+        Pierwsza integracja zajmuje około 30 minut.
+      </p>
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Czytaj dalej</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/content-moderation-api', locale)} class="font-medium text-brand-600 hover:text-brand-500">Jedno API do moderacji treści na czas migracji &rarr;</a></li>
+        <li><a href={localizePath('/alternatives/perspective-api', locale)} class="font-medium text-brand-600 hover:text-brand-500">Alternatywa dla Perspective API: migracja przed wyłączeniem &rarr;</a></li>
+        <li><a href={localizePath('/how-it-works', locale)} class="font-medium text-brand-600 hover:text-brand-500">Jak działa proces moderacji &rarr;</a></li>
+        <li><a href={localizePath('/pricing', locale)} class="font-medium text-brand-600 hover:text-brand-500">Zacznij za darmo, zmień plan, gdy się rozwiniesz &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

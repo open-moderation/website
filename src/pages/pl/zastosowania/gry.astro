@@ -1,0 +1,189 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import CodeBlock from '../../../components/CodeBlock.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const useCaseJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/pl/zastosowania/gry",
+  "url": "https://www.openmoderation.com/pl/zastosowania/gry",
+  "name": "Moderacja czatu z AI dla gier i e-sportu | OpenModeration",
+  "description": "Moderuj czat w grze, wiadomości graczy i zgłoszenia w czasie rzeczywistym, w wielu językach, z niskim opóźnieniem i automatycznym egzekwowaniem zasad.",
+  "inLanguage": "pl"
+};
+
+const webhookRuleExample = `{
+  "name": "Auto-delete hate speech",
+  "priority": 10,
+  "conditions": [{
+    "category": "hate",
+    "operator": "gte",
+    "score": 0.7
+  }],
+  "actions": ["delete"]
+}`;
+---
+
+<BaseLayout
+  title="Moderacja czatu w grach z AI w czasie rzeczywistym"
+  description="Moderuj czat w grze, wiadomości graczy i zgłoszenia w czasie rzeczywistym, w wielu językach, z niskim opóźnieniem i automatycznym egzekwowaniem zasad."
+  jsonLd={useCaseJsonLd}
+>
+  <Breadcrumb items={[{ label: "Strona główna", href: localizePath('/', locale) }, { label: "Zastosowania", href: localizePath('/use-cases', locale) }, { label: "Gry" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700">
+        <span class="flex h-1.5 w-1.5 rounded-full bg-brand-500"></span>
+        Zastosowanie
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Moderacja czatu z AI dla gier i e-sportu</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">Moderacja czatu w Twojej grze w czasie rzeczywistym, w wielu językach. Chroń graczy, stosuj własne zasady i spełniaj wymogi regulacyjne bez zespołu moderatorów dyżurującego przez całą dobę.</p>
+    </div>
+  </section>
+
+  <!-- Problem solutions etc -->
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-red-200 bg-red-50 px-3 py-1 text-xs font-medium text-red-700">
+            <span class="flex h-1.5 w-1.5 rounded-full bg-red-500"></span>
+            Wyzwanie
+          </div>
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Toksyczny czat odstrasza graczy</h2>
+          <p class="mt-4 text-lg text-surface-500">
+            Moderacja w społecznościach gier online jest coraz trudniejsza. Mowa nienawiści, nękanie, spam i oszustwa na czacie odstraszają graczy i rodzą ryzyko prawne. Przy milionach wiadomości dziennie na serwerach na całym świecie nikt nie jest w stanie przeczytać ich ręcznie.
+          </p>
+          <ul class="mt-8 space-y-3">
+            <li class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+              <p class="text-sm text-surface-600"><strong>46% graczy</strong> deklaruje, że doświadczyło nękania w grach online (ADL 2024).</p>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+              <p class="text-sm text-surface-600"><strong>Presja regulacyjna</strong> ze strony unijnego DSA i przepisów o bezpieczeństwie w sieci wymaga od platform reagowania na nielegalne treści.</p>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+              <p class="text-sm text-surface-600"><strong>Wiele języków</strong> do obsłużenia, bo globalne gry potrzebują moderacji po angielsku, francusku, niemiecku, hiszpańsku, portugalsku, arabsku i w innych językach.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6 shadow-sm">
+          <h3 class="text-lg font-semibold text-surface-900">Automatyczna moderacja czatu w grze</h3>
+          <CodeBlock code={webhookRuleExample} lang="json" />
+          <p class="mt-4 text-sm text-surface-500">Zdefiniuj zasadę raz, a Action Engine zastosuje ją na każdym serwerze i w każdym języku.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works for gaming -->
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Zaprojektowane dla gier w czasie rzeczywistym</h2>
+        <p class="mt-4 text-lg text-surface-500">Od odebrania wiadomości do podjęcia działania wszystko trwa poniżej 500 ms.</p>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="rounded-xl border border-surface-200 bg-white p-6 text-center">
+          <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <h3 class="font-semibold">Czas rzeczywisty</h3>
+          <p class="mt-1 text-xs text-surface-500">Wiadomości są moderowane w mniej niż 500 ms, a następnie ukrywane, usuwane lub oznaczane, zanim zobaczą je inni gracze.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6 text-center">
+          <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <h3 class="font-semibold">Wiele języków</h3>
+          <p class="mt-1 text-xs text-surface-500">Moderuje główne języki Twoich graczy, a trudne przypadki weryfikują inne modele AI.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6 text-center">
+          <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          </div>
+          <h3 class="font-semibold">Gotowe na DSA</h3>
+          <p class="mt-1 text-xs text-surface-500">Każda decyzja moderacyjna jest zapisywana, a raporty można wyeksportować dla regulatorów.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6 text-center">
+          <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          </div>
+          <h3 class="font-semibold">Hosting w UE</h3>
+          <p class="mt-1 text-xs text-surface-500">Dane z czatu Twojej gry są hostowane w Unii Europejskiej i można je wyeksportować w dowolnym momencie.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rule example -->
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-8">
+        <h2 class="text-2xl font-bold text-surface-900">Przykład: zasada automatycznej moderacji w grze</h2>
+        <div class="mt-4 grid gap-6 md:grid-cols-2">
+          <div>
+            <p class="text-sm text-surface-500">Konfiguruj zasady zwykłym językiem lub w kodzie:</p>
+            <ul class="mt-3 space-y-2 text-sm text-surface-600">
+              <li class="flex items-start gap-2"><span class="text-accent-500">1.</span> <strong>Filtr słów:</strong> natychmiast blokuj znane obelgi, frazy oszustów i wzorce spamu.</li>
+              <li class="flex items-start gap-2"><span class="text-accent-500">2.</span> <strong>Progi kategorii:</strong> automatycznie usuwaj mowę nienawiści powyżej 0,7, oznaczaj nękanie powyżej 0,5.</li>
+              <li class="flex items-start gap-2"><span class="text-accent-500">3.</span> <strong>Twoje zasady:</strong> zapisz je zwykłym językiem, a Action Engine je zinterpretuje i zastosuje.</li>
+            </ul>
+          </div>
+          <div class="rounded-lg border border-surface-200 bg-white p-4 text-xs text-surface-500 font-mono">
+            <p><span class="text-brand-600">Zasada:</span> Automatyczne usuwanie mowy nienawiści</p>
+            <p><span class="text-brand-600">Warunek:</span> category:hate &gt; 0.7</p>
+            <p><span class="text-brand-600">Działanie:</span> Usunięcie + ostrzeżenie dla gracza</p>
+            <p><span class="text-brand-600">Audyt:</span> Zapisane na potrzeby zgodności z DSA</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-3xl">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 text-center">Moderacja w grach: najczęstsze pytania</h2>
+        <div class="mt-8 divide-y divide-surface-200">
+          <details class="group py-5">
+            <summary class="flex cursor-pointer items-center justify-between text-base font-medium text-surface-900">
+              Czy OpenModeration radzi sobie z czatem w grze w czasie rzeczywistym?
+              <svg class="h-5 w-5 shrink-0 text-surface-400 transition duration-200 group-open:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+            </summary>
+            <p class="mt-3 text-sm text-surface-500">Tak. OpenModeration jest zoptymalizowane pod kątem moderacji z niskim opóźnieniem, zwykle poniżej 500 ms na żądanie. Wstępny filtr obsługuje oczywiste naruszenia natychmiast, bez żadnego wywołania API.</p>
+          </details>
+          <details class="group py-5">
+            <summary class="flex cursor-pointer items-center justify-between text-base font-medium text-surface-900">
+              Czy obsługuje wiele języków w grach globalnych?
+              <svg class="h-5 w-5 shrink-0 text-surface-400 transition duration-200 group-open:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+            </summary>
+            <p class="mt-3 text-sm text-surface-500">Tak. Nasza AI do moderacji obsługuje główne języki Twoich graczy w ramach tego samego wywołania API, a trudne przypadki weryfikują inne modele AI.</p>
+          </details>
+          <details class="group py-5">
+            <summary class="flex cursor-pointer items-center justify-between text-base font-medium text-surface-900">
+              Czy mogę moderować cały ruch na czacie gry bez spowalniania rozgrywki?
+              <svg class="h-5 w-5 shrink-0 text-surface-400 transition duration-200 group-open:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+            </summary>
+            <p class="mt-3 text-sm text-surface-500">Tak. Moderuj asynchronicznie lub wsadowo z Action Engine. Gracze nie odczuwają opóźnień, a Ty nadal egzekwujesz wszystkie zasady w czasie rzeczywistym.</p>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTASection
+    title="Chroń społeczność swojej gry"
+    subtitle="Uruchom moderację czatu z AI w kilka minut, z hostingiem w UE."
+    buttonText="Wypróbuj za darmo"
+    buttonHref="https://app.openmoderation.com/signup"
+  />
+</BaseLayout>

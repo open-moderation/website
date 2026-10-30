@@ -1,0 +1,234 @@
+---
+import { bookingUrl } from '../../../i18n/ui';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import CodeBlock from '../../../components/CodeBlock.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+const L = (p: string) => localizePath(p, locale);
+
+const migrationCode = `# Azure Content Safety (direct)
+const endpoint = "https://<resource>.cognitiveservices.azure.com/";
+const res = await fetch(endpoint + "/contentsafety/text:analyze?api-version=2024-02-01", {
+  method: 'POST',
+  headers: { 'Ocp-Apim-Subscription-Key': '...' },
+  body: JSON.stringify({ text, categories: ['Hate','SelfHarm','Sexual','Violence'] })
+});
+// Resultaat: Azure-specifiek formaat, 4 categorieën, uitrol per regio
+
+# OpenModeration (één formaat)
+const result = await fetch('https://api.openmoderation.com/v1/moderation', {
+  method: 'POST',
+  headers: { 'Authorization': 'Bearer om_key_...' },
+  body: JSON.stringify({
+    input: text,
+    categories: ['hate', 'harassment', 'sexual', 'violence', 'self-harm', 'spam'],
+    threshold: 0.5
+  })
+});
+// Plus: voorfilter, dubbele drempel, automatische acties, auditlog, teamdashboard`;
+
+const title = "Azure Content Safety alternatief: prijs en vergelijking";
+const description = "Azure Content Safety zit vast aan Microsoft. OpenModeration draait een eigen AI, gecontroleerd door andere modellen, met regels, menselijke review en DSA-log.";
+
+const comparisonJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/nl/alternatieven/azure-content-safety",
+  "url": "https://www.openmoderation.com/nl/alternatieven/azure-content-safety",
+  "name": title,
+  "description": description,
+  "inLanguage": "nl",
+  "about": {
+    "@id": "https://www.openmoderation.com/#software"
+  }
+};
+
+const faqItems = [
+  {
+    question: "Wat is het beste alternatief voor Azure Content Safety?",
+    answer: "Wil je meer dan losse scores, dan is OpenModeration een alternatief: een eigen moderatie-AI, gecontroleerd door andere AI-modellen, met regels zonder code, beoordeling van twijfelgevallen door ons team en een auditlog voor de DSA, gehost in de EU. Wil je alleen een API binnen het Microsoft-ecosysteem, dan blijft Azure Content Safety een logische keuze."
+  },
+  {
+    question: "Wat kost Azure Content Safety vergeleken met OpenModeration?",
+    answer: "Azure AI Content Safety rekent per 1.000 tekstrecords (één record is maximaal 1.000 tekens) na een gratis niveau van 5.000 records per maand, tegen een tarief dat afhangt van je Azure-regio. OpenModeration is gratis tot 1.000 verzoeken per maand; de beheerde cloud begint bij € 99 per maand voor 10.000 verzoeken, Enterprise op aanvraag."
+  },
+  {
+    question: "Hoe stap ik over van Azure Content Safety naar OpenModeration?",
+    answer: "Eén gestandaardiseerde POST /v1/moderation-call vervangt het Content Safety-endpoint. Je hoeft niets opnieuw te trainen: onze eigen moderatie-AI wordt ingericht op je regels en je use cases, en gevoelige gevallen worden door andere AI-modellen gecontroleerd."
+  },
+  {
+    question: "Zit ik dan vast aan één model, zoals bij Azure?",
+    answer: "Nee. De engine van OpenModeration is niet gebonden aan één model: komt er een beter of goedkoper AI-model uit, dan voegt ons team het snel toe. De antwoorden houden hetzelfde gestandaardiseerde formaat, dus aan jouw kant verandert er niets."
+  },
+  {
+    question: "Wat krijg ik bovenop de ruwe scores van Azure?",
+    answer: "Je krijgt de rest van de workflow: een voorfilter, dubbele drempels (automatisch goedkeuren, beoordeling door ons team, automatisch afwijzen), regels zonder code, een dashboard waarin je elke beslissing realtime ziet en een DSA-klaar auditlog met exporteerbare rapporten."
+  },
+  {
+    question: "Kunnen mijn gegevens in de EU blijven in plaats van in de cloud van Microsoft?",
+    answer: "Ja. OpenModeration is ontwikkeld en gehost in de Europese Unie, en een on-premise installatie is mogelijk op aanvraag."
+  },
+];
+
+const comparisonPoints = [
+  { feature: "Reikwijdte van de moderatie", azure: "Alleen modellen van Microsoft", openmod: "Een eigen moderatie-AI, bij gevoelige gevallen gecontroleerd door andere AI-modellen" },
+  { feature: "AI-modellen", azure: "Modellen van Microsoft", openmod: "Eigen moderatie-AI, gecontroleerd door andere AI-modellen; nieuwe modellen worden toegevoegd zodra ze uitkomen" },
+  { feature: "Werkomgeving", azure: "Alleen een API. Je bouwt zelf een beoordelingsinterface", openmod: "Twijfelgevallen afgehandeld door ons team; een dashboard waarin je elke beslissing realtime ziet" },
+  { feature: "Regelengine", azure: "Eigen logica moet je zelf bouwen en onderhouden", openmod: "Drie ingebouwde lagen: woordfilters, scoredrempels en je eigen regels in gewone taal" },
+  { feature: "Afhankelijkheid van de leverancier", azure: "Hoog (gebonden aan het Microsoft-ecosysteem)", openmod: "Laag: engine niet gebonden aan één model, betere modellen toegevoegd zodra ze uitkomen" },
+  { feature: "Datasoevereiniteit", azure: "Gegevens verwerkt op infrastructuur van Microsoft", openmod: "Ontwikkeld en gehost in de EU voor AVG en DSA; on-premise installatie mogelijk op aanvraag" },
+  { feature: "Prijsmodel", azure: "Facturatie per API-verzoek", openmod: "Openbare prijzen: gratis tot 1.000 verzoeken per maand, Pro voor € 99 per maand" }
+];
+---
+
+<BaseLayout title={title} description={description} jsonLd={comparisonJsonLd}>
+  <Breadcrumb items={[{ label: "Home", href: L('/') }, { label: "Alternatieven", href: L('/alternatives') }, { label: "Azure Content Safety" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">Azure Content Safety alternatief</div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Azure Content Safety is één API.<br/>OpenModeration is het platform.</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Azure Content Safety levert goede moderatie-API's, maar daar een werkende moderatieworkflow van maken kost flink wat ontwikkeltijd. OpenModeration geeft je de API <strong>en</strong> menselijke beoordeling door ons team, regels en logboeken eromheen.
+      </p>
+      <div class="mt-8 flex items-center justify-center gap-4">
+        <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm">Probeer OpenModeration gratis</a>
+        <a href="#comparison" class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700">Bekijk de vergelijking</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">In minder dan een uur over van Azure</h2>
+          <p class="mt-4 text-lg text-surface-500">
+            Eén gestandaardiseerde call vervangt het Content Safety-endpoint. De scores komen terug in één formaat, met drempels die jij bepaalt.
+          </p>
+          <ul class="mt-6 space-y-3">
+            <li class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600"><strong>Gecontroleerde AI</strong>: onze eigen moderatie-AI, waarbij andere AI-modellen de gevoelige gevallen beoordelen.</p>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600">Een <strong>voorfilter</strong> houdt duidelijke spam tegen vóór elke AI-call.</p>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600">Standaard <strong>gehost in de EU</strong>, met een on-premise installatie mogelijk op aanvraag: <a href={bookingUrl(locale)} class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">laten we praten</a>.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-4 shadow-sm">
+          <CodeBlock code={migrationCode} lang="javascript" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="comparison" class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-4xl">
+        <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">Azure Content Safety vs OpenModeration</h2>
+        <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+          <table class="w-full text-left text-sm">
+            <thead>
+              <tr class="bg-surface-50">
+                <th class="px-6 py-4 font-semibold text-surface-900">Criterium</th>
+                <th class="px-6 py-4 font-semibold text-surface-500">Azure Content Safety</th>
+                <th class="px-6 py-4 font-semibold text-brand-700">OpenModeration</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-surface-200 bg-white">
+              {comparisonPoints.map((row) => (
+                <tr>
+                  <td class="px-6 py-4 font-medium text-surface-900">{row.feature}</td>
+                  <td class="px-6 py-4 text-surface-600">{row.azure}</td>
+                  <td class="px-6 py-4 font-medium text-accent-600">{row.openmod}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="mt-16 grid gap-8 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-8">
+          <h3 class="text-xl font-bold text-surface-900">De verborgen kosten van moderatie met 'alleen een API'</h3>
+          <p class="mt-4 text-surface-600">
+            Azure Content Safety aanroepen is het makkelijke deel. Voordat moderatoren ermee kunnen werken, moeten je developers nog bouwen:
+          </p>
+          <ul class="mt-4 space-y-3 text-sm text-surface-600">
+            <li class="flex items-start gap-2"><span class="text-red-500">✕</span> Een dashboard waarin menselijke moderatoren grensgevallen beoordelen</li>
+            <li class="flex items-start gap-2"><span class="text-red-500">✕</span> Een regelengine die AI-scores omzet in automatische acties (verbergen, verwijderen, markeren)</li>
+            <li class="flex items-start gap-2"><span class="text-red-500">✕</span> Auditlogging om DSA-naleving aan toezichthouders te bewijzen</li>
+            <li class="flex items-start gap-2"><span class="text-red-500">✕</span> Terugvallogica voor als de API's van Azure uitvallen</li>
+          </ul>
+        </div>
+        <div class="rounded-xl border border-brand-200 bg-brand-50 p-8 shadow-sm">
+          <h3 class="text-xl font-bold text-brand-700">Het voordeel van OpenModeration</h3>
+          <p class="mt-4 text-surface-700">
+            OpenModeration draait een eigen moderatie-AI en voegt alles eromheen toe:
+          </p>
+          <ul class="mt-4 space-y-3 text-sm text-surface-700">
+            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> Twijfelgevallen worden afgehandeld door ons team. Je ziet elke beslissing realtime en kunt ingrijpen wanneer je wilt.</li>
+            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> Regels ingesteld met drie tools (verboden woorden, drempels per categorie en je eigen regels in gewone taal), zonder code.</li>
+            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> Gevoelige gevallen gecontroleerd door andere AI-modellen, en betere modellen toegevoegd zodra ze uitkomen.</li>
+            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> Een auditlog dat elke beslissing van AI en mens vastlegt.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h2 class="text-xl font-bold text-surface-900">Een AI die de vooruitgang van AI-modellen volgt</h2>
+          <p class="mt-3 text-sm text-surface-600">OpenModeration werkt met een eigen moderatie-AI, en bij gevoelige gevallen controleren andere AI-modellen die beslissing. Komt er een beter of goedkoper model uit, dan voegt het team dat snel toe, zonder dat jij iets hoeft te veranderen. Zo volgt je moderatie de vooruitgang van de AI-markt in plaats van vast te zitten aan de modellen van één leverancier.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h2 class="text-xl font-bold text-surface-900">Prijzen: Azure Content Safety vs OpenModeration</h2>
+          <p class="mt-3 text-sm text-surface-600">Azure AI Content Safety rekent per 1.000 tekstrecords (maximaal 1.000 tekens per record) na een gratis niveau van 5.000 records per maand, tegen een tarief dat per Azure-regio verschilt. OpenModeration is gratis tot 1.000 verzoeken per maand, Pro kost € 99 per maand voor 10.000 verzoeken en Enterprise is op aanvraag. <a href={L('/pricing')} class="font-medium text-brand-600 hover:text-brand-500">Bekijk de prijzen</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ items={faqItems} title="Azure Content Safety alternatief: veelgestelde vragen" />
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection
+    title="Stop met het bouwen van interne moderatietools."
+    subtitle="Koppel je pagina's: onze AI en ons team doen de rest, en jij ziet elke beslissing realtime."
+    buttonText="Gratis proberen"
+    buttonHref="https://app.openmoderation.com/signup"
+  />
+
+  <section class="border-t border-surface-100 bg-surface-50 py-16">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold text-surface-900">Vergelijk andere alternatieven</h2>
+      <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+        <a href={L('/alternatives/openai-moderation')} class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">OpenAI Moderation</a>
+        <a href={L('/alternatives/mistral-moderation')} class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Mistral Moderation</a>
+        <a href={L('/text-moderation-api')} class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Tekstmoderatie-API</a>
+        <a href={L('/alternatives/perspective-api')} class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Perspective API</a>
+        <a href={L('/alternatives/hive-moderation')} class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Hive Moderation</a>
+        <a href={L('/alternatives/checkstep')} class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Checkstep</a>
+        <a href={L('/alternatives')} class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Alle vergelijkingen</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

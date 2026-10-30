@@ -1,7 +1,8 @@
 ---
 import { getLocale } from '../i18n/routes';
-import { BOOKING_URL, useTranslations } from '../i18n/ui';
+import { bookingUrl, useTranslations } from '../i18n/ui';
 
+const BOOKING_URL = bookingUrl(getLocale(Astro.url.pathname));
 const t = useTranslations(getLocale(Astro.url.pathname));
 
 export interface Props {
@@ -28,12 +29,12 @@ const {
     <h2 class="text-3xl font-extrabold tracking-tight text-white sm:text-5xl">{title}</h2>
     <p class={`mx-auto mt-4 max-w-2xl text-lg text-white/85`}>{subtitle}</p>
     <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-      <a href={buttonHref} class="lift inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 text-sm font-semibold text-violet-700 shadow-lg transition hover:bg-sun-50">
+      <a href={BOOKING_URL} target="_blank" rel="noopener" class="lift inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 text-sm font-semibold text-violet-700 shadow-lg transition hover:bg-sun-50">
+        📅 {t('cta.book')}
+      </a>
+      <a href={buttonHref} class="inline-flex items-center gap-2 rounded-lg border border-white/50 bg-white/10 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
         <span>{buttonText}</span>
         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-      </a>
-      <a href={BOOKING_URL} target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg border border-white/50 bg-white/10 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
-        {t('cta.book')}
       </a>
     </div>
     <p class={`mt-4 text-sm text-white/85`}>

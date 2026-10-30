@@ -1,0 +1,241 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+const L = (p: string) => localizePath(p, locale);
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/pt/alternativas/arwen",
+  "name": "Alternativa ao Arwen: comparativo com o OpenModeration",
+  "description": "Arwen ou OpenModeration? Comparativo com fontes: redes cobertas, comentários do seu site, preços públicos, hospedagem na UE e motivo de cada decisão.",
+  "inLanguage": "pt",
+  "about": {
+    "@id": "https://www.openmoderation.com/#software"
+  }
+};
+
+const rows = [
+  {
+    "feature": "O que oferece",
+    "them": "Moderação com IA de comentários em redes sociais para marcas, esporte e mídia (Signals, Engage, Moderate, Protect)",
+    "openmod": "Moderação de comentários com IA para mídia, marcas e instituições, configurada com a equipe da Logora segundo as suas regras e os seus casos de uso"
+  },
+  {
+    "feature": "Canais",
+    "them": "Facebook, Instagram, X, TikTok e YouTube; Reddit \"em breve\"; anúncios da Meta e do TikTok",
+    "openmod": "Sites (API), WordPress, páginas do Facebook, contas profissionais do Instagram e canais do YouTube"
+  },
+  {
+    "feature": "Comentários do seu site",
+    "them": "Não especificado no seu site",
+    "openmod": "Sim, via WordPress ou API"
+  },
+  {
+    "feature": "Preço",
+    "them": "Não divulgado: depende de seguidores, perfis e anúncios; é preciso pedir uma demonstração",
+    "openmod": "Público: grátis até 1.000 requisições/mês, Pro a 99 €/mês para 10 mil requisições, Enterprise sob consulta"
+  },
+  {
+    "feature": "Explicação por escrito de cada decisão",
+    "them": "Não especificado no seu site",
+    "openmod": "Sim, uma explicação por escrito para cada decisão"
+  },
+  {
+    "feature": "DSA",
+    "them": "Não especificado no seu site",
+    "openmod": "Notificação e ação, declaração de motivos, revisão humana de decisões contestadas, números exportáveis e registro de atividade completo"
+  },
+  {
+    "feature": "Certificações",
+    "them": "Cyber Essentials e ISO 27001",
+    "openmod": "RGPD, com registro completo de cada decisão"
+  },
+  {
+    "feature": "Hospedagem dos dados",
+    "them": "Não especificado no seu site",
+    "openmod": "Hospedado na UE, em conformidade com o RGPD"
+  },
+  {
+    "feature": "Modelos de IA",
+    "them": "Não especificado (fala de uma IA \"em aprendizado constante\")",
+    "openmod": "IA de moderação própria, verificada por outros modelos de IA; novos modelos integrados assim que são lançados"
+  },
+  {
+    "feature": "Referências",
+    "them": "Hinge, Formula 1, ITV, ATP, Red Bull Racing, Fulham (logos do seu site)",
+    "openmod": "L'Équipe, Challenges, Sud Ouest, actu.fr, Estadão, Südkurier, Egora"
+  }
+];
+
+const faqItems = [
+  {
+    "question": "Qual é a melhor alternativa ao Arwen?",
+    "answer": "A melhor alternativa ao Arwen depende dos seus canais: se você modera Facebook, Instagram, YouTube e os comentários do seu próprio site, o OpenModeration faz isso em um único console, com preços públicos e uma explicação por escrito para cada decisão. Se você precisa de X, TikTok ou da moderação de anúncios, o Arwen cobre esses canais e o OpenModeration não."
+  },
+  {
+    "question": "Quanto custa o Arwen?",
+    "answer": "O Arwen não divulga os seus preços: segundo o seu site, eles dependem do número de seguidores, de perfis e de anúncios, e são calculados após uma demonstração. O OpenModeration divulga os seus: grátis até 1.000 requisições por mês, Pro a 99 €/mês para 10 mil requisições e Enterprise sob consulta para grandes volumes. O preço não depende dos seus seguidores."
+  },
+  {
+    "question": "Arwen ou OpenModeration: qual escolher?",
+    "answer": "Escolha o Arwen se você precisa moderar X ou TikTok, ou os comentários dos seus anúncios. Escolha o OpenModeration se quer saber o preço antes de pedir uma demonstração e quer uma explicação por escrito para cada decisão, com uma equipe que configura a moderação com você segundo as suas regras e os seus casos de uso."
+  },
+  {
+    "question": "Posso testar o OpenModeration sem sair do Arwen?",
+    "answer": "Sim. No modo sandbox, o OpenModeration analisa os seus comentários reais sem ocultar nada. O Arwen continua funcionando e você compara as duas séries de decisões, comentário por comentário, antes de mudar qualquer coisa."
+  },
+  {
+    "question": "Quais modelos de IA o OpenModeration usa?",
+    "answer": "O OpenModeration funciona com a sua própria IA de moderação e, nos casos delicados, outros modelos de IA verificam a decisão. Quando sai um modelo melhor ou mais econômico, a equipe o integra rapidamente, sem que você precise mudar nada: a sua moderação aproveita o progresso dos modelos de IA."
+  },
+  {
+    "question": "O OpenModeration serve para clubes esportivos e veículos de mídia?",
+    "answer": "Sim. A IA lê cada comentário junto com o título da publicação e a conversa, algo decisivo em dias de jogo ou de notícias urgentes. Veículos esportivos como o L'Équipe moderam os seus comentários com o OpenModeration."
+  }
+];
+---
+
+<BaseLayout title="Alternativa ao Arwen: comparativo com o OpenModeration" description="Arwen ou OpenModeration? Comparativo com fontes: redes cobertas, comentários do seu site, preços públicos, hospedagem na UE e motivo de cada decisão." jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Início", href: L('/') }, { label: "Alternativas", href: L('/alternatives') }, { label: "Arwen" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Comparativo
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Alternativa ao Arwen: comparativo com o OpenModeration</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        A melhor alternativa ao Arwen depende dos seus canais: se você modera Facebook, Instagram, YouTube e os comentários do seu próprio site, o OpenModeration faz isso em um único console, com preços públicos e uma explicação por escrito para cada decisão. Se você precisa de X, TikTok ou da moderação de anúncios, o Arwen cobre esses canais e o OpenModeration não.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold tracking-tight text-surface-900">Para quem é o Arwen?</h2>
+      <p class="mt-4 text-surface-600">Segundo o seu site, o Arwen modera com IA os comentários em redes sociais de marcas, clubes esportivos e veículos de mídia, com quatro produtos (Signals, Engage, Moderate e Protect). Ele cobre Facebook, Instagram, X, TikTok e YouTube, anuncia o Reddit "em breve" e também modera os comentários de anúncios da Meta e do TikTok. Entre os logos do seu site aparecem Hinge, Formula 1, ITV, ATP e Red Bull Racing.</p>
+      <p class="mt-4 text-surface-600">O OpenModeration modera com IA os comentários de veículos de mídia, marcas e instituições públicas, no site deles e nas suas páginas do Facebook, contas do Instagram e canais do YouTube. Ele oculta automaticamente as violações claras, mantém visível a crítica legítima e deixa os casos duvidosos com a nossa equipe; você acompanha cada decisão em tempo real em um único console. A equipe da Logora, em Paris desde 2019, configura tudo com você segundo as suas regras e os seus casos de uso.</p>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Arwen vs OpenModeration, ponto a ponto</h2>
+      <p class="mt-4 text-surface-500">Informações sobre o Arwen extraídas do seu site, arwen.ai, consultado em 30 de outubro de 2026.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Critério</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Arwen</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.them}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Escolha o OpenModeration se…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>você quer saber o preço antes de pedir uma demonstração;</li>
+          <li>você também modera os comentários do seu site ou do WordPress;</li>
+          <li>você precisa de uma explicação por escrito para cada comentário ocultado, como exige o DSA;</li>
+          <li>os seus dados precisam ficar na União Europeia.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">O Arwen pode ser mais indicado se…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>você precisa moderar X ou TikTok, ou os comentários dos seus anúncios;</li>
+          <li>você quer respostas sugeridas e social listening na mesma ferramenta;</li>
+          <li>o seu departamento de compras exige ISO 27001 ou Cyber Essentials.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h2 class="text-xl font-bold text-surface-900">Uma IA que acompanha o progresso dos modelos</h2>
+          <p class="mt-3 text-sm text-surface-600">O OpenModeration funciona com a sua própria IA de moderação e, nos casos delicados, outros modelos de IA verificam a decisão. Quando sai um modelo melhor ou mais econômico, a equipe o integra rapidamente, sem que você precise mudar nada. A sua moderação acompanha o progresso do mercado de IA em vez de ficar presa a um único algoritmo. O Arwen não indica no seu site quais modelos de IA utiliza.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h2 class="text-xl font-bold text-surface-900">Preços: Arwen vs OpenModeration</h2>
+          <p class="mt-3 text-sm text-surface-600">O Arwen não divulga os seus preços: segundo o seu site, eles dependem do número de seguidores, de perfis e de anúncios, e são calculados após uma demonstração. O OpenModeration divulga os seus: grátis até 1.000 requisições por mês, Pro a 99 €/mês para 10 mil requisições e Enterprise sob consulta para grandes volumes. O preço não depende dos seus seguidores. A implantação on-premise é possível sob consulta. <a href={L('/book-a-call')} class="font-medium text-brand-600 hover:text-brand-500">Agende uma reunião</a> para avaliar o seu caso.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Migrar do Arwen para o OpenModeration em 3 etapas</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">1. Teste no modo sandbox</h3>
+          <p class="mt-2 text-sm text-surface-600">Conecte o seu site, o WordPress ou as suas páginas do Facebook, Instagram e YouTube. O OpenModeration analisa comentários reais sem ocultar nada, enquanto o Arwen continua funcionando.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">2. Ajuste com a equipe da Logora</h3>
+          <p class="mt-2 text-sm text-surface-600">Comparamos as decisões com as da sua ferramenta atual e adaptamos a moderação às suas regras e aos seus casos de uso, com a explicação por escrito de cada decisão à vista.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">3. Ative canal por canal</h3>
+          <p class="mt-2 text-sm text-surface-600">Você ativa a moderação em um canal e depois nos outros. A nossa equipe trata os casos duvidosos; você vê cada decisão em tempo real e pode intervir quando quiser.</p>
+        </div>
+      </div>
+      <p class="mt-8 text-center text-surface-600">Quer ver com os seus próprios comentários? <a href={L('/book-a-call')} class="font-medium text-brand-600 hover:text-brand-500">Agende uma reunião com a nossa equipe</a>.</p>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Perguntas frequentes" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        Arwen é uma marca da sua empresa titular. Fontes: <a href="https://arwen.ai" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">arwen.ai</a> (consultado em 30 de outubro de 2026). Viu algum erro? Escreva para <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Para saber mais</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={L('/social-media-moderation')} class="font-medium text-brand-600 hover:text-brand-500">Moderação de redes sociais com o OpenModeration &rarr;</a></li>
+        <li><a href={L('/integrations/facebook')} class="font-medium text-brand-600 hover:text-brand-500">Moderar os comentários do Facebook &rarr;</a></li>
+        <li><a href={L('/blog/social-media-moderation-guide')} class="font-medium text-brand-600 hover:text-brand-500">Guia de moderação de redes sociais &rarr;</a></li>
+        <li><a href={L('/moderation-software')} class="font-medium text-brand-600 hover:text-brand-500">O software de moderação OpenModeration &rarr;</a></li>
+        <li><a href={L('/pricing')} class="font-medium text-brand-600 hover:text-brand-500">Os preços do OpenModeration &rarr;</a></li>
+        <li><a href={L('/alternatives')} class="font-medium text-brand-600 hover:text-brand-500">Todos os comparativos &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Compare a sua moderação atual com o OpenModeration." subtitle="Teste o OpenModeration no modo sandbox com os seus próprios comentários, sem ocultar nada. Grátis até 1.000 requisições por mês." buttonText="Agende uma reunião" buttonHref={L('/book-a-call')} />
+</BaseLayout>

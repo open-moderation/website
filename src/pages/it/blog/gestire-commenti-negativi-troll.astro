@@ -1,0 +1,309 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import FAQ from '../../../components/FAQ.astro';
+
+const title = "Come gestire i commenti negativi e i troll: guida";
+const description = "Come gestire i commenti negativi e i troll: critica o abuso, quando rispondere, nascondere, eliminare o bannare, modelli di risposta, raid, crisi e team.";
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Come gestire i commenti negativi e i troll sui social e sul tuo sito",
+  "description": description,
+  "inLanguage": "it",
+  "datePublished": "2026-10-30",
+  "dateModified": "2026-10-30",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/it/blog/gestire-commenti-negativi-troll" }
+};
+
+const decisions = [
+  { situation: "Un cliente si lamenta di un ordine in ritardo, di un bug o di una brutta esperienza", action: "Rispondere", why: "Rispondi in pubblico, poi sposta i dettagli in messaggio privato. Chi legge ti giudica da come rispondi." },
+  { situation: "Un'opinione dura ma pertinente sul tuo prodotto, sul tuo articolo, su una tua decisione", action: "Lasciare (e rispondere se serve)", why: "La critica fa parte della conversazione. Toglierla costa più fiducia di quanta ne faccia risparmiare." },
+  { situation: "Un'informazione falsa o una voce che si diffonde", action: "Rispondere con i fatti", why: "Una correzione pacata, con una fonte, aiuta chiunque leggerà il thread in seguito." },
+  { situation: "Un insulto, un attacco personale, un messaggio d'odio, una provocazione senza contenuto", action: "Nascondere", why: "Il commento non inquina più la discussione e l'autore di solito non se ne accorge." },
+  { situation: "Spam, link truffa, dati personali di altre persone", action: "Eliminare", why: "Questi contenuti non devono restare online in nessuna forma, nemmeno per chi li ha scritti." },
+  { situation: "Un recidivo, un account falso, un attacco coordinato", action: "Bannare o bloccare", why: "Quando lo schema è chiaro, intervieni sull'account e non commento per commento." },
+  { situation: "Minacce, incitamento alla violenza, abusi su minori o altri contenuti chiaramente illeciti", action: "Segnalare (e conservare le prove)", why: "Segnala alla piattaforma e, se qualcuno è in pericolo, alla Polizia Postale. Fai degli screenshot prima di rimuovere." },
+];
+
+const faqItems = [
+  {
+    question: "Bisogna cancellare i commenti negativi?",
+    answer: "No, se sono critiche. Un commento negativo ma educato sul tuo prodotto, servizio o contenuto deve restare visibile, meglio se con una risposta. Cancellarlo sembra censura e spesso fa tornare l'autore, più arrabbiato. Riserva l'eliminazione a spam, truffe, dati personali e contenuti illeciti, e nascondi gli insulti.",
+  },
+  {
+    question: "Come rispondere a un commento negativo sui social?",
+    answer: "Rispondi in fretta, ringrazia, riconosci il problema senza polemizzare, proponi un passo concreto e, se servono dati personali, passa in messaggio privato. Scrivi come una persona, firma con il nome se il tuo brand lo fa e non incollare mai la stessa frase sotto ogni lamentela.",
+  },
+  {
+    question: "Come gestire i troll?",
+    answer: "Non dargli da mangiare. Il troll cerca una reazione, e discutere in pubblico lo premia. Nascondi la provocazione, non rispondere e banna l'account se torna. Rispondi solo se il commento contiene un'informazione falsa a cui altri potrebbero credere, e in quel caso rivolgiti a chi legge, non al troll.",
+  },
+  {
+    question: "Che differenza c'è tra un troll e un cliente scontento?",
+    answer: "Un cliente scontento parla di un problema e di solito vuole che venga risolto. Un troll parla di te, o degli altri utenti, e cerca attenzione o scontro. Guarda la sostanza: c'è un fatto, una domanda, un'esperienza? Se sì, trattalo come un feedback, anche se il tono è sgradevole.",
+  },
+  {
+    question: "Cosa fare durante un raid di commenti?",
+    answer: "Rallenta la discussione: nascondi i nuovi commenti offensivi, limita o sospendi i commenti sul post preso di mira se la piattaforma lo consente, banna gli account arrivati solo per attaccare e conserva screenshot con data. Avvisa il team, pubblica se serve un messaggio pacato e aspetta che l'ondata passi prima di riaprire.",
+  },
+  {
+    question: "Bisogna spiegare perché un commento è stato rimosso?",
+    answer: "Sul tuo sito o sulla tua app, il Digital Services Act (DSA) chiede ai servizi di hosting di fornire all'autore una motivazione quando un contenuto viene rimosso o limitato. Sui social questo obbligo spetta alla piattaforma, ma tenere una breve traccia di ogni decisione resta una buona pratica.",
+  },
+  {
+    question: "Quando conviene automatizzare la moderazione dei commenti?",
+    answer: "Quando i commenti arrivano più in fretta di quanto il team riesca a leggerli, quando gli abusi arrivano di notte o nel weekend, o quando gli stessi insulti tornano di continuo. Uno strumento nasconde gli abusi evidenti in tempo reale, applica le tue regole e i tuoi casi d'uso e manda i casi dubbi a una persona.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} ogType="article" jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Home", href: "/it" }, { label: "Blog", href: "/it/blog" }, { label: "Gestire i commenti negativi e i troll" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-30">30 ottobre 2026</time>
+        <span>&middot;</span>
+        <span>9 min di lettura</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Come gestire i commenti negativi e i troll: guida pratica per social e siti web</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Ogni brand, testata e pagina pubblica riceve commenti negativi. Alcuni sono giusti e utili, altri sgarbati ma
+        sinceri, altri ancora arrivano da persone che vogliono solo ferire o provocare. La parte difficile non è sapere che
+        i troll esistono: è decidere, commento dopo commento, cosa fare. Rispondere, lasciar perdere, nascondere,
+        eliminare, bannare l'autore o segnalarlo? Questa guida ti dà un metodo semplice, modelli di risposta e un piano
+        per le giornate storte.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">In breve</h2>
+      <ul>
+        <li><strong>La critica resta visibile.</strong> Un commento negativo ma educato è un feedback. Rispondi invece di toglierlo.</li>
+        <li><strong>L'abuso si nasconde, non si discute.</strong> Insulti e molestie si nascondono; spam, truffe e dati personali si eliminano; i contenuti illeciti si segnalano.</li>
+        <li><strong>Il troll vuole una reazione.</strong> Non dargliela. Banna i recidivi e prepara un piano per raid e crisi.</li>
+        <li><strong>Proteggi il team e tieni traccia.</strong> Prenditi cura di chi legge i commenti e motiva ogni rimozione in poche righe.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Critica o abuso: come capire la differenza?</h2>
+      <p>
+        La prima domanda non è «questo commento è negativo?», ma «c'è qualcosa di cui discutere?». Un test utile: togli il
+        tono e guarda cosa resta.
+      </p>
+      <ul>
+        <li><strong>La critica</strong> riguarda ciò che fai: un prodotto, un prezzo, un articolo, una decisione, un ritardo. Può essere arrabbiata, ironica o ingiusta, ma contiene un fatto, un'esperienza o una domanda.</li>
+        <li><strong>L'abuso</strong> riguarda ciò che qualcuno è: insulti, odio, minacce, prese in giro sull'aspetto, l'origine, il genere o la religione. Senza il tono, non resta niente.</li>
+        <li><strong>Il trolling</strong> cerca una reazione: provocazioni fuori tema, esche, lo stesso messaggio ripetuto, indignazione finta.</li>
+        <li><strong>Spam e truffe</strong> parlano d'altro: link, falsi concorsi, account che si spacciano per il tuo brand.</li>
+      </ul>
+      <p>
+        «Tre settimane per una consegna e nessuno risponde alle mail, una vergogna» è una critica con una parola dura.
+        «Bisogna essere idioti per comprare da questi pagliacci» è un abuso senza contenuto. La prima merita una risposta,
+        la seconda si può nascondere.
+      </p>
+
+      <h3 class="text-lg font-semibold text-surface-900">Perché la critica deve restare visibile</h3>
+      <p>
+        La tentazione di ripulire ogni commento negativo è forte. Resisti. Chi legge si accorge quando una sezione commenti
+        contiene solo complimenti, e ci crede meno. Una lamentela che sparisce spesso torna più forte, a volte con uno
+        screenshot e la parola «censura». Una lamentela gestita bene, invece, mostra a tutti che qualcuno ascolta. Le tue
+        regole devono proteggere le persone dagli abusi, non il brand dal dissenso. Metti nero su bianco questa distinzione
+        nella tua <a href="/it/policy-di-moderazione" class="text-brand-600 hover:text-brand-500">policy di moderazione</a>, così tutto il team traccia il confine nello stesso punto.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Cosa fare con un commento negativo? La tabella delle decisioni</h2>
+      <p>
+        Quasi tutte le piattaforme offrono le stesse azioni con nomi diversi: rispondere, nascondere, eliminare, bannare o
+        bloccare, segnalare. Per gli abusi, nascondere è di solito la scelta migliore: su una Pagina Facebook, per esempio,
+        un commento nascosto resta visibile al suo autore e ai suoi amici, quindi l'autore raramente se ne accorge. Usa
+        questa tabella come base e adattala alle tue regole e ai tuoi casi d'uso.
+      </p>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Situazione</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Azione</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Perché</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {decisions.map((row) => (
+            <tr>
+              <td class="px-4 py-3 text-surface-600">{row.situation}</td>
+              <td class="px-4 py-3 font-medium text-surface-900">{row.action}</td>
+              <td class="px-4 py-3 text-surface-600">{row.why}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <p>
+        Due regole completano la tabella. Intervieni prima sul contenuto e poi sulla persona: un commento offensivo si
+        nasconde, un comportamento ripetuto porta al ban. E quando esiti tra due azioni, scegli quella reversibile. Un
+        commento nascosto si può mostrare di nuovo; uno eliminato è perso.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Come rispondere ai commenti negativi: modelli da adattare</h2>
+      <p>
+        Una buona risposta è rapida, breve, umana e precisa. Ringrazia, riconosce il problema, propone un passo successivo
+        e, se serve, sposta la conversazione in privato. Non polemizzare mai in pubblico, non dare la colpa al cliente e non
+        incollare la stessa frase sotto venti lamentele: la gente confronta.
+      </p>
+      <p><strong>Una lamentela su un prodotto o un servizio</strong></p>
+      <blockquote>
+        «Ciao Giulia, grazie per avercelo detto e scusa per le tre settimane di attesa: non è quello che ti avevamo promesso.
+        Ci mandi il numero d'ordine in privato? Oggi stesso verifichiamo cosa è successo e ti facciamo sapere. Marco,
+        assistenza clienti»
+      </blockquote>
+      <p><strong>Un'opinione dura che non condividi</strong></p>
+      <blockquote>
+        «Grazie per il tuo parere. Abbiamo fatto questa scelta perché [motivo breve e onesto]. Capiamo che non piaccia a
+        tutti e stiamo leggendo tutti i commenti sull'argomento.»
+      </blockquote>
+      <p><strong>Un'informazione falsa o una voce infondata</strong></p>
+      <blockquote>
+        «Un chiarimento per chi ci legge: questo prodotto non è stato richiamato. Il richiamo annunciato il [data] riguarda
+        [altro prodotto] e trovi tutte le informazioni qui: [link]. Per domande sul tuo ordine, il nostro team ti risponde
+        in privato.»
+      </blockquote>
+      <p><strong>Un richiamo alle regole quando la discussione si scalda</strong></p>
+      <blockquote>
+        «Qui il confronto è benvenuto, gli attacchi personali no. Abbiamo nascosto alcuni commenti che hanno superato il
+        limite. Le nostre regole della community sono qui: [link].»
+      </blockquote>
+      <p>
+        Adatta il tono al tuo brand. Una banca e un marchio streetwear non parlano allo stesso modo, ma entrambi devono
+        sembrare una persona, non un ufficio legale.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Come gestire i troll (e i raid)</h2>
+      <p>
+        «Non dare da mangiare al troll» è un consiglio vecchio, ed è ancora il migliore. Il troll cerca pubblico e
+        reazione. Una lunga risposta pubblica gli dà entrambe le cose.
+      </p>
+      <ul>
+        <li><strong>Riconosci lo schema.</strong> Provocazione fuori tema, account nuovo o anonimo, lo stesso messaggio sotto più post, risposte rivolte agli altri utenti più che a te.</li>
+        <li><strong>Nascondi, non discutere.</strong> Nascondi la provocazione e le risposte che ha scatenato. Il silenzio non è debolezza: toglie il palcoscenico.</li>
+        <li><strong>Correggi, ma per chi legge.</strong> Se un troll diffonde un'informazione falsa credibile, pubblica una sola correzione con i fatti, rivolta a tutti, e fermati lì.</li>
+        <li><strong>Banna i recidivi.</strong> Dopo due o tre commenti nascosti dallo stesso account, bloccalo. Annota il motivo in una riga.</li>
+        <li><strong>Non dare mai informazioni personali</strong> e non entrare in dialogo con chi minaccia il tuo team. Conserva le prove e segnala.</li>
+      </ul>
+      <p>
+        Un raid è un'altra cosa: decine o centinaia di account arrivano sullo stesso post in poco tempo, spesso chiamati da
+        un forum, un gruppo o un canale. In quel caso gestisci l'ondata, non il singolo commento. Nascondi i nuovi commenti
+        offensivi man mano che arrivano, limita o disattiva temporaneamente i commenti sul post preso di mira se la
+        piattaforma lo consente, banna gli account mobilitati per l'attacco e conserva screenshot con data. Avvisa la tua
+        community, con un messaggio breve, che per un po' la moderazione sarà più severa.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Cosa fare quando i commenti negativi diventano una crisi?</h2>
+      <p>
+        A volte i commenti negativi non sono un raid ma il segnale di un problema reale: un difetto di prodotto, una
+        campagna infelice, un articolo sulla tua azienda. In quel caso la moderazione non deve servire a nascondere la
+        crisi. Una sequenza semplice aiuta.
+      </p>
+      <ol>
+        <li><strong>Sospendi i post programmati.</strong> Un post promozionale allegro in piena crisi peggiora tutto.</li>
+        <li><strong>Fai salire la questione.</strong> Avvisa chi decide: comunicazione, direzione, ufficio legale, assistenza clienti. Stabilite chi parla.</li>
+        <li><strong>Pubblica un messaggio chiaro.</strong> Cosa è successo, cosa sai, cosa stai facendo, quando dirai di più. Fissalo in alto e rimandaci nelle risposte.</li>
+        <li><strong>Lascia visibile la critica.</strong> Nascondi come sempre abusi e minacce, ma lascia online i commenti arrabbiati e legittimi. Toglierli durante una crisi è il modo più rapido per scatenarne un'altra.</li>
+        <li><strong>Rispondi a blocchi.</strong> Non potrai rispondere a tutti uno per uno. Rispondi ai commenti più visibili e rappresentativi e rimanda al messaggio principale.</li>
+        <li><strong>Fai il punto dopo.</strong> Quali domande sono tornate di più? Quali decisioni sono state difficili? Aggiorna le regole e i modelli.</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Come proteggere il benessere del team?</h2>
+      <p>
+        Leggere odio, minacce e insulti tutto il giorno logora, anche quando sono rivolti al brand e non a chi li legge. I
+        social media manager lavorano spesso da soli, di sera, dal proprio telefono. Il tema merita la stessa attenzione di
+        qualsiasi altro rischio sul lavoro.
+      </p>
+      <ul>
+        <li><strong>Dividi il carico.</strong> Fai ruotare chi gestisce le code più pesanti e non lasciare mai una persona da sola davanti a un raid.</li>
+        <li><strong>Stabilisci degli orari.</strong> Decidi cosa succede di notte e nel weekend, invece di affidarti a chi guarda il telefono per caso.</li>
+        <li><strong>Riduci l'esposizione.</strong> Filtra i contenuti più violenti prima che li veda una persona e sfoca le immagini di default quando gli strumenti lo permettono.</li>
+        <li><strong>Sostieni le persone.</strong> Chiarisci che chi nasconde un abuso sta applicando le regole, e che la direzione è dalla sua parte.</li>
+        <li><strong>Parlatene.</strong> Un breve debriefing dopo una giornata difficile, e supporto quando qualcuno viene preso di mira personalmente.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Come documentare le decisioni di moderazione?</h2>
+      <p>
+        Quando un autore chiede «perché il mio commento è stato rimosso?», «perché sì» non è una risposta. Tieni una breve
+        traccia di ogni decisione: cosa è stato fatto, perché, da chi o da cosa. Protegge il team, rende le decisioni
+        coerenti e permette di correggere gli errori.
+      </p>
+      <p>
+        Sul tuo sito o sulla tua app è anche una questione legale. Con il DSA, un servizio di hosting che rimuove o limita un
+        contenuto deve fornire all'autore una motivazione. In poche righe indica:
+      </p>
+      <ul>
+        <li>cosa è stato fatto (rimozione, oscuramento, sospensione dell'account) e su quale contenuto;</li>
+        <li>i fatti alla base della decisione;</li>
+        <li>se sono stati usati strumenti automatizzati per rilevare o decidere;</li>
+        <li>la regola o la legge violata;</li>
+        <li>come l'autore può contestare la decisione.</li>
+      </ul>
+      <p>
+        Una traccia può stare in una frase: «Commento nascosto il 30 ottobre alle 21:42. Motivo: insulto verso un altro
+        utente, punto 3 delle regole della community. Rilevato automaticamente, confermato da un moderatore. Puoi contestare
+        questa decisione rispondendo a questo messaggio.» Trovi i dettagli nella nostra pagina sulla <a href="/it/conformita-dsa/motivazione" class="text-brand-600 hover:text-brand-500">motivazione richiesta dal DSA</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Quando conviene automatizzare la moderazione?</h2>
+      <p>
+        Tutto quello che hai letto si può fare a mano su una pagina piccola. Smette di funzionare quando i commenti arrivano
+        più in fretta di quanto il team riesca a leggerli, quando i peggiori compaiono alle due di notte o quando gli stessi
+        insulti tornano scritti in dodici modi diversi. È lì che uno strumento di moderazione automatica si guadagna il suo
+        posto.
+      </p>
+      <p>
+        Un buono strumento non sostituisce il tuo giudizio. Applica le tue regole e i tuoi casi d'uso a ogni commento in
+        tempo reale, nasconde gli abusi evidenti, lo spam e le truffe, lascia online le critiche e manda i casi dubbi a una
+        persona. Così il team dedica il suo tempo alle risposte, non alle pulizie. OpenModeration funziona così su siti web,
+        Pagine Facebook, account Instagram professionali, canali YouTube e WordPress: ogni decisione ha una motivazione
+        scritta e viene registrata, e il nostro team imposta la moderazione insieme a te. Scopri come funziona la <a href="/it/moderazione-automatica" class="text-brand-600 hover:text-brand-500">moderazione automatica dei commenti</a> o
+        come i <a href="/it/casi-d-uso/brand-retail" class="text-brand-600 hover:text-brand-500">brand e i retailer</a> proteggono le loro pagine e le loro campagne.
+      </p>
+      <p>
+        Per il quadro completo, leggi la nostra <a href="/it/blog/moderazione-commenti-guida" class="text-brand-600 hover:text-brand-500">guida completa alla moderazione dei commenti</a> e
+        la <a href="/it/blog/moderazione-social-media-guida" class="text-brand-600 hover:text-brand-500">guida alla moderazione dei social media</a>.
+      </p>
+    </div>
+
+    <div class="mt-12">
+      <FAQ title="Domande frequenti" items={faqItems} />
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Per approfondire</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/it/moderazione-automatica" class="font-medium text-brand-600 hover:text-brand-500">La moderazione automatica con OpenModeration &rarr;</a></li>
+        <li><a href="/it/casi-d-uso/brand-retail" class="font-medium text-brand-600 hover:text-brand-500">Moderazione dei commenti per brand e retail &rarr;</a></li>
+        <li><a href="/it/blog/nascondere-commenti-facebook-automaticamente" class="font-medium text-brand-600 hover:text-brand-500">Come nascondere i commenti Facebook in automatico &rarr;</a></li>
+        <li><a href="/it/conformita-dsa/motivazione" class="font-medium text-brand-600 hover:text-brand-500">Cosa deve contenere una motivazione DSA &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

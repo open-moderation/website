@@ -1,0 +1,188 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import CodeBlock from '../../../components/CodeBlock.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const useCaseJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "AI-chatmoderatie voor gaming en esports | OpenModeration",
+  "description": "Modereer in-game chat, berichten tussen spelers en meldingen in realtime, in vele talen, met lage latency en automatische handhaving voor gamecommunity's.",
+  "inLanguage": "nl",
+  "url": "https://www.openmoderation.com/nl/toepassingen/gaming"
+};
+
+const webhookRuleExample = `{
+  "name": "Auto-delete hate speech",
+  "priority": 10,
+  "conditions": [{
+    "category": "hate",
+    "operator": "gte",
+    "score": 0.7
+  }],
+  "actions": ["delete"]
+}`;
+---
+
+<BaseLayout
+  title="AI-chatmoderatie voor gaming: realtime filteren"
+  description="Modereer in-game chat, berichten tussen spelers en meldingen in realtime, in vele talen, met lage latency en automatische handhaving voor gamecommunity's."
+  jsonLd={useCaseJsonLd}
+>
+  <Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: "Toepassingen", href: localizePath('/use-cases', locale) }, { label: "Gaming" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700">
+        <span class="flex h-1.5 w-1.5 rounded-full bg-brand-500"></span>
+        Toepassing
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">AI-chatmoderatie voor gaming en esports</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">Realtime chatmoderatie voor je game, in vele talen. Bescherm spelers, pas je eigen regels toe en voldoe aan wettelijke eisen zonder dat er dag en nacht een moderatieteam online hoeft te zijn.</p>
+    </div>
+  </section>
+
+  <!-- Problem solutions etc -->
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-red-200 bg-red-50 px-3 py-1 text-xs font-medium text-red-700">
+            <span class="flex h-1.5 w-1.5 rounded-full bg-red-500"></span>
+            De uitdaging
+          </div>
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Toxische chat jaagt spelers weg</h2>
+          <p class="mt-4 text-lg text-surface-500">
+            Moderatie wordt steeds lastiger voor online gamecommunity's. Haatzaaiende taal, intimidatie, spam en oplichting in de chat jagen spelers weg en brengen juridische risico's met zich mee. Met miljoenen berichten per dag op servers wereldwijd kan niemand ze allemaal met de hand lezen.
+          </p>
+          <ul class="mt-8 space-y-3">
+            <li class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+              <p class="text-sm text-surface-600"><strong>46% van de spelers</strong> zegt te maken te hebben gehad met intimidatie in online games (ADL 2024).</p>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+              <p class="text-sm text-surface-600"><strong>Druk van regelgeving</strong>: de Europese DSA en wetten voor online veiligheid verplichten platforms om op te treden tegen illegale content.</p>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+              <p class="text-sm text-surface-600"><strong>Veel talen</strong> om te dekken: wereldwijde games hebben moderatie nodig in het Engels, Frans, Duits, Spaans, Portugees, Arabisch en meer.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6 shadow-sm">
+          <h3 class="text-lg font-semibold text-surface-900">In-game chat automatisch modereren</h3>
+          <CodeBlock code={webhookRuleExample} lang="json" />
+          <p class="mt-4 text-sm text-surface-500">Stel een regel één keer in en de Action Engine past hem toe op elke server en in elke taal.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works for gaming -->
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Gemaakt voor realtime gaming</h2>
+        <p class="mt-4 text-lg text-surface-500">Van het binnenkomen van een bericht tot de actie erop: alles gebeurt in minder dan 500 ms.</p>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="rounded-xl border border-surface-200 bg-white p-6 text-center">
+          <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <h3 class="font-semibold">Realtime</h3>
+          <p class="mt-1 text-xs text-surface-500">Berichten worden in minder dan 500 ms gemodereerd en daarna verborgen, verwijderd of gemarkeerd voordat andere spelers ze zien.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6 text-center">
+          <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <h3 class="font-semibold">Meertalig</h3>
+          <p class="mt-1 text-xs text-surface-500">De AI leest elk bericht in zijn eigen taal, met dezelfde regels voor alle spelers.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6 text-center">
+          <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          </div>
+          <h3 class="font-semibold">Klaar voor de DSA</h3>
+          <p class="mt-1 text-xs text-surface-500">Elke moderatiebeslissing wordt vastgelegd en rapporten kun je exporteren voor toezichthouders.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6 text-center">
+          <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          </div>
+          <h3 class="font-semibold">Gehost in de EU</h3>
+          <p class="mt-1 text-xs text-surface-500">Je chatdata wordt gehost in de Europese Unie en kan op elk moment worden geëxporteerd.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rule example -->
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-8">
+        <h2 class="text-2xl font-bold text-surface-900">Voorbeeld: een automatische moderatieregel voor gaming</h2>
+        <div class="mt-4 grid gap-6 md:grid-cols-2">
+          <div>
+            <p class="text-sm text-surface-500">Stel regels in met gewone taal of met code:</p>
+            <ul class="mt-3 space-y-2 text-sm text-surface-600">
+              <li class="flex items-start gap-2"><span class="text-accent-500">1.</span> <strong>Woordfilter:</strong> blokkeer bekende scheldwoorden, oplichterszinnen en spampatronen direct.</li>
+              <li class="flex items-start gap-2"><span class="text-accent-500">2.</span> <strong>Drempels per categorie:</strong> verwijder haatzaaiende taal automatisch boven 0,7, markeer intimidatie boven 0,5.</li>
+              <li class="flex items-start gap-2"><span class="text-accent-500">3.</span> <strong>Jouw regels:</strong> schrijf ze in gewone taal, en de Action Engine interpreteert en past ze toe.</li>
+            </ul>
+          </div>
+          <div class="rounded-lg border border-surface-200 bg-white p-4 text-xs text-surface-500 font-mono">
+            <p><span class="text-brand-600">Regel:</span> Haatzaaiende taal automatisch verwijderen</p>
+            <p><span class="text-brand-600">Trigger:</span> category:hate &gt; 0.7</p>
+            <p><span class="text-brand-600">Actie:</span> Verwijderen + speler waarschuwen</p>
+            <p><span class="text-brand-600">Audit:</span> Vastgelegd voor DSA-compliance</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-3xl">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 text-center">Veelgestelde vragen over moderatie in games</h2>
+        <div class="mt-8 divide-y divide-surface-200">
+          <details class="group py-5">
+            <summary class="flex cursor-pointer items-center justify-between text-base font-medium text-surface-900">
+              Kan OpenModeration realtime in-game chat aan?
+              <svg class="h-5 w-5 shrink-0 text-surface-400 transition duration-200 group-open:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+            </summary>
+            <p class="mt-3 text-sm text-surface-500">Ja. OpenModeration is geoptimaliseerd voor moderatie met lage latency, doorgaans minder dan 500 ms per verzoek. Het voorfilter handelt duidelijke overtredingen direct af, zonder API-aanroep.</p>
+          </details>
+          <details class="group py-5">
+            <summary class="flex cursor-pointer items-center justify-between text-base font-medium text-surface-900">
+              Ondersteunt het meerdere talen voor wereldwijde games?
+              <svg class="h-5 w-5 shrink-0 text-surface-400 transition duration-200 group-open:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+            </summary>
+            <p class="mt-3 text-sm text-surface-500">Ja. De AI leest elk bericht in zijn eigen taal en past overal dezelfde regels toe, via dezelfde API-aanroep.</p>
+          </details>
+          <details class="group py-5">
+            <summary class="flex cursor-pointer items-center justify-between text-base font-medium text-surface-900">
+              Kan ik al het chatverkeer in mijn game modereren zonder de gameplay te vertragen?
+              <svg class="h-5 w-5 shrink-0 text-surface-400 transition duration-200 group-open:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+            </summary>
+            <p class="mt-3 text-sm text-surface-500">Ja. Modereer asynchroon of in batches met de Action Engine. Spelers merken nooit vertraging, en je kunt alle regels toch in realtime handhaven.</p>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTASection
+    title="Bescherm je gamecommunity"
+    subtitle="Zet AI-chatmoderatie in een paar minuten op, gehost in de EU."
+    buttonText="Gratis proberen"
+    buttonHref="https://app.openmoderation.com/signup"
+  />
+</BaseLayout>

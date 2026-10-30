@@ -1,0 +1,227 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+const L = (p: string) => localizePath(p, locale);
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/pt/alternativas/openai-moderation",
+  "url": "https://www.openmoderation.com/pt/alternativas/openai-moderation",
+  "name": "Alternativa à API OpenAI Moderation: preço e comparativo",
+  "description": "A API OpenAI Moderation é grátis, mas só dá pontuações. Compare com o OpenModeration: as suas regras, revisão humana, motivo por escrito e registro DSA.",
+  "inLanguage": "pt",
+  "about": { "@id": "https://www.openmoderation.com/#software" }
+};
+
+const rows = [
+  { feature: "O que oferece", them: "Um endpoint de API que classifica textos e imagens e devolve uma pontuação por categoria", openmod: "Moderação de comentários com IA para mídia, marcas e instituições, configurada com a equipe da Logora segundo as suas regras e os seus casos de uso" },
+  { feature: "Resultado", them: "Um indicador \"flagged\" (sim/não) e uma pontuação por categoria (13 categorias)", openmod: "Uma decisão aplicada (ocultar, manter visível ou enviar para revisão humana) com uma explicação por escrito" },
+  { feature: "Regras próprias", them: "Cabe a você transformar as pontuações em ações", openmod: "As suas regras e os seus casos de uso, configurados com a nossa equipe" },
+  { feature: "Revisão humana", them: "Nenhuma interface: cabe a você construí-la", openmod: "Casos duvidosos tratados pela nossa equipe; você vê tudo em tempo real em um único console" },
+  { feature: "Canais", them: "Nenhum conector: você chama a API a partir do seu próprio código", openmod: "Sites (API), WordPress, páginas do Facebook, contas profissionais do Instagram e canais do YouTube" },
+  { feature: "Registro e DSA", them: "Não incluídos", openmod: "Registro de atividade completo, notificação e ação, declaração de motivos, revisão humana de decisões contestadas, números exportáveis" },
+  { feature: "Modelos de IA", them: "O seu próprio modelo, omni-moderation-latest", openmod: "IA de moderação própria, verificada por outros modelos de IA; novos modelos integrados assim que são lançados" },
+  { feature: "Hospedagem dos dados", them: "Dados processados nos servidores da OpenAI", openmod: "Hospedado na UE, em conformidade com o RGPD; on-premise sob consulta" },
+  { feature: "Preço", them: "Endpoint gratuito (somente pontuações)", openmod: "Grátis até 1.000 requisições/mês, Pro a 99 €/mês para 10 mil requisições, Enterprise sob consulta" },
+];
+
+const faqItems = [
+  {
+    question: "Qual é a melhor alternativa à API OpenAI Moderation?",
+    answer: "Se você só precisa de pontuações de toxicidade dentro do seu próprio código, o endpoint da OpenAI faz isso de graça. Se você quer moderar de fato os comentários do seu site, do Facebook, do Instagram e do YouTube, com as suas regras, revisão humana e uma explicação por escrito para cada decisão, o OpenModeration traz tudo isso pronto, configurado com a equipe da Logora.",
+  },
+  {
+    question: "A API OpenAI Moderation é gratuita?",
+    answer: "Sim. A OpenAI informa que o seu endpoint de moderação é gratuito. Ele devolve um indicador \"flagged\" e uma pontuação por categoria. Decidir o que ocultar, revisar os casos limítrofes e manter um registro de auditoria fica por sua conta.",
+  },
+  {
+    question: "Quanto custa a API OpenAI Moderation em comparação com o OpenModeration?",
+    answer: "O endpoint da OpenAI é gratuito, mas só devolve pontuações: sem console, sem regras, sem revisão humana e sem registro de auditoria. O OpenModeration é grátis até 1.000 requisições por mês, depois custa 99 € por mês para 10 mil requisições no plano Pro, com Enterprise sob consulta para grandes volumes.",
+  },
+  {
+    question: "O que o omni-moderation-latest detecta?",
+    answer: "omni-moderation-latest é o modelo de moderação atual da OpenAI. Ele aceita textos e imagens e pontua 13 categorias: harassment, harassment/threatening, hate, hate/threatening, illicit, illicit/violent, self-harm, self-harm/intent, self-harm/instructions, sexual, sexual/minors, violence e violence/graphic.",
+  },
+  {
+    question: "API OpenAI Moderation ou OpenModeration: qual escolher?",
+    answer: "Escolha a API da OpenAI se você tem uma equipe técnica pronta para construir as regras, a interface de revisão e o registro de auditoria. Escolha o OpenModeration se quer uma moderação que funcione desde o primeiro dia nos seus canais, com uma explicação por escrito para cada decisão e recursos para a DSA.",
+  },
+  {
+    question: "Quais modelos de IA o OpenModeration usa?",
+    answer: "O OpenModeration funciona com a sua própria IA de moderação e, nos casos delicados, outros modelos de IA verificam as suas decisões. Quando sai um modelo melhor ou mais econômico, a nossa equipe o integra rapidamente, sem que você precise mudar nada: você se beneficia do progresso dos modelos de IA.",
+  },
+];
+---
+
+<BaseLayout title="Alternativa à API OpenAI Moderation: preço e comparativo" description="A API OpenAI Moderation é grátis, mas só dá pontuações. Compare com o OpenModeration: as suas regras, revisão humana, motivo por escrito e registro DSA." jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Início", href: L('/') }, { label: "Alternativas", href: L('/alternatives') }, { label: "OpenAI Moderation" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Comparativo
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Alternativa à API OpenAI Moderation: das pontuações à moderação</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        A API de moderação da OpenAI é gratuita e devolve pontuações de toxicidade; todo o resto fica por sua conta. Se você quer uma alternativa que modere de fato os seus comentários, o OpenModeration oculta as violações claras, mantém as críticas legítimas visíveis, deixa os casos duvidosos com a nossa equipe e explica cada decisão por escrito, segundo as suas regras e os seus casos de uso.
+      </p>
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+        <a href={L('/book-a-call')} class="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-700">Agende uma reunião</a>
+        <a href="#comparison" class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700">Ver o comparativo</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold tracking-tight text-surface-900 sm:text-3xl">Para quem é a API OpenAI Moderation</h2>
+      <p class="mt-4 text-surface-600">Segundo a documentação da OpenAI, o endpoint de moderação é gratuito e usa o modelo omni-moderation-latest, que aceita textos e imagens e pontua 13 categorias, como assédio, ódio, conteúdo sexual e violência. Ele devolve um indicador "flagged" e uma pontuação por categoria. É uma boa ferramenta para equipes de desenvolvimento que querem integrar uma classificação ao seu próprio produto e construir sozinhas o que vem depois: regras, revisão, registro.</p>
+    </div>
+  </section>
+
+  <section class="bg-white pb-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Escolha o OpenModeration se…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>você quer moderar o seu site, o WordPress, o Facebook, o Instagram e o YouTube sem desenvolver nada;</li>
+          <li>você quer uma decisão aplicada, e não só uma pontuação, com uma explicação por escrito;</li>
+          <li>você quer que os casos duvidosos sejam tratados por nós, vendo cada decisão em tempo real;</li>
+          <li>você precisa de recursos para a DSA e de dados hospedados na UE;</li>
+          <li>você quer uma equipe que configure a moderação com você.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">A API OpenAI Moderation pode ser mais adequada se…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>você só precisa de uma pontuação por categoria dentro do seu próprio código;</li>
+          <li>a sua equipe técnica pode construir as regras, a interface de revisão e o registro de auditoria;</li>
+          <li>você também precisa classificar imagens;</li>
+          <li>o custo zero do endpoint é o critério principal.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="comparison" class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">API OpenAI Moderation vs OpenModeration</h2>
+      <p class="mt-4 text-surface-500">Informações sobre a API OpenAI Moderation retiradas da documentação da OpenAI, consultada em 30 de outubro de 2026.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Critério</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">API OpenAI Moderation</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.them}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Uma chamada de API não é um fluxo de moderação</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Das pontuações às decisões</h3>
+          <p class="mt-2 text-sm text-surface-600">Com a pontuação da OpenAI em mãos, ainda falta decidir qual pontuação dispara qual ação. O OpenModeration aplica as suas regras: oculta as violações claras, mantém as críticas legítimas visíveis e envia o resto para revisão.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Uma zona cinzenta tratada pela nossa equipe</h3>
+          <p class="mt-2 text-sm text-surface-600">Um indicador sim/não não deixa espaço para os comentários com nuances. No OpenModeration, os casos duvidosos são tratados pela nossa equipe, e você vê cada decisão em tempo real em um único console.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Um motivo por escrito para cada decisão</h3>
+          <p class="mt-2 text-sm text-surface-600">Cada decisão vem com uma explicação por escrito e fica no registro de atividade. Quando um leitor reclama, você sabe o que responder.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">A DSA pede mais do que uma API</h3>
+          <p class="mt-2 text-sm text-surface-600">A Lei de Serviços Digitais da UE exige decisões documentadas, mecanismos de contestação e números de transparência. O OpenModeration inclui notificação e ação, declaração de motivos, revisão humana de decisões contestadas e números exportáveis.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold tracking-tight text-surface-900 sm:text-3xl">Um motor de IA que acompanha o progresso dos modelos</h2>
+      <p class="mt-4 text-surface-600">A API da OpenAI depende de um único modelo, omni-moderation-latest. O OpenModeration funciona com a sua própria IA de moderação e, nos casos delicados, outros modelos de IA verificam as suas decisões. O motor não depende de um único modelo: quando sai um modelo de IA melhor ou mais econômico, a nossa equipe o integra rapidamente, sem que você precise mudar nada. A sua moderação acompanha o progresso do mercado de IA em vez de ficar presa a um único algoritmo.</p>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold tracking-tight text-surface-900 sm:text-3xl">Preços: API OpenAI Moderation e OpenModeration</h2>
+      <p class="mt-4 text-surface-600">O endpoint de moderação da OpenAI é gratuito, mas o custo real está no que você precisa construir em volta: regras, interface de revisão, registro de auditoria, conectores para os seus canais.</p>
+      <p class="mt-4 text-surface-600">O OpenModeration divulga os seus preços: grátis até 1.000 requisições por mês, Pro a 99 € por mês para 10 mil requisições e Enterprise sob consulta para grandes volumes. A implantação on-premise é possível sob consulta. <a href={L('/pricing')} class="font-medium text-brand-600 hover:text-brand-500">Ver os preços</a>.</p>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-16">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold tracking-tight text-surface-900 sm:text-3xl">Migrar da API OpenAI Moderation para o OpenModeration em 3 etapas</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">1. Teste no modo sandbox</h3>
+          <p class="mt-2 text-sm text-surface-600">Conecte o seu site via API, o WordPress ou as suas páginas do Facebook, Instagram e YouTube. O OpenModeration analisa comentários reais sem ocultar nada, enquanto a sua integração atual continua funcionando.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">2. Ajuste com a equipe da Logora</h3>
+          <p class="mt-2 text-sm text-surface-600">Adaptamos a moderação às suas regras e aos seus casos de uso e comparamos as decisões, com a explicação por escrito de cada uma à vista.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">3. Ative a moderação automática</h3>
+          <p class="mt-2 text-sm text-surface-600">As violações claras são ocultadas, os casos duvidosos são tratados pela nossa equipe e cada decisão fica no registro de atividade.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Alternativa à OpenAI Moderation: perguntas frequentes" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        OpenAI é uma marca da sua empresa titular. Fontes: <a href="https://platform.openai.com/docs/guides/moderation" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">platform.openai.com/docs/guides/moderation</a> (consultado em 30 de outubro de 2026). Viu algum erro? Escreva para <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Para saber mais</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={L('/blog/openai-moderation-api-guide')} class="font-medium text-brand-600 hover:text-brand-500">Como funciona a API OpenAI Moderation: categorias, preço e limites &rarr;</a></li>
+        <li><a href={L('/blog/ai-content-moderation-developer-guide')} class="font-medium text-brand-600 hover:text-brand-500">Moderação de conteúdo com IA: guia para desenvolvedores &rarr;</a></li>
+        <li><a href={L('/moderation-software')} class="font-medium text-brand-600 hover:text-brand-500">O software de moderação OpenModeration &rarr;</a></li>
+        <li><a href={L('/alternatives/azure-content-safety')} class="font-medium text-brand-600 hover:text-brand-500">Comparativo: Azure Content Safety &rarr;</a></li>
+        <li><a href={L('/alternatives/perspective-api')} class="font-medium text-brand-600 hover:text-brand-500">Comparativo: Perspective API &rarr;</a></li>
+        <li><a href={L('/alternatives')} class="font-medium text-brand-600 hover:text-brand-500">Todos os comparativos &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Vá além de uma pontuação de moderação." subtitle="Teste o OpenModeration no modo sandbox com os seus próprios comentários, sem ocultar nada. Grátis até 1.000 requisições por mês." buttonText="Agende uma reunião" buttonHref={L('/book-a-call')} />
+</BaseLayout>

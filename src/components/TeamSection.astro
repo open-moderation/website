@@ -1,0 +1,66 @@
+---
+import { getLocale } from '../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+// L'équipe OpenModeration est celle de Logora (logora.com/equipe).
+const people = [
+  { name: 'Pierre Laburthe-Tolra', role: 'ceo', city: 'Paris', photo: '/images/team/pierre-laburthe-tolra.jpg' },
+  { name: 'Henry Boisgibault', role: 'cto', city: 'Paris', photo: '/images/team/henry-boisgibault.jpg' },
+  { name: 'Margaux Guillerm', role: 'moderation', city: 'Paris', photo: '/images/team/margaux-guillerm.jpg' },
+  { name: 'Jesús Morillo', role: 'poSpain', city: 'Madrid', photo: '/images/team/jesus-morillo.jpg' },
+  { name: 'Sylvia Guie-Mien', role: 'bizGermany', city: 'Berlin' },
+  { name: 'Mathieu Rios', role: 'lead', city: 'Paris', photo: '/images/team/mathieu-rios.jpg' },
+  { name: 'Paul-Henry Ngounou Ngankam', role: 'fullstack', city: 'Paris', photo: '/images/team/paul-henry-ngounou.jpg' },
+  { name: 'Somaya Assaadi', role: 'mobile', city: 'Paris' },
+];
+
+const copyAll = {
+  en: { eyebrow: 'The team', title: 'The people who set up and run your moderation', text: 'OpenModeration is built by the Logora team: 8 people in Paris, Madrid and Berlin who have been moderating reader comments for European publishers since 2019. They also handle your doubtful cases and user reports. The company is owned by its employees.', facts: [['2019', 'founded in Paris'], ['23', 'publishers in Europe and Latin America'], ['100%', 'employee-owned']], roles: { ceo: 'Co-founder & CEO', cto: 'Co-founder & CTO', moderation: 'Moderation advisor', poSpain: 'Product owner, Spain & Latin America', bizGermany: 'Business developer, Germany', lead: 'Lead developer', fullstack: 'Full-stack developer', mobile: 'Full-stack developer' } },
+  fr: { eyebrow: "L'équipe", title: 'Les personnes qui mettent en place et font tourner votre modération', text: "OpenModeration est construit par l'équipe de Logora : 8 personnes à Paris, Madrid et Berlin qui modèrent les commentaires de médias européens depuis 2019. Ce sont aussi elles qui traitent vos cas douteux et vos signalements. L'entreprise appartient à ses salariés.", facts: [['2019', 'création à Paris'], ['23', 'médias en Europe et en Amérique latine'], ['100 %', 'détenue par ses salariés']], roles: { ceo: 'Cofondateur et CEO', cto: 'Cofondateur et CTO', moderation: 'Conseillère modération', poSpain: 'Product owner, Espagne et Amérique latine', bizGermany: 'Développement commercial, Allemagne', lead: 'Lead developer', fullstack: 'Développeur full-stack', mobile: 'Développeuse full-stack' } },
+  es: { eyebrow: 'El equipo', title: 'Las personas que ponen en marcha y gestionan tu moderación', text: 'OpenModeration lo construye el equipo de Logora: 8 personas en París, Madrid y Berlín que moderan los comentarios de medios europeos desde 2019. También son ellas quienes gestionan tus casos dudosos y las denuncias. La empresa pertenece a sus empleados.', facts: [['2019', 'fundada en París'], ['23', 'medios en Europa y América Latina'], ['100 %', 'propiedad de sus empleados']], roles: { ceo: 'Cofundador y CEO', cto: 'Cofundador y CTO', moderation: 'Asesora de moderación', poSpain: 'Product owner, España y América Latina', bizGermany: 'Desarrollo de negocio, Alemania', lead: 'Lead developer', fullstack: 'Desarrollador full-stack', mobile: 'Desarrolladora full-stack' } },
+  de: { eyebrow: 'Das Team', title: 'Die Menschen, die Ihre Moderation einrichten und betreiben', text: 'OpenModeration wird vom Team von Logora entwickelt: 8 Personen in Paris, Madrid und Berlin, die seit 2019 Leserkommentare für europäische Medien moderieren. Sie bearbeiten auch Ihre Zweifelsfälle und Meldungen. Das Unternehmen gehört seinen Mitarbeitenden.', facts: [['2019', 'in Paris gegründet'], ['23', 'Medien in Europa und Lateinamerika'], ['100 %', 'im Besitz der Mitarbeitenden']], roles: { ceo: 'Mitgründer & CEO', cto: 'Mitgründer & CTO', moderation: 'Moderationsberaterin', poSpain: 'Product Owner, Spanien & Lateinamerika', bizGermany: 'Business Development, Deutschland', lead: 'Lead Developer', fullstack: 'Full-Stack-Entwickler', mobile: 'Full-Stack-Entwicklerin' } },
+  it: { eyebrow: 'Il team', title: 'Le persone che avviano e gestiscono la tua moderazione', text: 'OpenModeration è sviluppato dal team di Logora: 8 persone tra Parigi, Madrid e Berlino che moderano i commenti dei media europei dal 2019. Sono loro a gestire anche i tuoi casi dubbi e le segnalazioni. L’azienda appartiene ai suoi dipendenti.', facts: [['2019', 'fondata a Parigi'], ['23', 'media in Europa e America Latina'], ['100%', 'di proprietà dei dipendenti']], roles: { ceo: 'Cofondatore e CEO', cto: 'Cofondatore e CTO', moderation: 'Consulente di moderazione', poSpain: 'Product owner, Spagna e America Latina', bizGermany: 'Business developer, Germania', lead: 'Lead developer', fullstack: 'Sviluppatore full-stack', mobile: 'Sviluppatrice full-stack' } },
+  pt: { eyebrow: 'A equipe', title: 'As pessoas que implantam e cuidam da sua moderação', text: 'A OpenModeration é desenvolvida pela equipe da Logora: 8 pessoas em Paris, Madri e Berlim que moderam comentários de leitores para veículos europeus desde 2019. São elas também que cuidam dos seus casos duvidosos e das denúncias. A empresa pertence aos seus funcionários.', facts: [['2019', 'fundada em Paris'], ['23', 'veículos na Europa e na América Latina'], ['100%', 'controlada pelos funcionários']], roles: { ceo: 'Cofundador e CEO', cto: 'Cofundador e CTO', moderation: 'Consultora de moderação', poSpain: 'Product owner, Espanha e América Latina', bizGermany: 'Desenvolvimento de negócios, Alemanha', lead: 'Lead developer', fullstack: 'Desenvolvedor full-stack', mobile: 'Desenvolvedora full-stack' } },
+  pl: { eyebrow: 'Zespół', title: 'Ludzie, którzy wdrażają i prowadzą moderację', text: 'OpenModeration tworzy zespół Logora: 8 osób w Paryżu, Madrycie i Berlinie, które od 2019 roku moderują komentarze czytelników dla europejskich wydawców. To oni zajmują się też przypadkami wątpliwymi i zgłoszeniami. Firma należy do swoich pracowników.', facts: [['2019', 'założona w Paryżu'], ['23', 'wydawców w Europie i Ameryce Łacińskiej'], ['100%', 'własność pracowników']], roles: { ceo: 'Współzałożyciel i CEO', cto: 'Współzałożyciel i CTO', moderation: 'Doradczyni ds. moderacji', poSpain: 'Product owner, Hiszpania i Ameryka Łacińska', bizGermany: 'Business developer, Niemcy', lead: 'Lead developer', fullstack: 'Full-stack developer', mobile: 'Full-stack developerka' } },
+  nl: { eyebrow: 'Het team', title: 'De mensen die je moderatie inrichten en draaien', text: 'OpenModeration wordt gebouwd door het team van Logora: 8 mensen in Parijs, Madrid en Berlijn die sinds 2019 lezersreacties modereren voor Europese media. Zij behandelen ook je twijfelgevallen en meldingen. Het bedrijf is in handen van de medewerkers.', facts: [['2019', 'opgericht in Parijs'], ['23', 'media in Europa en Latijns-Amerika'], ['100%', 'eigendom van de medewerkers']], roles: { ceo: 'Medeoprichter & CEO', cto: 'Medeoprichter & CTO', moderation: 'Moderatieadviseur', poSpain: 'Product owner, Spanje & Latijns-Amerika', bizGermany: 'Business developer, Duitsland', lead: 'Lead developer', fullstack: 'Full-stack developer', mobile: 'Full-stack developer' } },
+};
+const copy = copyAll[locale as keyof typeof copyAll] ?? copyAll.en;
+
+const tints = ['from-violet-400 to-brand-500', 'from-rose-400 to-sun-400', 'from-mint-400 to-brand-400', 'from-sun-400 to-rose-500'];
+const initials = (n: string) => n.split(/[\s-]+/).filter(Boolean).map((w) => w[0]).slice(0, 2).join('');
+---
+
+<section class="bg-white py-20">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="grid items-center gap-12 lg:grid-cols-[1fr_1.1fr]">
+      <div>
+        <p class="mb-4 inline-flex rounded-full bg-gradient-to-r from-violet-500 to-rose-500 px-3 py-1 text-xs font-semibold text-white shadow-sm">👋 {copy.eyebrow}</p>
+        <h2 class="text-3xl font-extrabold tracking-tight text-surface-900 sm:text-4xl">{copy.title}</h2>
+        <p class="mt-4 text-lg leading-relaxed text-surface-600">{copy.text}</p>
+        <dl class="mt-8 grid grid-cols-3 gap-4">
+          {copy.facts.map(([value, label]) => (
+            <div class="flex flex-col-reverse rounded-2xl bg-violet-50 p-4">
+              <dt class="mt-1 text-xs text-surface-600">{label}</dt>
+              <dd class="font-display text-2xl font-extrabold text-violet-700">{value}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+      <ul class="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
+        {people.map((p, i) => (
+          <li class="lift flex flex-col items-center rounded-2xl border border-surface-100 bg-white p-4 text-center shadow-sm">
+            {p.photo ? (
+              <img src={p.photo} alt={p.name} width="96" height="96" loading="lazy" decoding="async" class="h-20 w-20 rounded-full object-cover ring-4 ring-violet-100" />
+            ) : (
+              <span class={`flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br font-display text-2xl font-bold text-white ring-4 ring-violet-100 ${tints[i % tints.length]}`} aria-hidden="true">{initials(p.name)}</span>
+            )}
+            <p class="mt-3 text-sm font-bold leading-tight text-surface-900">{p.name}</p>
+            <p class="mt-1 text-xs leading-snug text-surface-600">{copy.roles[p.role as keyof typeof copy.roles]}</p>
+            <p class="mt-1 text-[11px] text-surface-400">📍 {p.city}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>

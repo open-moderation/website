@@ -2,6 +2,7 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumb from '../../../components/Breadcrumb.astro';
 import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
 import CodeBlock from '../../../components/CodeBlock.astro';
 import FAQ from '../../../components/FAQ.astro';
 
@@ -26,40 +27,40 @@ const comparisonJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
   "name": "Alternative zur OpenAI Moderation API: Preise und Vergleich",
-  "description": "Sie suchen eine Alternative zur OpenAI Moderation API? OpenModeration bietet Moderation über mehrere Anbieter hinter einer einzigen API und dazu eine vollständige Compliance-Ebene für Unternehmen mit automatischen Regeln, manueller Prüfung und DSA-Audit-Trail.",
+  "description": "Sie suchen eine Alternative zur OpenAI Moderation API? OpenModeration bietet eine eigene Moderations-KI, die bei heiklen Fällen von weiteren KI-Modellen geprüft wird, und dazu eine vollständige Compliance-Ebene für Unternehmen mit automatischen Regeln, menschlicher Prüfung durch unser Team und DSA-Audit-Trail.",
   "inLanguage": "de",
 };
 
 const comparisonPoints = [
-  { feature: "Anbieter", openai: "Nur OpenAI (ein einziger Anbieter)", openmod: "10 Anbieter: OpenAI, Azure, Mistral, HuggingFace, LLMs (GPT-4o, Claude), Cohere und weitere" },
-  { feature: "API-Format", openai: "Proprietäres OpenAI-Format", openmod: "Einheitliches Format für alle Anbieter. Anbieterwechsel ganz ohne Codeänderung." },
-  { feature: "Vorfilterung", openai: "Nicht verfügbar, jede Anfrage geht an die API", openmod: "Integrierter Wortfilter blockiert offensichtliche Inhalte vor jedem API-Aufruf und senkt so die Kosten" },
-  { feature: "Entscheidungslogik", openai: "Binär markiert/nicht markiert pro Kategorie", openmod: "Doppelter Schwellenwert: automatisch freigeben / Graubereich → manuelle Prüfung / automatisch ablehnen" },
-  { feature: "Moderationskonsole", openai: "Nur API. Kein Dashboard, keine Prüfoberfläche.", openmod: "Vollständiges Dashboard: Moderationswarteschlange, Teamrollen, Analysen, Anbieterstatus" },
+  { feature: "KI-Engine", openai: "Ein einziges OpenAI-Modell", openmod: "Eigene Moderations-KI, bei heiklen Fällen von weiteren KI-Modellen geprüft" },
+  { feature: "API-Format", openai: "Proprietäres OpenAI-Format", openmod: "Standardisiertes Format. Binden wir ein besseres KI-Modell an, ändert sich in Ihrem Code nichts." },
+  { feature: "Vorfilterung", openai: "Nicht verfügbar, jede Anfrage geht an die API", openmod: "Integrierter Wortfilter blockiert offensichtliche Inhalte vor jedem KI-Aufruf" },
+  { feature: "Entscheidungslogik", openai: "Binär markiert/nicht markiert pro Kategorie", openmod: "Doppelter Schwellenwert: automatisch freigeben / Graubereich → Prüfung durch unser Team / automatisch ablehnen" },
+  { feature: "Moderationskonsole", openai: "Nur API. Kein Dashboard, keine Prüfoberfläche.", openmod: "Vollständiges Dashboard: jede Entscheidung in Echtzeit, Teamrollen, Analysen" },
   { feature: "Automatische Regeln", openai: "Eigene Integration erforderlich", openmod: "Sofort einsatzbereit: Regeln einmal definieren, die Action Engine setzt sie automatisch durch" },
-  { feature: "Manuelle Prüfung", openai: "Eigene Prüfoberfläche erforderlich", openmod: "Integrierte Prüfwarteschlange mit Kontext, Zuweisung, Freigeben/Ablehnen" },
+  { feature: "Manuelle Prüfung", openai: "Eigene Prüfoberfläche erforderlich", openmod: "Zweifelsfälle übernimmt unser Team; Sie können jederzeit eingreifen oder eine Entscheidung ändern" },
   { feature: "Audit-Trail", openai: "Beschränkt auf API-Protokolle", openmod: "Vollständiger Audit-Trail: jede Entscheidung von KI und Mensch protokolliert, exportierbar für den DSA" },
-  { feature: "Anbieterbindung", openai: "Vollständige Bindung an das OpenAI-Ökosystem", openmod: "Keine. BYOK, selbst hostbar, Open Source unter AGPL v3" },
-  { feature: "Datensouveränität", openai: "Datenverarbeitung auf Servern von OpenAI", openmod: "Self-Hosting auf Ihrer Infrastruktur. Option mit EU-Cloud verfügbar." },
-  { feature: "Preise", openai: "Kostenloser Endpunkt (nur Scores)", openmod: "Self-Hosting kostenlos. Managed Cloud ab 99 €/Monat (10K Anfragen inklusive)." },
-  { feature: "Maximale Eingabelänge", openai: "32.000 Zeichen", openmod: "Bis zu 32.000 Zeichen (je nach Anbieter) + Batch-Verarbeitung für größere Mengen" },
+  { feature: "Anbieterbindung", openai: "Vollständige Bindung an das OpenAI-Ökosystem", openmod: "Keine. Modellunabhängige Engine, Export Ihrer Daten jederzeit" },
+  { feature: "Datensouveränität", openai: "Datenverarbeitung auf Servern von OpenAI", openmod: "Hosting in der EU. On-Premise auf Anfrage." },
+  { feature: "Preise", openai: "Kostenloser Endpunkt (nur Scores)", openmod: "Kostenlos bis 1.000 Anfragen pro Monat. Pro ab 99 €/Monat (10K Anfragen inklusive)." },
+  { feature: "Maximale Eingabelänge", openai: "32.000 Zeichen", openmod: "Lange Texte werden unterstützt + Batch-Verarbeitung für größere Mengen" },
 ];
 
 const reasons = [
   {
-    title: "Sie sind an die Genauigkeit eines einzigen Anbieters gebunden",
+    title: "Sie sind an die Genauigkeit eines einzigen Modells gebunden",
     icon: "lock",
-    description: "OpenAI Moderation ist hervorragend für englische Inhalte, aber weniger geeignet für andere Sprachen, Nischenkategorien oder wenn Sie Redundanz brauchen. Mit OpenModeration leiten Sie jede Anfrage an den besten Anbieter weiter: OpenAI für toxische Inhalte auf Englisch, Mistral für mehrsprachigen Spam, LLMs für eigene Kategorien."
+    description: "OpenAI Moderation ist hervorragend für englische Inhalte, aber weniger geeignet für andere Sprachen, Nischenkategorien oder wenn Sie Redundanz brauchen. OpenModeration nutzt eine eigene Moderations-KI, die bei heiklen Fällen von weiteren KI-Modellen geprüft wird. Kommt ein besseres oder günstigeres Modell heraus, binden wir es schnell an."
   },
   {
     title: "Ein API-Aufruf ist noch kein Moderations-Workflow",
     icon: "api",
-    description: "Einen Toxizitäts-Score von OpenAI zu erhalten, ist erst der Anfang. Sie müssen noch festlegen, welcher Score welche Aktion auslöst, eine Prüfoberfläche für Grenzfälle bauen, jede Entscheidung für Audits protokollieren und den Zugriff Ihres Teams verwalten. OpenModeration liefert all das direkt mit."
+    description: "Einen Toxizitäts-Score von OpenAI zu erhalten, ist erst der Anfang. Sie müssen noch festlegen, welcher Score welche Aktion auslöst, Grenzfälle prüfen, jede Entscheidung für Audits protokollieren und den Zugriff Ihres Teams verwalten. Bei OpenModeration ist all das enthalten, und die Zweifelsfälle übernimmt unser Team."
   },
   {
     title: "Ohne Vorfilter geht jeder Kommentar an die API",
     icon: "cost",
-    description: "Der OpenAI-Endpunkt ist kostenlos, aber jeder Kommentar durchläuft trotzdem einen Aufruf dorthin, selbst bei offensichtlichem Spam oder verbotenen Wörtern. Der Vorfilter von OpenModeration blockiert solche Inhalte, bevor sie einen Anbieter erreichen, und senkt so auch die Kosten bei den kostenpflichtigen Anbietern, die Sie hinzufügen."
+    description: "Der OpenAI-Endpunkt ist kostenlos, aber jeder Kommentar durchläuft trotzdem einen Aufruf dorthin, selbst bei offensichtlichem Spam oder verbotenen Wörtern. Der Vorfilter von OpenModeration blockiert solche Inhalte, bevor überhaupt eine KI aufgerufen wird."
   },
   {
     title: "DSA-Konformität erfordert mehr als eine API",
@@ -69,7 +70,7 @@ const reasons = [
 ];
 
 const verticals = [
-  { name: "Soziale Plattformen", desc: "Moderieren Sie Kommentare und Beiträge mit kontextbewusster KI und Richtlinien, die auf Ihre Community zugeschnitten sind." },
+  { name: "Soziale Plattformen", desc: "Moderieren Sie Kommentare und Beiträge mit kontextbewusster KI und Regeln, die auf Ihre Community und Ihre Anwendungsfälle zugeschnitten sind." },
   { name: "KI-Anwendungen", desc: "Filtern Sie Nutzereingaben und LLM-Ausgaben. Nutzen Sie LLM-basierte Moderation für eigene, sich wandelnde Kategorien." },
   { name: "Gaming", desc: "Chat-Moderation in Echtzeit in mehreren Sprachen, mit einer Latenz unter 250 ms und automatischen Aktionen." },
   { name: "Marktplätze", desc: "Markieren Sie Spam-Angebote, Hassrede in Bewertungen und offengelegte personenbezogene Daten, bevor sie online gehen." },
@@ -78,11 +79,11 @@ const verticals = [
 const faqItems = [
   {
     question: "Was kostet die OpenAI Moderation API im Vergleich zu OpenModeration?",
-    answer: "Der Moderations-Endpunkt von OpenAI ist kostenlos, liefert aber nur Scores: kein Dashboard, keine Regeln, keine manuelle Prüfung und kein Audit-Trail. OpenModeration ist im Self-Hosting kostenlos und nutzt im Hintergrund weiterhin omni-moderation-latest. Die Managed Cloud beginnt bei 99 €/Monat für 10K Anfragen."
+    answer: "Der Moderations-Endpunkt von OpenAI ist kostenlos, liefert aber nur Scores: kein Dashboard, keine Regeln, keine manuelle Prüfung und kein Audit-Trail. OpenModeration ist bis 1.000 Anfragen pro Monat kostenlos. Der Pro-Tarif beginnt bei 99 €/Monat für 10K Anfragen."
   },
   {
-    question: "Kann ich OpenAI weiterhin als Anbieter nutzen?",
-    answer: "Ja. Hinterlegen Sie Ihren eigenen OpenAI-Schlüssel (BYOK) und behalten Sie omni-moderation-latest. Mistral, Azure oder Llama Guard fügen Sie per Konfigurationsänderung als Fallback hinzu, ohne Code neu zu schreiben."
+    question: "Welche KI nutzt OpenModeration?",
+    answer: "Eine eigene Moderations-KI, eingerichtet nach Ihren Regeln und Anwendungsfällen. Bei heiklen Fällen prüfen weitere KI-Modelle die Entscheidung, bevor sie angewendet wird. Die Engine ist modellunabhängig: Kommt ein besseres oder günstigeres Modell heraus, binden wir es an, ohne dass Sie Code neu schreiben müssen."
   },
   {
     question: "Wie lange dauert die Migration?",
@@ -90,26 +91,22 @@ const faqItems = [
   },
   {
     question: "Was bekomme ich über die reinen Scores hinaus?",
-    answer: "Eine komplette Plattform: Vorfilter, doppelte Schwellenwerte (automatisch freigeben, manuell prüfen, automatisch ablehnen), Moderations-Dashboard, Teamrollen und einen DSA-fähigen Audit-Trail mit exportierbaren Berichten."
-  },
-  {
-    question: "Ist OpenModeration Open Source?",
-    answer: "Ja, unter AGPL v3. Hosten Sie es mit Docker selbst und behalten Sie alle Daten auf Ihrer Infrastruktur, oder nutzen Sie die in der EU gehostete Managed Cloud."
+    answer: "Eine komplette Plattform: Vorfilter, doppelte Schwellenwerte (automatisch freigeben, Prüfung durch unser Team, automatisch ablehnen), ein Dashboard, in dem Sie jede Entscheidung in Echtzeit sehen, Teamrollen und einen DSA-fähigen Audit-Trail mit exportierbaren Berichten."
   },
   {
     question: "Welche Moderations-API eignet sich am besten für Enterprise-Compliance?",
-    answer: "Für Enterprise-Compliance brauchen Sie mehr als rohe Scores: dokumentierte Entscheidungen, rollenbasierten Zugriff, einen Audit-Trail und exportierbare Berichte. OpenModeration bietet all das: Jede Entscheidung von KI und Mensch wird protokolliert, Regeln werden automatisch durchgesetzt, und der vollständige Audit-Trail lässt sich mit einem Klick für DSA-Transparenzberichte exportieren. Mit Self-Hosting oder der EU-Cloud bleiben die Daten unter Ihrer Kontrolle."
+    answer: "Für Enterprise-Compliance brauchen Sie mehr als rohe Scores: dokumentierte Entscheidungen, rollenbasierten Zugriff, einen Audit-Trail und exportierbare Berichte. OpenModeration bietet all das: Jede Entscheidung von KI und Mensch wird protokolliert, Regeln werden automatisch durchgesetzt, und der vollständige Audit-Trail lässt sich mit einem Klick für DSA-Transparenzberichte exportieren. Ihre Daten werden in der EU gehostet und lassen sich jederzeit exportieren."
   },
   {
-    question: "Funktioniert OpenModeration mit dem Modell omni-moderation-latest von OpenAI?",
-    answer: "Ja. Hinterlegen Sie Ihren eigenen OpenAI-Schlüssel und leiten Sie alle Anfragen an omni-moderation-latest als primäres Modell. Die Antworten sind über alle Anbieter hinweg einheitlich, und Mistral, Azure oder HuggingFace fügen Sie per Konfigurationsänderung als Fallback hinzu, ohne Code neu zu schreiben."
+    question: "Muss ich meinen Code ändern, wenn OpenModeration die KI-Modelle wechselt?",
+    answer: "Nein. Die Antworten behalten dasselbe standardisierte Format. Kommt ein besseres oder günstigeres KI-Modell heraus, bindet unser Team es schnell an, und für Sie ändert sich nichts."
   },
 ];
 ---
 
 <BaseLayout
   title="Alternative zur OpenAI Moderation API: Preise & Vergleich"
-  description="Der kostenlose OpenAI-Endpunkt liefert nur Scores. OpenModeration: 10 Anbieter, eine API, Vorfilter, Regeln, manuelle Prüfung und DSA-Audit-Trail."
+  description="Der kostenlose OpenAI-Endpunkt liefert nur Scores. OpenModeration: eigene, geprüfte KI, Vorfilter, Regeln, Prüfung durch unser Team, DSA-Audit-Trail."
   jsonLd={comparisonJsonLd}
 >
   <Breadcrumb items={[{ label: "Startseite", href: "/de" }, { label: "Alternativen", href: "/de/alternativen" }, { label: "Alternative zu OpenAI Moderation" }]} />
@@ -121,12 +118,12 @@ const faqItems = [
         Alternative zur OpenAI Moderation API
       </div>
       <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">
-        OpenAI Moderation einbinden<br/>und den Rest nicht selbst bauen
+        Mehr als Scores,<br/>ohne den Rest selbst zu bauen
       </h1>
       <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
         Die Moderation API von OpenAI liefert Toxizitäts-Scores. OpenModeration ergänzt, was Sie im Betrieb brauchen:
-        10 Anbieter hinter einer API, Vorfilterung, automatische Regeln, manuelle Prüfung und einen
-        DSA-konformen Audit-Trail. Der Code ist Open Source und selbst hostbar, eine Anbieterbindung gibt es nicht.
+        eine eigene, von weiteren Modellen geprüfte KI, Vorfilterung, automatische Regeln, Prüfung der Zweifelsfälle durch unser Team und einen
+        DSA-konformen Audit-Trail. Jede Entscheidung wird schriftlich begründet.
       </p>
       <div class="mt-8 flex items-center justify-center gap-4">
         <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm">OpenModeration kostenlos testen</a>
@@ -166,7 +163,7 @@ const faqItems = [
         <div>
           <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700">
             <span class="flex h-1.5 w-1.5 animate-pulse-dot rounded-full bg-brand-500" />
-            Eine Integration, unbegrenzt viele Anbieter
+            Eine Integration, eine KI, die mit dem Markt geht
           </div>
           <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">
             Dieselbe Textmoderation, mehr Kontrolle
@@ -179,15 +176,15 @@ const faqItems = [
           <div class="mt-6 space-y-3">
             <div class="flex items-start gap-3">
               <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <p class="text-sm text-surface-600"><strong>OpenAI weiter nutzen</strong> als Anbieter über OpenModeration, mit Ihren eigenen API-Schlüsseln (BYOK).</p>
+              <p class="text-sm text-surface-600"><strong>Unsere eigene Moderations-KI</strong>, eingerichtet nach Ihren Regeln und Anwendungsfällen.</p>
             </div>
             <div class="flex items-start gap-3">
               <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <p class="text-sm text-surface-600"><strong>Redundanz schaffen</strong> durch Routing zu Mistral, Azure oder HuggingFace, wenn OpenAI langsam oder nicht erreichbar ist.</p>
+              <p class="text-sm text-surface-600"><strong>Eine zweite Meinung</strong>: Bei heiklen Fällen prüfen weitere KI-Modelle die Entscheidung, bevor sie angewendet wird.</p>
             </div>
             <div class="flex items-start gap-3">
               <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <p class="text-sm text-surface-600"><strong>Anbieter objektiv vergleichen</strong> dank einheitlicher Analysen über Ihren gesamten Moderationstraffic.</p>
+              <p class="text-sm text-surface-600"><strong>Kein eingefrorenes Modell</strong>: Bessere oder günstigere Modelle binden wir an, sobald sie erscheinen, für Sie ändert sich nichts.</p>
             </div>
           </div>
         </div>
@@ -240,26 +237,26 @@ const faqItems = [
           <ul class="mt-6 space-y-3 text-sm text-surface-600">
             <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Jeder Kommentar geht an die API, selbst offensichtlicher Spam oder verbotene Wörter</li>
             <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Binär markiert/nicht markiert, kein Graubereich für nuancierte Inhalte</li>
-            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Ein eigenes Dashboard, in dem menschliche Moderatoren Grenzfälle prüfen, müssen Sie selbst bauen</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Ein eigenes Dashboard und ein Team, das Grenzfälle prüft, müssen Sie selbst aufbauen</li>
             <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Eine eigene Regel-Engine, die Scores in Aktionen übersetzt, müssen Sie selbst bauen</li>
             <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Ein eigenes Audit-Logging für die DSA-Konformität müssen Sie selbst bauen</li>
-            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Kein Fallback, wenn OpenAI langsam oder nicht verfügbar ist</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Ein einziges Modell, das zwischen zwei Updates stillsteht</li>
             <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Bindung an das OpenAI-Ökosystem</li>
           </ul>
         </div>
         <div class="rounded-xl border border-brand-200 bg-brand-50 p-8 shadow-sm">
           <h3 class="flex items-center gap-2 text-xl font-semibold text-brand-700">
             <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-            OpenModeration (mit OpenAI als Anbieter)
+            OpenModeration
           </h3>
           <ul class="mt-6 space-y-3 text-sm text-surface-700">
-            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Ein <strong>Vorfilter</strong> blockiert offensichtlichen Spam und verbotene Wörter vor jedem API-Aufruf. Das spart 10 bis 30 % der Kosten.</li>
-            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Ein <strong>doppelter Schwellenwert</strong> entscheidet, was automatisch freigegeben, automatisch abgelehnt oder zur manuellen Prüfung weitergeleitet wird.</li>
-            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Im <strong>Dashboard</strong> kann Ihr Trust-&-Safety-Team sofort mit der Prüfung beginnen.</li>
-            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Die <strong>Regeln</strong> stellen Sie ohne Code mit drei Werkzeugen ein: verbotene Wörter, Schwellenwerte pro Kategorie und Ihre Community-Richtlinien.</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Ein <strong>Vorfilter</strong> blockiert offensichtlichen Spam und verbotene Wörter vor jedem KI-Aufruf.</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Ein <strong>doppelter Schwellenwert</strong> entscheidet, was automatisch freigegeben, automatisch abgelehnt oder von unserem Team geprüft wird.</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Sie haben <strong>nichts zu tun</strong>: Im Dashboard sehen Sie jede Entscheidung in Echtzeit und können jederzeit eingreifen.</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Die <strong>Regeln</strong> stellen Sie ohne Code mit drei Werkzeugen ein: verbotene Wörter, Schwellenwerte pro Kategorie und Ihre eigenen Vorgaben in natürlicher Sprache.</li>
             <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Für die <strong>Compliance</strong> gibt es einen vollständigen Audit-Trail, exportierbare Berichte und eine konfigurierbare Datenaufbewahrung.</li>
-            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Ist OpenAI langsam, geht die Anfrage per <strong>Fallback</strong> an Mistral, Azure oder HuggingFace.</li>
-            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Es gibt <strong>keine Anbieterbindung</strong>: Der Code ist Open Source (AGPL v3) und selbst hostbar, und Sie nutzen Ihre eigenen Schlüssel (BYOK).</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Heikle Fälle werden von <strong>weiteren KI-Modellen geprüft</strong>.</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> <strong>Kein eingefrorenes Modell</strong>: Bessere Modelle werden angebunden, sobald sie erscheinen, und Sie können Ihre Daten jederzeit exportieren.</li>
           </ul>
         </div>
       </div>
@@ -288,22 +285,22 @@ const faqItems = [
   <section class="border-t border-surface-100 bg-white py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="mx-auto mb-12 max-w-2xl text-center">
-        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Funktioniert mit omni-moderation-latest von OpenAI und 9 weiteren Modellen</h2>
-        <p class="mt-4 text-lg text-surface-500">Behalten Sie das OpenAI-Moderationsmodell, dem Sie bereits vertrauen, als primäre Engine und betten Sie es in eine Plattform ein.</p>
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Von omni-moderation-latest zu OpenModeration</h2>
+        <p class="mt-4 text-lg text-surface-500">Ihre Integration bleibt einfach, und Sie bekommen den ganzen Workflow rund um den Score.</p>
         <p class="mt-2 text-sm"><a href="/de/blog/openai-moderation-api-leitfaden" class="font-medium text-brand-600 hover:text-brand-500">So funktioniert die OpenAI Moderation API: Kategorien, Preise und Grenzen &rarr;</a></p>
       </div>
       <div class="grid gap-6 md:grid-cols-3">
         <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-          <h3 class="font-semibold text-surface-900">omni-moderation-latest behalten</h3>
-          <p class="mt-2 text-sm text-surface-500">Nutzen Sie Ihren eigenen OpenAI-Schlüssel (BYOK) und leiten Sie jede Anfrage an omni-moderation-latest: dasselbe Modell, einheitliches Antwortformat.</p>
+          <h3 class="font-semibold text-surface-900">Einen Aufruf ersetzen</h3>
+          <p class="mt-2 text-sm text-surface-500">Ein Aufruf von POST /v1/moderation ersetzt openai.moderations.create, mit standardisiertem Antwortformat.</p>
         </div>
         <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-          <h3 class="font-semibold text-surface-900">Fallback-Modelle hinzufügen</h3>
-          <p class="mt-2 text-sm text-surface-500">Ist OpenAI langsam oder nicht erreichbar, gehen die Anfragen automatisch an Mistral, Azure oder HuggingFace. Dafür ändern Sie keinen Code, und es gibt keine Ausfallzeit.</p>
+          <h3 class="font-semibold text-surface-900">Geprüfte Entscheidungen</h3>
+          <p class="mt-2 text-sm text-surface-500">Bei heiklen Fällen prüfen weitere KI-Modelle die Entscheidung, und Zweifelsfälle übernimmt unser Team.</p>
         </div>
         <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-          <h3 class="font-semibold text-surface-900">Jedes Modell im Blick</h3>
-          <p class="mt-2 text-sm text-surface-500">Einheitliche Analysen zeigen Genauigkeit und Kosten pro Anbieter, sodass Sie immer wissen, welches Modell Ihren Traffic am besten verarbeitet.</p>
+          <h3 class="font-semibold text-surface-900">Eine KI, die besser wird</h3>
+          <p class="mt-2 text-sm text-surface-500">Kommt ein besseres oder günstigeres KI-Modell heraus, binden wir es schnell an. Für Sie ändert sich nichts.</p>
         </div>
       </div>
     </div>
@@ -330,9 +327,11 @@ const faqItems = [
     </div>
   </section>
 
+  <RelatedComparisons />
+
   <CTASection
-    title="Behalten Sie OpenAI und ergänzen Sie den Rest."
-    subtitle="Sie bekommen 10 Anbieter, Vorfilterung, automatische Regeln und ein Dashboard für die manuelle Prüfung, alles Open Source. OpenAI nutzen Sie mit BYOK weiter oder fügen weitere Anbieter hinzu."
+    title="Moderieren Sie mit mehr als einer einzelnen API."
+    subtitle="Sie bekommen unsere eigene, geprüfte KI, Vorfilterung, automatische Regeln und die Prüfung der Zweifelsfälle durch unser Team, in der EU gehostet. Sie sehen jede Entscheidung in Echtzeit."
     buttonText="Kostenlos testen"
     buttonHref="https://app.openmoderation.com/signup"
   />

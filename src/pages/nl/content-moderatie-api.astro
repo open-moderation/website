@@ -1,0 +1,212 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import CTASection from '../../components/CTASection.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+import FAQ from '../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://www.openmoderation.com/nl/content-moderatie-api",
+      "url": "https://www.openmoderation.com/nl/content-moderatie-api",
+      "name": "Content moderatie API: één endpoint, gecontroleerde AI (2026)",
+      "description": "Een API voor contentmoderatie met onze eigen AI, gecontroleerd door andere modellen. Gestandaardiseerde endpoints, voorfiltering, eigen regels en DSA-audittrajecten.",
+      "inLanguage": "nl",
+      "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://www.openmoderation.com/nl/content-moderatie-api#software",
+      "name": "OpenModeration API",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Alle (REST API)",
+      "description": "Eén API voor contentmoderatie: één endpoint, onze eigen gecontroleerde moderatie-AI, eigen moderatieregels, batch-endpoints en audittrajecten.",
+      "url": "https://www.openmoderation.com/nl/content-moderatie-api",
+      "inLanguage": "nl",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR", "availability": "https://schema.org/InStock" }
+    }
+  ]
+};
+
+const quickstart = `# Modereer tekst: één verzoek, één gestandaardiseerde response
+curl -X POST https://api.openmoderation.com/v1/moderation \\
+  -H "Authorization: Bearer om_key_..." \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "input": "Your text to moderate here",
+    "categories": ["hate", "harassment", "sexual", "violence", "self-harm", "spam"],
+    "threshold": 0.5
+  }'
+
+# Response (gestandaardiseerd formaat)
+{
+  "flagged": false,
+  "results": [{ "category": "hate", "score": 0.02, "flagged": false }],
+  "usage": { "latency_ms": 243 }
+}`;
+
+const faqItems = [
+  {
+    question: "Wat is een API voor contentmoderatie?",
+    answer: "Een API voor contentmoderatie geeft scores aan wat gebruikers plaatsen (haat, intimidatie, seksuele content, geweld, spam, persoonsgegevens…) zodat je app het automatisch kan goedkeuren, markeren of afwijzen. OpenModeration draait zijn eigen moderatie-AI achter één endpoint, laat lastige gevallen controleren door andere AI-modellen en geeft altijd hetzelfde responseformaat terug."
+  },
+  {
+    question: "Welke moderatie-API past het best bij compliance in grote organisaties?",
+    answer: "Let voor gereguleerde platforms op schriftelijke motiveringen, een volledig audittraject, hosting in de EU en menselijke beoordeling van twijfelgevallen. OpenModeration dekt alle vier: lastige gevallen worden gecontroleerd door andere AI-modellen, twijfelgevallen worden afgehandeld door ons team en elke beslissing wordt vastgelegd voor DSA-rapportages."
+  },
+  {
+    question: "Wat kost een moderatie-API?",
+    answer: "Het moderatie-endpoint van OpenAI is gratis, Mistral bepaalt zelf de prijs van zijn moderatiemodel, en Azure AI Content Safety rekent per 1.000 tekstrecords af na een gratis tegoed van 5.000 records per maand. OpenModeration heeft een gratis abonnement tot 1.000 verzoeken per maand. Het Pro-abonnement in de beheerde cloud begint bij € 99 per maand voor 10.000 verzoeken."
+  },
+  {
+    question: "Kan ik overstappen van OpenAI text-moderation-latest?",
+    answer: "Ja. Vervang openai.moderations.create door één aanroep van POST /v1/moderation. Je krijgt gestandaardiseerde scores, schriftelijke motiveringen en een audittraject, en als wij een beter AI-model aansluiten, verandert er niets aan je code."
+  },
+  {
+    question: "Kan ik eigen moderatieregels opstellen?",
+    answer: "Ja, met drie hulpmiddelen. Verboden woorden blokkeren een reactie direct. Drempels per categorie bepalen of iets automatisch wordt goedgekeurd, beoordeeld of afgewezen. Je eigen regels, in gewone taal geschreven, worden door onze AI toegepast voor je eigen categorieën."
+  },
+  {
+    question: "Waar vind ik de volledige API-referentie?",
+    answer: "De interactieve referentie staat op api.openmoderation.com/docs (OpenAPI). Deze pagina behandelt de concepten en vergelijkingen. Kopieer van daaruit het curl-voorbeeld naar je stack."
+  },
+];
+---
+
+<BaseLayout
+  title="Content moderatie API: één endpoint, gecontroleerde AI"
+  description="Moderatie-API met onze eigen AI, gecontroleerd door andere modellen: vaste endpoints, voorfiltering, eigen regels, batches en DSA-audittrail. Gratis starten."
+  jsonLd={pageJsonLd}
+>
+  <Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: "Content moderatie API" }]} />
+
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Voor ontwikkelaars: REST API en dashboard
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">
+        Eén API voor contentmoderatie.<br />Een AI die steeds beter wordt.
+      </h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Schrijf de integratie één keer. Eén <strong>moderatie-endpoint</strong> met onze eigen moderatie-AI,
+        bij lastige gevallen gecontroleerd door andere modellen, met voorfiltering, eigen regels,
+        batch-endpoints en een audittraject dat klaar is voor de DSA.
+      </p>
+      <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">
+          Vraag een gratis API-sleutel aan
+        </a>
+        <a href="https://api.openmoderation.com/docs" class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">
+          Lees de API-documentatie &rarr;
+        </a>
+      </div>
+      <p class="mt-4 text-sm text-surface-400">Gratis abonnement · Geen creditcard · OpenAPI-referentie</p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Hetzelfde verzoek, steeds betere AI</h2>
+          <p class="mt-4 text-lg text-surface-500">
+            Onze engine is model-agnostisch: komt er een beter of goedkoper AI-model uit, dan sluiten we het aan.
+            Je verzoek verandert niet, en scores komen terug in één gestandaardiseerd formaat, met drempels die jij bepaalt.
+          </p>
+          <ul class="mt-6 space-y-3 text-sm text-surface-600">
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span><span><strong>Gestandaardiseerde moderatie-endpoints.</strong> Aanroepen voor één tekst en batches (tot 10.000 items) gebruiken hetzelfde schema.</span></li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span><span><strong>Voorfilter.</strong> Duidelijke spam en verboden woorden worden geblokkeerd vóór elke AI-aanroep.</span></li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span><span><strong>Dubbele drempels.</strong> Duidelijke gevallen worden automatisch goedgekeurd of afgewezen, en het grijze gebied wordt beoordeeld door ons team.</span></li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span><span><strong>Gecontroleerde AI.</strong> Bij lastige gevallen beoordelen andere AI-modellen de beslissing voordat die wordt toegepast.</span></li>
+          </ul>
+          <div class="mt-6 flex flex-wrap gap-3 text-sm">
+            <a href={localizePath('/text-moderation-api', locale)} class="font-medium text-brand-600 hover:text-brand-500">Tekstmoderatie-API &rarr;</a>
+            <a href={localizePath('/alternatives/openai-moderation', locale)} class="font-medium text-brand-600 hover:text-brand-500">Alternatief voor OpenAI Moderation &rarr;</a>
+            <a href={localizePath('/alternatives/mistral-moderation', locale)} class="font-medium text-brand-600 hover:text-brand-500">Alternatief voor Mistral Moderation &rarr;</a>
+            <a href={localizePath('/features', locale)} class="font-medium text-brand-600 hover:text-brand-500">Alle API-functies &rarr;</a>
+          </div>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-4 shadow-sm">
+          <CodeBlock code={quickstart} lang="bash" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Waarom teams kiezen voor OpenModeration</h2>
+        <p class="mt-4 text-lg text-surface-500">Een kale modelscore is nog geen moderatiesysteem.</p>
+      </div>
+      <div class="overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Functie</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Kale model-API</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration API</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            <tr><td class="px-6 py-4 font-medium text-surface-900">AI-engine</td><td class="px-6 py-4 text-surface-500">Eén model (lock-in)</td><td class="px-6 py-4">Onze eigen AI, gecontroleerd door andere modellen; betere modellen worden aangesloten zodra ze uitkomen</td></tr>
+            <tr><td class="px-6 py-4 font-medium text-surface-900">Responseformaat</td><td class="px-6 py-4 text-surface-500">Eigen formaat per leverancier</td><td class="px-6 py-4">Gestandaardiseerde scores + oordeel (flagged)</td></tr>
+            <tr><td class="px-6 py-4 font-medium text-surface-900">Voorfiltering</td><td class="px-6 py-4 text-surface-500">Nee</td><td class="px-6 py-4">Ja, duidelijke spam wordt geblokkeerd vóór elke AI-aanroep</td></tr>
+            <tr><td class="px-6 py-4 font-medium text-surface-900">Eigen regels</td><td class="px-6 py-4 text-surface-500">Zelf bouwen</td><td class="px-6 py-4">Verboden woorden, drempels, regels in gewone taal toegepast door AI</td></tr>
+            <tr><td class="px-6 py-4 font-medium text-surface-900">Beoordeling + audit</td><td class="px-6 py-4 text-surface-500">Zelf bouwen</td><td class="px-6 py-4">Twijfelgevallen afgehandeld door ons team, realtime dashboard, DSA-export</td></tr>
+            <tr><td class="px-6 py-4 font-medium text-surface-900">Documentatie</td><td class="px-6 py-4 text-surface-500">Documentatie van de leverancier</td><td class="px-6 py-4"><a class="text-brand-600 hover:text-brand-500" href="https://api.openmoderation.com/docs">OpenAPI-referentie &rarr;</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Begin vanuit je eigen stack</h2>
+        <p class="mt-4 text-lg text-surface-500">Stap in minder dan een uur over, of modereer reacties op social media zonder code.</p>
+      </div>
+      <div class="grid gap-6 md:grid-cols-3">
+        <a href={localizePath('/alternatives/openai-moderation', locale)} class="rounded-xl border border-surface-200 bg-surface-50 p-6 transition hover:shadow-md">
+          <h3 class="font-semibold text-surface-900">Overstappen van OpenAI</h3>
+          <p class="mt-2 text-sm text-surface-500">Vervang aanroepen van text-moderation / omni-moderation door één endpoint met schriftelijke motiveringen.</p>
+        </a>
+        <a href={localizePath('/alternatives/mistral-moderation', locale)} class="rounded-xl border border-surface-200 bg-surface-50 p-6 transition hover:shadow-md">
+          <h3 class="font-semibold text-surface-900">Vergelijk met Mistral Moderation</h3>
+          <p class="mt-2 text-sm text-surface-500">Eén enkel model tegenover onze gecontroleerde AI, regels en audittraject.</p>
+        </a>
+        <a href={localizePath('/use-cases/social-platforms', locale)} class="rounded-xl border border-surface-200 bg-surface-50 p-6 transition hover:shadow-md">
+          <h3 class="font-semibold text-surface-900">Moderatieplatform zonder code</h3>
+          <p class="mt-2 text-sm text-surface-500">Koppel gewoon je pagina's: wij doen de rest, en jij ziet elke beslissing in realtime.</p>
+        </a>
+      </div>
+      <div class="mt-8 grid gap-6 md:grid-cols-4">
+        <a href={localizePath('/integrations/facebook', locale)} class="text-sm font-medium text-brand-600 hover:text-brand-500">Tool voor moderatie van Facebook-reacties &rarr;</a>
+        <a href={localizePath('/integrations/instagram', locale)} class="text-sm font-medium text-brand-600 hover:text-brand-500">Automatische moderatie op Instagram &rarr;</a>
+        <a href={localizePath('/integrations/wordpress', locale)} class="text-sm font-medium text-brand-600 hover:text-brand-500">Moderatie van WordPress-reacties &rarr;</a>
+        <a href="https://api.openmoderation.com/docs" class="text-sm font-medium text-surface-500 hover:text-surface-700">Volledige API-referentie (api.openmoderation.com/docs) &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ items={faqItems} title="Content moderatie API: veelgestelde vragen" />
+    </div>
+  </section>
+
+  <CTASection
+    title="Eén integratie, een AI die steeds beter wordt."
+    subtitle="Vraag een API-sleutel aan, kopieer het curl-voorbeeld en modereer binnen enkele minuten je eerste tekst, met een audittraject vanaf dag één."
+    buttonText="Probeer de API gratis"
+    buttonHref="https://app.openmoderation.com/signup"
+  />
+</BaseLayout>

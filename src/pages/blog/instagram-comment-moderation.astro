@@ -1,0 +1,231 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CTASection from '../../components/CTASection.astro';
+import GuideComparisons from '../../components/GuideComparisons.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
+
+const title = "Instagram Comment Moderation: Automoderation Guide";
+const description = "How to moderate Instagram comments: Hidden Words, Limits and Restrict, their limits, what you need to connect a tool and how to set up automoderation.";
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Instagram comment moderation: how to set up Instagram automoderation",
+  "description": description,
+  "inLanguage": "en",
+  "datePublished": "2026-10-30",
+  "dateModified": "2026-10-30",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/blog/instagram-comment-moderation" }
+};
+
+const comparison = [
+  { need: "Filter generally offensive comments", builtin: "Yes, with Hidden Words and Instagram's own list", tool: "Yes, read in context" },
+  { need: "Block your own words and emojis", builtin: "Yes, with a custom list, exact matches only", tool: "Yes, including variants and misspellings" },
+  { need: "Understand sarcasm, coded language and context", builtin: "No", tool: "Yes" },
+  { need: "Apply rules specific to your account", builtin: "Limited to word lists and who can comment", tool: "Yes, your rules and your use cases written in plain language" },
+  { need: "Send doubtful comments to a person", builtin: "No", tool: "Yes, to a review queue in one console" },
+  { need: "Written reason for each decision", builtin: "No", tool: "Yes" },
+  { need: "Audit trail of decisions", builtin: "No", tool: "Yes, every decision is logged" },
+  { need: "Several accounts and networks in one place", builtin: "No, account by account in the app", tool: "Yes, with Facebook, YouTube and WordPress" },
+];
+
+const faqItems = [
+  {
+    question: "What is Instagram automoderation?",
+    answer: "Instagram automoderation means comments are filtered without anyone reading them first. Instagram does part of it with Hidden Words. A moderation tool goes further: it reads every new comment in context, applies your own rules, hides what breaks them and sends doubtful cases to your team.",
+  },
+  {
+    question: "What do I need to connect a comment moderation tool to Instagram?",
+    answer: "A professional Instagram account (Business or Creator), admin access to it, and, depending on how the tool connects, a Facebook Page linked to the account. You then log in through Meta and approve the permissions the tool needs to read and manage comments. Personal accounts cannot be connected.",
+  },
+  {
+    question: "Can I moderate Instagram comments without a business account?",
+    answer: "You can use Instagram's built-in tools (Hidden Words, Limits, Restrict, deleting comments) on any account. But third-party tools can only connect to professional accounts, because Meta's API is not available for personal ones. Switching to a professional account is free.",
+  },
+  {
+    question: "Does Hidden Words catch every offensive comment?",
+    answer: "No. It relies on lists of words, phrases and emojis, so it misses misspellings, sarcasm, coded language and insults that use ordinary words. It also cannot apply rules that are specific to your brand, such as competitor promotion or customers posting personal data.",
+  },
+  {
+    question: "Does the person know their Instagram comment was hidden?",
+    answer: "Instagram does not notify the author. A comment hidden by a filter or a moderation tool is no longer shown to other visitors, while its author generally still sees it, which avoids escalating the conversation.",
+  },
+  {
+    question: "Is Instagram automoderation compliant with the DSA?",
+    answer: "It can be, provided each decision is explained and recorded. The Digital Services Act asks for a statement of reasons when content is restricted, including whether automated means were used. OpenModeration writes a reason for every decision, keeps a complete log and is hosted in the EU.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} ogType="article" jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Blog", href: "/blog" }, { label: "Instagram comment moderation" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-30">October 30, 2026</time>
+        <span>&middot;</span>
+        <span>8 min read</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Instagram comment moderation: how to set up Instagram automoderation</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        On Instagram, the comments under a post are part of the post. Spam bots, fake giveaways, insults
+        and trolls end up next to your product shots and your campaigns. Instagram gives you a few
+        built-in filters, but they were designed for individuals, not for brands receiving thousands of
+        comments. This guide covers what Instagram offers, where it stops, and how to set up automatic
+        moderation with a tool.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">The short answer</h2>
+      <ul>
+        <li><strong>Built-in tools:</strong> Hidden Words, a custom list of words and emojis, Limits, Restrict, comment controls and manual deletion.</li>
+        <li><strong>Their limit:</strong> they work on word lists and on who can comment, not on what a comment means.</li>
+        <li><strong>To connect a tool:</strong> you need a professional account (Business or Creator) and must approve Meta's permissions.</li>
+        <li><strong>A moderation tool adds</strong> context-aware analysis, your rules and your use cases, human review of doubtful cases and a written reason for every decision.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">What are Instagram's built-in moderation tools?</h2>
+      <p>Instagram renames and moves its settings regularly, so look for them in your account's privacy settings rather than at a fixed place. The features themselves have been around for years.</p>
+      <ul>
+        <li>
+          <strong>Hidden Words.</strong> Instagram filters comments it considers offensive, based on its own
+          list, and moves them out of view. A stricter option hides more comments that may be inappropriate.
+        </li>
+        <li>
+          <strong>Custom word list.</strong> Within Hidden Words, you add your own words, phrases and emojis.
+          Comments that contain them are hidden.
+        </li>
+        <li>
+          <strong>Limits.</strong> During a wave of abuse, you temporarily limit comments and messages from
+          accounts that don't follow you or followed you only recently.
+        </li>
+        <li>
+          <strong>Restrict.</strong> A restricted person's new comments are only visible to them unless you
+          approve them. They are not told they have been restricted.
+        </li>
+        <li>
+          <strong>Comment controls.</strong> You choose who can comment, block specific accounts from
+          commenting, or turn comments off on a given post.
+        </li>
+        <li>
+          <strong>Manual moderation.</strong> You delete comments one by one or several at a time, and block
+          or report their authors.
+        </li>
+      </ul>
+      <p>Turn these on in any case. They are free and remove a share of the obvious spam and insults.</p>
+
+      <h2 class="text-xl font-bold text-surface-900">Where Instagram's tools fall short</h2>
+      <ul>
+        <li><strong>Words, not meaning.</strong> "Nice filter, shame about the face" contains no banned word. Sarcasm, irony and coded language get through.</li>
+        <li><strong>Easy to get around.</strong> Spaces, dots, emojis or a letter swapped are enough to beat a list.</li>
+        <li><strong>Several languages.</strong> A global brand gets comments in many languages, and a list only covers what you thought to add.</li>
+        <li><strong>Blunt controls.</strong> Limiting comments or turning them off also silences your real customers, which is the opposite of what a campaign wants.</li>
+        <li><strong>No rules of your own.</strong> You cannot tell Instagram "hide competitor promotion" or "hide comments containing a customer's order number".</li>
+        <li><strong>No reasons, no log.</strong> Nothing records what was filtered and why, which you need for reviews and for the DSA.</li>
+        <li><strong>One account at a time.</strong> Each account is managed in the app. Teams handling several accounts, or Facebook as well, juggle several interfaces.</li>
+      </ul>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">What you need</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Instagram built-in tools</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Automoderation tool</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {comparison.map((row) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{row.need}</td>
+              <td class="px-4 py-3 text-surface-600">{row.builtin}</td>
+              <td class="px-4 py-3 text-surface-600">{row.tool}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">What do you need to connect a comment moderation tool to Instagram?</h2>
+      <p>This is the question most teams get stuck on. Third-party tools go through Meta's official API, which comes with a few conditions.</p>
+      <ol>
+        <li><strong>A professional account.</strong> The account must be a Business or Creator account. Personal accounts are not accessible through the API. Switching is free and can be done in the account settings.</li>
+        <li><strong>A linked Facebook Page, depending on the connection method.</strong> Many tools connect through Facebook Login, which requires the Instagram account to be linked to a Facebook Page you manage.</li>
+        <li><strong>Admin rights.</strong> You must have full control of the account (and of the Page, when one is linked), for example through Meta Business Suite.</li>
+        <li><strong>Meta permissions.</strong> You log in through Meta and approve the permissions the tool requests, mainly reading the account's media and comments and managing comments. The tool never needs your password.</li>
+        <li><strong>Webhooks.</strong> Once connected, Meta notifies the tool of each new comment, so it can act within moments of the comment being posted.</li>
+      </ol>
+      <p>
+        With OpenModeration, there is no code to write. You connect the account and our team checks the
+        prerequisites and sets up your rules with you. Details are on the
+        <a href="/integrations/instagram" class="text-brand-600 hover:text-brand-500">Instagram integration page</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">What does an Instagram automoderation tool add?</h2>
+      <ul>
+        <li><strong>Context.</strong> Each comment is read for what it means, so disguised insults, scam offers and harassment are caught even without a banned word.</li>
+        <li><strong>Your rules and your use cases.</strong> You describe in plain language what you accept and what you don't: competitor links, fake giveaway accounts, personal data, off-topic debates.</li>
+        <li><strong>Automatic hiding.</strong> Comments that clearly break your rules are hidden as soon as they arrive, day and night.</li>
+        <li><strong>Human review.</strong> Doubtful comments go to a queue in one console, where your team decides.</li>
+        <li><strong>A written reason.</strong> Every decision is explained and logged, which is what the DSA expects.</li>
+        <li><strong>One place for every network.</strong> OpenModeration also connects to Facebook Pages, YouTube channels and WordPress.</li>
+      </ul>
+      <p>
+        For brands running campaigns and influencer partnerships, this is the difference between a comment
+        section you watch and one you trust. See the <a href="/use-cases/brands-retail" class="text-brand-600 hover:text-brand-500">brands and retail use case</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">How to choose an Instagram comment moderation tool</h2>
+      <ol>
+        <li><strong>Official API only.</strong> The tool should connect through Meta's API, never ask for your password.</li>
+        <li><strong>Real time.</strong> Comments should be handled as they arrive, not in batches hours later.</li>
+        <li><strong>Hide by default.</strong> Hiding is reversible and discreet. Deletion should be reserved for specific cases.</li>
+        <li><strong>Custom rules.</strong> You should be able to describe your own rules, not just toggle generic categories.</li>
+        <li><strong>Context and languages.</strong> Test it on real comments from your account: sarcasm, emojis, slang, other languages.</li>
+        <li><strong>Review queue.</strong> Doubtful cases need a place where your team can decide quickly.</li>
+        <li><strong>Reasons and log.</strong> Every decision should be explained and exportable, in line with the <a href="/dsa-compliance" class="text-brand-600 hover:text-brand-500">DSA</a>.</li>
+        <li><strong>Data hosting.</strong> Check where comments are processed. OpenModeration is hosted in the EU.</li>
+        <li><strong>Facebook too.</strong> If you also run a Facebook Page, use the same rules on both.</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Moderating Facebook as well?</h2>
+      <p>
+        Facebook Pages have different built-in tools and a different way of hiding comments. Read our guide on
+        <a href="/blog/hide-facebook-comments-automatically" class="text-brand-600 hover:text-brand-500">how to hide Facebook comments automatically</a>,
+        or <a href="/demo" class="text-brand-600 hover:text-brand-500">try the live demo</a> to test the moderation on your own comments.
+      </p>
+    </div>
+
+    <div class="mt-12">
+      <FAQ title="FAQ" items={faqItems} />
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Keep exploring</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/integrations/instagram" class="font-medium text-brand-600 hover:text-brand-500">Instagram automoderation with OpenModeration &rarr;</a></li>
+        <li><a href="/blog/hide-facebook-comments-automatically" class="font-medium text-brand-600 hover:text-brand-500">How to hide Facebook comments automatically &rarr;</a></li>
+        <li><a href="/use-cases/brands-retail" class="font-medium text-brand-600 hover:text-brand-500">Comment moderation for brands and retail &rarr;</a></li>
+        <li><a href="/dsa-compliance" class="font-medium text-brand-600 hover:text-brand-500">What the DSA requires for moderation decisions &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

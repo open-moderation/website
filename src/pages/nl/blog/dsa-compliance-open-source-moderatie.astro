@@ -1,0 +1,126 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+import { bookingUrl } from '../../../i18n/ui';
+
+const locale = getLocale(Astro.url.pathname);
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "DSA-compliance eenvoudig gemaakt voor reactiemoderatie",
+  "description": "Zo voldoe je bij reactiemoderatie aan de Europese Digital Services Act: schriftelijke redenen, volledige audittrail, transparantierapporten en hosting in de EU.",
+  "inLanguage": "nl",
+  "datePublished": "2026-06-08",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/nl/blog/dsa-compliance-open-source-moderatie" },
+  "dateModified": "2026-06-08"
+};
+---
+
+<BaseLayout title="DSA-compliance eenvoudig gemaakt voor reactiemoderatie" description="Zo voldoe je bij reactiemoderatie aan de Europese DSA: schriftelijke redenen, een volledige audittrail, transparantierapporten en hosting in de EU." jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: "Blog", href: localizePath('/blog', locale) }, { label: "DSA-compliance eenvoudig gemaakt" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-06-08">8 juni 2026</time>
+        <span>&middot;</span>
+        <span>6 min lezen</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">DSA-compliance eenvoudig gemaakt voor reactiemoderatie</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        De Europese Digital Services Act (DSA) is sinds 2024 volledig van kracht, en platforms zijn
+        er nog altijd mee bezig. Elke dienst die content van gebruikers in de EU host, waar het hoofdkantoor ook staat,
+        moet reageren op meldingen van illegale content, zijn moderatiebeslissingen toelichten
+        en gebruikers de kans geven die aan te vechten. Boetes kunnen oplopen tot 6% van de wereldwijde jaaromzet.
+      </p>
+      <p>
+        Voor veel platforms is het lastigste deel: aan toezichthouders bewijzen dat hun moderatiesysteem
+        werkt. Daarvoor zijn drie dingen nodig: een geautomatiseerde moderatiepijplijn,
+        een volledige audittrail en de mogelijkheid om transparantierapporten te genereren.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">De DSA-verplichtingen, vereenvoudigd</h2>
+      <p>De DSA schrijft geen specifieke technologie voor. Hij eist resultaten:</p>
+      <ul>
+        <li><strong>Melding en actie (art. 16):</strong> gebruikers moeten content kunnen melden. Platforms moeten iets met die meldingen doen.</li>
+        <li><strong>Transparantierapportage (art. 15):</strong> platforms moeten rapporten over hun moderatieactiviteiten publiceren.</li>
+        <li><strong>Motivering (art. 17):</strong> elke verwijdering of beperking moet aan de gebruiker worden uitgelegd, inclusief of er geautomatiseerde middelen zijn gebruikt.</li>
+        <li><strong>Klachtensysteem (art. 20):</strong> gebruikers moeten bezwaar kunnen maken tegen moderatiebeslissingen.</li>
+        <li><strong>Risicobeoordeling (art. 34):</strong> zeer grote platforms (meer dan 45 miljoen maandelijkse gebruikers in de EU) moeten systeemrisico's beoordelen.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Waarom uitgelegde beslissingen tellen voor compliance</h2>
+      <p>
+        DSA-complianceverantwoordelijken zouden één eenvoudige vraag moeten stellen. Als je moderatietool
+        een black box is, hoe laat je een toezichthouder dan zien wat die doet?
+      </p>
+      <p>
+        Een tool die alleen "verwijderd" of "behouden" teruggeeft, dwingt je zijn beweringen op vertrouwen aan te nemen,
+        en dat vertrouwen volstaat misschien niet voor een toezichthouder. Je moet kunnen zien waarom elke beslissing is genomen.
+      </p>
+      <p>
+        Bij OpenModeration komt elke beslissing met een reden in gewone taal en wordt
+        ze vastgelegd in een volledige audittrail. Je complianceteam ziet precies welke regel is
+        toegepast, welke criteria zijn gebruikt en waar de resultaten naartoe gaan.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Een DSA-conforme moderatiepijplijn opzetten</h2>
+      <p>Zo ziet een DSA-conforme opzet met OpenModeration eruit:</p>
+      <ol>
+        <li><strong>Binnenkomst van content:</strong> ontvang content via de API, een webhook of de sociale connectoren. Elk item krijgt een unieke ID en wordt versleuteld opgeslagen.</li>
+        <li><strong>AI-moderatie:</strong> onze eigen moderatie-AI analyseert de content; bij lastige gevallen controleren andere AI-modellen de beslissing. De resultaten bevatten scores per categorie en een beslissing gemarkeerd/niet gemarkeerd.</li>
+        <li><strong>Toetsing aan je regels:</strong> je regels combineren verboden woorden om direct te blokkeren, drempels per categorie voor geautomatiseerde beslissingen en je eigen regels in gewone taal.</li>
+        <li><strong>Auditlogging:</strong> elke stap wordt gelogd: content, scores, toegepaste regel, genomen actie, tijdstempel.</li>
+        <li><strong>Transparantie-export:</strong> GET /v1/analytics/usage levert de gegevens die je nodig hebt voor je DSA-transparantierapporten.</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Concrete DSA-verplichtingen invullen</h2>
+      <p>
+        <strong>Audittrail:</strong> OpenModeration logt elke moderatie met latency, scores, schriftelijke reden en beslissing.
+        Gegevens worden bewaard volgens het beleid dat je instelt (standaard 7 dagen voor invoertekst, 90 dagen voor logs).
+        Alles is exporteerbaar voor audits door toezichthouders.
+      </p>
+      <p>
+        <strong>Transparantierapportage:</strong> de analytics-API levert gebruiksgegevens per periode, platform en categorie.
+        Het gaat om het totale aantal verzoeken, het aandeel gemarkeerde content en de verdeling per categorie: precies wat DSA-transparantierapporten vragen.
+      </p>
+      <p>
+        <strong>Datasoevereiniteit:</strong> de gegevens worden in de EU gehost en je kunt ze op elk moment exporteren.
+        Dat telt voor de AVG en voor DSA-risicobeoordelingen. Een on-premise installatie is
+        op aanvraag mogelijk: <a href={bookingUrl(locale)} class="text-brand-600 hover:text-brand-500">laten we het bespreken</a>.
+      </p>
+      <p>
+        <strong>Menselijke beoordeling:</strong> twijfelgevallen, meldingen en betwiste beslissingen worden door ons team behandeld,
+        zoals de DSA vraagt voor klachtenafhandeling en bezwaar. Jij ziet elke beslissing in realtime en kunt op elk moment ingrijpen.
+      </p>
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Lees verder</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/dsa-compliance', locale)} class="font-medium text-brand-600 hover:text-brand-500">DSA-compliance: audittrail en transparantierapporten &rarr;</a></li>
+        <li><a href={localizePath('/product/transparency', locale)} class="font-medium text-brand-600 hover:text-brand-500">Bij elke verborgen reactie een schriftelijke reden &rarr;</a></li>
+        <li><a href={localizePath('/pricing', locale)} class="font-medium text-brand-600 hover:text-brand-500">Begin gratis, stap over als je groeit &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

@@ -2,6 +2,7 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumb from '../../../components/Breadcrumb.astro';
 import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
 import CodeBlock from '../../../components/CodeBlock.astro';
 import FAQ from '../../../components/FAQ.astro';
 
@@ -10,63 +11,62 @@ import { Mistral } from '@mistralai/mistralai';
 const mistral = new Mistral({ apiKey: '...' });
 const result = await mistral.moderations.create({ input: text });
 
-# Dopo: OpenModeration con Mistral
+# Dopo: OpenModeration
 const result = await fetch('https://api.openmoderation.com/v1/moderation', {
   method: 'POST',
   headers: { 'Authorization': 'Bearer om_key_...' },
-  body: JSON.stringify({ input: text, model: 'mistral/mistral-moderation-latest' })
+  body: JSON.stringify({ input: text })
 });
-// Oppure lascia decidere il router intelligente, con Azure/OpenAI/HuggingFace come fallback`;
+// In più: pre-filtro, doppia soglia, azioni automatiche, registro di audit, IA verificata`;
 
 const comparisonJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
   "name": "Alternativa a Mistral Moderation | OpenModeration",
-  "description": "Mistral Moderation è un'ottima API multilingue, ma è un solo fornitore. OpenModeration ti permette di usare Mistral insieme ad altri 9 fornitori tramite un'unica API unificata, con pre-filtro, regole automatiche e registri di audit pronti per il DSA.",
+  "description": "Mistral Moderation è un'ottima API multilingue, ma è un solo modello. OpenModeration usa la propria IA di moderazione, verificata da altri modelli di IA, con pre-filtro, regole automatiche e registri di audit pronti per il DSA.",
   "inLanguage": "it",
 };
 
 const comparisonPoints = [
-  { feature: "Fornitori", mistral: "Solo Mistral", openmod: "10 fornitori tra cui Mistral, OpenAI, Azure, HuggingFace, LLM (GPT-4o, Claude), Cohere" },
-  { feature: "Categorie", mistral: "11 categorie fisse nel modello attuale, tra cui dati personali e jailbreak", openmod: "10 categorie standardizzate, completamente personalizzabili con la moderazione basata su LLM" },
-  { feature: "Lingue", mistral: "Ottimo supporto multilingue (francese, tedesco, spagnolo, italiano, portoghese, ecc.)", openmod: "Instradamento per lingua: Mistral per FR/DE/ES, OpenAI per EN, gli LLM per tutto il resto" },
+  { feature: "Motore di IA", mistral: "Solo il modello di moderazione di Mistral", openmod: "La nostra IA di moderazione, verificata da altri modelli di IA sui casi delicati" },
+  { feature: "Categorie", mistral: "11 categorie fisse nel modello attuale, tra cui dati personali e jailbreak", openmod: "10 categorie standardizzate, più le tue categorie descritte in linguaggio naturale" },
+  { feature: "Lingue", mistral: "Ottimo supporto multilingue (francese, tedesco, spagnolo, italiano, portoghese, ecc.)", openmod: "Principali lingue dell'UE e inglese, con i casi delicati verificati da altri modelli di IA" },
   { feature: "Pre-filtro", mistral: "Non disponibile", openmod: "Filtro di parole integrato che blocca i contenuti evidenti prima di qualsiasi chiamata API" },
-  { feature: "Motore decisionale", mistral: "Solo punteggi grezzi", openmod: "Doppia soglia: approvazione automatica / zona grigia → revisione umana / rifiuto automatico" },
+  { feature: "Motore decisionale", mistral: "Solo punteggi grezzi", openmod: "Doppia soglia: approvazione automatica / zona grigia → revisione da parte del nostro team / rifiuto automatico" },
   { feature: "Input massimo", mistral: "32.000 caratteri", openmod: "Fino a 32.000 caratteri + elaborazione batch per volumi maggiori" },
-  { feature: "Console", mistral: "Solo API. Nessuna interfaccia di revisione.", openmod: "Console di moderazione completa con coda di revisione, statistiche e ruoli del team" },
-  { feature: "Dipendenza dal fornitore", mistral: "Vincolato a Mistral", openmod: "Nessuna. Passi da Mistral a OpenAI o Azure modificando la configurazione. BYOK supportato." },
-  { feature: "Self-hosting", mistral: "Solo API in cloud", openmod: "Self-hosting con Docker (gratuito) o cloud gestito in UE" },
+  { feature: "Console", mistral: "Solo API. Nessuna interfaccia di revisione.", openmod: "Console in cui vedi ogni decisione in tempo reale, statistiche, ruoli del team" },
+  { feature: "Dipendenza", mistral: "Vincolato a Mistral", openmod: "Bassa. Motore indipendente dai modelli: i modelli migliori collegati appena escono" },
   { feature: "Conformità", mistral: "Log API di base", openmod: "Registro di audit DSA completo con report esportabili" },
-  { feature: "Prezzi", mistral: "Fissato da Mistral sulla sua API", openmod: "Gratuito in self-hosting. Cloud gestito da 99 €/mese (10.000 richieste incluse)." },
+  { feature: "Prezzi", mistral: "Fissato da Mistral sulla sua API", openmod: "Gratis fino a 1.000 richieste al mese. Cloud gestito da 99 €/mese (10.000 richieste incluse)." },
 ];
 
 const reasons = [
   {
-    title: "Mistral è ottimo per le lingue europee, meno per l'inglese",
-    description: "L'API di moderazione di Mistral eccelle sui contenuti in francese, tedesco, spagnolo e italiano. Ma per rilevare la tossicità in inglese il modello omni-moderation di OpenAI è spesso più preciso. OpenModeration manda l'inglese a OpenAI e le lingue europee a Mistral, in automatico."
+    title: "Un solo modello, fermo tra un aggiornamento e l'altro",
+    description: "L'API di moderazione di Mistral eccelle sui contenuti in francese, tedesco, spagnolo e italiano. Ma un solo modello resta uguale tra un aggiornamento e l'altro. OpenModeration usa la propria IA di moderazione, fa verificare i casi delicati da altri modelli di IA e collega i modelli migliori appena escono."
   },
   {
     title: "Categorie fisse o categorie configurabili",
-    description: "Mistral copre un insieme fisso di categorie. E se la tua community deve individuare disinformazione, adescamento di minori o violazioni di regole specifiche? OpenModeration aggiunge una moderazione basata su LLM con categorie completamente configurabili: le definisci in linguaggio naturale e lasci classificare a GPT-4o o Claude."
+    description: "Mistral copre un insieme fisso di categorie. E se la tua community deve individuare disinformazione, adescamento di minori o violazioni di regole specifiche? OpenModeration aggiunge categorie configurabili: le descrivi in linguaggio naturale e la nostra IA fa la classificazione."
   },
   {
     title: "Un'API ha bisogno di un livello operativo",
-    description: "Mistral ti dà dei punteggi. Il tuo team ha comunque bisogno di una console di revisione, di un motore di azioni (nascondere/eliminare/segnalare), di accessi basati sui ruoli, di registri di audit per il DSA e di un'analisi dei costi. OpenModeration include tutto questo: Mistral diventa uno dei 10 motori di backend."
+    description: "Mistral ti dà dei punteggi. Un servizio di moderazione ha comunque bisogno di una revisione umana, di un motore di azioni (nascondere/eliminare/segnalare), di accessi basati sui ruoli, di registri di audit per il DSA e di statistiche. OpenModeration include tutto questo, e i casi dubbi li gestisce il nostro team."
   },
   {
     title: "Senza pre-filtro paghi anche lo spam evidente",
-    description: "Ogni commento che invii all'endpoint di moderazione di Mistral rientra nel tuo consumo dell'API. Con il pre-filtro di OpenModeration, spam evidente, parole vietate e pattern regex vengono bloccati prima che un fornitore li veda: risparmi dal 10 al 30% sui costi API, su Mistral e su tutti gli altri fornitori."
+    description: "Ogni commento che invii all'endpoint di moderazione di Mistral rientra nel tuo consumo dell'API. Con il pre-filtro di OpenModeration, spam evidente, parole vietate e pattern regex vengono bloccati prima che un modello di IA li veda."
   },
 ];
 
 const faqItems = [
   {
     question: "Quanto costa Mistral Moderation rispetto a OpenModeration?",
-    answer: "Mistral fissa il prezzo del suo modello di moderazione sulla propria API. OpenModeration è gratuito in self-hosting: paghi solo le chiamate al fornitore. Il cloud gestito parte da 99 €/mese per 10.000 richieste, con un pre-filtro che elimina dal 10 al 30% delle chiamate fatturabili."
+    answer: "Mistral fissa il prezzo del suo modello di moderazione sulla propria API. OpenModeration è gratuito fino a 1.000 richieste al mese e il cloud gestito parte da 99 €/mese per 10.000 richieste."
   },
   {
-    question: "Posso continuare a usare Mistral con OpenModeration?",
-    answer: "Sì. Usa la tua chiave Mistral (BYOK) e mantieni mistral-moderation-latest come modello principale. Aggiungi OpenAI, Azure o HuggingFace come fallback modificando la configurazione, senza riscrivere una riga di codice."
+    question: "Quale IA usa OpenModeration?",
+    answer: "La propria IA di moderazione, configurata sulle tue regole e sui tuoi casi d'uso, con i casi delicati verificati da altri modelli di IA. Quando esce un modello migliore o più economico, lo colleghiamo rapidamente, senza codice da riscrivere da parte tua."
   },
   {
     question: "Quanto tempo richiede la migrazione?",
@@ -74,18 +74,18 @@ const faqItems = [
   },
   {
     question: "Supporta il francese e le altre lingue europee?",
-    answer: "Sì. L'instradamento intelligente manda francese, tedesco, spagnolo e italiano a Mistral, l'inglese a OpenAI e le categorie personalizzate agli LLM: oltre 120 lingue coperte."
+    answer: "Sì. La nostra IA di moderazione gestisce il francese, il tedesco, lo spagnolo, l'italiano e le altre principali lingue dell'UE, e i casi delicati vengono verificati da altri modelli di IA."
   },
   {
     question: "Ogni decisione viene registrata per gli audit DSA?",
-    answer: "Sì. Ogni decisione, dell'IA o umana, conserva i punteggi del fornitore, le soglie, il revisore e la data e l'ora. Esporti con un clic l'intero registro di audit per le relazioni di trasparenza DSA."
+    answer: "Sì. Ogni decisione, dell'IA o umana, conserva i punteggi, le soglie, il revisore e la data e l'ora. Esporti con un clic l'intero registro di audit per le relazioni di trasparenza DSA."
   },
 ];
 ---
 
 <BaseLayout
   title="Alternativa a Mistral Moderation: prezzi, confronto e migrazione"
-  description="Mistral Moderation ti dà i punteggi di un solo fornitore. OpenModeration unisce Mistral, OpenAI, Azure e altri 7 in un'API, con regole, revisione umana e audit DSA."
+  description="Mistral Moderation è un solo modello. OpenModeration usa la propria IA, verificata da altri modelli, con regole, revisione umana e audit DSA."
   jsonLd={comparisonJsonLd}
 >
   <Breadcrumb items={[{ label: "Home", href: "/it" }, { label: "Alternative", href: "/it/alternative" }, { label: "Alternativa a Mistral Moderation" }]} />
@@ -96,12 +96,12 @@ const faqItems = [
         Alternativa a Mistral Moderation
       </div>
       <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">
-        Mistral è eccellente per la moderazione in Europa.<br/>Aggiungi altri 9 fornitori con lo stesso sforzo.
+        Mistral è eccellente per la moderazione in Europa.<br/>Un servizio di moderazione richiede più di un modello.
       </h1>
       <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
-        L'API di moderazione di Mistral gestisce benissimo le lingue europee. Non c'è motivo, però, di limitarti a un solo fornitore.
-        OpenModeration usa Mistral <strong>più</strong> OpenAI, Azure, HuggingFace e altri 7 con la stessa
-        chiamata API, con regole automatiche, revisione umana e registri di audit conformi al DSA.
+        L'API di moderazione di Mistral gestisce benissimo le lingue europee. Resta però un solo modello.
+        OpenModeration usa la propria IA di moderazione, <strong>verificata</strong> da altri modelli di IA, con una sola
+        chiamata API, con regole automatiche, revisione umana da parte del nostro team e registri di audit conformi al DSA.
       </p>
       <div class="mt-8 flex items-center justify-center gap-4">
         <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm">Prova OpenModeration gratis</a>
@@ -135,21 +135,21 @@ const faqItems = [
         <div>
           <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700">
             <span class="flex h-1.5 w-1.5 animate-pulse-dot rounded-full bg-brand-500" />
-            Tieni Mistral, ottieni tutto il resto
+            Una chiamata, tutta la piattaforma
           </div>
-          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Usa Mistral tramite OpenModeration e ottieni la piattaforma completa.</h2>
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Sostituisci il client Mistral. Ottieni la piattaforma completa.</h2>
           <p class="mt-4 text-lg text-surface-500">
-            Puoi continuare a usare Mistral come fornitore principale. OpenModeration lo arricchisce con pre-filtro,
+            Una sola chiamata POST /v1/moderation sostituisce il client Mistral. OpenModeration aggiunge pre-filtro,
             doppia soglia, azioni automatiche e un registro di audit completo, sempre con la stessa chiamata API.
           </p>
           <div class="mt-6 space-y-3">
             <div class="flex items-start gap-3">
               <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <p class="text-sm text-surface-600"><strong>Instrada per lingua:</strong> Mistral per FR/DE/ES/IT, OpenAI per EN, gli LLM per le categorie personalizzate.</p>
+              <p class="text-sm text-surface-600"><strong>IA verificata:</strong> altri modelli di IA arbitrano i casi delicati prima che una decisione venga applicata.</p>
             </div>
             <div class="flex items-start gap-3">
               <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <p class="text-sm text-surface-600"><strong>Usa la tua chiave Mistral</strong> (BYOK) e aggiungi altri fornitori per la ridondanza.</p>
+              <p class="text-sm text-surface-600"><strong>Indipendente dai modelli:</strong> quando esce un modello migliore o più economico, lo colleghiamo. Per te non cambia nulla.</p>
             </div>
             <div class="flex items-start gap-3">
               <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
@@ -169,7 +169,7 @@ const faqItems = [
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="mx-auto mb-12 max-w-2xl text-center">
         <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Mistral Moderation vs OpenModeration</h2>
-        <p class="mt-4 text-lg text-surface-500">L'API di Mistral è eccellente. OpenModeration la trasforma in una piattaforma completa.</p>
+        <p class="mt-4 text-lg text-surface-500">L'API di Mistral è eccellente. OpenModeration è una piattaforma completa.</p>
       </div>
       <div class="overflow-x-auto rounded-xl border border-surface-200">
         <table class="w-full text-left text-sm">
@@ -204,7 +204,7 @@ const faqItems = [
   <!-- Other alternatives -->
   <section class="border-t border-surface-100 bg-surface-50 py-16">
     <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-      <h2 class="text-2xl font-bold text-surface-900">Confronta altri fornitori</h2>
+      <h2 class="text-2xl font-bold text-surface-900">Confronta altre alternative</h2>
       <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
         <a href="/it/alternative/openai-moderation" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">OpenAI Moderation</a>
         <a href="/it/alternative/azure-content-safety" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Azure Content Safety</a>
@@ -215,9 +215,11 @@ const faqItems = [
     </div>
   </section>
 
+  <RelatedComparisons />
+
   <CTASection
-    title="Mistral e altri 9 fornitori in un'unica API."
-    subtitle="Mantieni la tua integrazione Mistral, aggiungi ridondanza con OpenAI, Azure o HuggingFace e ottieni regole automatiche e una console di revisione umana, tutto open source."
+    title="Più di un modello di moderazione."
+    subtitle="La nostra IA verificata, regole automatiche e la revisione umana del nostro team, tutto ospitato nell'UE. Vedi ogni decisione in tempo reale."
     buttonText="Prova OpenModeration gratis"
     buttonHref="https://app.openmoderation.com/signup"
   />

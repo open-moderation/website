@@ -1,0 +1,205 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import CTASection from '../../components/CTASection.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+import FAQ from '../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://www.openmoderation.com/pl/api-moderacji-tekstu",
+      "url": "https://www.openmoderation.com/pl/api-moderacji-tekstu",
+      "name": "API do moderacji tekstu: komentarze, czat i wiadomości",
+      "description": "API do moderacji tekstu, które filtruje toksyczne komentarze, wiadomości na czacie i opinie użytkowników: własna AI weryfikowana przez inne modele, własne reguły, podwójne progi i dziennik audytu DSA.",
+      "inLanguage": "pl",
+      "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://www.openmoderation.com/pl/api-moderacji-tekstu#software",
+      "name": "OpenModeration Text Moderation API",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Dowolny (REST API)",
+      "description": "API do moderacji tekstu: jeden endpoint, własna AI do moderacji weryfikowana przez inne modele, własne reguły, podwójne progi, endpointy wsadowe i dziennik audytu DSA.",
+      "url": "https://www.openmoderation.com/pl/api-moderacji-tekstu",
+      "inLanguage": "pl",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR", "availability": "https://schema.org/InStock" }
+    }
+  ]
+};
+
+const quickstart = `# Moderacja dowolnego tekstu — komentarze, czat, wiadomości, opinie
+curl -X POST https://api.openmoderation.com/v1/moderation \\
+  -H "Authorization: Bearer om_key_..." \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "input": "komentarz użytkownika",
+    "categories": ["hate", "harassment", "sexual", "violence", "self-harm", "spam"],
+    "threshold": 0.5
+  }'
+
+# Odpowiedź (ujednolicony format)
+{
+  "flagged": false,
+  "results": [{ "category": "harassment", "score": 0.03, "flagged": false }],
+  "usage": { "latency_ms": 212 }
+}`;
+
+const useCases = [
+  { name: "Komentarze i opinie", desc: "Automatyczne ukrywanie mowy nienawiści, spamu i wycieków danych osobowych w komentarzach, opiniach i postach na forum, zanim zostaną opublikowane." },
+  { name: "Czat i komunikatory", desc: "Moderacja w czasie rzeczywistym w wielu językach, z opóźnieniem poniżej 250 ms i automatycznymi działaniami." },
+  { name: "Prompty w aplikacjach AI", desc: "Filtrowanie tego, co wysyłają użytkownicy, i tego, co odpowiada Państwa LLM. Własne kategorie mogą zmieniać się z czasem." },
+  { name: "Ogłoszenia w marketplace’ach", desc: "Oznaczanie spamu, oszustw i zakazanych treści w tytułach i opisach ogłoszeń już w chwili ich dodania." },
+];
+
+const faqItems = [
+  {
+    question: "Czym jest API do moderacji tekstu?",
+    answer: "API do moderacji tekstu ocenia to, co piszą użytkownicy (mowa nienawiści, nękanie, treści seksualne, przemoc, spam, dane osobowe…), aby aplikacja mogła automatycznie zatwierdzić, oznaczyć lub odrzucić wpis. OpenModeration udostępnia za jednym endpointem własną AI do moderacji, weryfikowaną w trudnych przypadkach przez inne modele AI, z jednym formatem odpowiedzi, własnymi regułami i dziennikiem audytu."
+  },
+  {
+    question: "Które API do moderacji tekstu wybrać?",
+    answer: "Surowe API modeli (OpenAI, Azure, Mistral) pozwalają szybko zacząć, ale wiążą z jednym modelem, który stoi w miejscu między aktualizacjami. OpenModeration korzysta z własnej AI do moderacji, weryfikuje trudne przypadki innymi modelami AI, podłącza lepsze modele, gdy się pojawiają, i dodaje filtrowanie wstępne, reguły oraz weryfikację wątpliwych przypadków przez nasz zespół."
+  },
+  {
+    question: "Ile kosztuje API do moderacji tekstu?",
+    answer: "Endpoint moderacji OpenAI jest bezpłatny, Mistral sam ustala cenę swojego modelu moderacji, a Azure AI Content Safety nalicza opłaty za każde 1000 rekordów tekstowych po przekroczeniu darmowego limitu 5000 rekordów miesięcznie. OpenModeration oferuje darmowy plan do 1000 żądań miesięcznie. Zarządzany plan chmurowy Pro zaczyna się od 99 €/miesiąc za 10 tys. żądań, a wstępne filtrowanie eliminuje 10–30% płatnych wywołań."
+  },
+  {
+    question: "Czy można zdefiniować własne reguły moderacji?",
+    answer: "Tak, za pomocą trzech narzędzi i bez kodu. Zakazane słowa natychmiast blokują wiadomość. Progi dla poszczególnych kategorii decydują o automatycznym zatwierdzeniu, weryfikacji przez nasz zespół lub automatycznym odrzuceniu. Własne reguły, zapisane zwykłym językiem, stosuje nasza AI dla kategorii takich jak dezinformacja czy grooming."
+  },
+  {
+    question: "Czy można przejść z OpenAI text-moderation-latest?",
+    answer: "Tak. Wystarczy zastąpić openai.moderations.create jednym wywołaniem POST /v1/moderation. Otrzymują Państwo ujednolicone wyniki, pisemne uzasadnienia i dziennik audytu, a gdy podłączamy lepszy model AI, w Państwa kodzie nic się nie zmienia."
+  },
+  {
+    question: "Czy każda decyzja moderacyjna jest rejestrowana?",
+    answer: "Tak. Każda decyzja AI i człowieka zachowuje wyniki, progi, osobę weryfikującą i znacznik czasu. Pełny dziennik audytu można wyeksportować jednym kliknięciem na potrzeby raportów przejrzystości DSA."
+  },
+];
+---
+
+<BaseLayout
+  title="API do moderacji tekstu: komentarze, czat i wiadomości"
+  description="API do moderacji tekstu z własną AI weryfikowaną przez inne modele. Ukrywaj toksyczne komentarze, spam i dane osobowe z regułami i audytem DSA."
+  jsonLd={pageJsonLd}
+>
+  <Breadcrumb items={[{ label: "Strona główna", href: localizePath('/', locale) }, { label: "API do moderacji tekstu" }]} />
+
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Dla programistów: REST API i panel
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">
+        API do moderacji tekstu, które działa na podstawie wyniku.
+      </h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Jeden endpoint moderuje komentarze, czat, wiadomości i opinie naszą własną AI,
+        weryfikowaną w trudnych przypadkach przez inne modele. W zestawie: filtrowanie wstępne, własne reguły, podwójne progi
+        i dziennik audytu gotowy na DSA.
+      </p>
+      <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">
+          Odbierz darmowy klucz API
+        </a>
+        <a href="https://api.openmoderation.com/docs" class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">
+          Zobacz dokumentację API &rarr;
+        </a>
+      </div>
+      <p class="mt-4 text-sm text-surface-400">Darmowy plan · Bez karty kredytowej · Dokumentacja OpenAPI</p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Moderacja dowolnego tekstu jednym żądaniem</h2>
+          <p class="mt-4 text-lg text-surface-500">
+            Wyślij tekst do jednego endpointu. Nasza AI do moderacji go analizuje, a inne modele AI weryfikują trudne przypadki.
+            Wyniki wracają w jednym formacie, z progami, które ustawiasz samodzielnie.
+          </p>
+          <ul class="mt-6 space-y-3 text-sm text-surface-600">
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span><span><strong>10 kategorii, ponad 120 języków.</strong> Mowa nienawiści, nękanie, treści seksualne, przemoc, samookaleczenia, spam, dane osobowe i własne kategorie.</span></li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span><span><strong>Filtrowanie wstępne.</strong> Oczywisty spam i zakazane słowa są blokowane, zanim nastąpi jakiekolwiek wywołanie AI.</span></li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span><span><strong>Podwójne progi.</strong> Jednoznaczne przypadki są automatycznie zatwierdzane lub odrzucane, a szarą strefą zajmuje się nasz zespół.</span></li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span><span><strong>Wsadowo do 10 tys. tekstów.</strong> Wywołania wsadowe korzystają z tego samego schematu co pojedyncze.</span></li>
+          </ul>
+          <div class="mt-6 flex flex-wrap gap-3 text-sm">
+            <a href={localizePath('/content-moderation-api', locale)} class="font-medium text-brand-600 hover:text-brand-500">Pełne API do moderacji treści &rarr;</a>
+            <a href={localizePath('/alternatives/openai-moderation', locale)} class="font-medium text-brand-600 hover:text-brand-500">Alternatywa dla OpenAI Moderation &rarr;</a>
+            <a href={localizePath('/features', locale)} class="font-medium text-brand-600 hover:text-brand-500">Wszystkie funkcje API &rarr;</a>
+          </div>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-4 shadow-sm">
+          <CodeBlock code={quickstart} lang="bash" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Do każdego zastosowania moderacji tekstu</h2>
+        <p class="mt-4 text-lg text-surface-500">Jedno API dla każdego miejsca, w którym piszą użytkownicy.</p>
+      </div>
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {useCases.map((u) => (
+          <div class="rounded-xl border border-surface-200 bg-white p-6">
+            <h3 class="font-semibold text-surface-900">{u.name}</h3>
+            <p class="mt-2 text-sm text-surface-500">{u.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Surowe API modelu a OpenModeration</h2>
+        <p class="mt-4 text-lg text-surface-500">Surowy wynik toksyczności to jeszcze nie system moderacji.</p>
+      </div>
+      <div class="overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-50">
+              <th class="px-6 py-4 font-semibold text-surface-900">Funkcja</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Surowe API tekstowe modelu</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            <tr><td class="px-6 py-4 font-medium text-surface-900">Silnik AI</td><td class="px-6 py-4 text-surface-500">Jeden model (uzależnienie)</td><td class="px-6 py-4">Własna AI weryfikowana przez inne modele; lepsze modele podłączane, gdy się pojawiają</td></tr>
+            <tr><td class="px-6 py-4 font-medium text-surface-900">Własne reguły</td><td class="px-6 py-4 text-surface-500">We własnym zakresie</td><td class="px-6 py-4">Zakazane słowa, progi i reguły zapisane zwykłym językiem, stosowane przez AI, bez kodu</td></tr>
+            <tr><td class="px-6 py-4 font-medium text-surface-900">Weryfikacja przez człowieka</td><td class="px-6 py-4 text-surface-500">We własnym zakresie</td><td class="px-6 py-4">Wątpliwymi przypadkami zajmuje się nasz zespół; widzą Państwo każdą decyzję w czasie rzeczywistym i mogą interweniować</td></tr>
+            <tr><td class="px-6 py-4 font-medium text-surface-900">Dziennik audytu</td><td class="px-6 py-4 text-surface-500">Tylko logi API</td><td class="px-6 py-4">Pełny eksport DSA decyzji AI i ludzi</td></tr>
+            <tr><td class="px-6 py-4 font-medium text-surface-900">Ceny</td><td class="px-6 py-4 text-surface-500">Ustalane przez każdego dostawcę API, od bezpłatnych (OpenAI) po płatne za wywołanie</td><td class="px-6 py-4">Darmowy plan do 1000 żądań/mies. · Pro od 99 €/mies.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ items={faqItems} title="API do moderacji tekstu: najczęstsze pytania" />
+    </div>
+  </section>
+
+  <CTASection
+    title="Zacznij moderować tekst w kilka minut."
+    subtitle="Odbierz klucz API, skopiuj przykład curl i zmoderuj pierwszy tekst jeszcze dziś, z regułami, weryfikacją wątpliwych przypadków przez nasz zespół i dziennikiem audytu od pierwszego dnia."
+    buttonText="Wypróbuj API za darmo"
+    buttonHref="https://app.openmoderation.com/signup"
+  />
+</BaseLayout>

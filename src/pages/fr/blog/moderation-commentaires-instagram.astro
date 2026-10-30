@@ -1,0 +1,233 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import FAQ from '../../../components/FAQ.astro';
+
+const title = "Modération des commentaires Instagram : le guide";
+const description = "Modérer les commentaires Instagram : mots masqués, limites, restriction, ce qu'il faut pour connecter un outil et mettre en place la modération automatique.";
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Modération des commentaires Instagram : mettre en place une modération automatique",
+  "description": description,
+  "inLanguage": "fr",
+  "datePublished": "2026-10-30",
+  "dateModified": "2026-10-30",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/fr/blog/moderation-commentaires-instagram" }
+};
+
+const comparison = [
+  { need: "Filtrer les commentaires injurieux courants", builtin: "Oui, avec les mots masqués et la liste d'Instagram", tool: "Oui, lus dans leur contexte" },
+  { need: "Bloquer vos propres mots et emojis", builtin: "Oui, avec une liste personnalisée, à l'identique", tool: "Oui, y compris variantes et fautes" },
+  { need: "Comprendre l'ironie, les sous-entendus, le contexte", builtin: "Non", tool: "Oui" },
+  { need: "Appliquer des règles propres à votre compte", builtin: "Limité aux listes de mots et au choix de qui peut commenter", tool: "Oui, vos règles et vos cas d'usage écrits en langage courant" },
+  { need: "Confier les cas douteux à une personne", builtin: "Non", tool: "Oui : avec OpenModeration, notre équipe les traite, et vous voyez tout en temps réel" },
+  { need: "Une explication écrite pour chaque décision", builtin: "Non", tool: "Oui" },
+  { need: "Un historique des décisions", builtin: "Non", tool: "Oui, chaque décision est journalisée" },
+  { need: "Plusieurs comptes et réseaux au même endroit", builtin: "Non, compte par compte dans l'application", tool: "Oui, avec Facebook, YouTube et WordPress" },
+];
+
+const faqItems = [
+  {
+    question: "Qu'est-ce que la modération automatique sur Instagram ?",
+    answer: "C'est le filtrage des commentaires sans que personne ne les lise au préalable. Instagram en assure une partie avec les mots masqués. Un outil de modération va plus loin : il lit chaque nouveau commentaire dans son contexte, applique vos propres règles, masque ce qui les enfreint et confie les cas douteux à votre équipe.",
+  },
+  {
+    question: "Que faut-il pour connecter un outil de modération des commentaires à Instagram ?",
+    answer: "Un compte Instagram professionnel (entreprise ou créateur), un accès administrateur à ce compte et, selon la méthode de connexion de l'outil, une Page Facebook liée au compte. Vous vous connectez ensuite via Meta et acceptez les autorisations nécessaires pour lire et gérer les commentaires. Les comptes personnels ne peuvent pas être connectés.",
+  },
+  {
+    question: "Peut-on modérer Instagram sans compte professionnel ?",
+    answer: "Les outils intégrés (mots masqués, limites, restriction, suppression des commentaires) fonctionnent sur tous les comptes. En revanche, un outil tiers ne peut se connecter qu'à un compte professionnel, car l'API de Meta n'est pas ouverte aux comptes personnels. Le passage en compte professionnel est gratuit.",
+  },
+  {
+    question: "Les mots masqués suffisent-ils à bloquer les commentaires injurieux ?",
+    answer: "Non. Ils reposent sur des listes de mots, d'expressions et d'emojis : les fautes volontaires, l'ironie, les sous-entendus et les insultes faites de mots ordinaires passent. Ils ne savent pas non plus appliquer des règles propres à votre marque, comme la promotion d'un concurrent ou un client qui publie ses coordonnées.",
+  },
+  {
+    question: "L'auteur sait-il que son commentaire Instagram a été masqué ?",
+    answer: "Instagram ne prévient pas l'auteur. Un commentaire masqué par un filtre ou par un outil de modération n'est plus montré aux autres visiteurs, tandis que son auteur le voit en général toujours, ce qui évite d'envenimer l'échange.",
+  },
+  {
+    question: "La modération automatique sur Instagram est-elle conforme au DSA ?",
+    answer: "Elle peut l'être si chaque décision est expliquée et enregistrée. Le DSA demande de motiver les restrictions de contenus et de préciser si des moyens automatisés ont été utilisés. OpenModeration rédige une explication pour chaque décision, conserve un journal complet et est hébergé dans l'UE.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} ogType="article" jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Accueil", href: "/fr" }, { label: "Blog", href: "/fr/blog" }, { label: "Modération des commentaires Instagram" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-30">30 octobre 2026</time>
+        <span>&middot;</span>
+        <span>8 min de lecture</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Modération des commentaires Instagram : comment mettre en place une modération automatique</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Sur Instagram, les commentaires font partie de la publication. Bots de spam, faux concours,
+        insultes et trolls s'affichent juste sous vos visuels produits et vos campagnes. Instagram propose
+        quelques filtres intégrés, pensés pour des particuliers plus que pour des marques qui reçoivent des
+        milliers de commentaires. Ce guide présente ce qu'offre Instagram, ses limites, et la façon de mettre
+        en place une modération automatique avec un outil.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">L'essentiel en bref</h2>
+      <ul>
+        <li><strong>Outils intégrés :</strong> mots masqués, liste personnalisée de mots et d'emojis, limites, restriction, contrôle des commentaires et suppression manuelle.</li>
+        <li><strong>Leur limite :</strong> ils jouent sur des listes de mots et sur qui peut commenter, pas sur ce que veut dire un commentaire.</li>
+        <li><strong>Pour connecter un outil :</strong> il vous faut un compte professionnel (entreprise ou créateur) et accepter les autorisations de Meta.</li>
+        <li><strong>Un outil de modération apporte</strong> une analyse en contexte, vos règles et vos cas d'usage, une revue humaine des cas douteux et une explication écrite pour chaque décision.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Quels sont les outils de modération intégrés à Instagram ?</h2>
+      <p>Instagram renomme et déplace régulièrement ses réglages : cherchez-les dans les paramètres de confidentialité de votre compte plutôt qu'à un endroit précis. Les fonctions, elles, existent depuis des années.</p>
+      <ul>
+        <li>
+          <strong>Mots masqués.</strong> Instagram filtre les commentaires qu'il juge injurieux, d'après sa
+          propre liste, et les retire de la vue. Une option plus stricte masque davantage de commentaires
+          potentiellement inappropriés.
+        </li>
+        <li>
+          <strong>Liste personnalisée.</strong> Dans les mots masqués, vous ajoutez vos propres mots,
+          expressions et emojis. Les commentaires qui les contiennent sont masqués.
+        </li>
+        <li>
+          <strong>Limites.</strong> Lors d'une vague d'attaques, vous limitez temporairement les commentaires
+          et les messages des comptes qui ne vous suivent pas ou ne vous suivent que depuis peu.
+        </li>
+        <li>
+          <strong>Restriction.</strong> Les nouveaux commentaires d'une personne restreinte ne sont visibles
+          que par elle, sauf si vous les approuvez. Elle n'est pas prévenue de la restriction.
+        </li>
+        <li>
+          <strong>Contrôle des commentaires.</strong> Vous choisissez qui peut commenter, empêchez certains
+          comptes de commenter ou désactivez les commentaires d'une publication.
+        </li>
+        <li>
+          <strong>Modération manuelle.</strong> Vous supprimez les commentaires un par un ou plusieurs à la
+          fois, et bloquez ou signalez leurs auteurs.
+        </li>
+      </ul>
+      <p>Activez-les dans tous les cas : ils sont gratuits et écartent une partie du spam et des insultes évidentes.</p>
+
+      <h2 class="text-xl font-bold text-surface-900">Où s'arrêtent les outils d'Instagram ?</h2>
+      <ul>
+        <li><strong>Des mots, pas un sens.</strong> « Joli filtre, dommage pour le reste » ne contient aucun mot interdit. L'ironie et les sous-entendus passent.</li>
+        <li><strong>Faciles à contourner.</strong> Des espaces, des points, un emoji ou une lettre remplacée suffisent à déjouer une liste.</li>
+        <li><strong>Plusieurs langues.</strong> Une marque internationale reçoit des commentaires dans de nombreuses langues, et une liste ne couvre que ce que vous y avez mis.</li>
+        <li><strong>Des réglages trop larges.</strong> Limiter ou désactiver les commentaires fait aussi taire vos vrais clients, l'inverse de ce que cherche une campagne.</li>
+        <li><strong>Pas de règles à vous.</strong> Impossible de demander à Instagram de « masquer la promotion des concurrents » ou « les commentaires qui contiennent un numéro de commande ».</li>
+        <li><strong>Ni explication ni historique.</strong> Rien ne garde la trace de ce qui a été filtré et pourquoi, alors que vous en avez besoin pour vos bilans et pour le DSA.</li>
+        <li><strong>Un compte à la fois.</strong> Chaque compte se gère dans l'application. Les équipes qui suivent plusieurs comptes, ou Facebook en plus, jonglent entre les interfaces.</li>
+      </ul>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Votre besoin</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Outils intégrés d'Instagram</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Outil de modération automatique</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {comparison.map((row) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{row.need}</td>
+              <td class="px-4 py-3 text-surface-600">{row.builtin}</td>
+              <td class="px-4 py-3 text-surface-600">{row.tool}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">Que faut-il pour connecter un outil de modération à Instagram ?</h2>
+      <p>C'est sur ce point que la plupart des équipes bloquent. Les outils tiers passent par l'API officielle de Meta, qui pose quelques conditions.</p>
+      <ol>
+        <li><strong>Un compte professionnel.</strong> Le compte doit être de type entreprise ou créateur : les comptes personnels ne sont pas accessibles via l'API. Le changement est gratuit et se fait dans les paramètres du compte.</li>
+        <li><strong>Une Page Facebook liée, selon la méthode de connexion.</strong> Beaucoup d'outils se connectent via Facebook Login, ce qui suppose que le compte Instagram soit lié à une Page Facebook que vous gérez.</li>
+        <li><strong>Des droits d'administrateur.</strong> Il vous faut le contrôle total du compte (et de la Page, si une Page est liée), par exemple via Meta Business Suite.</li>
+        <li><strong>Les autorisations Meta.</strong> Vous vous connectez via Meta et acceptez les autorisations demandées par l'outil, essentiellement lire les publications et les commentaires du compte et gérer les commentaires. L'outil n'a jamais besoin de votre mot de passe.</li>
+        <li><strong>Les webhooks.</strong> Une fois la connexion faite, Meta prévient l'outil de chaque nouveau commentaire : il peut agir dans les instants qui suivent sa publication.</li>
+      </ol>
+      <p>
+        Avec OpenModeration, vous n'écrivez aucun code. Vous connectez le compte, et notre équipe vérifie les
+        prérequis et paramètre vos règles avec vous. Tous les détails sont sur la page
+        <a href="/fr/integrations/moderation-instagram" class="text-brand-600 hover:text-brand-500">modération Instagram</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Qu'apporte un outil de modération automatique pour Instagram ?</h2>
+      <ul>
+        <li><strong>Le contexte.</strong> Chaque commentaire est lu pour ce qu'il veut dire : insultes déguisées, fausses offres et harcèlement sont repérés, même sans mot interdit.</li>
+        <li><strong>Vos règles et vos cas d'usage.</strong> Vous décrivez en langage courant ce que vous acceptez ou non : liens vers un concurrent, faux comptes de concours, données personnelles, débats hors sujet.</li>
+        <li><strong>Le masquage automatique.</strong> Les commentaires qui enfreignent clairement vos règles sont masqués dès leur arrivée, de jour comme de nuit.</li>
+        <li><strong>La revue humaine.</strong> Les commentaires douteux sont tranchés par notre équipe. Vous voyez chaque décision en temps réel dans une seule console et pouvez intervenir quand vous voulez.</li>
+        <li><strong>Une explication écrite.</strong> Chaque décision est motivée et journalisée, comme l'attend le DSA.</li>
+        <li><strong>Un seul endroit pour tous vos réseaux.</strong> OpenModeration se connecte aussi aux Pages Facebook, aux chaînes YouTube et à WordPress.</li>
+      </ul>
+      <p>
+        Pour les marques qui mènent des campagnes et des partenariats avec des influenceurs, c'est la différence
+        entre un espace de commentaires qu'on surveille et un espace auquel on peut se fier. Voir le
+        <a href="/fr/cas-usage/marques-retail" class="text-brand-600 hover:text-brand-500">cas d'usage marques et retail</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Comment choisir un outil de modération des commentaires Instagram ?</h2>
+      <ol>
+        <li><strong>L'API officielle uniquement.</strong> L'outil doit passer par l'API de Meta et ne jamais vous demander votre mot de passe.</li>
+        <li><strong>Le temps réel.</strong> Les commentaires doivent être traités à leur arrivée, pas par lots quelques heures plus tard.</li>
+        <li><strong>Masquer par défaut.</strong> Le masquage est discret et réversible ; la suppression doit rester réservée à des cas précis.</li>
+        <li><strong>Des règles sur mesure.</strong> Vous devez pouvoir décrire vos propres règles, pas seulement activer des catégories génériques.</li>
+        <li><strong>Contexte et langues.</strong> Testez l'outil sur de vrais commentaires de votre compte : ironie, emojis, argot, autres langues.</li>
+        <li><strong>La revue humaine.</strong> Les cas douteux doivent être tranchés vite par une personne : demandez qui s'en charge, l'éditeur ou votre équipe.</li>
+        <li><strong>Explications et journal.</strong> Chaque décision doit être motivée et exportable, conformément au <a href="/fr/conformite-dsa" class="text-brand-600 hover:text-brand-500">DSA</a>.</li>
+        <li><strong>L'hébergement des données.</strong> Vérifiez où sont traités les commentaires. OpenModeration est hébergé dans l'UE.</li>
+        <li><strong>Facebook aussi.</strong> Si vous animez aussi une Page Facebook, appliquez les mêmes règles aux deux.</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Vous modérez aussi Facebook ?</h2>
+      <p>
+        Les Pages Facebook ont d'autres outils intégrés et une autre façon de masquer les commentaires. Lisez notre guide pour
+        <a href="/fr/blog/masquer-commentaires-facebook-automatiquement" class="text-brand-600 hover:text-brand-500">masquer automatiquement les commentaires Facebook</a>,
+        ou <a href="/fr/tester-la-moderation" class="text-brand-600 hover:text-brand-500">testez la modération</a> sur vos propres commentaires.
+      </p>
+    </div>
+
+    <div class="mt-12">
+      <FAQ title="FAQ" items={faqItems} />
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Pour aller plus loin</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/fr/integrations/moderation-instagram" class="font-medium text-brand-600 hover:text-brand-500">La modération Instagram avec OpenModeration &rarr;</a></li>
+        <li><a href="/fr/blog/masquer-commentaires-facebook-automatiquement" class="font-medium text-brand-600 hover:text-brand-500">Masquer automatiquement les commentaires Facebook &rarr;</a></li>
+        <li><a href="/fr/cas-usage/marques-retail" class="font-medium text-brand-600 hover:text-brand-500">La modération des commentaires pour les marques et le retail &rarr;</a></li>
+        <li><a href="/fr/conformite-dsa" class="font-medium text-brand-600 hover:text-brand-500">Ce que le DSA exige des décisions de modération &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

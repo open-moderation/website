@@ -1,0 +1,239 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const title = "ActiveFence alternatief: vergelijking met OpenModeration";
+const description = "ActiveFence (nu Alice) of OpenModeration? Vergelijking met bronnen voor media en merken: aanbod, koppelingen, AI-modellen, DSA, prijs en hosting in de EU.";
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/nl/alternatieven/activefence",
+  "name": title,
+  "description": description,
+  "inLanguage": "nl",
+  "about": {
+    "@id": "https://www.openmoderation.com/#software"
+  }
+};
+
+const rows = [
+  {
+    "feature": "Aanbod",
+    "competitor": "Trust & safety voor gebruikerscontent (waarschuwingen, dreigingsdata, monitoring van het web, onderzoeken, de SaaS ActiveMind), plus AI-veiligheidsproducten onder de merknaam Alice",
+    "openmod": "AI-moderatie van reacties, afgestemd op je regels en je use cases, samen met je ingericht door het team van Logora"
+  },
+  {
+    "feature": "Bedoeld voor",
+    "competitor": "Sociale netwerken, marktplaatsen, AI-modellabs en bedrijven die AI-apps en -agents bouwen",
+    "openmod": "Digitale media, merken en overheidsinstanties"
+  },
+  {
+    "feature": "Koppelingen",
+    "competitor": "Documentatie voor developers en een integratiepagina; geen koppeling met Facebook, Instagram, YouTube of WordPress genoemd op de UGC-pagina",
+    "openmod": "Websites (API), Facebook-pagina's, professionele Instagram-accounts, YouTube-kanalen, WordPress"
+  },
+  {
+    "feature": "Automatisering en menselijke beoordeling",
+    "competitor": "Geautomatiseerde detectie en handhaving, plus teams van analisten en beleidsexperts; de UGC-pagina beschrijft geen beoordelingsconsole",
+    "openmod": "Duidelijke overtredingen automatisch verborgen, legitieme kritiek zichtbaar, twijfelgevallen beoordeeld door ons team, elke beslissing realtime zichtbaar in één console; een schriftelijke reden bij elke beslissing en een volledig activiteitenlogboek"
+  },
+  {
+    "feature": "DSA",
+    "competitor": "Niet genoemd op de UGC-pagina, die wel de EU AI-verordening, NIST en OWASP noemt",
+    "openmod": "Bouwstenen voor melding en actie, motivering, menselijke beoordeling van betwiste beslissingen en exporteerbare cijfers"
+  },
+  {
+    "feature": "AI-modellen",
+    "competitor": "Eigen grote taalmodellen voor ActiveMind, volgens de website",
+    "openmod": "Eigen moderatie-AI, gecontroleerd door andere AI-modellen; nieuwe modellen worden toegevoegd zodra ze uitkomen"
+  },
+  {
+    "feature": "Prijs",
+    "competitor": "Niet gepubliceerd; demo op aanvraag",
+    "openmod": "Openbaar: gratis tot 1.000 verzoeken per maand, Pro voor € 99 per maand voor 10.000 verzoeken, Enterprise op aanvraag"
+  },
+  {
+    "feature": "Hosting en beveiliging",
+    "competitor": "Hosting niet vermeld op de website; toont SOC 2, ISO 27001 en ISO 42001",
+    "openmod": "Gehost in de EU, AVG; on-premise op aanvraag"
+  },
+  {
+    "feature": "Referenties",
+    "competitor": "Getoonde logo's, onder meer TikTok, Niantic, Deliveroo en Udemy",
+    "openmod": "L'Équipe, Challenges, Sud Ouest, actu.fr, Estadão, Südkurier, Egora"
+  }
+];
+
+const faqItems = [
+  {
+    "question": "Wat is het beste alternatief voor ActiveFence?",
+    "answer": "Voor de reacties van een mediabedrijf, een merk of een overheidsinstantie is OpenModeration een direct alternatief: koppelingen voor je website (API), Facebook-pagina's, Instagram, YouTube en WordPress, een schriftelijke reden bij elke beslissing, bouwstenen voor de DSA en openbare prijzen. Voor een groot platform dat dreigingsinformatie en analisten nodig heeft, is ActiveFence juist daarvoor gemaakt."
+  },
+  {
+    "question": "Wat kost ActiveFence?",
+    "answer": "ActiveFence (nu Alice) publiceert geen prijzen op de website; je moet een demo aanvragen. OpenModeration is gratis tot 1.000 verzoeken per maand, Pro kost € 99 per maand voor 10.000 verzoeken en Enterprise is op aanvraag."
+  },
+  {
+    "question": "ActiveFence of OpenModeration: wat is het belangrijkste verschil?",
+    "answer": "ActiveFence is een trust & safety-aanbieder op basis van dreigingsinformatie voor grote platforms en AI-bedrijven. OpenModeration richt zich op reacties: het verbergt duidelijke overtredingen automatisch, laat legitieme kritiek zichtbaar en laat twijfelgevallen door ons team beoordelen, realtime zichtbaar in één console, met een schriftelijke reden bij elke beslissing."
+  },
+  {
+    "question": "Heet ActiveFence nu Alice?",
+    "answer": "Ja. Volgens de website is ActiveFence de vroegere naam van het bedrijf, dat nu als Alice actief is. Het aanbod voor gebruikerscontent wordt nog steeds gepresenteerd als ActiveFence UGC."
+  },
+  {
+    "question": "Kan ik OpenModeration testen zonder mijn huidige tool uit te zetten?",
+    "answer": "Ja. In sandboxmodus analyseert OpenModeration je echte reacties zonder iets te verbergen. Je huidige tool blijft werken en je vergelijkt de beslissingen reactie per reactie."
+  },
+  {
+    "question": "Helpt OpenModeration bij het naleven van de DSA?",
+    "answer": "Ja. Het biedt bouwstenen voor melding en actie, een motivering bij elke beslissing, menselijke beoordeling van betwiste beslissingen, een volledig activiteitenlogboek en exporteerbare cijfers. De gegevens worden gehost in de EU en verwerkt volgens de AVG."
+  }
+];
+---
+
+<BaseLayout title={title} description={description} jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: "Alternatieven", href: localizePath('/alternatives', locale) }, { label: "ActiveFence" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Vergelijking
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">ActiveFence alternatief: vergelijking met OpenModeration</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Het beste alternatief voor ActiveFence hangt af van wat je beschermt: voor een groot platform dat te maken heeft met georganiseerde dreigingen is de trust & safety van ActiveFence, gebouwd op dreigingsinformatie, precies bedoeld. Voor de reacties van een mediabedrijf, een merk of een overheidsinstantie is OpenModeration de directere keuze, met kant-en-klare koppelingen, een schriftelijke reden bij elke beslissing en openbare prijzen.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900">Voor wie is ActiveFence?</h2>
+      <p class="mt-4 text-surface-600">ActiveFence opereert volgens de website nu onder de naam Alice en heeft vestigingen in New York en Tel Aviv. Het aanbod voor door gebruikers gemaakte content, dat nog altijd als ActiveFence UGC wordt verkocht, combineert realtime dreigingswaarschuwingen, data over kwaadwillende actoren, monitoring van het open, deep en dark web, onderzoeken en ActiveMind: een SaaS voor moderatieteams die volgens de website draait op eigen grote taalmodellen. ActiveFence zegt meer dan 117 talen en meer dan 20 misbruikcategorieën te dekken, zoals kinderbescherming en verkiezingsbeïnvloeding.</p>
+      <p class="mt-4 text-surface-600">Onder de merknaam Alice richt het bedrijf zich ook op AI-veiligheid: red teaming, guardrails en evaluaties voor modellabs en bedrijven die AI-apps en -agents uitrollen. De klanten zijn vooral grote onlineplatforms, marktplaatsen en AI-bedrijven.</p>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">ActiveFence en OpenModeration naast elkaar</h2>
+      <p class="mt-4 text-surface-500">Informatie over ActiveFence afkomstig van de eigen website (alice.io), geraadpleegd op 30 oktober 2026.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Criterium</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">ActiveFence</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.competitor}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Kies OpenModeration als…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>je de reacties van een mediabedrijf, een merk of een overheidsinstantie modereert, niet van een platform met miljoenen gebruikers;</li>
+          <li>je kant-en-klare koppelingen wilt voor je website (API), je Facebook-pagina's, Instagram, YouTube en WordPress;</li>
+          <li>je de DSA-bouwstenen nodig hebt: melding en actie, motivering, menselijke beoordeling van betwiste beslissingen;</li>
+          <li>je de prijs wilt kennen vóór een demo en je gegevens in de EU wilt houden;</li>
+          <li>je een team wilt dat de moderatie samen met je inricht, afgestemd op je regels en je use cases.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">ActiveFence past misschien beter als…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>je een groot platform beheert dat blootstaat aan georganiseerde dreigingen (kinderbescherming, desinformatie, extremisme) en dreigingsinformatie nodig hebt;</li>
+          <li>je naast de tool ook dark-webmonitoring, onderzoeken en analisten wilt;</li>
+          <li>je AI-modellen of -agents ontwikkelt en red teaming en guardrails zoekt.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900">Een AI die de vooruitgang van AI-modellen volgt</h2>
+      <p class="mt-4 text-surface-600">ActiveFence geeft aan dat zijn moderatie-SaaS draait op eigen grote taalmodellen. OpenModeration gebruikt een eigen moderatie-AI, waarvan de beslissingen in gevoelige gevallen door andere AI-modellen worden gecontroleerd. De engine is niet gebonden aan één model: komt er een beter of goedkoper model uit, dan voegt ons team het snel toe, zonder dat jij iets hoeft te veranderen. Zo volgt je moderatie de vooruitgang van de AI-markt in plaats van vast te zitten aan één eigen algoritme.</p>
+      <h2 class="mt-16 text-3xl font-bold tracking-tight text-surface-900">Prijzen: ActiveFence vs OpenModeration</h2>
+      <p class="mt-4 text-surface-600">ActiveFence publiceert geen prijzen: de website nodigt je uit een demo te boeken. De prijzen van OpenModeration zijn openbaar: gratis tot 1.000 verzoeken per maand, Pro voor € 99 per maand voor 10.000 verzoeken, Enterprise op aanvraag, en on-premise mogelijk op aanvraag. <a href={localizePath('/pricing', locale)} class="font-medium text-brand-600 hover:text-brand-500">De prijzen van OpenModeration &rarr;</a></p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">In 3 stappen van ActiveFence naar OpenModeration</h2>
+      <ol class="mt-8 grid gap-6 md:grid-cols-3">
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">1</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Koppel je kanalen en deel je regels</h3>
+          <p class="mt-2 text-sm text-surface-600">Koppel je website via de API, je Facebook-pagina's, professionele Instagram-accounts, YouTube-kanalen of WordPress. Ons team stemt de moderatie samen met je af op je regels en je use cases.</p>
+        </li>
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">2</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Test in sandboxmodus op echte reacties</h3>
+          <p class="mt-2 text-sm text-surface-600">OpenModeration analyseert je echte reacties zonder iets te verbergen. ActiveFence blijft draaien terwijl je de beslissingen vergelijkt, elk met een schriftelijke reden.</p>
+        </li>
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">3</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Zet automatische moderatie aan</h3>
+          <p class="mt-2 text-sm text-surface-600">Duidelijke overtredingen worden automatisch verborgen, twijfelgevallen worden door ons team beoordeeld en je ziet alles realtime in de console, en het activiteitenlogboek en de exporteerbare cijfers liggen klaar voor de DSA.</p>
+        </li>
+      </ol>
+      <p class="mt-8 text-surface-600">Wil je het eerst zien met je eigen reacties? <a href={localizePath('/book-a-call', locale)} class="font-medium text-brand-600 hover:text-brand-500">Plan een gesprek met ons team &rarr;</a></p>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Veelgestelde vragen" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        ActiveFence is een merk van de betreffende eigenaar. De informatie komt van de eigen website (geraadpleegd op 30 oktober 2026); wat daar niet staat, is aangegeven als niet vermeld. Fout gezien? Mail ons op <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+      <p class="mx-auto mt-4 max-w-3xl text-center text-sm text-surface-400">
+        Bronnen: <a href="https://alice.io/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">alice.io</a> · <a href="https://alice.io/solutions/activefence-ugc" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">alice.io/solutions/activefence-ugc</a> · <a href="https://alice.io/llms.txt" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">alice.io/llms.txt</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Meer weten</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/book-a-call', locale)} class="font-medium text-brand-600 hover:text-brand-500">Plan een gesprek met het team van OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/moderation-software', locale)} class="font-medium text-brand-600 hover:text-brand-500">De moderatiesoftware van OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/blog/comment-moderation-guide', locale)} class="font-medium text-brand-600 hover:text-brand-500">Reacties modereren: de complete gids &rarr;</a></li>
+        <li><a href={localizePath('/blog/dsa-compliance-sme-guide', locale)} class="font-medium text-brand-600 hover:text-brand-500">DSA-gids voor het mkb &rarr;</a></li>
+        <li><a href={localizePath('/alternatives', locale)} class="font-medium text-brand-600 hover:text-brand-500">Alle vergelijkingen &rarr;</a></li>
+        <li><a href={localizePath('/pricing', locale)} class="font-medium text-brand-600 hover:text-brand-500">De prijzen van OpenModeration &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Vergelijk je huidige moderatie met OpenModeration." subtitle="Test OpenModeration in sandboxmodus op je eigen reacties, zonder iets te verbergen. Gratis tot 1.000 verzoeken per maand." buttonText="Plan een gesprek" buttonHref={localizePath('/book-a-call', locale)} />
+</BaseLayout>

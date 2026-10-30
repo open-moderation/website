@@ -1,0 +1,183 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+const L = (p: string) => localizePath(p, locale);
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Exposição de motivos (artigo 17 do DSA): quem deve fornecê-la e o que deve conter",
+  "description": "O que o artigo 17 do Regulamento dos Serviços Digitais (DSA) exige para cada remoção de conteúdo: quem deve fornecer uma exposição de motivos, quando, com quais informações, e um exemplo.",
+  "inLanguage": "pt",
+  "datePublished": "2026-10-20",
+  "dateModified": "2026-10-20",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "mainEntityOfPage": { "@type": "WebPage", "@id": `https://www.openmoderation.com${L('/dsa-compliance/statement-of-reasons')}` }
+};
+
+const contents = [
+  { letter: "a", title: "A medida tomada", text: "Remoção, bloqueio do acesso, despromoção ou restrição da visibilidade, suspensão de pagamentos monetários ou outra medida e, se for o caso, o seu âmbito territorial e a sua duração." },
+  { letter: "b", title: "Os fatos e as circunstâncias", text: "Aquilo em que a decisão se baseia, incluindo se ela decorre de uma notificação (artigo 16) ou de uma investigação voluntária por iniciativa própria. A identidade de quem notificou só é indicada quando estritamente necessário." },
+  { letter: "c", title: "O uso de meios automatizados", text: "Se for o caso, o fato de a decisão ter sido tomada por meios automatizados, ou de dizer respeito a conteúdo detectado ou identificado por esses meios." },
+  { letter: "d", title: "O fundamento jurídico", text: "Se o conteúdo for considerado ilegal: o fundamento jurídico invocado e as explicações sobre por que o conteúdo é considerado ilegal com base nele." },
+  { letter: "e", title: "A cláusula dos termos e condições", text: "Se o conteúdo for considerado incompatível com os seus termos e condições: o fundamento contratual invocado e as explicações sobre por que o conteúdo é incompatível com ele." },
+  { letter: "f", title: "As vias de recurso", text: "Informações claras e acessíveis sobre as vias de recurso disponíveis: sistema interno de tratamento de reclamações, resolução extrajudicial de litígios, recurso judicial." },
+];
+
+const faqItems = [
+  {
+    question: "O que é a exposição de motivos do DSA?",
+    answer: "É a explicação que o artigo 17 do Regulamento (UE) 2022/2065, o Regulamento dos Serviços Digitais, obriga você a dar a um usuário cujo conteúdo é removido, tem o acesso bloqueado, é despromovido ou tem a visibilidade restringida, e também quando uma conta, o serviço ou pagamentos monetários são suspensos.",
+  },
+  {
+    question: "Um site de notícias que modera os seus comentários precisa cumprir essa obrigação?",
+    answer: "Sim. A partir do momento em que armazena comentários publicados pelos leitores, ele atua como prestador de serviços de hospedagem para esse conteúdo. O artigo 17 se aplica a todos os prestadores de serviços de hospedagem, inclusive às pequenas empresas.",
+  },
+  {
+    question: "Preciso de uma exposição de motivos para cada comentário removido?",
+    answer: "Sim, para cada restrição imposta porque o conteúdo é ilegal ou incompatível com os seus termos e condições, desde que você conheça os dados de contato eletrônico do autor. A obrigação não se aplica a conteúdo comercial enganoso de grande volume, nem a ordens de autoridades nos termos do artigo 9.",
+  },
+  {
+    question: "As exposições de motivos precisam ser enviadas à Comissão Europeia?",
+    answer: "Os prestadores de plataformas online devem enviar as suas decisões e exposições de motivos à Comissão, sem demora injustificada, para inclusão em uma base de dados acessível ao público, sem nenhum dado pessoal (artigo 24, n.º 5). As micro e pequenas empresas estão isentas pelo artigo 19, salvo se forem designadas como plataformas online de muito grande dimensão.",
+  },
+  {
+    question: "Quais são as sanções em caso de descumprimento?",
+    answer: "O DSA deixa as sanções a cargo dos Estados-Membros, mas limita as multas por descumprimento de uma obrigação a 6% do faturamento anual mundial do prestador (artigo 52).",
+  },
+];
+---
+
+<BaseLayout title="Exposição de motivos do DSA (art. 17): regras e exemplo" description="O que o artigo 17 do DSA exige a cada remoção de conteúdo: quem deve cumprir, quando informar o autor, os seis elementos obrigatórios e um exemplo prático." ogType="article" jsonLd={articleJsonLd}>
+  <Breadcrumb items={[{ label: "Início", href: L('/') }, { label: "Conformidade com o DSA", href: L('/dsa-compliance') }, { label: "Exposição de motivos" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-20">20 de outubro de 2026</time>
+        <span>&middot;</span>
+        <span>7 min de leitura</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">A exposição de motivos do DSA: o que o artigo 17 exige para cada remoção de conteúdo</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Desde que o Regulamento dos Serviços Digitais (DSA) passou a ser aplicável, remover um comentário já não basta:
+        é preciso dizer ao autor por quê. O artigo 17 chama essa explicação de "exposição de motivos" e define o seu conteúdo
+        mínimo. Veja quem está sujeito à obrigação, quando ela se aplica, o que a exposição deve conter e como ela pode ser.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Quem deve fornecer uma exposição de motivos?</h2>
+      <p>
+        A obrigação recai sobre os <strong>prestadores de serviços de hospedagem</strong>, ou seja, qualquer serviço que armazene
+        informações fornecidas pelos seus usuários: redes sociais, fóruns, marketplaces, mas também sites de notícias ou blogs
+        que hospedam comentários de leitores. Ao contrário de outras obrigações do DSA, o artigo 17 não prevê nenhuma isenção para micro
+        e pequenas empresas.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Em quais casos?</h2>
+      <p>
+        Uma exposição de motivos é devida a todo usuário afetado por uma restrição imposta porque o seu conteúdo é ilegal
+        ou incompatível com os seus termos e condições. O texto abrange quatro tipos de restrição:
+      </p>
+      <ul>
+        <li>qualquer restrição da visibilidade de um conteúdo: remoção, bloqueio do acesso ou despromoção;</li>
+        <li>suspensão, cessação ou outra restrição de pagamentos monetários;</li>
+        <li>suspensão ou cessação, total ou parcial, da prestação do serviço;</li>
+        <li>suspensão ou encerramento da conta do usuário.</li>
+      </ul>
+      <p>
+        A obrigação se aplica quando você conhece os dados de contato eletrônico do usuário, o mais tardar a partir do momento
+        em que a restrição é imposta. Ela não abrange conteúdo comercial enganoso de grande volume, nem
+        ordens de autoridades nos termos do artigo 9.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Os seis elementos obrigatórios</h2>
+      <p>O n.º 3 do artigo 17 enumera as informações que a exposição deve conter, no mínimo:</p>
+    </div>
+
+    <div class="mt-6 space-y-3">
+      {contents.map((c) => (
+        <div class="flex items-start gap-4 rounded-lg border border-surface-200 bg-surface-50 p-4">
+          <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-100 font-mono text-sm font-semibold text-brand-700">{c.letter}</span>
+          <div>
+            <p class="text-sm font-medium text-surface-900">{c.title}</p>
+            <p class="mt-1 text-sm text-surface-500">{c.text}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <p>
+        Essas informações devem ser "claras e facilmente compreensíveis", tão precisas e específicas quanto razoavelmente possível, e
+        permitir que o usuário exerça efetivamente as vias de recurso (n.º 4).
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">E as plataformas online?</h2>
+      <p>
+        Os prestadores de plataformas online têm uma obrigação a mais: enviar as suas decisões e exposições de
+        motivos à Comissão Europeia, sem demora injustificada, para inclusão em uma base de dados acessível ao público. Esses envios
+        não podem conter nenhum dado pessoal (artigo 24, n.º 5). As micro e pequenas empresas estão
+        isentas pelo artigo 19, salvo se forem designadas como plataformas online de muito grande dimensão.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Exemplo de exposição de motivos para um comentário removido</h2>
+      <p>Exemplo fictício, a adaptar ao seu serviço e aos seus termos e condições:</p>
+    </div>
+
+    <div class="mt-6 rounded-xl border border-surface-200 bg-white p-6 text-sm leading-relaxed text-surface-700 shadow-sm">
+      <p>Olá,</p>
+      <p class="mt-3"><strong>Medida:</strong> o seu comentário publicado em 14 de outubro de 2026 no artigo "…" foi removido. A sua conta não foi afetada.</p>
+      <p class="mt-3"><strong>Motivo:</strong> o comentário contém um insulto dirigido a outro leitor, o que viola a seção 4 das nossas diretrizes da comunidade ("Respeito aos demais participantes").</p>
+      <p class="mt-3"><strong>Como a decisão foi tomada:</strong> o comentário foi detectado por uma ferramenta de análise automatizada, e a decisão foi depois confirmada por um moderador.</p>
+      <p class="mt-3"><strong>As suas vias de recurso:</strong> se considerar esta decisão injustificada, você pode contestá-la respondendo a esta mensagem no prazo de seis meses. Também pode recorrer a um organismo certificado de resolução extrajudicial de litígios ou à via judicial.</p>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">Como o OpenModeration ajuda você a produzir as suas exposições de motivos</h2>
+      <ul>
+        <li><strong>Um motivo por escrito para cada decisão.</strong> Cada comentário rejeitado recebe uma explicação por escrito, no idioma da sua escolha, que serve de base para o fundamento (alínea e ou d).</li>
+        <li><strong>O papel da automação, registrado.</strong> O histórico de atividade mostra se a decisão veio da IA ou de um moderador, e de qual deles (alíneas b e c).</li>
+        <li><strong>Dados prontos para enviar.</strong> A API e os webhooks devolvem o veredito, a categoria e o motivo de cada item: você pode incluí-los na mensagem enviada ao autor.</li>
+        <li><strong>Um histórico completo.</strong> Cada decisão, automática ou humana, fica na trilha de auditoria para os seus relatórios e auditorias.</li>
+      </ul>
+      <p>
+        As informações sobre as vias de recurso e o fundamento jurídico preciso continuam sob a sua responsabilidade: elas dependem do seu
+        serviço, dos seus termos e condições e da legislação aplicável.
+      </p>
+      <p class="text-sm text-surface-400">
+        Fonte: <a href="https://eur-lex.europa.eu/legal-content/PT/TXT/?uri=CELEX:32022R2065" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">Regulamento (UE) 2022/2065, de 19 de outubro de 2022, relativo a um mercado único para os serviços digitais</a>, JO L 277 de 27 de outubro de 2022, artigos 17, 19, 24 e 52. Esta página tem caráter apenas informativo e não constitui aconselhamento jurídico.
+      </p>
+    </div>
+
+    <div class="mt-12">
+      <FAQ title="Perguntas frequentes" items={faqItems} />
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Para saber mais</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={L('/content-moderation-policy')} class="font-medium text-brand-600 hover:text-brand-500">Política de moderação de conteúdo: guia e modelo &rarr;</a></li>
+        <li><a href={L('/dsa-compliance')} class="font-medium text-brand-600 hover:text-brand-500">Conformidade com o DSA com o OpenModeration &rarr;</a></li>
+        <li><a href={L('/product/transparency')} class="font-medium text-brand-600 hover:text-brand-500">Cada decisão explicada por escrito &rarr;</a></li>
+        <li><a href={L('/use-cases/news-publishers')} class="font-medium text-brand-600 hover:text-brand-500">Moderação de comentários para veículos de mídia &rarr;</a></li>
+        <li><a href={L('/blog/dsa-compliance-sme-guide')} class="font-medium text-brand-600 hover:text-brand-500">O DSA para PMEs: um guia prático &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <CTASection title="Uma exposição de motivos para cada comentário removido." subtitle="O OpenModeration redige o motivo de cada decisão e registra quem decidiu o quê. Comece grátis." />
+</BaseLayout>

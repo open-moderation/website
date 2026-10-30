@@ -1,0 +1,306 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const title = "Moderação de comentários no YouTube: Studio e limites";
+const description = "Como moderar comentários no YouTube: retidos para revisão, palavras e links bloqueados, usuários aprovados e ocultos, moderadores, chat ao vivo e automação.";
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Moderação de comentários no YouTube: como usar as ferramentas do YouTube Studio e quando automatizar",
+  "description": description,
+  "inLanguage": "pt",
+  "datePublished": "2026-10-30",
+  "dateModified": "2026-10-30",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/pt/blog/moderacao-comentarios-youtube" }
+};
+
+const levels = [
+  { level: "Não reter nenhum comentário", effect: "Tudo é publicado. Você só age depois.", fit: "Canais pequenos, com um público tranquilo e conhecido" },
+  { level: "Reter comentários potencialmente inadequados", effect: "O sistema automático do YouTube retém os comentários que considera arriscados; o resto entra no ar.", fit: "O padrão sensato para a maioria dos canais" },
+  { level: "Retenção mais rigorosa", effect: "Uma faixa maior de comentários é retida, então mais spam e ofensas são barrados, mas também mais comentários inocentes.", fit: "Canais que atraem trolls ou estão sob ataque" },
+  { level: "Reter todos os comentários", effect: "Nada é publicado até que alguém aprove.", fit: "Vídeos sensíveis, períodos curtos, volumes pequenos" },
+];
+
+const comparison = [
+  { need: "Barrar um insulto conhecido ou uma palavra proibida", builtin: "Sim, com as palavras bloqueadas, se a grafia for parecida o bastante", tool: "Sim, inclusive variações e truques" },
+  { need: "Entender sarcasmo, contexto e linguagem cifrada", builtin: "Em parte: o filtro do YouTube é genérico e não pode ser ajustado", tool: "Sim, cada comentário é lido no contexto" },
+  { need: "Aplicar regras específicas do seu canal", builtin: "Não, só palavras, links e um nível de rigor", tool: "Sim, as suas regras e os seus casos de uso em linguagem natural" },
+  { need: "Dar conta do acúmulo de comentários retidos", builtin: "Não, alguém precisa abrir a fila e decidir", tool: "Sim, os casos evidentes são decididos e só os duvidosos chegam a uma pessoa" },
+  { need: "Motivo por escrito para cada decisão", builtin: "Não", tool: "Sim, para cada comentário retido ou rejeitado" },
+  { need: "Trilha de auditoria das decisões", builtin: "Nenhum histórico exportável", tool: "Sim, cada decisão fica registrada" },
+  { need: "Vários canais e outras redes no mesmo lugar", builtin: "Não, canal por canal", tool: "Sim, YouTube, Facebook, Instagram, WordPress e o seu site" },
+];
+
+const faqItems = [
+  {
+    question: "O que significa \"retido para revisão\" no YouTube?",
+    answer: "O comentário não foi publicado. Ele espera na área Retidos para revisão do YouTube Studio, onde o dono do canal ou um moderador pode aprová-lo, excluí-lo ou deixá-lo ali. O YouTube retém comentários por causa das suas palavras ou links bloqueados, porque o filtro automático achou que podiam ser inadequados ou porque você escolheu reter tudo. Os comentários retidos ficam guardados por um tempo limitado (a central de ajuda do YouTube fala atualmente em até 60 dias) e depois somem se ninguém agir.",
+  },
+  {
+    question: "O autor fica sabendo que o comentário dele no YouTube foi retido?",
+    answer: "Não. O YouTube não envia notificação ao autor quando um comentário é retido, nem avisa um usuário ocultado de que foi ocultado. Essa discrição evita muitas respostas do tipo \"vocês me censuraram\", mas também significa que você deve uma explicação ao autor se ele perguntar.",
+  },
+  {
+    question: "Como funcionam as palavras bloqueadas no YouTube?",
+    answer: "Você adiciona uma lista de palavras e frases nas configurações de comunidade ou de comentários do canal. Os comentários que as contêm, ou que se parecem muito com elas, são retidos para revisão em vez de publicados, e a mesma lista vale para o chat ao vivo. Os usuários aprovados passam por cima da lista, e o filtro não entende o sentido, então um insulto disfarçado ou sarcástico continua passando.",
+  },
+  {
+    question: "Qual é a diferença entre um usuário aprovado e um usuário oculto?",
+    answer: "Os comentários de um usuário aprovado são publicados sem passar pelos seus filtros, o que serve para fãs assíduos ou parceiros. Os comentários e mensagens no chat ao vivo de um usuário oculto ficam escondidos de todos os outros no seu canal, sem que ele saiba. Use os usuários ocultos para trolls persistentes e contas de spam.",
+  },
+  {
+    question: "Posso dar direitos de moderação a alguém sem compartilhar a minha conta?",
+    answer: "Sim. Você pode adicionar moderadores ao seu canal. Os moderadores padrão podem revisar os comentários retidos e agir no chat ao vivo; os moderadores gerenciadores também podem gerenciar listas, como outros moderadores padrão e usuários aprovados. Para a gestão completa do canal, as permissões do canal do YouTube permitem convidar pessoas com um papel definido em vez de compartilhar uma senha.",
+  },
+  {
+    question: "Dá para moderar comentários automaticamente no YouTube?",
+    answer: "O filtro do próprio YouTube retém alguns comentários automaticamente, mas não aplica as suas regras e deixa a fila por sua conta. Uma ferramenta conectada pela YouTube Data API oficial pode publicar, reter para revisão ou rejeitar cada comentário conforme as suas regras. É o que o OpenModeration faz, com um motivo por escrito para cada decisão.",
+  },
+  {
+    question: "Isso também vale para o YouTube Shorts?",
+    answer: "Os comentários nos Shorts fazem parte dos comentários do seu canal e seguem as mesmas configurações: palavras bloqueadas, links bloqueados, usuários ocultos e o nível de retenção se aplicam. O chat ao vivo durante uma transmissão é um fluxo separado, com ferramentas próprias, como o modo lento e o tempo limite.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} ogType="article" jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Início", href: localizePath("/", locale) }, { label: "Blog", href: localizePath("/blog", locale) }, { label: "Moderação de comentários no YouTube" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-30">30 de outubro de 2026</time>
+        <span>&middot;</span>
+        <span>9 min de leitura</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Moderação de comentários no YouTube: como usar as ferramentas do YouTube Studio e quando automatizar</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Os comentários de um vídeo no YouTube ficam ali por anos, e muitas vezes são a primeira coisa para a qual o espectador
+        rola a tela. Para um veículo de mídia ou uma marca, alguns insultos, links de golpe ou respostas de bots em um vídeo
+        bastam para mudar a imagem do canal inteiro. Este guia explica como moderar os comentários do YouTube
+        com as ferramentas que o YouTube Studio já oferece, onde essas ferramentas param e como uma
+        ferramenta de moderação automática assume a parte repetitiva.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Em resumo</h2>
+      <ul>
+        <li><strong>Comece pelo YouTube Studio.</strong> Defina um nível de retenção, uma lista de palavras bloqueadas, links bloqueados, usuários aprovados e usuários ocultos. É gratuito e pega os casos óbvios.</li>
+        <li><strong>"Retido para revisão" é uma fila, não uma decisão.</strong> Alguém ainda precisa aprovar ou excluir cada comentário retido, e os comentários retidos expiram se ninguém fizer isso.</li>
+        <li><strong>Os filtros nativos comparam palavras e usam o julgamento genérico do YouTube.</strong> Eles não conhecem as suas regras, os seus temas nem a sua marca.</li>
+        <li><strong>Uma ferramenta automática</strong> conectada pela YouTube Data API publica, retém ou rejeita cada comentário conforme as suas regras e registra um motivo para cada decisão.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Como moderar comentários no YouTube?</h2>
+      <p>
+        O YouTube oferece a um canal três tipos de controle: configurações que decidem quais comentários são publicados
+        na hora, listas de pessoas e de palavras, e ações manuais em cada comentário. Além disso,
+        cada vídeo pode ter os comentários ativados, retidos ou desativados, e os vídeos feitos para crianças têm os comentários
+        desativados pelo YouTube.
+      </p>
+      <p>
+        As ações manuais estão disponíveis na página de comentários do YouTube Studio e diretamente embaixo do vídeo.
+        Em qualquer comentário, o dono do canal pode responder, curtir, fixar no topo, excluir, denunciar ou
+        ocultar o usuário do canal. Os nomes dos menus mudam de vez em quando, mas esses recursos estão
+        estáveis há anos.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Quais são as configurações de comentários do YouTube?</h2>
+      <p>
+        A configuração mais importante é quantos comentários o YouTube retém para revisão antes de publicá-los.
+        Você pode definir um padrão para o canal e mudá-lo em cada vídeo. Existem quatro níveis.
+      </p>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Configuração</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">O que acontece</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Indicada para</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {levels.map((row) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{row.level}</td>
+              <td class="px-4 py-3 text-surface-600">{row.effect}</td>
+              <td class="px-4 py-3 text-surface-600">{row.fit}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <p>
+        "Reter comentários potencialmente inadequados" depende do classificador do próprio YouTube. Você não consegue ver por que ele
+        reteve um comentário, nem dizer a ele o que importa para o seu canal. O nível mais rigoroso pega
+        mais, ao custo de mais falsos positivos que alguém terá de aprovar manualmente.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Como funcionam as palavras bloqueadas e os links bloqueados?</h2>
+      <ul>
+        <li>
+          <strong>Palavras bloqueadas.</strong> Você lista as palavras e frases que não quer embaixo dos seus vídeos.
+          Os comentários que as contêm, ou que se parecem muito com elas, são retidos para revisão. A mesma lista bloqueia
+          as mensagens correspondentes no chat ao vivo.
+        </li>
+        <li>
+          <strong>Links bloqueados.</strong> Com essa opção ativada, os comentários que contêm uma URL são retidos em vez de
+          publicados, e os links são bloqueados no chat ao vivo. É a proteção mais simples contra phishing,
+          sorteios falsos e golpes de cripto, que adoram as respostas em vídeos populares.
+        </li>
+      </ul>
+      <p>
+        Os comentários seus, dos seus moderadores e dos seus usuários aprovados não são barrados por esses filtros. Isso
+        é prático, mas também significa que uma conta "confiável" invadida ou falsificada passa direto.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Usuários aprovados, usuários ocultos e moderadores</h2>
+      <ul>
+        <li><strong>Usuários aprovados.</strong> Os comentários deles são publicados sem passar pelas palavras bloqueadas, pelos links bloqueados nem pelo nível de retenção. Mantenha essa lista curta: colaboradores assíduos, parceiros, a sua própria equipe.</li>
+        <li><strong>Usuários ocultos.</strong> Os comentários e as mensagens no chat ao vivo deles ficam escondidos de todos os outros no seu canal. Eles não são avisados. É a resposta do YouTube a trolls persistentes e contas de spam.</li>
+        <li><strong>Moderadores.</strong> Você pode dar direitos de moderação a pessoas de confiança. Os moderadores padrão revisam os comentários retidos e ajudam no chat ao vivo; os moderadores gerenciadores também podem gerenciar algumas listas, como os moderadores padrão e os usuários aprovados. Para um acesso mais amplo ao YouTube Studio, use as permissões do canal em vez de compartilhar uma senha.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Como moderar o chat ao vivo do YouTube?</h2>
+      <p>O chat ao vivo anda muito mais rápido do que os comentários, por isso o YouTube oferece ferramentas próprias para ele.</p>
+      <ul>
+        <li><strong>Remover uma mensagem, aplicar um tempo limite a um usuário ou ocultá-lo</strong> pelo resto da transmissão e do canal.</li>
+        <li><strong>O modo lento</strong> limita a frequência com que cada pessoa pode escrever.</li>
+        <li><strong>O chat só para inscritos ou só para membros</strong> restringe quem pode escrever.</li>
+        <li><strong>As palavras bloqueadas, os links bloqueados e a retenção de mensagens potencialmente inadequadas</strong> também valem para o chat.</li>
+        <li><strong>Os moderadores</strong> são essenciais: preveja pelo menos um por transmissão ao vivo, dois para um grande evento.</li>
+      </ul>
+      <p>
+        Para uma transmissão ao vivo, prepare as configurações com antecedência. Durante a transmissão, ninguém tem tempo de atualizar
+        uma lista de palavras.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Por que as ferramentas do YouTube não bastam para veículos de mídia e marcas</h2>
+      <p>O YouTube Studio foi feito para um criador que gerencia o próprio canal. Veículos de mídia e marcas esbarram nos limites dele rapidamente.</p>
+      <ul>
+        <li><strong>A fila de retidos cresce mais rápido do que você consegue ler.</strong> Um vídeo de notícia sobre um tema polêmico ou uma campanha publicitária pode gerar centenas de comentários retidos em uma noite. Os comentários retidos que ninguém revisa acabam expirando, inclusive os legítimos.</li>
+        <li><strong>As listas de palavras deixam passar o que importa.</strong> "Idi0ta", um insulto escrito com espaços, sarcasmo no lançamento de um produto ou uma ofensa cifrada não contêm nenhuma palavra da sua lista.</li>
+        <li><strong>O filtro do YouTube é genérico.</strong> Ele não conhece as suas regras: nada de divulgação de concorrentes, nada de dados pessoais, nada de debate político fora do tema em um vídeo de receita, nada de difamação de pessoas citadas em uma reportagem.</li>
+        <li><strong>Vários idiomas.</strong> Canais internacionais recebem comentários em vários idiomas. Uma lista de palavras só cobre as palavras que você lembrou de adicionar, idioma por idioma.</li>
+        <li><strong>Nem motivo, nem histórico.</strong> O YouTube não diz qual regra foi aplicada a um comentário e não guarda nenhum log exportável de quem decidiu o quê. As revisões internas e o DSA pedem isso.</li>
+        <li><strong>Canal por canal.</strong> Um grupo com vários canais, Páginas do Facebook e contas do Instagram tem outras tantas telas de configuração para manter alinhadas.</li>
+      </ul>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">O que você precisa</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">YouTube Studio</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Ferramenta de moderação automática</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {comparison.map((row) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{row.need}</td>
+              <td class="px-4 py-3 text-surface-600">{row.builtin}</td>
+              <td class="px-4 py-3 text-surface-600">{row.tool}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">Boas práticas de moderação de comentários no YouTube</h2>
+      <ol>
+        <li><strong>Publique as suas regras.</strong> Uma nota curta na descrição do canal ou um comentário fixado nos vídeos sensíveis define as expectativas e dá a você algo para apontar.</li>
+        <li><strong>Retenha os comentários potencialmente inadequados por padrão,</strong> e passe para o nível mais rigoroso só nos vídeos que atraem problemas.</li>
+        <li><strong>Bloqueie os links,</strong> a menos que a sua comunidade realmente precise compartilhá-los.</li>
+        <li><strong>Mantenha as suas palavras bloqueadas</strong> com variações, apelidos das pessoas visadas e as frases de golpe que você vê nas respostas.</li>
+        <li><strong>Revise a fila de retidos todos os dias.</strong> Aprovar os comentários legítimos importa tanto quanto remover os ruins: crítica não é ofensa.</li>
+        <li><strong>Oculte usuários em vez de discutir</strong> com eles. Ocultar é silencioso e interrompe a escalada. O nosso guia sobre <a href={localizePath("/blog/handle-negative-comments-trolls", locale)} class="text-brand-600 hover:text-brand-500">como lidar com comentários negativos e trolls</a> trata das respostas que vale a pena escrever.</li>
+        <li><strong>Desative os comentários só em último caso.</strong> Uma seção de comentários vazia também passa uma mensagem.</li>
+        <li><strong>Guarde um registro</strong> do que você removeu e por quê, sobretudo em canais de notícias e de marcas.</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Como uma ferramenta automática modera os comentários do YouTube?</h2>
+      <p>
+        O YouTube oferece uma API oficial, a YouTube Data API, que permite a um aplicativo autorizado ler os
+        comentários de um canal e definir o status de moderação deles. Uma ferramenta automática a usa em três etapas:
+        recupera os novos comentários, analisa cada um e depois o publica, retém para revisão ou rejeita.
+        São as mesmas ações que você tem no YouTube Studio, aplicadas a cada comentário sem esperar
+        que alguém abra a fila.
+      </p>
+      <p>
+        É assim que funciona a <a href={localizePath("/integrations/youtube", locale)} class="text-brand-600 hover:text-brand-500">integração do OpenModeration com o YouTube</a>.
+        Você conecta o seu canal e depois descreve as suas regras e os seus casos de uso em linguagem natural. Os casos evidentes
+        são tratados automaticamente, os duvidosos são tratados pela nossa equipe, você vê tudo em tempo real em um único console, e cada decisão
+        vem com um motivo por escrito e fica registrada. O mesmo console cobre as suas Páginas do Facebook, contas do Instagram,
+        sites WordPress e o seu próprio site, então as suas regras são as mesmas em toda parte.
+      </p>
+      <ul>
+        <li><strong>Para veículos de mídia:</strong> mantenha o debate aberto nos vídeos de notícias e retenha difamação, assédio a jornalistas e campanhas coordenadas. Veja o <a href={localizePath("/use-cases/news-publishers", locale)} class="text-brand-600 hover:text-brand-500">caso de uso para veículos de notícias</a>.</li>
+        <li><strong>Para marcas:</strong> proteja os vídeos de lançamento e as campanhas publicitárias de golpes, spam e divulgação de concorrentes, sem ocultar as reclamações genuínas dos clientes.</li>
+        <li><strong>Para a conformidade:</strong> cada decisão é explicada e registrada, o que ajuda a atender às <a href={localizePath("/dsa-compliance", locale)} class="text-brand-600 hover:text-brand-500">exigências do DSA</a>. Os dados ficam hospedados na UE.</li>
+      </ul>
+      <p>
+        A nossa equipe configura a moderação com você: regras, exemplos tirados dos seus próprios comentários e o limite
+        a partir do qual uma pessoa deve decidir. Para ver como os seus próprios comentários seriam julgados, <a href={localizePath("/demo", locale)} class="text-brand-600 hover:text-brand-500">teste a demonstração ao vivo</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Como escolher uma ferramenta de moderação para o YouTube</h2>
+      <ol>
+        <li><strong>API oficial.</strong> Ela deve se conectar pela YouTube Data API com a sua autorização, nunca com a sua senha.</li>
+        <li><strong>As ações certas.</strong> Publicar, reter para revisão e rejeitar, escolhidas por regra.</li>
+        <li><strong>As suas regras.</strong> Dá para escrever regras para o seu canal, ou só ligar e desligar categorias genéricas?</li>
+        <li><strong>Contexto e idiomas.</strong> Ela pega sarcasmo, truques e os idiomas que o seu público usa?</li>
+        <li><strong>Revisão humana.</strong> Existe uma fila compartilhada para os comentários duvidosos?</li>
+        <li><strong>Explicações e log de auditoria.</strong> Cada decisão vem com um motivo, e dá para exportar o histórico?</li>
+        <li><strong>Outras redes.</strong> Dá para aplicar as mesmas regras ao Facebook, ao Instagram e ao seu site?</li>
+        <li><strong>Acompanhamento.</strong> Alguém vai ajudar você a configurar?</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Para ir mais longe</h2>
+      <p>
+        O YouTube é um canal entre outros. Para o método geral, leia o nosso <a href={localizePath("/blog/comment-moderation-guide", locale)} class="text-brand-600 hover:text-brand-500">guia completo de moderação de comentários</a>.
+      </p>
+    </div>
+
+    <div class="mt-12">
+      <FAQ title="Perguntas frequentes" items={faqItems} />
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Continue explorando</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath("/integrations/youtube", locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderação de comentários no YouTube com o OpenModeration &rarr;</a></li>
+        <li><a href={localizePath("/blog/instagram-comment-moderation", locale)} class="font-medium text-brand-600 hover:text-brand-500">Como moderar comentários no Instagram &rarr;</a></li>
+        <li><a href={localizePath("/use-cases/brands-retail", locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderação de comentários para marcas e varejo &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

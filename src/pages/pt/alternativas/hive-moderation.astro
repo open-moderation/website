@@ -1,0 +1,207 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+const L = (p: string) => localizePath(p, locale);
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/pt/alternativas/hive-moderation",
+  "name": "Alternativa ao Hive Moderation: comparativo e preços",
+  "description": "Hive Moderation ou OpenModeration? A API de moderação visual do Hive ou uma moderação de comentários pronta, com revisão humana, motivo escrito e DSA.",
+  "inLanguage": "pt",
+  "about": {
+    "@id": "https://www.openmoderation.com/#software"
+  }
+};
+
+const rows = [
+  { feature: "O que é", hive: "Uma API de classificação de conteúdo, conhecida pela moderação de imagens e vídeos", openmod: "Uma moderação de comentários com IA, adaptada às suas regras e aos seus casos de uso, configurada com você pela equipe da Logora" },
+  { feature: "Tipos de conteúdo", hive: "Texto, imagem e vídeo (moderação visual sólida)", openmod: "Comentários de texto" },
+  { feature: "Modelos de IA", hive: "Os seus próprios modelos proprietários", openmod: "IA de moderação própria, verificada por outros modelos de IA; novos modelos integrados assim que são lançados" },
+  { feature: "Decisão", hive: "Pontuações de classificação brutas: a lógica fica por sua conta", openmod: "Violações claras ocultadas automaticamente, crítica legítima visível, casos duvidosos tratados pela nossa equipe" },
+  { feature: "Ações automáticas", hive: "Você precisa construir a sua própria integração", openmod: "Ocultar ou sinalizar, diretamente nas plataformas conectadas; os casos duvidosos ficam com a nossa equipe" },
+  { feature: "Console", hive: "Painel básico da API", openmod: "Console de moderação: você vê cada decisão e o seu motivo em tempo real e pode intervir quando quiser" },
+  { feature: "Conectores", hive: "API", openmod: "Sites (API), páginas do Facebook, contas profissionais do Instagram, canais do YouTube, WordPress" },
+  { feature: "Explicação de cada decisão", hive: "Pontuações, sem explicação por escrito", openmod: "Um motivo por escrito para cada decisão, no console e via API" },
+  { feature: "DSA", hive: "Logs de requisições da API", openmod: "Notificação e ação, exposição de motivos, revisão humana de decisões contestadas, números exportáveis, registro de atividade completo" },
+  { feature: "Hospedagem", hive: "API na nuvem", openmod: "Hospedado na UE, RGPD; on-premise possível sob consulta" },
+  { feature: "Preço", hive: "Conforme o uso, sob consulta", openmod: "Grátis até 1.000 requisições/mês; Pro a 99 €/mês para 10 mil requisições; Enterprise sob consulta" },
+];
+
+const faqItems = [
+  {
+    question: "Qual é a melhor alternativa ao Hive Moderation?",
+    answer: "Para moderar os comentários de um veículo de mídia, de uma marca ou de uma instituição pública, o OpenModeration é uma alternativa direta: ele não devolve só pontuações, mas oculta as violações claras, deixa os casos duvidosos com a nossa equipe e explica cada decisão por escrito. Você só conecta as suas páginas. Se o que você precisa é classificar imagens e vídeos dentro do seu próprio produto, a API do Hive foi pensada para isso.",
+  },
+  {
+    question: "Quanto custa o Hive Moderation?",
+    answer: "O Hive cobra conforme o uso, com preço sob consulta. O OpenModeration publica os seus preços: grátis até 1.000 requisições por mês, Pro a 99 €/mês para 10 mil requisições e Enterprise sob consulta.",
+  },
+  {
+    question: "Hive Moderation vs OpenModeration: qual é a diferença?",
+    answer: "O Hive é uma API de classificação: ela devolve pontuações e a sua equipe técnica constrói o resto (regras, ações, fila de revisão, registro). O OpenModeration é uma moderação de comentários completa: você conecta as suas páginas e nós cuidamos do resto. Decisões automáticas, casos duvidosos tratados pela nossa equipe, um console onde você vê tudo em tempo real, motivo escrito para cada decisão e elementos do DSA.",
+  },
+  {
+    question: "O OpenModeration modera imagens e vídeos?",
+    answer: "Não. O OpenModeration modera comentários de texto, no seu site e nas suas páginas do Facebook, Instagram e YouTube e no WordPress. Para a moderação visual, uma API como a do Hive continua sendo a ferramenta adequada.",
+  },
+  {
+    question: "Posso testar o OpenModeration sem desligar o Hive?",
+    answer: "Sim. Em modo sandbox, o OpenModeration analisa os seus comentários reais sem ocultar nada. A sua integração atual continua funcionando e você compara as decisões comentário por comentário.",
+  },
+  {
+    question: "Quais modelos de IA o OpenModeration usa?",
+    answer: "O OpenModeration funciona com a sua própria IA de moderação e, nos casos delicados, outros modelos de IA verificam a decisão. Quando sai um modelo melhor ou mais econômico, a equipe o integra rapidamente, sem nada a mudar do seu lado.",
+  },
+];
+---
+
+<BaseLayout title="Alternativa ao Hive Moderation: comparativo e preços" description="Hive Moderation ou OpenModeration? A API de moderação visual do Hive ou uma moderação de comentários pronta, com revisão humana, motivo escrito e DSA." jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Início", href: L('/') }, { label: "Alternativas", href: L('/alternatives') }, { label: "Hive Moderation" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Comparativo
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Alternativa ao Hive Moderation: comparativo com o OpenModeration</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        A melhor alternativa ao Hive Moderation depende do que você modera: para classificar imagens e vídeos no seu próprio produto, a API do Hive é uma referência. Para moderar os comentários de um veículo de mídia, de uma marca ou de uma instituição pública, o OpenModeration entrega a moderação pronta, com revisão humana feita pela nossa equipe, um motivo por escrito para cada decisão e os elementos do DSA.
+      </p>
+      <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a href={L('/book-a-call')} class="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-500">Agendar uma reunião</a>
+        <a href="#comparativo" class="inline-flex items-center gap-2 rounded-lg border border-surface-200 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">Ver o comparativo</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold tracking-tight text-surface-900 sm:text-3xl">Para quem é o Hive Moderation?</h2>
+      <p class="mt-4 text-surface-600">O Hive é conhecido pela moderação de imagens e vídeos, e a sua API também classifica texto. Ela funciona com os modelos proprietários do Hive e devolve pontuações de classificação: cabe à sua equipe técnica decidir o que fazer com elas, construir as ações, a fila de revisão e o registro das decisões. É uma ferramenta para equipes de produto e de engenharia que integram a moderação no próprio aplicativo.</p>
+      <p class="mt-4 text-surface-600">O OpenModeration modera com IA os comentários de veículos de mídia, marcas e instituições públicas, no site e nas páginas do Facebook, contas do Instagram e canais do YouTube. Ele oculta automaticamente as violações claras, mantém visível a crítica legítima, e os casos duvidosos são tratados pela nossa equipe. Você vê cada decisão em tempo real num único console e pode intervir quando quiser. A equipe da Logora, em Paris desde 2019, o configura com você conforme as suas regras e os seus casos de uso.</p>
+    </div>
+  </section>
+
+  <section id="comparativo" class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Hive Moderation e OpenModeration, ponto a ponto</h2>
+      <p class="mt-4 text-surface-500">Informações sobre o Hive extraídas da sua documentação pública (thehive.ai). Quando algo não é especificado, indicamos.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Critério</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Hive Moderation</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.hive}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Escolha o OpenModeration se…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>você modera os comentários de um veículo de mídia, de uma marca ou de uma instituição pública;</li>
+          <li>você quer decisões aplicadas, e não pontuações para interpretar;</li>
+          <li>você quer que os casos duvidosos sejam tratados por humanos, sem trabalho para a sua equipe, e um motivo por escrito para cada decisão;</li>
+          <li>você quer conectores prontos para Facebook, Instagram, YouTube e WordPress;</li>
+          <li>você quer preços públicos e os seus dados hospedados na UE.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">O Hive pode ser melhor para você se…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>você precisa moderar imagens e vídeos;</li>
+          <li>a sua equipe técnica quer pontuações brutas para construir a própria lógica de moderação;</li>
+          <li>a moderação faz parte do seu produto, e não de uma redação ou de uma equipe de comunidade.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">O motor de IA: acompanhar o progresso dos modelos</h2>
+      <p class="mt-4 text-surface-600">O Hive funciona com os seus próprios modelos proprietários. O OpenModeration usa a sua própria IA de moderação, e as decisões nos casos delicados são verificadas por outros modelos de IA. O motor não depende de nenhum modelo: quando sai um melhor ou mais barato, a nossa equipe o integra rapidamente, sem que você precise mudar nada. Assim, a sua moderação acompanha o progresso do mercado de IA em vez de ficar congelada num único algoritmo.</p>
+      <h2 class="mt-16 text-3xl font-bold tracking-tight text-surface-900">Preço: Hive vs OpenModeration</h2>
+      <p class="mt-4 text-surface-600">O Hive cobra conforme o uso, com preço sob consulta. Os preços do OpenModeration são públicos: grátis até 1.000 requisições por mês, Pro a 99 €/mês para 10 mil requisições, Enterprise sob consulta, e implantação on-premise disponível sob consulta. <a href={L('/pricing')} class="font-medium text-brand-600 hover:text-brand-500">Os preços do OpenModeration &rarr;</a></p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Do Hive ao OpenModeration em 3 etapas</h2>
+      <ol class="mt-8 grid gap-6 md:grid-cols-3">
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">1</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Conecte as suas fontes e compartilhe as suas regras</h3>
+          <p class="mt-2 text-sm text-surface-600">Conecte o seu site via API, as suas páginas do Facebook, contas profissionais do Instagram, canais do YouTube ou o WordPress. A nossa equipe adapta com você a moderação às suas regras e aos seus casos de uso.</p>
+        </li>
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">2</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Teste em modo sandbox com comentários reais</h3>
+          <p class="mt-2 text-sm text-surface-600">O OpenModeration analisa os seus comentários reais sem ocultar nada. A sua integração com o Hive continua funcionando enquanto você compara as decisões, cada uma com o seu motivo por escrito.</p>
+        </li>
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">3</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Ative a moderação automática</h3>
+          <p class="mt-2 text-sm text-surface-600">As violações claras são ocultadas automaticamente, os casos duvidosos são tratados pela nossa equipe, você acompanha tudo no console, e o registro de atividade e os números exportáveis ficam prontos para o DSA.</p>
+        </li>
+      </ol>
+      <p class="mt-8 text-surface-600">Quer ver antes com os seus próprios comentários? <a href={L('/book-a-call')} class="font-medium text-brand-600 hover:text-brand-500">Agende uma reunião com a nossa equipe &rarr;</a></p>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Perguntas frequentes" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        Hive é uma marca do seu titular. As informações sobre ele vêm da sua documentação pública; o que não consta é indicado como não especificado. Viu algum erro? Escreva para <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+      <p class="mx-auto mt-4 max-w-3xl text-center text-sm text-surface-400">
+        Fontes: <a href="https://thehive.ai/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">thehive.ai</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Para saber mais</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={L('/book-a-call')} class="font-medium text-brand-600 hover:text-brand-500">Agende uma reunião com a equipe do OpenModeration &rarr;</a></li>
+        <li><a href={L('/moderation-software')} class="font-medium text-brand-600 hover:text-brand-500">O software de moderação OpenModeration &rarr;</a></li>
+        <li><a href={L('/text-moderation-api')} class="font-medium text-brand-600 hover:text-brand-500">A API de moderação de texto &rarr;</a></li>
+        <li><a href={L('/blog/ai-content-moderation-developer-guide')} class="font-medium text-brand-600 hover:text-brand-500">Moderação de conteúdo com IA: o guia para desenvolvedores &rarr;</a></li>
+        <li><a href={L('/alternatives')} class="font-medium text-brand-600 hover:text-brand-500">Todos os comparativos &rarr;</a></li>
+        <li><a href={L('/pricing')} class="font-medium text-brand-600 hover:text-brand-500">Os preços do OpenModeration &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Modere os seus comentários com uma ferramenta feita para eles." subtitle="Conecte o seu site e as suas redes sociais, teste o sandbox com comentários reais e leia o motivo de cada decisão. Grátis para começar." />
+</BaseLayout>

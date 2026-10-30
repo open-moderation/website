@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
 import Breadcrumb from '../../../components/Breadcrumb.astro';
 
 const articleJsonLd = {
@@ -89,16 +90,16 @@ const articleJsonLd = {
       </p>
       <ul>
         <li><strong>Cobertura de categorías:</strong> Perspective detecta toxicidad, toxicidad grave, ataques a la identidad, insultos, lenguaje soez, amenazas y contenido sexual explícito. Tu sustituto debería cubrir estas categorías y más.</li>
-        <li><strong>Compatibilidad con varios proveedores:</strong> depender de un único proveedor significa repetir esta migración la próxima vez que cambie de estrategia. Una API unificada te permite cambiar sin tocar una sola línea de código.</li>
+        <li><strong>Una IA que no se queda congelada:</strong> depender de un único modelo significa repetir esta migración la próxima vez que cambie de estrategia o se quede atrás. Busca un servicio que incorpore los nuevos modelos de IA sin que tengas que tocar tu código.</li>
         <li><strong>Latencia:</strong> la moderación de un foro tiene que producirse antes de que el contenido aparezca. Apunta a tiempos de respuesta inferiores a un segundo.</li>
-        <li><strong>Control de los datos:</strong> si tratas contenido de usuarios de la UE, el RGPD importa. Las opciones autoalojadas evitan enviar datos a terceros.</li>
+        <li><strong>Control de los datos:</strong> si tratas contenido de usuarios de la UE, el RGPD importa. Elige un servicio alojado en la UE que registre cada decisión y te permita exportar tus datos.</li>
       </ul>
 
       <h2 class="text-xl font-bold text-surface-900">Lista de verificación para la migración</h2>
       <p>Sigue estos pasos para migrar desde Perspective API sin sobresaltos:</p>
       <ol>
         <li><strong>Audita tu uso actual.</strong> Cuenta las llamadas diarias a la API, identifica qué categorías utilizas y mide tus necesidades de latencia. Así tendrás una referencia para la nueva configuración.</li>
-        <li><strong>Elige una arquitectura de sustitución.</strong> Una plataforma de moderación unificada como OpenModeration te permite mantener estable tu integración aunque cambies de proveedor más adelante.</li>
+        <li><strong>Elige una arquitectura de sustitución.</strong> Una plataforma de moderación como OpenModeration te permite mantener estable tu integración: cuando sale un modelo de IA mejor, lo conectamos nosotros, sin que cambie nada por tu parte.</li>
         <li><strong>Establece la correspondencia de categorías.</strong> Asocia tus categorías actuales de Perspective con sus equivalentes en el nuevo proveedor. Por ejemplo, TOXICITY de Perspective corresponde a categorías como odio y acoso en la mayoría de los sistemas modernos.</li>
         <li><strong>Reajusta los umbrales.</strong> Cada proveedor puntúa de forma distinta. Ejecuta ambos sistemas en paralelo durante una semana para calibrar tus umbrales.</li>
         <li><strong>Actualiza tu integración.</strong> Sustituye la llamada a Perspective API por el nuevo endpoint. Con OpenModeration, basta con una única llamada POST /v1/moderation.</li>
@@ -107,8 +108,8 @@ const articleJsonLd = {
 
       <h2 class="text-xl font-bold text-surface-900">Migrar a OpenModeration</h2>
       <p>
-        OpenModeration es la vía más directa para migrar desde Perspective API. Ofrece una sola API que envía
-        cada petición al proveedor más adecuado. Puedes empezar con un proveedor y cambiar sin modificar el código.
+        OpenModeration es la vía más directa para migrar desde Perspective API. Funciona con su propia IA de
+        moderación y, en los casos delicados, otros modelos de IA arbitran la decisión antes de aplicarla.
       </p>
       <p>
         Así es una migración con OpenModeration:
@@ -116,12 +117,12 @@ const articleJsonLd = {
       <p>
         <strong>Antes (Perspective API):</strong> tu código hace una llamada directa a
         commentanalyzer.googleapis.com con una clave de API específica. Recibes puntuaciones por atributo.
-        Los umbrales están escritos a fuego en el código. Cambiar de proveedor implica reescribir esta integración.
+        Los umbrales están escritos a fuego en el código. Cambiar de servicio implica reescribir esta integración.
       </p>
       <p>
         <strong>Después (OpenModeration):</strong> tu código llama a POST /v1/moderation con el texto del
-        contenido. OpenModeration lo envía al proveedor configurado, normaliza la respuesta y devuelve un
-        formato coherente. Para cambiar de proveedor, actualizas un archivo de configuración. Sin tocar el código.
+        contenido. OpenModeration lo analiza según tus reglas y devuelve puntuaciones estandarizadas, una decisión
+        y su explicación por escrito. Cuando sale un modelo de IA mejor o más barato, lo conectamos rápido. Sin tocar tu código.
       </p>
 
       <h2 class="text-xl font-bold text-surface-900">Lo que ganas más allá de la migración</h2>
@@ -130,9 +131,9 @@ const articleJsonLd = {
         Perspective nunca tuvo:
       </p>
       <ul>
-        <li><strong>Motor de acciones:</strong> define reglas con tres herramientas sencillas: palabras prohibidas, umbrales y una carta de la comunidad. Sin código a medida.</li>
+        <li><strong>Motor de acciones:</strong> define reglas con tres herramientas sencillas: palabras prohibidas, umbrales y tus reglas escritas en lenguaje natural. Sin código a medida.</li>
         <li><strong>Registro de auditoría:</strong> cada decisión de moderación queda registrada con todo su contexto y se puede exportar para los informes de cumplimiento.</li>
-        <li><strong>Analítica:</strong> un panel de control con el volumen de moderación, las tasas de marcado, el rendimiento de los proveedores y el desglose por categorías.</li>
+        <li><strong>Analítica:</strong> un panel de control con el volumen de moderación, las tasas de marcado, las acciones aplicadas y el desglose por categorías.</li>
         <li><strong>Preparación para la DSA:</strong> los registros de auditoría y los datos de transparencia que necesitas para cumplir la Ley de Servicios Digitales de la UE.</li>
       </ul>
 
@@ -145,7 +146,7 @@ const articleJsonLd = {
       </p>
       <p>
         Para una guía completa de configuración de OpenModeration, consulta nuestra documentación. La
-        integración de tu primer proveedor lleva unos 30 minutos.
+        primera integración lleva unos 30 minutos.
       </p>
     </div>
   </article>
@@ -154,13 +155,15 @@ const articleJsonLd = {
     <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
       <h2 class="text-lg font-bold text-surface-900">Sigue explorando</h2>
       <ul class="mt-4 space-y-2 text-sm">
-        <li><a href="/es/api-moderacion-contenido" class="font-medium text-brand-600 hover:text-brand-500">Una sola API de moderación de contenido para tu migración &rarr;</a></li>
+        <li><a href="/es/api-moderacion-contenido" class="font-medium text-brand-600 hover:text-brand-500">Una API de moderación de contenido para tu migración &rarr;</a></li>
         <li><a href="/es/alternativas/perspective-api" class="font-medium text-brand-600 hover:text-brand-500">Alternativa a Perspective API: migra antes del cierre &rarr;</a></li>
         <li><a href="/es/como-funciona" class="font-medium text-brand-600 hover:text-brand-500">Cómo funciona la cadena de moderación &rarr;</a></li>
         <li><a href="/es/precios" class="font-medium text-brand-600 hover:text-brand-500">Empieza gratis y cambia de plan cuando crezcas &rarr;</a></li>
       </ul>
     </div>
   </section>
+
+  <GuideComparisons />
 
   <CTASection />
 </BaseLayout>

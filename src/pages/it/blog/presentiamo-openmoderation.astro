@@ -1,13 +1,15 @@
 ---
+import { bookingUrl } from '../../../i18n/ui';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
 import Breadcrumb from '../../../components/Breadcrumb.astro';
 
 const articleJsonLd = {
   "@context": "https://schema.org",
   "@type": "Article",
   "headline": "Presentiamo OpenModeration, la piattaforma di moderazione unificata",
-  "description": "Stiamo costruendo il livello infrastrutturale open source per la moderazione dei contenuti. Un'unica API, tutti i fornitori, il pieno controllo.",
+  "description": "Stiamo costruendo una piattaforma di moderazione: la nostra IA, verificata da altri modelli, con motivazione scritta e registro di audit per ogni decisione.",
   "inLanguage": "it",
   "datePublished": "2026-06-01",
   "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
@@ -22,7 +24,7 @@ const articleJsonLd = {
 };
 ---
 
-<BaseLayout title="Presentiamo OpenModeration: la moderazione unificata" description="Stiamo costruendo il livello infrastrutturale open source per la moderazione dei contenuti. Un'unica API, tutti i fornitori, il pieno controllo." jsonLd={articleJsonLd}>
+<BaseLayout title="Presentiamo OpenModeration: la moderazione unificata" description="Stiamo costruendo una piattaforma di moderazione: la nostra IA, verificata da altri modelli, con motivazione scritta e registro di audit per ogni decisione." jsonLd={articleJsonLd}>
 <Breadcrumb items={[{ label: "Home", href: "/it" }, { label: "Blog", href: "/it/blog" }, { label: "Presentiamo OpenModeration" }]} />
   <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
     <div class="mb-8">
@@ -36,17 +38,15 @@ const articleJsonLd = {
 
     <div class="prose prose-surface max-w-none text-surface-600">
       <p class="text-lg leading-relaxed">
-        Oggi annunciamo OpenModeration, una piattaforma open source che riunisce la moderazione
-        dei contenuti dietro un'unica API. Immaginala come un OpenRouter per la moderazione dei
-        contenuti.
+        Oggi annunciamo OpenModeration, una piattaforma di moderazione dei contenuti basata sulla
+        propria IA di moderazione, con i casi delicati verificati da altri modelli di IA.
       </p>
 
       <h2 class="text-xl font-bold text-surface-900">Il problema che risolviamo</h2>
       <p>
-        La moderazione dei contenuti è frammentata. Ogni fornitore ha il proprio formato di API,
-        il proprio schema di categorie e il proprio modello di prezzo. Integrare due fornitori
-        significa costruire e mantenere due percorsi di codice completamente separati. Cambiare
-        fornitore significa riscrivere la propria pipeline di moderazione.
+        Molti strumenti di moderazione si basano su un unico algoritmo proprietario, fermo tra un
+        aggiornamento e l'altro. Intanto i modelli di IA migliorano e costano meno ogni anno, e le
+        piattaforme ferme al modello di ieri perdono questi progressi.
       </p>
       <p>
         Nel frattempo, il volume dei contenuti generati dagli utenti cresce del 30-40% ogni anno.
@@ -63,23 +63,25 @@ const articleJsonLd = {
         OpenModeration è una piattaforma di moderazione completa, non un semplice proxy di API:
       </p>
       <ul>
-        <li><strong>API unificata</strong>: POST /v1/moderation funziona allo stesso modo con OpenAI, Azure, HuggingFace, Mistral e i fornitori basati su LLM.</li>
-        <li><strong>Routing intelligente</strong>: instrada le richieste in base a lingua, tipo di contenuto, costo o disponibilità.</li>
-        <li><strong>Motore di azioni</strong>: definisci le regole con tre strumenti semplici, cioè parole vietate, soglie per categoria e una carta della community scritta in linguaggio naturale.</li>
-        <li><strong>Connettori nativi</strong>: integrazione con Facebook, Instagram, YouTube e WordPress in modalità BYOC (Bring Your Own Credentials, con le tue credenziali).</li>
+        <li><strong>La nostra IA di moderazione</strong>: POST /v1/moderation restituisce punteggi standardizzati per categoria, e altri modelli di IA verificano i casi delicati.</li>
+        <li><strong>Un motore indipendente dai modelli</strong>: quando esce un modello di IA migliore o più economico, lo colleghiamo rapidamente. Per te non cambia nulla.</li>
+        <li><strong>Motore di azioni</strong>: definisci le regole con tre strumenti semplici, cioè parole vietate, soglie per categoria e le tue regole scritte in linguaggio naturale.</li>
+        <li><strong>Connettori nativi</strong>: integrazione con Facebook, Instagram, YouTube e WordPress collegati con i tuoi account delle piattaforme.</li>
         <li><strong>Dashboard di amministrazione</strong>: interfaccia React Admin per gestire le chiavi, consultare i log e analizzare l'utilizzo.</li>
         <li><strong>Registro di audit conforme al DSA</strong>: ogni moderazione viene registrata con tutti i dettagli ed è esportabile per la conformità.</li>
       </ul>
 
-      <h2 class="text-xl font-bold text-surface-900">Perché open source</h2>
+      <h2 class="text-xl font-bold text-surface-900">Perché la trasparenza</h2>
       <p>
-        La moderazione è prima di tutto una questione di fiducia. Una piattaforma di moderazione a
-        codice chiuso è una scatola nera: non puoi verificare cosa fa, come prende le decisioni o
-        dove finiscono i tuoi dati.
+        La moderazione è prima di tutto una questione di fiducia. Una piattaforma di moderazione
+        che non spiega le proprie scelte è una scatola nera: non sai cosa fa, come prende le
+        decisioni o dove finiscono i tuoi dati.
       </p>
       <p>
-        Rilasciamo OpenModeration con licenza AGPL v3. Ogni riga di codice è verificabile.
-        Puoi ospitarlo in proprio con Docker e tenere tutti i dati sulla tua infrastruttura.
+        Con OpenModeration ogni decisione è spiegata per iscritto e conservata in un registro di
+        audit completo. Applichi le tue regole e i tuoi casi d'uso, i dati sono ospitati nell'UE e
+        puoi esportarli quando vuoi. Un'installazione on-premise è possibile su richiesta:
+        <a href={bookingUrl('it')} class="text-brand-600 hover:text-brand-500">parliamone</a>.
       </p>
 
       <h2 class="text-xl font-bold text-surface-900">I prossimi passi</h2>
@@ -90,8 +92,8 @@ const articleJsonLd = {
       </p>
       <p>
         Se stai costruendo una piattaforma che ha bisogno di moderazione, il tuo parere ci
-        interessa. Dai un'occhiata al codice su GitHub, installalo con Docker e facci sapere cosa
-        ne pensi.
+        interessa. <a href={bookingUrl('it')} class="text-brand-600 hover:text-brand-500">Prenota un appuntamento</a>:
+        il nostro team la configura insieme a te.
       </p>
     </div>
   </article>
@@ -102,10 +104,12 @@ const articleJsonLd = {
       <ul class="mt-4 space-y-2 text-sm">
         <li><a href="/it/come-funziona" class="font-medium text-brand-600 hover:text-brand-500">Come funziona la pipeline di moderazione &rarr;</a></li>
         <li><a href="/it/funzionalita" class="font-medium text-brand-600 hover:text-brand-500">Tutto ciò che la piattaforma fa per te &rarr;</a></li>
-        <li><a href="/it/prezzi" class="font-medium text-brand-600 hover:text-brand-500">Inizia gratis, passa al piano superiore quando cresci &rarr;</a></li>
+        <li><a href="/it/prezzi" class="font-medium text-brand-600 hover:text-brand-500">Scopri i piani e i prezzi &rarr;</a></li>
       </ul>
     </div>
   </section>
+
+  <GuideComparisons />
 
   <CTASection />
 </BaseLayout>

@@ -1,0 +1,174 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Google Perspective API stopt: migratiegids voor forums",
+  "description": "Perspective API stopt eind 2026. Lees wat dat betekent voor je forum en hoe je vóór de deadline overstapt naar OpenModeration.",
+  "inLanguage": "nl",
+  "datePublished": "2026-06-12",
+  "dateModified": "2026-10-20",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/nl/blog/perspective-api-migratie" }
+};
+---
+
+<BaseLayout title="Google Perspective API stopt: migratiegids voor forums" description="Google Perspective API stopt eind 2026. Lees wat dat betekent voor je forum of reactiesysteem en hoe je vóór de deadline overstapt naar OpenModeration." jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: "Blog", href: localizePath('/blog', locale) }, { label: "Migratie van Perspective API" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-06-12">12 juni 2026</time>
+        <span>&middot;</span>
+        <span>Bijgewerkt op 20 oktober 2026</span>
+        <span>&middot;</span>
+        <span>7 min lezen</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Google Perspective API stopt: migratiegids voor forums</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Jigsaw, het onderdeel van Google achter Perspective API, heeft aangekondigd dat de dienst
+        wordt stopgezet: hij blijft actief tot 31 december 2026.
+        Voor de duizenden forums, reactiesystemen en publicatieplatforms die erop leunen,
+        betekent dit dat ze vóór de deadline een alternatief voor Perspective API moeten vinden.
+      </p>
+      <p>
+        Deze gids legt uit wat er verandert, wat het voor jou betekent en hoe je met zo min mogelijk
+        verstoring overstapt naar OpenModeration.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Wat er gebeurt en wanneer</h2>
+      <p>
+        Perspective API was een van de eerste breed beschikbare API's voor het detecteren van toxiciteit. Jigsaw
+        (een incubator van Google) lanceerde hem in 2017, en hij stuurde de moderatie aan van platforms als The New
+        York Times, Disqus en talloze forumcommunity's.
+      </p>
+      <p>
+        Volgens de <a href="https://perspectiveapi.com/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">officiële site van Perspective API</a>:
+      </p>
+      <ul>
+        <li><strong>Tot februari 2026:</strong> aanvragen voor een hoger quotum werden nog behandeld. Daarna worden geen nieuwe aanvragen meer aangenomen.</li>
+        <li><strong>31 december 2026:</strong> laatste dag van de dienst. Na 2026 is de API niet meer beschikbaar.</li>
+        <li><strong>Migratie:</strong> Jigsaw geeft aan geen directe ondersteuning bij de migratie te bieden.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Waarom Perspective API stopt</h2>
+      <p>
+        Jigsaw geeft één reden: de mogelijkheden van AI zijn veranderd, en er is nu minder vraag naar
+        een losse tool specifiek voor dit domein. Teams kunnen inderdaad kiezen uit veel
+        moderatiemodellen, van OpenAI tot HuggingFace en Mistral, en de meeste platforms willen
+        beslissingen die de context begrijpen in plaats van één toxiciteitsscore.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Wat dit betekent voor je forum</h2>
+      <p>
+        Gebruik je vandaag Perspective API, dan gaat je moderatiepijplijn stuk zodra de dienst
+        stopt. Reacties en berichten die op automatische toxiciteitsscores leunen, blijven
+        ongemodereerd. Afhankelijk van hoe diep je integratie gaat, zie je een van drie uitkomsten:
+      </p>
+      <ul>
+        <li><strong>Directe integratie:</strong> roept je app Perspective API rechtstreeks aan, dan mislukken de verzoeken. Je moderatiewachtrij valt stil.</li>
+        <li><strong>Via middleware:</strong> gebruik je een moderatieplatform dat Perspective inbouwt, controleer dan of het een migratiepad heeft.</li>
+        <li><strong>Via een sociale connector:</strong> sommige tools voor socialemediabeheer gebruiken Perspective om reacties te filteren. Ga na wat hun plan is.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Alternatieven voor Perspective API beoordelen</h2>
+      <p>
+        Hier let je op bij een vervanger:
+      </p>
+      <ul>
+        <li><strong>Dekking van categorieën:</strong> Perspective detecteert toxiciteit, ernstige toxiciteit, aanvallen op identiteit, beledigingen, grof taalgebruik, bedreigingen en seksueel expliciete content. Je vervanger moet deze categorieën en meer dekken.</li>
+        <li><strong>Ondersteuning van meerdere providers:</strong> wie op één provider vertrouwt, doet deze migratie opnieuw zodra die provider van strategie verandert. Met één uniforme API wissel je zonder je code aan te passen.</li>
+        <li><strong>Latency:</strong> forummoderatie moet plaatsvinden voordat content verschijnt. Mik op responstijden onder de seconde.</li>
+        <li><strong>Controle over gegevens:</strong> verwerk je content van Europese gebruikers, dan telt de AVG. Kies voor hosting in de EU en de mogelijkheid om je gegevens te exporteren.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Checklist voor de migratie</h2>
+      <p>Volg deze stappen om van Perspective API af te stappen:</p>
+      <ol>
+        <li><strong>Breng je huidige gebruik in kaart.</strong> Tel je dagelijkse API-calls, bepaal welke categorieën je gebruikt en meet je eisen aan de latency. Zo heb je een nulmeting voor de nieuwe opzet.</li>
+        <li><strong>Kies een architectuur voor de vervanging.</strong> Met een moderatieplatform als OpenModeration blijft je integratie stabiel, ook als er onder de motorkap nieuwe AI-modellen worden aangesloten.</li>
+        <li><strong>Koppel de categorieën.</strong> Koppel je huidige Perspective-categorieën aan hun tegenhangers in je nieuwe systeem. TOXICITY van Perspective komt in de meeste moderne systemen bijvoorbeeld overeen met categorieën als haat en intimidatie.</li>
+        <li><strong>Stel de drempels opnieuw af.</strong> Elk systeem scoort anders. Laat beide systemen een week parallel draaien om je drempels te kalibreren.</li>
+        <li><strong>Pas je integratie aan.</strong> Vervang je Perspective-call door het nieuwe API-endpoint. Met OpenModeration is dat één call naar POST /v1/moderation.</li>
+        <li><strong>Schakel over.</strong> Stuur het productieverkeer naar het nieuwe systeem. Houd Perspective tijdens de overgangsperiode als fallback.</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Overstappen naar OpenModeration</h2>
+      <p>
+        OpenModeration is het eenvoudigste migratiepad weg van Perspective API. Het draait op
+        zijn eigen moderatie-AI, en andere AI-modellen controleren de lastige gevallen. Komt er een beter of
+        goedkoper model uit, dan sluiten we het snel aan, zonder dat je je code hoeft aan te passen.
+      </p>
+      <p>
+        Zo ziet een migratie naar OpenModeration eruit:
+      </p>
+      <p>
+        <strong>Vooraf (Perspective API):</strong> je code roept commentanalyzer.googleapis.com
+        rechtstreeks aan met een specifieke API-sleutel. Je krijgt attribuutscores terug.
+        De drempels staan hard in je code, en je zit vast aan één model.
+      </p>
+      <p>
+        <strong>Achteraf (OpenModeration):</strong> je code roept POST /v1/moderation aan met
+        de tekst van de content. OpenModeration analyseert de content met zijn eigen AI en geeft gestandaardiseerde scores
+        per categorie terug, met een schriftelijke reden. Nieuwe AI-modellen sluiten wij aan.
+        Geen codewijzigingen nodig.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Wat je wint naast de migratie</h2>
+      <p>
+        Overstappen van Perspective API is een gedwongen upgrade. OpenModeration geeft je
+        mogelijkheden die Perspective nooit had:
+      </p>
+      <ul>
+        <li><strong>Action Engine:</strong> stel regels op met drie tools (verboden woorden, drempels en je eigen regels in gewone taal) zonder eigen code te schrijven.</li>
+        <li><strong>Audittrail:</strong> elke moderatiebeslissing wordt met de volledige context gelogd. Exporteerbaar voor compliancerapportage.</li>
+        <li><strong>Analyses:</strong> een dashboard met moderatievolume, aandeel gemarkeerde content, schriftelijke redenen en een uitsplitsing per categorie.</li>
+        <li><strong>Klaar voor de DSA:</strong> de auditlogs en transparantiegegevens die je nodig hebt om aan de Europese Digital Services Act te voldoen.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Tijdlijn en volgende stappen</h2>
+      <p>
+        Google Perspective API stopt eind 2026. Hoe eerder je met je
+        migratie begint, hoe meer tijd je hebt om drempels te kalibreren en in productie
+        te testen. We raden aan om minstens 90 dagen vóór je beoogde overstapdatum
+        te beginnen.
+      </p>
+      <p>
+        Een volledige gids om OpenModeration in te richten vind je in onze documentatie. Je
+        eerste integratie kost ongeveer 30 minuten.
+      </p>
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Lees verder</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/content-moderation-api', locale)} class="font-medium text-brand-600 hover:text-brand-500">Eén contentmoderatie-API voor je migratie &rarr;</a></li>
+        <li><a href={localizePath('/alternatives/perspective-api', locale)} class="font-medium text-brand-600 hover:text-brand-500">Alternatief voor Perspective API: stap over vóór de stopzetting &rarr;</a></li>
+        <li><a href={localizePath('/how-it-works', locale)} class="font-medium text-brand-600 hover:text-brand-500">Zo werkt de moderatiepijplijn &rarr;</a></li>
+        <li><a href={localizePath('/pricing', locale)} class="font-medium text-brand-600 hover:text-brand-500">Begin gratis, stap over als je groeit &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

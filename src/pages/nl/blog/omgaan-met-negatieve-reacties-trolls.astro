@@ -1,0 +1,308 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const title = "Omgaan met negatieve reacties en trolls (gids 2026)";
+const description = "Omgaan met negatieve reacties en trolls: kritiek of misbruik, wanneer je antwoordt, verbergt, verwijdert of verbant, sjablonen, raids, crises en welzijn.";
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Omgaan met negatieve reacties en trolls op social media en je website",
+  "description": description,
+  "inLanguage": "nl",
+  "datePublished": "2026-10-30",
+  "dateModified": "2026-10-30",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/nl/blog/omgaan-met-negatieve-reacties-trolls" }
+};
+
+const decisions = [
+  { situation: "Een klant klaagt over een late bestelling, een bug of een slechte ervaring", action: "Antwoorden", why: "Antwoord in het openbaar en verplaats de details naar privéberichten. Andere lezers beoordelen je op hoe je reageert." },
+  { situation: "Een harde maar relevante mening over je product, artikel of beslissing", action: "Laten staan (en antwoorden als dat nuttig is)", why: "Kritiek hoort bij het gesprek. Weghalen kost meer vertrouwen dan het oplevert." },
+  { situation: "Een feitelijke fout of een gerucht dat zich verspreidt", action: "Antwoorden met feiten", why: "Eén rustige correctie, met een bron, helpt iedereen die de thread later leest." },
+  { situation: "Een belediging, persoonlijke aanval, scheldwoord of provocatie zonder inhoud", action: "Verbergen", why: "De reactie vervuilt de thread niet meer, en de auteur merkt het zelden." },
+  { situation: "Spam, oplichterslinks, persoonsgegevens van iemand anders", action: "Verwijderen", why: "Dit mag in geen enkele vorm online blijven, ook niet voor de auteur." },
+  { situation: "Een notoire overtreder, een nepaccount, een gecoördineerde raid", action: "Verbannen of blokkeren", why: "Pak het account aan, niet elke reactie, zodra het patroon duidelijk is." },
+  { situation: "Bedreigingen, aanzetten tot geweld, kindermisbruik, andere duidelijk illegale content", action: "Melden (en bewijs bewaren)", why: "Meld het bij het platform en, als mensen gevaar lopen, bij de politie. Maak screenshots voordat je iets weghaalt." },
+];
+
+const faqItems = [
+  {
+    question: "Moet je negatieve reacties verwijderen?",
+    answer: "Niet als het om kritiek gaat. Een negatieve maar beleefde reactie over je product, dienst of content hoort zichtbaar te blijven, het liefst met een antwoord. Verwijderen oogt als censuur en haalt de auteur vaak boos terug. Bewaar verwijderen voor spam, oplichting, persoonsgegevens en illegale content, en verberg beledigingen en persoonlijke aanvallen.",
+  },
+  {
+    question: "Hoe reageer je op een negatieve reactie op social media?",
+    answer: "Antwoord snel, bedank de persoon, erken het probleem zonder in discussie te gaan, geef een concrete volgende stap en verplaats het gesprek naar privéberichten als er persoonlijke gegevens nodig zijn. Schrijf als een mens, onderteken met een voornaam als je merk dat doet, en plak nooit dezelfde zin onder elke klacht.",
+  },
+  {
+    question: "Wat is de beste manier om met trolls om te gaan?",
+    answer: "Voer ze niet. Een troll wil een reactie, dus in het openbaar discussiëren beloont hem meestal. Verberg de provocatie, reageer er niet op en verban het account als het terugkomt. Antwoord alleen als de reactie van de troll een onware bewering bevat die andere lezers zouden kunnen geloven, en richt je dan tot de lezers, niet tot de troll.",
+  },
+  {
+    question: "Wat is het verschil tussen een troll en een ontevreden klant?",
+    answer: "Een ontevreden klant praat over een probleem en wil het meestal opgelost zien. Een troll praat over jou, of over andere reageerders, en wil aandacht of conflict. Kijk naar de inhoud: staat er een feit, een vraag of een ervaring in de reactie? Zo ja, behandel haar als feedback, hoe onbeleefd de toon ook is.",
+  },
+  {
+    question: "Wat doe je tijdens een raid op je reacties?",
+    answer: "Vertraag de thread: verberg nieuwe beledigende reacties, beperk of pauzeer reacties op de aangevallen post als het platform dat toelaat, verban de accounts die alleen komen om aan te vallen en maak screenshots. Vertel je team wat er speelt, publiceer zo nodig één rustige verklaring en wacht tot de golf voorbij is voordat je weer opent.",
+  },
+  {
+    question: "Moet je uitleggen waarom een reactie is weggehaald?",
+    answer: "Op je eigen website of app vraagt de Digital Services Act hostingdiensten om de auteur een motivering te geven als content wordt verwijderd of beperkt. Op sociale netwerken ligt die plicht bij het platform, maar een korte vastlegging van elke beslissing blijft goede praktijk, voor het geval een auteur, een leidinggevende of een journalist ernaar vraagt.",
+  },
+  {
+    question: "Wanneer automatiseer je reactiemoderatie?",
+    answer: "Als reacties sneller binnenkomen dan je team ze kan lezen, als misbruik 's nachts of in het weekend komt, of als dezelfde beledigingen blijven terugkomen. Een tool kan duidelijk misbruik realtime verbergen, je regels en je use cases toepassen en twijfelgevallen naar een mens sturen, zodat je team zijn tijd aan antwoorden besteedt in plaats van aan opruimen.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} ogType="article" jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: "Blog", href: localizePath('/blog', locale) }, { label: "Negatieve reacties en trolls" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-30">30 oktober 2026</time>
+        <span>&middot;</span>
+        <span>9 min lezen</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Omgaan met negatieve reacties en trolls: een praktische gids voor social media en websites</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Elk merk, elk medium en elke publieke pagina krijgt negatieve reacties. Sommige zijn terecht en nuttig, sommige
+        onbeleefd maar eerlijk, en sommige komen van mensen die alleen willen kwetsen of provoceren. Het lastige is niet
+        weten dat trolls bestaan. Het is per reactie beslissen wat je doet: antwoorden, laten staan, verbergen,
+        verwijderen, de auteur verbannen of hem melden. Deze gids geeft je een eenvoudige methode, antwoordsjablonen en een
+        plan voor de slechte dagen.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">In het kort</h2>
+      <ul>
+        <li><strong>Kritiek blijft zichtbaar.</strong> Een negatieve maar beleefde reactie is feedback. Beantwoord haar in plaats van haar weg te halen.</li>
+        <li><strong>Misbruik verberg je, je gaat er niet over in discussie.</strong> Beledigingen, intimidatie en provocaties worden verborgen; spam, oplichting en persoonsgegevens verwijderd; illegale content gemeld.</li>
+        <li><strong>Trolls willen een reactie.</strong> Geef ze die niet. Verban notoire overtreders en bereid een plan voor raids en crises voor.</li>
+        <li><strong>Bescherm mensen en leg alles vast.</strong> Zorg voor het team dat de reacties leest, en schrijf bij elke verwijdering een korte reden.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Kritiek of misbruik? Zo zie je het verschil</h2>
+      <p>
+        De eerste vraag is niet "is deze reactie negatief?", maar "valt er iets in te bespreken?". Een handige
+        test: haal de toon weg en kijk wat er overblijft.
+      </p>
+      <ul>
+        <li><strong>Kritiek</strong> gaat over wat je doet: een product, een prijs, een artikel, een beslissing, een vertraging. Ze kan boos, sarcastisch of onterecht zijn, maar bevat een feit, een ervaring of een vraag.</li>
+        <li><strong>Misbruik</strong> gaat over wie iemand is: beledigingen, scheldwoorden, bedreigingen, spot met iemands lichaam, afkomst, gender of religie. Haal de toon weg en er blijft niets over.</li>
+        <li><strong>Trollen</strong> draait om een reactie uitlokken: provocaties buiten het onderwerp, lokaas, steeds weer hetzelfde bericht, geveinsde verontwaardiging.</li>
+        <li><strong>Spam en oplichting</strong> gaan over iets heel anders: links, nepwinacties, mensen die zich voordoen als je merk.</li>
+      </ul>
+      <p>
+        "Jullie levering duurde drie weken en niemand beantwoordde mijn mails, triest" is kritiek met een onvriendelijk woord. "Alleen
+        idioten kopen bij die clowns" is misbruik zonder inhoud. De eerste verdient een antwoord; de tweede mag je verbergen.
+      </p>
+
+      <h3 class="text-lg font-semibold text-surface-900">Waarom kritiek zichtbaar moet blijven</h3>
+      <p>
+        Het is verleidelijk om elke negatieve reactie op te ruimen. Doe het niet. Lezers merken het als een reactiesectie alleen
+        lof bevat, en ze vertrouwen haar dan minder. Een klacht die verdwijnt, komt vaak terug, luider, soms met
+        een screenshot en het woord "censuur". Een goed afgehandelde klacht laat daarentegen elke lezer zien dat
+        er iemand luistert. Je regels horen mensen tegen misbruik te beschermen, niet het merk tegen tegenspraak.
+        Leg dat onderscheid vast in je <a href={localizePath('/content-moderation-policy', locale)} class="text-brand-600 hover:text-brand-500">moderatiebeleid</a>, zodat iedereen in het team de grens op dezelfde plek trekt.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Wat doe je met een negatieve reactie? Een beslistabel</h2>
+      <p>
+        De meeste platforms geven je dezelfde set acties, onder verschillende namen: antwoorden, verbergen, verwijderen, verbannen of blokkeren,
+        en melden. Verbergen is meestal de beste standaard bij misbruik: op een Facebook-pagina bijvoorbeeld blijft een verborgen reactie
+        zichtbaar voor de auteur en diens vrienden, dus de auteur merkt het zelden. Gebruik deze tabel als vertrekpunt en pas hem aan
+        je regels en je use cases aan.
+      </p>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Situatie</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Actie</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Waarom</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {decisions.map((row) => (
+            <tr>
+              <td class="px-4 py-3 text-surface-600">{row.situation}</td>
+              <td class="px-4 py-3 font-medium text-surface-900">{row.action}</td>
+              <td class="px-4 py-3 text-surface-600">{row.why}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <p>
+        Twee vuistregels maken de tabel compleet. Pak eerst de content aan en pas daarna de persoon: één onbeleefde reactie vraagt om
+        verbergen, een patroon om een ban. En twijfel je tussen twee acties, kies dan de actie die je kunt terugdraaien. Een verborgen
+        reactie kun je weer zichtbaar maken; een verwijderde reactie kun je niet herstellen.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Zo reageer je op negatieve reacties: sjablonen om aan te passen</h2>
+      <p>
+        Een goed antwoord is snel, kort, menselijk en concreet. Het bedankt, erkent, geeft een volgende stap en verplaatst zo nodig
+        het gesprek naar privéberichten. Ga nooit in het openbaar in discussie, geef de klant nooit de schuld en plak nooit dezelfde
+        zin onder twintig klachten: mensen vergelijken.
+      </p>
+      <p><strong>Een klacht over een product of dienst</strong></p>
+      <blockquote>
+        "Hoi Sanne, bedankt dat je het laat weten, en sorry voor de drie weken wachten: dat is niet wat we beloven. Kun je ons
+        je ordernummer in een privébericht sturen? We zoeken vandaag uit wat er is gebeurd en komen bij je terug. Tom, klantenteam"
+      </blockquote>
+      <p><strong>Een harde mening waar je het niet mee eens bent</strong></p>
+      <blockquote>
+        "Bedankt voor je feedback, Mark. We hebben deze keuze gemaakt omdat [korte, eerlijke reden]. We begrijpen dat ze niet bij
+        iedereen past, en we lezen alle reacties over dit onderwerp."
+      </blockquote>
+      <p><strong>Een feitelijke fout of een gerucht</strong></p>
+      <blockquote>
+        "Ter verduidelijking voor iedereen die meeleest: dit product is niet teruggeroepen. De terugroepactie die op [datum] is aangekondigd, gaat over
+        [ander product], en de details staan hier: [link]. Heb je een vraag over je eigen bestelling, dan staat ons team
+        voor je klaar in privéberichten."
+      </blockquote>
+      <p><strong>Een herinnering aan de regels, als een thread verhit raakt</strong></p>
+      <blockquote>
+        "Discussie is hier welkom, persoonlijke aanvallen niet. We hebben een paar reacties verborgen die over de grens gingen. Onze
+        communityregels staan hier: [link]."
+      </blockquote>
+      <p>
+        Pas de toon aan je merk aan. Een bank en een streetwearlabel praten niet op dezelfde manier, maar allebei horen ze te klinken als een
+        mens, niet als een juridische afdeling.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Zo ga je om met trolls (en trollraids)</h2>
+      <p>
+        "Don't feed the trolls" is een oud advies, en nog altijd het beste. Een troll zoekt een publiek en een reactie.
+        Een lang openbaar antwoord geeft hem allebei.
+      </p>
+      <ul>
+        <li><strong>Herken het patroon.</strong> Provocatie buiten het onderwerp, een nieuw of anoniem account, hetzelfde bericht onder meerdere posts, antwoorden gericht aan andere reageerders in plaats van aan jou.</li>
+        <li><strong>Verberg, ga niet in discussie.</strong> Verberg de provocatie en de reacties die ze uitlokte. Zwijgen is geen zwakte; het haalt het podium weg.</li>
+        <li><strong>Corrigeer, maar voor de lezers.</strong> Verspreidt een troll een onware bewering die anderen kunnen geloven, plaats dan één feitelijke correctie, gericht aan iedereen, en laat het daarbij.</li>
+        <li><strong>Verban notoire overtreders.</strong> Na twee of drie verborgen reacties van hetzelfde account blokkeer of verban je het. Noteer in één regel waarom.</li>
+        <li><strong>Geef nooit persoonlijke gegevens prijs</strong> en ga niet in gesprek met mensen die je medewerkers bedreigen. Bewaar bewijs en meld het.</li>
+      </ul>
+      <p>
+        Een raid is iets anders: tientallen of honderden accounts duiken binnen korte tijd op dezelfde post op, vaak opgetrommeld vanuit een ander
+        forum, een andere groep of een ander kanaal. Pak dan de golf aan in plaats van elke reactie. Verberg nieuwe beledigende reacties zodra ze
+        binnenkomen, beperk reacties op de aangevallen post of zet ze tijdelijk uit als het platform dat toelaat, verban de accounts
+        die alleen voor de aanval zijn aangemaakt of gemobiliseerd, en maak screenshots met datum. Laat je community in één kort
+        bericht weten dat de reacties een tijdje strenger worden gemodereerd.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Wat doe je als negatieve reacties uitgroeien tot een crisis?</h2>
+      <p>
+        Soms zijn de negatieve reacties geen raid maar een echt probleem: een productfout, een ongelukkige campagne, een nieuwsbericht
+        over je bedrijf. Dan mag moderatie geen manier worden om de crisis te verbergen. Een eenvoudige volgorde helpt.
+      </p>
+      <ol>
+        <li><strong>Pauzeer ingeplande posts.</strong> Een vrolijke promopost midden in een crisis maakt het erger.</li>
+        <li><strong>Schaal op.</strong> Waarschuw de mensen die kunnen beslissen: communicatie, directie, juridische zaken, klantenservice. Spreek af wie het woord voert.</li>
+        <li><strong>Publiceer één helder bericht.</strong> Wat er is gebeurd, wat je weet, wat je doet, wanneer je meer vertelt. Zet het vast en verwijs ernaar in je antwoorden.</li>
+        <li><strong>Houd kritiek zichtbaar.</strong> Verberg misbruik en bedreigingen zoals gewoonlijk, maar laat boze, legitieme reacties online. Ze tijdens een crisis weghalen is de snelste manier om een tweede crisis te beginnen.</li>
+        <li><strong>Antwoord in batches.</strong> Je kunt niet iedereen afzonderlijk antwoorden. Beantwoord de meest zichtbare en meest representatieve reacties en verwijs naar het hoofdbericht.</li>
+        <li><strong>Evalueer achteraf.</strong> Wat vroegen mensen het meest? Welke beslissingen waren moeilijk? Werk je regels en je sjablonen bij.</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Zo bescherm je het welzijn van je team</h2>
+      <p>
+        De hele dag haat, bedreigingen en beledigingen lezen eist zijn tol, ook als ze op het merk gericht zijn en niet op de
+        persoon die ze leest. Communitymanagers werken vaak alleen, 's avonds, op hun eigen telefoon. Dat verdient dezelfde
+        aandacht als elk ander risico voor gezondheid en veiligheid.
+      </p>
+      <ul>
+        <li><strong>Verdeel de last.</strong> Wissel af wie de zwaarste wachtrijen behandelt, en laat nooit één persoon alleen voor een raid staan.</li>
+        <li><strong>Spreek tijden af.</strong> Leg vast wat er 's nachts en in het weekend gebeurt, in plaats van het over te laten aan wie er toevallig kijkt.</li>
+        <li><strong>Beperk de blootstelling.</strong> Filter de meest gewelddadige content voordat een mens hem ziet, en vervaag afbeeldingen standaard als je tools dat toelaten.</li>
+        <li><strong>Steun mensen.</strong> Maak duidelijk dat een moderator die misbruik verbergt de regels toepast, en dat de leiding achter die beslissing staat.</li>
+        <li><strong>Praat erover.</strong> Een korte nabespreking na een zware dag, en toegang tot ondersteuning als iemand persoonlijk wordt aangevallen.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Zo documenteer je je moderatiebeslissingen</h2>
+      <p>
+        Vraagt een auteur "waarom is mijn reactie weggehaald?", dan is "daarom" geen antwoord. Leg elke
+        beslissing kort vast: wat er is gedaan, waarom, en door wie of door wat. Dat beschermt het team, maakt beslissingen consistent en laat je
+        fouten corrigeren.
+      </p>
+      <p>
+        Op je eigen website of app is het ook een juridische kwestie. Onder de Digital Services Act moet een hostingdienst die
+        content verwijdert of beperkt de auteur een motivering geven. Die vermeldt in een paar regels:
+      </p>
+      <ul>
+        <li>wat er is gedaan (verwijderd, verborgen, account opgeschort) en met welke content;</li>
+        <li>de feiten achter de beslissing;</li>
+        <li>of er geautomatiseerde middelen zijn gebruikt om te detecteren of te beslissen;</li>
+        <li>de regel of de wet die is overtreden;</li>
+        <li>hoe de auteur de beslissing kan aanvechten.</li>
+      </ul>
+      <p>
+        Een vastlegging kan zo eenvoudig zijn als: "Reactie verborgen op 30 oktober, 21.42 uur. Reden: persoonlijke belediging van een andere gebruiker,
+        regel 3 van onze communityregels. Automatisch gedetecteerd, bevestigd door een moderator. Je kunt deze beslissing aanvechten door
+        op dit bericht te antwoorden." Zie onze pagina over de <a href={localizePath('/dsa-compliance/statement-of-reasons', locale)} class="text-brand-600 hover:text-brand-500">motivering onder de DSA</a> voor de details.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Wanneer automatiseer je de moderatie?</h2>
+      <p>
+        Alles hierboven kun je op een kleine pagina met de hand doen. Het werkt niet meer als reacties sneller binnenkomen dan je team
+        ze kan lezen, als de ergste om 2 uur 's nachts worden geplaatst, of als dezelfde beledigingen in tien spellingen terugkomen.
+        Dan verdient een tool voor automatische moderatie zijn plek.
+      </p>
+      <p>
+        Een goede tool vervangt je oordeel niet. Hij past je regels en je use cases realtime toe op elke reactie,
+        verbergt duidelijk misbruik, spam en oplichting, laat kritiek online en stuurt twijfelgevallen naar een mens. Zo besteedt je team
+        zijn tijd aan antwoorden, niet aan opruimen. OpenModeration werkt zo op websites, Facebook-pagina's, professionele Instagram-accounts,
+        YouTube-kanalen en WordPress: elke beslissing komt met een schriftelijke reden en wordt gelogd,
+        twijfelgevallen worden door ons team behandeld en jij ziet alles in realtime. Lees hoe <a href={localizePath('/automatic-comment-moderation', locale)} class="text-brand-600 hover:text-brand-500">automatische reactiemoderatie</a> werkt,
+        of bekijk hoe <a href={localizePath('/use-cases/brands-retail', locale)} class="text-brand-600 hover:text-brand-500">merken en retailers</a> hun pagina's en campagnes beschermen.
+      </p>
+      <p>
+        Voor het grotere plaatje lees je onze <a href={localizePath('/blog/comment-moderation-guide', locale)} class="text-brand-600 hover:text-brand-500">complete gids over reactiemoderatie</a> en
+        onze <a href={localizePath('/blog/social-media-moderation-guide', locale)} class="text-brand-600 hover:text-brand-500">gids over social media modereren</a>.
+      </p>
+    </div>
+
+    <div class="mt-12">
+      <FAQ title="Veelgestelde vragen" items={faqItems} />
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Lees verder</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/automatic-comment-moderation', locale)} class="font-medium text-brand-600 hover:text-brand-500">Automatische reactiemoderatie met OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/use-cases/brands-retail', locale)} class="font-medium text-brand-600 hover:text-brand-500">Reactiemoderatie voor merken en retail &rarr;</a></li>
+        <li><a href={localizePath('/blog/hide-facebook-comments-automatically', locale)} class="font-medium text-brand-600 hover:text-brand-500">Facebook-reacties automatisch verbergen &rarr;</a></li>
+        <li><a href={localizePath('/dsa-compliance/statement-of-reasons', locale)} class="font-medium text-brand-600 hover:text-brand-500">Wat een motivering onder de DSA moet bevatten &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

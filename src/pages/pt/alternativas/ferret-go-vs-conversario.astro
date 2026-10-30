@@ -1,0 +1,265 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+const L = (p: string) => localizePath(p, locale);
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/pt/alternativas/ferret-go-vs-conversario",
+  "name": "Ferret Go e Conversario: a diferença, e uma alternativa",
+  "description": "Ferret Go ou Conversario? Os dois pertencem à ferret go GmbH. Veja o que cada oferta cobre e como o OpenModeration se compara como alternativa aos dois.",
+  "inLanguage": "pt",
+  "about": {
+    "@id": "https://www.openmoderation.com/#software"
+  }
+};
+
+const rows = [
+  {
+    "feature": "Papel",
+    "competitor": "A ferret go GmbH edita o Conversario (moderação) e o Engagently (plataforma de engajamento)",
+    "openmod": "A Logora (Paris, desde 2019) edita o OpenModeration (moderação)"
+  },
+  {
+    "feature": "Canais",
+    "competitor": "Facebook, Instagram, YouTube, LinkedIn, TikTok e Threads segundo a sua linha do tempo, além de sistemas onsite, apps de diálogo e fóruns",
+    "openmod": "Páginas do Facebook, contas profissionais do Instagram, canais do YouTube e WordPress de forma nativa; qualquer site ou app via API"
+  },
+  {
+    "feature": "Preços",
+    "competitor": "Não publicados no site. O formulário pede o seu volume mensal de comentários; teste grátis de 30 dias",
+    "openmod": "Públicos: grátis até 1.000 requisições/mês, Pro a 99 €/mês (10 mil requisições), Enterprise sob consulta"
+  },
+  {
+    "feature": "Modelos de IA",
+    "competitor": "Modelos próprios de IA de moderação desde 2016, com IA generativa acrescentada em 2024 (segundo o seu site)",
+    "openmod": "IA de moderação própria, verificada por outros modelos de IA; novos modelos integrados assim que são lançados"
+  },
+  {
+    "feature": "Motivo por escrito de cada decisão",
+    "competitor": "Não especificado no site",
+    "openmod": "Sim, para cada decisão, no console e via API"
+  },
+  {
+    "feature": "Teste antes de migrar",
+    "competitor": "Um modo «dry-run» que analisa os canais sem agir",
+    "openmod": "Modo sandbox com comentários reais, sem ocultar nada"
+  },
+  {
+    "feature": "DSA",
+    "competitor": "Linha do tempo de cada ação de moderação ao segundo, área própria para denúncias de usuários, API de reporting",
+    "openmod": "Notificação e ação, exposição de motivos, revisão humana de decisões contestadas, números exportáveis, registro completo"
+  },
+  {
+    "feature": "Hospedagem e RGPD",
+    "competitor": "Declara cumprir o RGPD; local de hospedagem não especificado no site",
+    "openmod": "Hospedagem na UE, RGPD"
+  },
+  {
+    "feature": "Sistema de comentários para o seu site",
+    "competitor": "Sim, com o Engagently",
+    "openmod": "Não: o OpenModeration modera o seu sistema atual (WordPress, API)"
+  },
+  {
+    "feature": "Referências",
+    "competitor": "Mais de 100 clientes do Conversario segundo o fornecedor; cita FAZ e ntv, e os seus primeiros modelos criados em 2016 para WELT e Bild",
+    "openmod": "Entre eles L'Équipe, Challenges, Sud Ouest, actu.fr, Estadão, Südkurier e Egora"
+  },
+  {
+    "feature": "Equipe",
+    "competitor": "Região de Berlim, mercado de língua alemã",
+    "openmod": "Paris, Madri e Berlim, com uma falante nativa de alemão em Berlim para a região DACH"
+  }
+];
+
+const faqItems = [
+  {
+    "question": "Ferret Go vs Conversario: qual é a diferença?",
+    "answer": "A Ferret Go (ferret go GmbH) é a empresa e o Conversario é o seu produto de moderação de comentários com IA. A plataforma de engajamento Engagently também pertence à ferret go. Não são dois fornecedores concorrentes."
+  },
+  {
+    "question": "O Conversario pertence à Ferret Go?",
+    "answer": "Sim. O site conversar.io indica que a ferret go GmbH trabalha nessa visão desde 2015, e ferret-go.com cita o Conversario entre os seus produtos."
+  },
+  {
+    "question": "Qual é o preço do Conversario?",
+    "answer": "Os preços não são publicados no site. O formulário pede o seu volume mensal de comentários e há um teste grátis de 30 dias. OpenModeration: grátis até 1.000 requisições por mês, Pro a 99 €/mês, Enterprise sob consulta."
+  },
+  {
+    "question": "Qual é a alternativa à Ferret Go e ao Conversario?",
+    "answer": "Se você valoriza preços públicos, um motivo para cada decisão, hospedagem na UE e uma IA que integra os novos modelos, o OpenModeration é uma alternativa. Para LinkedIn, TikTok, Threads ou uma ferramenta de engajamento no seu site, a oferta da Ferret Go é mais ampla."
+  },
+  {
+    "question": "Quem é o dono da Ferret Go?",
+    "answer": "Segundo a Horizont (2 de fevereiro de 2022), o grupo dfv Mediengruppe, com sede em Frankfurt, detém cerca de 67 % das participações da Ferret Go."
+  },
+  {
+    "question": "Posso testar o OpenModeration sem desligar o Conversario?",
+    "answer": "Sim. Em modo sandbox, o OpenModeration avalia os seus comentários reais sem ocultar nada, enquanto o Conversario continua moderando."
+  }
+];
+---
+
+<BaseLayout title="Ferret Go e Conversario: diferença e alternativa" description="Ferret Go ou Conversario? Os dois pertencem à ferret go GmbH. Veja o que cada oferta cobre e como o OpenModeration se compara como alternativa aos dois." jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Início", href: L('/') }, { label: "Alternativas", href: L('/alternatives') }, { label: "Ferret Go e Conversario" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Explicação
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Ferret Go e Conversario: a diferença, e uma alternativa</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Ferret Go e Conversario não são concorrentes: a ferret go GmbH é a empresa e o Conversario é o seu produto de moderação de comentários com IA. Se você procura uma alternativa aos dois, o OpenModeration oferece preços públicos, um motivo para cada decisão e hospedagem na UE.
+      </p>
+      <p class="mx-auto mt-6 max-w-2xl rounded-xl border border-surface-200 bg-white px-5 py-4 text-sm text-surface-600">
+        Comparativos detalhados: <a href={L('/alternatives/ferret-go')} class="text-brand-600 hover:text-brand-500">Alternativa ao Ferret Go</a> · <a href={L('/alternatives/conversario')} class="text-brand-600 hover:text-brand-500">Alternativa ao Conversario</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Quem faz o quê?</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">ferret go GmbH: a empresa</h3>
+          <p class="mt-2 text-sm text-surface-600">Com sede em Berlim segundo o seu aviso legal; em conversar.io a equipe se apresenta como «AI-Solutions from Bernau near Berlin». Segundo a Horizont (fevereiro de 2022), o grupo dfv Mediengruppe detém cerca de 67 % das participações.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Conversario: o software de moderação</h3>
+          <p class="mt-2 text-sm text-surface-600">Moderação de comentários com IA, com ferramentas de análise e diálogo (chamadas Protect, Detect, Interact e Connect no site). A sua linha do tempo cita Facebook, Instagram, YouTube, LinkedIn, TikTok e Threads, além de sistemas onsite, apps e fóruns. Mais de 100 clientes segundo o fornecedor.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Engagently: a plataforma de engajamento</h3>
+          <p class="mt-2 text-sm text-surface-600">Uma plataforma de comentários, votações e diálogo nos sites das editoras, com IA de moderação. Usada por mais de 100 portais segundo conversar.io, com debates e quizzes desde 2025.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Software ou serviço?</h3>
+          <p class="mt-2 text-sm text-surface-600">Os dois sites descrevem software. Não encontramos um serviço de moderação humana terceirizada em ferret-go.com nem em conversar.io. Com o OpenModeration, a nossa equipe coloca a moderação em funcionamento com você e trata os casos duvidosos; você vê cada decisão em tempo real no console.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">A oferta da Ferret Go e o OpenModeration, ponto a ponto</h2>
+      <p class="mt-4 text-surface-500">Informações sobre Ferret Go, Conversario e Engagently tiradas dos seus sites, consultados em 30 de outubro de 2026.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Critério</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Ferret Go (Conversario, Engagently)</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.competitor}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Qual escolher para cada necessidade?</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">Você modera LinkedIn, TikTok ou Threads</h3>
+          <p class="mt-2 text-sm text-surface-600">O Conversario cita essas redes; o OpenModeration não as suporta.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">Você também precisa de uma ferramenta de comentários no site</h3>
+          <p class="mt-2 text-sm text-surface-600">O Engagently da Ferret Go oferece comentários, votações e debates. O OpenModeration modera o seu sistema atual via WordPress ou API, sem substituí-lo.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">Você quer saber o preço de antemão</h3>
+          <p class="mt-2 text-sm text-surface-600">O OpenModeration publica os seus preços e começa grátis. A Ferret Go não publica preços no seu site.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">Você precisa de um motivo para cada decisão</h3>
+          <p class="mt-2 text-sm text-surface-600">O OpenModeration escreve um para cada decisão, no console e via API. Isso não é especificado no site do Conversario.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">A hospedagem na UE é obrigatória</h3>
+          <p class="mt-2 text-sm text-surface-600">O OpenModeration é hospedado na UE. O Conversario declara cumprir o RGPD sem indicar onde hospeda os dados.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">Você quer uma moderação que melhora com a IA</h3>
+          <p class="mt-2 text-sm text-surface-600">O OpenModeration usa a sua própria IA, verificada por outros modelos, e integra os novos modelos assim que eles são lançados.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">O motor de IA, e por que ele importa</h2>
+      <p class="mt-4 text-surface-600">O OpenModeration usa a sua própria IA de moderação. Nos casos delicados, outros modelos de IA verificam a decisão antes de ocultar um comentário ou deixá-lo com a nossa equipe.</p>
+      <p class="mt-4 text-surface-600">A plataforma não depende de um único modelo: quando sai um modelo de IA melhor ou mais barato, a nossa equipe o integra rapidamente, sem que você precise mudar nada. A sua moderação acompanha o progresso do mercado de IA em vez de ficar congelada num único algoritmo próprio.</p>
+    </div>
+  </section>
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Da Ferret Go ao OpenModeration em três etapas</h2>
+      <ol class="mt-8 grid gap-6 md:grid-cols-3">
+        <li class="rounded-xl border border-surface-200 bg-white p-6">
+          <span class="text-sm font-semibold text-brand-600">1</span>
+          <h3 class="mt-2 font-semibold text-surface-900">Conecte os seus canais</h3>
+          <p class="mt-2 text-sm text-surface-600">Facebook, Instagram, YouTube, WordPress, ou o seu sistema via API.</p>
+        </li>
+        <li class="rounded-xl border border-surface-200 bg-white p-6">
+          <span class="text-sm font-semibold text-brand-600">2</span>
+          <h3 class="mt-2 font-semibold text-surface-900">Teste em sandbox</h3>
+          <p class="mt-2 text-sm text-surface-600">O OpenModeration avalia os seus comentários reais em paralelo ao Conversario, sem ocultar nada.</p>
+        </li>
+        <li class="rounded-xl border border-surface-200 bg-white p-6">
+          <span class="text-sm font-semibold text-brand-600">3</span>
+          <h3 class="mt-2 font-semibold text-surface-900">Ative</h3>
+          <p class="mt-2 text-sm text-surface-600">Ative a moderação automática quando os resultados convencerem você.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Perguntas frequentes" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        Ferret Go, Conversario e Engagently são marcas da sua editora, a ferret go GmbH. Fontes (consultadas em 30 de outubro de 2026): <a href="https://www.ferret-go.com" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">ferret-go.com</a>, <a href="https://www.ferret-go.com/impressum" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">ferret-go.com/impressum</a>, <a href="https://www.conversar.io/en/about" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">conversar.io/en/about</a>, <a href="https://www.conversar.io/en/product" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">conversar.io/en/product</a>, <a href="https://www.conversar.io/en/dsa-comment-moderation" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">conversar.io/en/dsa-comment-moderation</a>, <a href="https://conversar.io/en/demo" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">conversar.io/en/demo</a>, <a href="https://www.engagently.com/en" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">engagently.com</a>, <a href="https://www.horizont.net/medien/nachrichten/ki-basierte-community-loesungen-dfv-mediengruppe-uebernimmt-mehrheit-an-ferret-go-197573" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">Horizont, 2 de fevereiro de 2022</a>. Viu algum erro? Escreva para <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Para saber mais</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={L('/alternatives/ferret-go')} class="font-medium text-brand-600 hover:text-brand-500">Alternativa ao Ferret Go &rarr;</a></li>
+        <li><a href={L('/alternatives/conversario')} class="font-medium text-brand-600 hover:text-brand-500">Alternativa ao Conversario &rarr;</a></li>
+        <li><a href={L('/moderation-software')} class="font-medium text-brand-600 hover:text-brand-500">O software de moderação OpenModeration &rarr;</a></li>
+        <li><a href={L('/blog/social-media-moderation-guide')} class="font-medium text-brand-600 hover:text-brand-500">Guia de moderação de redes sociais &rarr;</a></li>
+        <li><a href={L('/alternatives')} class="font-medium text-brand-600 hover:text-brand-500">Todos os comparativos &rarr;</a></li>
+        <li><a href={L('/book-a-call')} class="font-medium text-brand-600 hover:text-brand-500">Agende uma reunião com a nossa equipe &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Uma alternativa à Ferret Go e ao Conversario, testada com os seus comentários." subtitle="Comece em modo sandbox: o OpenModeration avalia os seus comentários reais e explica cada decisão. Grátis até 1.000 requisições por mês." />
+</BaseLayout>

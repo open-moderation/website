@@ -1,0 +1,276 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const title = "WebPurify alternatief: vergelijking met OpenModeration";
+const description = "WebPurify of OpenModeration? Vergelijking met bronnen: scheldwoordenfilter of AI-moderatie, menselijke beoordeling, DSA, EU-hosting, AI en publieke prijzen.";
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/nl/alternatieven/webpurify",
+  "name": title,
+  "description": description,
+  "inLanguage": "nl",
+  "about": {
+    "@id": "https://www.openmoderation.com/#software"
+  }
+};
+
+const rows = [
+  {
+    "feature": "Aanbod",
+    "competitor": "API voor een scheldwoordenfilter, moderatie van afbeeldingen en video's met AI en met eigen menselijke moderatoren",
+    "openmod": "AI-moderatie van reacties voor media, merken en overheidsinstanties, samen met jou opgezet door het team van Logora"
+  },
+  {
+    "feature": "Gemodereerde content",
+    "competitor": "Tekst (scheldwoordenfilter in 15 talen), afbeeldingen en video's",
+    "openmod": "Reacties op je websites en sociale pagina's"
+  },
+  {
+    "feature": "Integraties",
+    "competitor": "API; pluginlicentie voor cms'en als WordPress of Drupal. Connectoren voor sociale media niet vermeld op de geraadpleegde pagina's",
+    "openmod": "API voor websites, Facebook-pagina's, professionele Instagram-accounts, YouTube-kanalen, WordPress"
+  },
+  {
+    "feature": "AI-modellen",
+    "competitor": "AI gecombineerd met menselijke moderatoren; de gebruikte modellen worden niet vermeld op de website",
+    "openmod": "Eigen moderatie-AI, gecontroleerd door andere AI-modellen; nieuwe modellen worden aangesloten zodra ze uitkomen"
+  },
+  {
+    "feature": "Menselijke beoordeling",
+    "competitor": "Uitgevoerd door moderatoren van WebPurify („live”-moderatie), gefactureerd per afbeelding of per minuut video",
+    "openmod": "Duidelijke overtredingen automatisch verborgen, twijfelgevallen afgehandeld door ons team; jij ziet alles in één console"
+  },
+  {
+    "feature": "Uitleg bij beslissingen",
+    "competitor": "Niet vermeld op de website",
+    "openmod": "Een geschreven uitleg bij elke beslissing en een volledig activiteitenlogboek"
+  },
+  {
+    "feature": "DSA",
+    "competitor": "Niet vermeld op de website",
+    "openmod": "Melding en actie, motivering van beslissingen, menselijke beoordeling van betwiste beslissingen, exporteerbare cijfers"
+  },
+  {
+    "feature": "Hosting en data",
+    "competitor": "Niet vermeld op de website; bedrijf gevestigd in Irvine, Californië",
+    "openmod": "Gehost in de Europese Unie, AVG; on-premise installatie op aanvraag"
+  },
+  {
+    "feature": "Publieke prijzen",
+    "competitor": "Filter: $ 5/maand (plugin), $ 15/maand (standaard), $ 50/maand (tot 6 domeinen); live-moderatie van afbeeldingen: 2 cent per afbeelding",
+    "openmod": "Gratis tot 1.000 verzoeken/maand, Pro € 99/maand voor 10.000 verzoeken, Enterprise op maat"
+  },
+  {
+    "feature": "Referenties",
+    "competitor": "Niet vermeld op de geraadpleegde pagina's",
+    "openmod": "L'Équipe, Challenges, Sud Ouest, actu.fr, Estadão, Südkurier, Egora"
+  }
+];
+
+const faqItems = [
+  {
+    "question": "Wat is het beste alternatief voor WebPurify?",
+    "answer": "Voor het modereren van reacties bij media, op merkpagina's en op publieke kanalen is OpenModeration voor precies dat gebruik gemaakt: een AI die de context leest, connectoren voor sociale media en WordPress, een console waarin je elke beslissing in realtime ziet, een geschreven uitleg bij elke beslissing en hosting in de EU. Wil je dat de leverancier menselijke moderatoren levert voor afbeeldingen en video, dan is WebPurify daarvoor gemaakt."
+  },
+  {
+    "question": "Wat kost WebPurify?",
+    "answer": "Volgens de website en de voorwaarden: het scheldwoordenfilter kost $ 5 per maand (pluginlicentie), $ 15 per maand (standaard) of $ 50 per maand voor maximaal 6 domeinen, en live-moderatie van afbeeldingen 2 cent per afbeelding, met een gratis proefperiode van 14 dagen. OpenModeration is gratis tot 1.000 verzoeken per maand en kost daarna € 99 per maand voor 10.000 verzoeken."
+  },
+  {
+    "question": "WebPurify vs OpenModeration: wat is het verschil?",
+    "answer": "WebPurify verkoopt een scheldwoordenfilter en moderatiewerk door eigen menselijke teams. OpenModeration is AI-moderatie van reacties, afgestemd op je regels en je use cases: het grijpt in op je reacties, laat legitieme kritiek zichtbaar, laat twijfelgevallen door ons team afhandelen en legt elke beslissing schriftelijk uit."
+  },
+  {
+    "question": "Kan ik OpenModeration testen zonder WebPurify uit te zetten?",
+    "answer": "Ja. In sandboxmodus analyseert OpenModeration je echte reacties zonder iets te verbergen. WebPurify blijft gewoon draaien en je vergelijkt beide reeksen beslissingen op dezelfde reacties, elke beslissing van OpenModeration met een geschreven uitleg."
+  },
+  {
+    "question": "Welke AI gebruikt OpenModeration?",
+    "answer": "OpenModeration werkt met een eigen moderatie-AI, en bij gevoelige gevallen controleren andere AI-modellen de beslissingen. Komt er een beter of goedkoper model uit, dan sluit ons team het aan zonder dat jij iets hoeft te veranderen: je profiteert van de vooruitgang van AI-modellen."
+  },
+  {
+    "question": "Werkt WebPurify met menselijke moderatoren?",
+    "answer": "Ja. Volgens de website wordt de „live”-moderatie uitgevoerd door eigen moderatoren, bijvoorbeeld voor 2 cent per afbeelding. Bij OpenModeration worden twijfelgevallen door ons team afgehandeld; jij ziet elke beslissing en haar reden in realtime in één console."
+  }
+];
+---
+
+<BaseLayout title={title} description={description} jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: "Alternatieven", href: localizePath('/alternatives', locale) }, { label: "WebPurify" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Vergelijking
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Alternatief voor WebPurify: OpenModeration naast elkaar gezet</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Zoek je moderatie van reacties die de context leest in plaats van alleen scheldwoorden te filteren, dan is OpenModeration een sterk alternatief voor WebPurify: de AI verbergt duidelijke overtredingen, laat legitieme kritiek zichtbaar en ons team handelt de twijfelgevallen af. Wil je een leverancier die menselijke moderatoren levert voor afbeeldingen en video, dan is WebPurify daarvoor gemaakt.
+      </p>
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+        <a href={localizePath('/book-a-call', locale)} class="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-700">Plan een gesprek</a>
+        <a href="#comparison" class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700">Bekijk de vergelijking</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold tracking-tight text-surface-900 sm:text-3xl">Voor wie is WebPurify?</h2>
+      <p class="mt-4 text-surface-600">WebPurify, opgericht in 2007 in Irvine (Californië) en volgens de overnameaankondiging sinds 2025 onderdeel van IntouchCX, verkoopt een API voor een scheldwoordenfilter en moderatie van afbeeldingen en video's met AI en met eigen menselijke moderatoren. Het aanbod richt zich op bedrijven met door gebruikers gemaakte content, van websites en apps tot merkcampagnes. Elke dienst wordt apart gefactureerd: het filter per licentie, de menselijke beoordeling per afbeelding of per minuut.</p>
+    </div>
+  </section>
+
+  <section class="bg-white pb-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Kies OpenModeration als…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>je reacties modereert van een mediabedrijf, merkpagina's of publieke kanalen;</li>
+          <li>je een AI wilt die de context van een reactie leest, verder dan een scheldwoordenfilter;</li>
+          <li>je Facebook, Instagram, YouTube en WordPress wilt koppelen en elke beslissing in één console wilt zien;</li>
+          <li>je een geschreven uitleg bij elke beslissing, bouwstenen voor de DSA en hosting in de EU nodig hebt;</li>
+          <li>je een team wilt dat de moderatie afstemt op je regels en je use cases.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">WebPurify past misschien beter als…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>je wilt dat de leverancier menselijke moderatoren levert voor afbeeldingen en video's;</li>
+          <li>een goedkoop scheldwoordenfilter voor één domein voor jou volstaat;</li>
+          <li>afbeeldingen en video's die gebruikers uploaden je grootste risico zijn.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="comparison" class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">WebPurify en OpenModeration naast elkaar</h2>
+      <p class="mt-4 text-surface-500">Informatie over WebPurify afkomstig van de website webpurify.com, geraadpleegd op 30 oktober 2026. Prijzen exclusief btw.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Criterium</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">WebPurify</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.competitor}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Een AI-engine die de vooruitgang van de modellen volgt</h2>
+      <p class="mt-4 text-surface-600">WebPurify combineert AI-moderatie met eigen menselijke moderatoren; de geraadpleegde pagina's zeggen niet op welke AI-modellen het is gebaseerd.</p>
+      <p class="mt-4 text-surface-600">OpenModeration werkt met een eigen moderatie-AI, en bij gevoelige gevallen controleren andere AI-modellen de beslissingen. De engine is niet aan één model gebonden: komt er een beter of goedkoper model uit, dan sluit ons team het snel aan, zonder dat jij iets hoeft te veranderen. Zo gaat je moderatie mee met de vooruitgang van de AI-markt, in plaats van vast te zitten aan één eigen algoritme.</p>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Prijs van WebPurify en prijs van OpenModeration</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">WebPurify</h3>
+          <ul class="mt-4 list-disc space-y-2 pl-5 text-sm text-surface-600">
+          <li>Scheldwoordenfilter, pluginlicentie: $ 5 per maand voor één domein</li>
+          <li>Scheldwoordenfilter, standaardlicentie: $ 15 per maand voor één domein</li>
+          <li>Scheldwoordenfilter, bedrijfslicentie: $ 50 per maand voor maximaal 6 domeinen</li>
+          <li>Live-moderatie van afbeeldingen (menselijk): 2 cent per afbeelding, zonder minimum voor de standaardcriteria</li>
+          <li>Gratis proefperiode van 14 dagen</li>
+          </ul>
+        </div>
+        <div class="rounded-xl border border-brand-200 bg-brand-50 p-6">
+          <h3 class="font-semibold text-brand-700">OpenModeration</h3>
+          <ul class="mt-4 list-disc space-y-2 pl-5 text-sm text-surface-700">
+          <li>Gratis: tot 1.000 verzoeken per maand</li>
+          <li>Pro: € 99 per maand voor 10.000 verzoeken</li>
+          <li>Enterprise: op maat, voor grote volumes</li>
+          <li>On-premise installatie: alleen op aanvraag</li>
+          </ul>
+        </div>
+      </div>
+      <p class="mt-6 text-sm text-surface-500">WebPurify factureert elke dienst apart, en menselijke beoordeling door zijn teams wordt per stuk betaald. OpenModeration rekent per verzoek: de AI, de afhandeling van twijfelgevallen door ons team, de console, de connectoren en het activiteitenlogboek zijn inbegrepen.</p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Overstappen van WebPurify naar OpenModeration in 3 stappen</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="flex h-8 w-8 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white">1</div>
+          <h3 class="mt-4 font-semibold text-surface-900">Zet de sandboxmodus aan naast WebPurify</h3>
+          <p class="mt-2 text-sm text-surface-600">Koppel je website of je sociale pagina's. OpenModeration analyseert je echte reacties zonder iets te verbergen, terwijl WebPurify gewoon blijft draaien.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="flex h-8 w-8 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white">2</div>
+          <h3 class="mt-4 font-semibold text-surface-900">Stem de regels af met ons team</h3>
+          <p class="mt-2 text-sm text-surface-600">Het team van Logora stemt de moderatie af op je regels en je use cases. Je vergelijkt de beslissingen, en de geschreven uitleg erbij, reactie per reactie.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="flex h-8 w-8 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white">3</div>
+          <h3 class="mt-4 font-semibold text-surface-900">Zet de automatische acties aan</h3>
+          <p class="mt-2 text-sm text-surface-600">Overtuigen de resultaten je, dan worden duidelijke overtredingen automatisch verborgen en worden twijfelgevallen door ons team afgehandeld; jij volgt alles in de console.</p>
+        </div>
+      </div>
+      <div class="mt-8">
+        <a href={localizePath('/book-a-call', locale)} class="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-700">Plan een gesprek</a>
+      </div>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Veelgestelde vragen" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        WebPurify is een merk van de eigenaar ervan. De informatie komt van de website (geraadpleegd op 30 oktober 2026). Zie je een fout? Schrijf ons op <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+      <p class="mx-auto mt-4 max-w-3xl text-center text-xs text-surface-400">
+        Bronnen: <a href="https://www.webpurify.com/pricing/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">www.webpurify.com/pricing/</a> · <a href="https://www.webpurify.com/terms/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">www.webpurify.com/terms/</a> · <a href="https://www.webpurify.com/profanity-filter/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">www.webpurify.com/profanity-filter/</a> · <a href="https://www.webpurify.com/image-moderation/live/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">www.webpurify.com/image-moderation/live/</a> · <a href="https://www.newswire.ca/news-releases/intouchcx-expands-trust-amp-safety-solutions-with-strategic-acquisition-of-webpurify-843206076.html" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">www.newswire.ca/news-releases/intouchcx-expands-trust-amp-safety-solutions-with-strategic-acquisition-of-webpurify-843206076.html</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Meer weten</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/moderation-software', locale)} class="font-medium text-brand-600 hover:text-brand-500">De moderatiesoftware van OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/use-cases/news-publishers', locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderatie van reacties voor media &rarr;</a></li>
+        <li><a href={localizePath('/blog/comment-moderation-guide', locale)} class="font-medium text-brand-600 hover:text-brand-500">De gids voor het modereren van reacties &rarr;</a></li>
+        <li><a href={localizePath('/blog/ai-content-moderation-developer-guide', locale)} class="font-medium text-brand-600 hover:text-brand-500">Contentmoderatie met AI: gids voor developers &rarr;</a></li>
+        <li><a href={localizePath('/pricing', locale)} class="font-medium text-brand-600 hover:text-brand-500">De prijzen van OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/alternatives', locale)} class="font-medium text-brand-600 hover:text-brand-500">Alle vergelijkingen &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Ga verder dan een scheldwoordenfilter." subtitle="Plan een gesprek: we bekijken je regels en je use cases en starten daarna de sandbox op je echte reacties, naast WebPurify." buttonText="Plan een gesprek" buttonHref={localizePath('/book-a-call', locale)} />
+</BaseLayout>

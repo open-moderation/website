@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import CharterSupport from '../../components/CharterSupport.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import CTASection from '../../components/CTASection.astro';
+import RelatedComparisons from '../../components/RelatedComparisons.astro';
 import FAQ from '../../components/FAQ.astro';
 
 const pageJsonLd = {
@@ -10,50 +11,98 @@ const pageJsonLd = {
   "@type": "WebPage",
   "@id": "https://www.openmoderation.com/alternatives/conversario",
   "name": "Conversario alternative: how OpenModeration compares",
-  "description": "Conversario or OpenModeration? A sourced comparison of the two comment moderation tools: channels, public pricing, open source, EU hosting and a written reason for every decision.",
+  "description": "Looking for a Conversario alternative? Sourced comparison with OpenModeration: public pricing, a reason for every decision, EU hosting, own AI engine.",
   "inLanguage": "en",
   "about": { "@id": "https://www.openmoderation.com/#software" }
 };
 
 const rows = [
-  { feature: "Offering", competitor: "SaaS for dialogue management with four modules: moderation AI, analytics AI, dialogue assistant and organisation assistant", openmod: "A moderation platform: social media and WordPress connectors, plus a REST API and webhooks for everything else" },
-  { feature: "Channels", competitor: "Facebook, Instagram, YouTube, LinkedIn, TikTok and Threads, plus onsite comments, dialogue apps and forums", openmod: "Facebook, Instagram, YouTube and WordPress natively; everything else through the API" },
-  { feature: "Pricing", competitor: "Not published on the website. 30-day free trial with no automatic renewal", openmod: "Public: free up to 1,000 requests per month, Pro at €99 per month, self-hosting free" },
-  { feature: "How moderation is set up", competitor: "The AI sorts comments into categories. For each category, the community team chooses the action, from automatic approval to manual review", openmod: "Rules written in plain language, a threshold per category, a grey zone sent to your team for review" },
-  { feature: "Learning from decisions", competitor: "The AI learns from manual re-moderation decisions, according to the vendor", openmod: "Learns from your moderators' decisions and proposes rule adjustments that an admin applies in one click" },
-  { feature: "Written reason for every decision", competitor: "Not stated on their site", openmod: "Yes, for every decision, in the language of your choice, also returned by the API" },
-  { feature: "DSA", competitor: "Timeline of every moderation action to the second, a separate area for user reports, an API for reporting", openmod: "Activity log showing, for each decision, whether it was automatic or which moderator made it" },
-  { feature: "Data hosting", competitor: "Location not stated on their site. GDPR compliance is claimed", openmod: "Built and hosted in the European Union, GDPR" },
-  { feature: "Source code and self-hosting", competitor: "Not stated on their site", openmod: "Open source under AGPL v3, self-hosting with Docker" },
-  { feature: "AI models", competitor: "In-house moderation AI, with generative AI added since 2024", openmod: "Your choice: OpenAI, Azure, Mistral, Llama Guard, Perspective, LLMs, behind a single API" },
-  { feature: "References", competitor: "Including SPIEGEL, RTL, FAZ, NZZ, ORF and n-tv. Over 100 customers, according to the vendor", openmod: "Including L'Équipe, Südkurier, Sud Ouest, Challenges and Estadão" },
+  {
+    "feature": "Offering",
+    "competitor": "AI comment moderation by ferret go GmbH, with analytics and dialogue tools (modules named Protect, Detect, Interact and Connect). The same company also sells Engagently, an engagement platform for publishers' own sites",
+    "openmod": "A moderation platform adapted with you to your rules and use cases: social media and WordPress connectors, plus an API for everything else"
+  },
+  {
+    "feature": "Channels",
+    "competitor": "Facebook, Instagram, YouTube, LinkedIn, TikTok and Threads according to its company timeline, plus onsite systems, dialogue apps and forums",
+    "openmod": "Facebook Pages, Instagram professional accounts, YouTube channels and WordPress natively; everything else through the API"
+  },
+  {
+    "feature": "Pricing",
+    "competitor": "Not published on the website. The request form asks for your monthly comment volume; 30-day free trial",
+    "openmod": "Public: free up to 1,000 requests per month, Pro at €99 per month (10,000 requests), Enterprise on request"
+  },
+  {
+    "feature": "How moderation is set up",
+    "competitor": "Individual strictness settings, custom lexicon and rule set (masking, whitelisting), granular strictness and timing settings",
+    "openmod": "Adapted to your rules and use cases, a threshold per category, a grey zone sent to your team for review"
+  },
+  {
+    "feature": "AI models",
+    "competitor": "Its own moderation AI models since 2016, with generative AI added in 2024 (according to its website)",
+    "openmod": "Own moderation AI, cross-checked by other AI models; new models plugged in as they come out"
+  },
+  {
+    "feature": "Written reason for every decision",
+    "competitor": "Not specified on its website",
+    "openmod": "Yes, for every decision, in the language of your choice, also returned by the API"
+  },
+  {
+    "feature": "Testing before switching",
+    "competitor": "A “dry-run mode” that analyses channels without taking action",
+    "openmod": "Sandbox mode on real comments, nothing hidden, every decision explained"
+  },
+  {
+    "feature": "DSA",
+    "competitor": "Timeline of every moderation action to the second, a separate area for user reports, an API for reporting",
+    "openmod": "Notice and action, statements of reasons, human review of contested decisions, exportable figures, full activity log"
+  },
+  {
+    "feature": "Data hosting",
+    "competitor": "GDPR compliance is claimed; hosting location not specified on its website",
+    "openmod": "Built and hosted in the European Union, GDPR"
+  },
+  {
+    "feature": "References",
+    "competitor": "Over 100 Conversario customers according to the vendor; logos include SPIEGEL, RTL, FAZ, NZZ, ORF and n-tv",
+    "openmod": "Including L'Équipe, Südkurier, Sud Ouest, Challenges, actu.fr, Estadão and Egora"
+  },
+  {
+    "feature": "Team",
+    "competitor": "ferret go GmbH, Berlin area, focused on the German-speaking market",
+    "openmod": "Logora: Paris, Madrid and Berlin, with a native German speaker in Berlin for the DACH region"
+  }
 ];
 
 const faqItems = [
   {
-    question: "What is the best alternative to Conversario?",
-    answer: "It depends on what you need. If you want public pricing, open code, EU hosting and a written reason for every hidden comment, OpenModeration meets those criteria. If you need to moderate TikTok, LinkedIn or Threads, or want analytics and a dialogue assistant in the same tool, Conversario covers that and OpenModeration does not.",
+    "question": "What is the best Conversario alternative?",
+    "answer": "It depends on what you need. If you want public pricing, EU hosting, a written reason for every hidden comment and an AI engine that takes on new models as they come out, OpenModeration meets those criteria. If you need to moderate TikTok, LinkedIn or Threads, or want analytics and an onsite engagement platform from the same vendor, Conversario's publisher covers that and OpenModeration does not."
   },
   {
-    question: "How much does Conversario cost?",
-    answer: "Conversario does not publish its prices. Its contact form asks for your monthly comment volume, and it offers a 30-day free trial. OpenModeration publishes its pricing: free up to 1,000 requests per month, Pro at €99 per month for 10,000 requests, custom plans for large volumes, and free self-hosting.",
+    "question": "How much does Conversario cost?",
+    "answer": "Conversario does not publish its prices. Its request form asks for your monthly comment volume, and it offers a 30-day free trial. OpenModeration publishes its pricing: free up to 1,000 requests per month, Pro at €99 per month for 10,000 requests, and Enterprise on request."
   },
   {
-    question: "Can I test OpenModeration without switching off Conversario?",
-    answer: "Yes. In sandbox mode, OpenModeration analyses your real comments without taking any action. Your current tool keeps moderating, and you compare the two sets of decisions comment by comment, each with the written reason from OpenModeration.",
+    "question": "Conversario vs Ferret Go: what is the difference?",
+    "answer": "There is no rivalry: Conversario is a product of ferret go GmbH (Ferret Go), which also publishes the engagement platform Engagently. Our page “Ferret Go vs Conversario: the difference and an alternative” explains who does what and how OpenModeration compares with both."
   },
   {
-    question: "Does OpenModeration help with DSA obligations?",
-    answer: "OpenModeration writes a reason for every decision and logs whether each comment was hidden automatically or by a named moderator. Both feed directly into the statement of reasons required by Article 17 of the DSA.",
+    "question": "Can I test OpenModeration without switching off Conversario?",
+    "answer": "Yes. In sandbox mode, OpenModeration analyses your real comments without taking any action. Your current tool keeps moderating, and you compare the two sets of decisions comment by comment, each with the written reason from OpenModeration."
   },
   {
-    question: "Does OpenModeration work for German-language publishers?",
-    answer: "Yes. Südkurier, a German regional daily, moderates its comments with OpenModeration. Our team writes the moderation charter with each newsroom from its existing rules and real reader comments, then fine-tunes it over the first weeks.",
+    "question": "Does OpenModeration help with DSA obligations?",
+    "answer": "Yes. OpenModeration writes a reason for every decision, logs whether each comment was hidden automatically or by a named moderator, and provides notice and action, human review of contested decisions and exportable figures."
   },
+  {
+    "question": "Does OpenModeration work for German-language publishers?",
+    "answer": "Yes. Südkurier, a German regional daily, moderates its comments with OpenModeration. Sylvia, based in Berlin, works with German-speaking clients in German, and our team adapts the moderation to each newsroom's rules and use cases."
+  }
 ];
 ---
 
-<BaseLayout title="Conversario Alternative: OpenModeration Compared (2026)" description="Conversario or OpenModeration? A sourced comparison: channels, public pricing, open source, EU hosting and a written reason for every decision." jsonLd={pageJsonLd}>
+<BaseLayout title="Conversario Alternative: Comparison with OpenModeration" description="Looking for a Conversario alternative? Sourced comparison with OpenModeration: public pricing, a reason for every decision, EU hosting, own AI engine." jsonLd={pageJsonLd}>
   <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Alternatives", href: "/alternatives" }, { label: "Conversario" }]} />
   <section class="bg-gradient-to-b from-brand-50 to-white py-20">
     <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
@@ -62,7 +111,10 @@ const faqItems = [
       </div>
       <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Conversario alternative: how OpenModeration compares</h1>
       <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
-        Conversario, made by ferret go GmbH near Berlin, is widely used by German-language publishers and broadcasters. OpenModeration makes different choices: public pricing, open code, EU hosting and a written reason for every decision. Here are the differences, with sources.
+        Conversario, made by ferret go GmbH near Berlin, is widely used by German-language publishers and broadcasters. OpenModeration makes different choices: public pricing, EU hosting and a written reason for every decision. Here are the differences, with sources.
+      </p>
+      <p class="mx-auto mt-6 max-w-2xl rounded-xl border border-surface-200 bg-white px-5 py-4 text-sm text-surface-600">
+        Good to know: Conversario is a product of ferret go GmbH (Ferret Go). <a href="/alternatives/ferret-go-vs-conversario" class="text-brand-600 hover:text-brand-500">Ferret Go vs Conversario: the difference</a> · <a href="/alternatives/ferret-go" class="text-brand-600 hover:text-brand-500">Ferret Go alternative</a>.
       </p>
     </div>
   </section>
@@ -74,9 +126,9 @@ const faqItems = [
         <ul class="mt-4 space-y-2 text-sm text-surface-700">
           <li>you want to know the price before talking to sales;</li>
           <li>your newsroom needs a written reason for every hidden comment;</li>
-          <li>you would rather write your moderation rules in your own words than pick categories;</li>
-          <li>you care about auditable code that you can also host yourself;</li>
-          <li>you want to test the new tool alongside your current one before it acts on anything.</li>
+          <li>you want our team to adapt the moderation with you to your rules and use cases;</li>
+          <li>you want a full audit trail of every moderation decision;</li>
+          <li>you want your moderation to benefit from the progress of new AI models.</li>
         </ul>
       </div>
       <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
@@ -93,7 +145,7 @@ const faqItems = [
   <section class="bg-surface-50 py-20">
     <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
       <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Conversario and OpenModeration, side by side</h2>
-      <p class="mt-4 text-surface-500">Information about Conversario taken from its website, conversar.io, consulted on October 20, 2026.</p>
+      <p class="mt-4 text-surface-500">Information about Conversario taken from conversar.io and ferret-go.com, consulted on October 30, 2026.</p>
       <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
         <table class="w-full text-left text-sm">
           <thead>
@@ -131,13 +183,21 @@ const faqItems = [
         </div>
         <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
           <h3 class="font-semibold text-surface-900">A test that leaves live moderation alone</h3>
-          <p class="mt-2 text-sm text-surface-600">In sandbox mode, OpenModeration analyses your real comments without hiding anything. Conversario keeps moderating, and you compare both results before you change a thing.</p>
+          <p class="mt-2 text-sm text-surface-600">In sandbox mode, OpenModeration analyses your real comments without hiding anything. Conversario keeps moderating, and you compare both results before you change a thing. To be fair, Conversario also offers a dry-run mode according to its website; with OpenModeration, every decision comes with its reason.</p>
         </div>
         <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-          <h3 class="font-semibold text-surface-900">Public prices, open code</h3>
-          <p class="mt-2 text-sm text-surface-600">Our prices are on our website and you can start for free. The code is released under AGPL v3. If you want to keep everything in-house, you can run OpenModeration on your own servers with Docker.</p>
+          <h3 class="font-semibold text-surface-900">Public prices</h3>
+          <p class="mt-2 text-sm text-surface-600">Our prices are on our website and you can start for free. If you need an on-premise deployment, it is possible on request: <a href="/book-a-call" class="text-brand-600 hover:text-brand-500">book a call</a>.</p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">The AI engine, and why it matters</h2>
+      <p class="mt-4 text-surface-600">OpenModeration runs its own moderation AI. On delicate cases, its decision is cross-checked by other AI models before a comment is hidden or sent to your team.</p>
+      <p class="mt-4 text-surface-600">The platform is not tied to one model: when a better or cheaper AI model comes out, our team plugs it in quickly, with nothing to change on your side. Your moderation follows the progress of the AI market instead of being frozen on a single in-house algorithm.</p>
     </div>
   </section>
 
@@ -147,7 +207,7 @@ const faqItems = [
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <FAQ title="Frequently asked questions" items={faqItems} />
       <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
-        Conversario is a trademark of its owner, ferret go GmbH. Information about it comes from <a href="https://www.conversar.io/en" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">conversar.io</a> (consulted on October 20, 2026). Spotted a mistake? Write to us at <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+        Conversario is a trademark of its owner, ferret go GmbH. Sources (consulted on October 30, 2026): <a href="https://www.conversar.io/en" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">conversar.io</a>, <a href="https://www.conversar.io/en/about" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">conversar.io/en/about</a>, <a href="https://www.conversar.io/en/product" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">conversar.io/en/product</a>, <a href="https://www.conversar.io/en/dsa-comment-moderation" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">conversar.io/en/dsa-comment-moderation</a>, <a href="https://conversar.io/en/demo" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">conversar.io/en/demo</a>, <a href="https://www.ferret-go.com" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">ferret-go.com</a>. Conversario vs Ferret Go: see <a href="/alternatives/ferret-go-vs-conversario" class="text-brand-600 hover:text-brand-500">the difference and an alternative</a>. Spotted a mistake? Write to us at <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
       </p>
     </div>
   </section>
@@ -159,11 +219,17 @@ const faqItems = [
         <li><a href="/use-cases/news-publishers" class="font-medium text-brand-600 hover:text-brand-500">Comment moderation for news publishers &rarr;</a></li>
         <li><a href="/social-media-moderation" class="font-medium text-brand-600 hover:text-brand-500">Social media moderation with OpenModeration &rarr;</a></li>
         <li><a href="/dsa-compliance/statement-of-reasons" class="font-medium text-brand-600 hover:text-brand-500">The statement of reasons required by the DSA &rarr;</a></li>
+        <li><a href="/alternatives/ferret-go-vs-conversario" class="font-medium text-brand-600 hover:text-brand-500">Ferret Go vs Conversario: the difference and an alternative &rarr;</a></li>
+        <li><a href="/alternatives/ferret-go" class="font-medium text-brand-600 hover:text-brand-500">Ferret Go alternative &rarr;</a></li>
+        <li><a href="/moderation-software" class="font-medium text-brand-600 hover:text-brand-500">OpenModeration moderation software &rarr;</a></li>
         <li><a href="/alternatives" class="font-medium text-brand-600 hover:text-brand-500">All comparisons &rarr;</a></li>
+        <li><a href="/book-a-call" class="font-medium text-brand-600 hover:text-brand-500">Book a call &rarr;</a></li>
         <li><a href="/pricing" class="font-medium text-brand-600 hover:text-brand-500">OpenModeration pricing &rarr;</a></li>
       </ul>
     </div>
   </section>
+
+  <RelatedComparisons />
 
   <CTASection title="Compare OpenModeration with Conversario on your own comments." subtitle="Start in sandbox mode: OpenModeration judges your real comments and explains every decision, without touching your live moderation." />
 </BaseLayout>

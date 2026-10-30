@@ -1,0 +1,411 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CTASection from '../../components/CTASection.astro';
+import GuideComparisons from '../../components/GuideComparisons.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
+
+const pageTitle = "Comment Moderation: The Complete Guide (2026)";
+const pageDescription = "How to moderate comments: the methods compared, what your rules should cover, grey areas, the DSA, choosing comment moderation software and 10 best practices.";
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Comment Moderation: The Complete Guide to Moderating Comments",
+  "description": pageDescription,
+  "inLanguage": "en",
+  "datePublished": "2026-10-30",
+  "dateModified": "2026-10-30",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/blog/comment-moderation-guide" }
+};
+
+const methods = [
+  { name: "Pre-moderation", how: "Every comment is reviewed before it goes live.", speed: "Slow: publication waits for a moderator", cost: "High", risk: "Low for illegal content, high for the conversation", scale: "Poor" },
+  { name: "Post-moderation", how: "Comments go live, then a moderator reviews them.", speed: "Instant", cost: "High", risk: "Medium: harmful content stays up until review", scale: "Medium" },
+  { name: "Reactive moderation", how: "You only act on user reports.", speed: "Instant", cost: "Low", risk: "High: nothing is seen until someone reports it", scale: "Good, but passive" },
+  { name: "Automatic filters", how: "Banned word lists, link blocking, fixed rules.", speed: "Instant", cost: "Low", risk: "High: false positives on criticism, irony and coded insults slip through", scale: "Good" },
+  { name: "Hybrid AI + human", how: "AI applies your rules, doubtful cases go to a team.", speed: "Seconds", cost: "Moderate", risk: "Low when rules and thresholds are well tuned", scale: "Very good" },
+];
+
+const actions = [
+  { action: "Hide", what: "The comment is no longer visible to the public. On Facebook, the author and their friends can still see it.", when: "Insults, spam, aggressive off-topic posts: the everyday case, and reversible." },
+  { action: "Delete or reject", what: "The comment is removed for good (or refused before it goes live).", when: "Clearly illegal content, scams, someone else's personal data." },
+  { action: "Ban or restrict", what: "The author can no longer comment, for a set period or permanently.", when: "Repeat offenders, targeted harassment, spam accounts, coordinated raids." },
+];
+
+const faqItems = [
+  {
+    question: "What is comment moderation?",
+    answer: "Comment moderation is the set of rules and actions that decide which comments stay visible under your articles, videos and posts: publish, hide, delete, send to review or restrict an author, and then explain the decision.",
+  },
+  {
+    question: "How do you moderate comments effectively?",
+    answer: "Write clear rules with examples, automate the obvious cases, send doubtful ones to a human, explain every decision to its author, keep a record of everything and review your rules regularly based on the mistakes you see.",
+  },
+  {
+    question: "Should I hide or delete a comment?",
+    answer: "Hiding is the sensible default: it is reversible and it is enough to protect the conversation. Keep deletion for clearly illegal or dangerous content. Either way, record the decision and the reason for it.",
+  },
+  {
+    question: "Does the DSA apply to comments on my website?",
+    answer: "Yes, as soon as you host content posted by your users, such as comments, you act as a hosting service under the DSA. The exact obligations depend on the nature and size of your service. This is not legal advice.",
+  },
+  {
+    question: "Can comments be moderated automatically?",
+    answer: "Yes. AI can read each comment in context, apply your rules within seconds and hide what breaks them. Doubtful cases should still be decided by a human, and authors should know when automated means were used.",
+  },
+  {
+    question: "Should negative comments be deleted?",
+    answer: "No. Criticism of your brand, your newsroom or a product, even harsh criticism, is not a reason to remove a comment. Deleting negative feedback damages trust more than the comment ever would. What gets removed is abuse, hate, threats, spam and illegal content.",
+  },
+  {
+    question: "What should I look for in comment moderation software?",
+    answer: "Connectors for all your platforms, the ability to apply your own rules rather than a generic grid, a single review queue for doubtful cases, a written reason for every decision, an audit log, and EU hosting if GDPR applies to you.",
+  },
+  {
+    question: "How much does comment moderation cost?",
+    answer: "An in-house team or an agency is paid by time or by volume. An automatic tool costs a fraction of that. OpenModeration has a free plan to get started, a Pro plan, and custom proposals for large volumes.",
+  },
+];
+
+const linkClass = "text-brand-600 hover:text-brand-500";
+---
+
+<BaseLayout title={pageTitle} description={pageDescription} ogType="article" jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Blog", href: "/blog" }, { label: "Comment moderation guide" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-30">October 30, 2026</time>
+        <span>&middot;</span>
+        <span>12 min read</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Comment Moderation: The Complete Guide to Moderating Comments</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Comments under an article, a YouTube video or a Facebook post can bring your audience together,
+        or drive it away. This guide covers how to moderate comments in practice: the methods available,
+        the rules worth writing down, the grey areas, what the EU's Digital Services Act expects, and how
+        to choose between an in-house team, an agency and comment moderation software.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Key takeaways</h2>
+      <ul>
+        <li><strong>Moderating means deciding</strong> which comments stay visible, based on rules set in advance, and being able to explain each decision.</li>
+        <li><strong>The approach that scales</strong> pairs AI that applies your rules within seconds with a human team for the doubtful cases.</li>
+        <li><strong>Your rules matter more than your tool</strong>: what goes, what stays (criticism, disagreement) and how you handle irony or politics.</li>
+        <li><strong>The DSA</strong> requires sites that host comments to act on reports, give reasons for decisions and let users challenge them.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">What is comment moderation and why does it matter?</h2>
+      <p>
+        Comment moderation is the set of rules and actions that decide what stays visible in your comment
+        sections: publish, hide, delete, send to review, restrict an author. It covers your website and app,
+        but also your Facebook Pages, Instagram accounts and YouTube channels, where comments appear under
+        your name.
+      </p>
+      <p>It matters for four reasons.</p>
+      <ul>
+        <li><strong>Community.</strong> A handful of aggressive commenters is enough to silence everyone else. A well-kept space makes people want to join in, come back and debate.</li>
+        <li><strong>Brand image.</strong> A hateful comment under your post reads as something you tolerate. For a brand, a scam comment under a sponsored post hits your customers directly.</li>
+        <li><strong>Advertisers.</strong> Publishers know advertisers look at the environment their ads appear in. A comment thread out of control works against you.</li>
+        <li><strong>Legal exposure.</strong> If you host comments, you have obligations once illegal content is reported to you. Doing nothing, or being unable to prove what you did, leaves you exposed.</li>
+      </ul>
+      <p>
+        Newsrooms can read our page on <a href="/use-cases/news-publishers" class={linkClass}>comment moderation for news publishers</a>;
+        brands, the one on <a href="/use-cases/brands-retail" class={linkClass}>comment moderation for brands and retail</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">What are the main comment moderation methods?</h2>
+      <p>
+        There are five broad ways to moderate. You can combine them, but each one strikes a different
+        balance between speed, cost and risk.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Pre-moderation</h3>
+      <p>
+        Every comment waits for a moderator's approval before it is published. Nothing harmful appears,
+        but the conversation stalls: a comment posted at 10 pm may not show up until the next morning.
+        It makes sense for very sensitive topics or low-volume spaces.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Post-moderation</h3>
+      <p>
+        Comments go live immediately and are reviewed afterwards. The discussion flows, but problem content
+        stays visible until a moderator gets to it, and evening, weekend or breaking-news spikes quickly
+        overwhelm the team.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Reactive moderation (user reports)</h3>
+      <p>
+        You only step in when a user reports a comment. It is cheap, but it leaves your audience to find
+        the problems for you. A report button is still essential, because the DSA requires one, but it
+        cannot be your only line of defence.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Automatic moderation</h3>
+      <p>
+        Traditional tools rely on banned word lists and fixed rules. They are fast, but they block
+        legitimate criticism and let irony, disguised insults and scams through. Modern AI reads the
+        comment in context instead. See our page on
+        <a href="/automatic-comment-moderation" class={linkClass}>automatic comment moderation</a>.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Hybrid moderation: AI plus humans</h3>
+      <p>
+        AI applies your rules to every comment within seconds. What clearly complies is published, what
+        clearly breaks the rules is hidden, and the grey zone goes to a review queue where your team
+        decides. It is the only method that handles volume, speed and judgment at the same time.
+      </p>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Method</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">How it works</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Speed</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Cost</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Risk</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Scale</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {methods.map((m) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{m.name}</td>
+              <td class="px-4 py-3 text-surface-600">{m.how}</td>
+              <td class="px-4 py-3 text-surface-600">{m.speed}</td>
+              <td class="px-4 py-3 text-surface-600">{m.cost}</td>
+              <td class="px-4 py-3 text-surface-600">{m.risk}</td>
+              <td class="px-4 py-3 text-surface-600">{m.scale}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">What should your comment moderation rules cover?</h2>
+      <p>
+        Before any tool, you need rules. They should be precise enough that any moderator, human or AI,
+        reaches the same decision on the same comment. Our guide to
+        <a href="/content-moderation-policy" class={linkClass}>writing a content moderation policy</a> goes
+        into the method; here is the core of it.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">What to remove</h3>
+      <ul>
+        <li>Insults and personal attacks, whether aimed at other commenters, your journalists or your staff.</li>
+        <li>Hate targeting ethnicity, religion, gender, sexual orientation or disability.</li>
+        <li>Threats and calls to violence.</li>
+        <li>Harassment, including repeated messages aimed at the same person.</li>
+        <li>Spam, scam links, fake giveaways and people impersonating your brand.</li>
+        <li>Other people's personal data (addresses, phone numbers) and clearly illegal content.</li>
+      </ul>
+      <h3 class="text-lg font-semibold text-surface-900">What to keep</h3>
+      <p>
+        Spell it out: <strong>criticism and disagreement are not grounds for removal</strong>. A reader
+        challenging an article, a customer unhappy with a delivery, someone taking your argument apart: they
+        all belong. Moderation that wipes out negative feedback loses its audience's trust faster than any
+        troll could.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Grey areas</h3>
+      <ul>
+        <li><strong>Irony and sarcasm.</strong> "Great, another masterpiece of journalism" is criticism, not abuse. The reverse also happens: an ironic compliment can carry an attack.</li>
+        <li><strong>Coded language.</strong> Letters swapped for numbers, emojis, nicknames or references that point at a community: word lists miss them, context does not.</li>
+        <li><strong>Politics.</strong> A strong view on a party or a policy is legitimate. Attacking a side's voters as people may not be. Decide where the line is before the election, not during it.</li>
+        <li><strong>Off-topic.</strong> Fine under a brand post, jarring under an article about a tragedy. The rule can depend on the space.</li>
+      </ul>
+      <h3 class="text-lg font-semibold text-surface-900">Always add examples</h3>
+      <p>Each rule works better with concrete cases on both sides of the line.</p>
+      <ul>
+        <li>"This article is biased and poorly sourced": <strong>keep</strong>, it is criticism.</li>
+        <li>"The writer of this piece is an idiot": <strong>hide</strong>, it is a personal attack.</li>
+        <li>"Your customer service never answers, I'm disappointed": <strong>keep</strong>, and reply.</li>
+        <li>"Win a free iPhone, click here" under your post: <strong>hide</strong>, it is a scam.</li>
+        <li>"Another genius in government": <strong>keep</strong>, it is political sarcasm.</li>
+      </ul>
+      <p>
+        With a tool like OpenModeration, these rules are written in plain language, the way you would explain
+        them to a moderator, with no word lists to maintain. The examples are then used to test the
+        moderation on your real comments before it is switched on.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Hide, delete or ban: what should you do with a comment?</h2>
+      <p>
+        Not every decision carries the same weight. Scale your response to the severity and to repeat behaviour.
+      </p>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Action</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Effect</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">When to use it</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {actions.map((a) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{a.action}</td>
+              <td class="px-4 py-3 text-surface-600">{a.what}</td>
+              <td class="px-4 py-3 text-surface-600">{a.when}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <p>
+        Hiding can be undone, which matters when a decision is challenged. Platforms do not all offer the
+        same actions: in OpenModeration, refused content is hidden on Facebook and Instagram and rejected
+        on YouTube.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Explaining decisions to authors</h3>
+      <p>
+        A comment that vanishes without explanation feeds the feeling of censorship. A clear reason, on the
+        other hand, teaches the rule and defuses most complaints. A good explanation says:
+      </p>
+      <ul>
+        <li>what was done (hidden, deleted, account restricted);</li>
+        <li>which rule applies, stated simply;</li>
+        <li>whether the decision was automated or made by a moderator;</li>
+        <li>how to challenge it.</li>
+      </ul>
+      <p>
+        This is more than good manners: the DSA calls it a statement of reasons.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">What does EU law require? The DSA and comment moderation</h2>
+      <p>
+        The EU Digital Services Act (DSA) has applied in full since 2024. A website that hosts its users'
+        comments acts as a hosting service under the DSA. In practice, four articles shape how you moderate.
+      </p>
+      <ul>
+        <li>
+          <strong>Article 16, notice and action.</strong> Anyone must be able to report content they believe
+          is illegal, easily and electronically. You handle the report diligently and objectively, and tell
+          the person who reported it what you decided.
+          More in <a href="/dsa-compliance/notice-and-action" class={linkClass}>DSA notice and action (Article 16)</a>.
+        </li>
+        <li>
+          <strong>Article 17, statement of reasons.</strong> When you hide or remove content, you tell its
+          author what was decided, on which facts, on which basis (the law or your terms), whether automated
+          means were used, and what redress is available.
+          See <a href="/dsa-compliance/statement-of-reasons" class={linkClass}>the statement of reasons, with an example</a>.
+        </li>
+        <li>
+          <strong>Article 20, internal complaints.</strong> Online platforms must offer an internal
+          complaint-handling system, so a commenter can challenge a decision and get it reviewed in a way
+          that does not rely solely on automated means.
+        </li>
+        <li>
+          <strong>Article 15, transparency.</strong> The services concerned publish regular reports on their
+          moderation: number of notices, decisions taken, use of automation, complaints received.
+        </li>
+      </ul>
+      <p>
+        Not every obligation applies to everyone in the same way: it depends on the nature and size of your
+        service. Our <a href="/dsa-compliance" class={linkClass}>DSA compliance page</a> and the
+        <a href="/blog/dsa-compliance-sme-guide" class={linkClass}>DSA guide for SMEs</a> go further.
+      </p>
+      <p class="text-sm text-surface-400">
+        This summary is not legal advice. To know exactly what applies to your service, talk to a lawyer.
+      </p>
+      <p>
+        The key point: for every decision, you should be able to show when it was made, by whom or by what,
+        under which rule and for what reason. Without a log, you cannot answer a complaint or an audit.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">In-house team, agency or comment moderation software?</h2>
+      <h3 class="text-lg font-semibold text-surface-900">An in-house team</h3>
+      <p>
+        Your moderators know your editorial line and your audience. But a team cannot cover nights, weekends
+        and news spikes without growing, quality varies from one person to the next, and repeated exposure
+        to violent content takes a toll on the people doing the work.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">A moderation agency</h3>
+      <p>
+        An agency absorbs the volume, but bills by volume or by time spent, with delays at night and at
+        weekends. Training external moderators on your rules takes time, and they do not know your editorial
+        line. Compare with our page on <a href="/outsourced-moderation" class={linkClass}>an alternative to outsourced moderation</a>.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Comment moderation software</h3>
+      <p>
+        Software applies the same rules to every comment, day and night, within seconds, for a fraction of
+        the cost of manual moderation. Only the cases that need a human are left, and some services handle those for you. The catch: a generic
+        tool, delivered without support, applies a grid that is not yours.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">How to choose comment moderation software</h3>
+      <ul>
+        <li><strong>Connectors:</strong> it plugs into your site (API, WordPress) and your Facebook, Instagram and YouTube pages, so you are not juggling interfaces.</li>
+        <li><strong>Your rules and your use cases:</strong> you write them in plain language instead of living with a generic grid or maintaining word lists.</li>
+        <li><strong>Context:</strong> each comment is read with the topic of the article or post, in its own language, to catch irony and coded insults.</li>
+        <li><strong>Adjustable thresholds:</strong> you decide what is hidden automatically, published or sent to review, category by category.</li>
+        <li><strong>One review queue:</strong> doubtful cases from every platform land in the same place, with the rule at stake.</li>
+        <li><strong>A written reason for every decision:</strong> one you can show to the author as well as to a regulator.</li>
+        <li><strong>Audit log:</strong> every decision, automatic or human, is recorded and can be exported for transparency reporting.</li>
+        <li><strong>Built-in reporting:</strong> your report button feeds the same queue as automatic moderation.</li>
+        <li><strong>Hosting and GDPR:</strong> where the data is stored, and for how long.</li>
+        <li><strong>Support:</strong> someone helps you turn your rules into instructions and test them on your real comments before going live.</li>
+        <li><strong>Trial:</strong> you can try it on your own comments before you commit.</li>
+      </ul>
+      <p>
+        That is the checklist we built <a href="/moderation-software" class={linkClass}>OpenModeration's moderation software</a>
+        around: AI that applies your rules and your use cases, two thresholds per category with a grey zone
+        handled by our team, a single <a href="/dashboard" class={linkClass}>moderation console</a>, a written
+        reason for every decision and an audit log. OpenModeration is built and hosted in the European Union,
+        and our team sets it up with you. You have nothing to do, but you see every decision in real time and can step in.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Comment moderation best practices: a 10-point checklist</h2>
+      <ol>
+        <li><strong>Publish your rules</strong> in plain words, where people comment.</li>
+        <li><strong>Protect criticism and disagreement</strong> explicitly in those rules.</li>
+        <li><strong>Back every rule with examples</strong> of what goes and what stays.</li>
+        <li><strong>Automate the obvious cases</strong> so abuse and scams disappear within seconds, even at 3 am.</li>
+        <li><strong>Keep a human on the grey zone</strong>: irony, politics, sensitive topics.</li>
+        <li><strong>Hide rather than delete</strong> when in doubt, so you can change your mind.</li>
+        <li><strong>Explain every decision</strong> to its author, with the rule involved and a way to appeal.</li>
+        <li><strong>Act on every report</strong> and tell the reporter what happened.</li>
+        <li><strong>Log everything</strong>: decision, reason, human or automated, date.</li>
+        <li><strong>Review your rules regularly</strong> based on mistakes and appeals, especially when your news cycle or audience changes.</li>
+      </ol>
+      <p>
+        To see what a reasoned decision looks like, paste a comment into our
+        <a href="/demo" class={linkClass}>moderation demo</a>: the decision and its explanation appear within
+        seconds, no sign-up needed.
+      </p>
+    </div>
+
+    <div class="mt-12">
+      <FAQ title="Comment moderation FAQ" items={faqItems} />
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Keep exploring</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/content-moderation-policy" class="font-medium text-brand-600 hover:text-brand-500">How to write a content moderation policy, with a template &rarr;</a></li>
+        <li><a href="/automatic-comment-moderation" class="font-medium text-brand-600 hover:text-brand-500">Automatic comment moderation with AI &rarr;</a></li>
+        <li><a href="/outsourced-moderation" class="font-medium text-brand-600 hover:text-brand-500">Outsource your moderation without agency costs &rarr;</a></li>
+        <li><a href="/dsa-compliance" class="font-medium text-brand-600 hover:text-brand-500">What the DSA requires from sites that host comments &rarr;</a></li>
+        <li><a href="/use-cases/news-publishers" class="font-medium text-brand-600 hover:text-brand-500">Comment moderation for news publishers &rarr;</a></li>
+        <li><a href="/use-cases/brands-retail" class="font-medium text-brand-600 hover:text-brand-500">Comment moderation for brands &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

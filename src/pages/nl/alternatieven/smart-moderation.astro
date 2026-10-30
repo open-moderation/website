@@ -1,0 +1,213 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const title = "Smart Moderation alternatief: vergelijking en prijzen";
+const description = "Op zoek naar een alternatief voor Smart Moderation? Vergelijk platforms, prijzen, AI-modellen, DSA-tools en hosting in de EU met OpenModeration.";
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/nl/alternatieven/smart-moderation",
+  "name": title,
+  "description": description,
+  "inLanguage": "nl",
+  "about": {
+    "@id": "https://www.openmoderation.com/#software"
+  }
+};
+
+const rows = [
+  { feature: "Aanbod", competitor: "Moderatie van reacties op sociale media: herkent en verbergt in realtime illegale of ongepaste reacties, spam en trollen", openmod: "AI-moderatie van reacties voor media, merken en overheidsinstanties, samen met jou ingericht door het team van Logora" },
+  { feature: "Platforms", competitor: "Facebook-pagina's en -advertenties, Facebook-reactieplugin, Instagram-profielen en -advertenties, YouTube-kanalen, HubSpot-blogs, integraties via API", openmod: "Websites (API), Facebook-pagina's, professionele Instagram-accounts, YouTube-kanalen, WordPress" },
+  { feature: "Inrichting", competitor: "Selfservice; het systeem „leert wat ongepast is” voor elke gebruiker, volgens de website", openmod: "Door ons team afgestemd op je regels en je use cases: duidelijke overtredingen verborgen, legitieme kritiek zichtbaar" },
+  { feature: "AI-modellen", competitor: "Niet vermeld: de website spreekt van natuurlijke taalverwerking en machine learning", openmod: "Eigen moderatie-AI, gecontroleerd door andere AI-modellen; nieuwe modellen worden aangesloten zodra ze uitkomen" },
+  { feature: "Menselijke beoordeling", competitor: "Eén dashboard en een iOS-app", openmod: "Twijfelgevallen naar menselijke beoordeling in één console" },
+  { feature: "Reden bij elke beslissing", competitor: "Niet vermeld op de website", openmod: "Een geschreven reden bij elke beslissing en een volledig activiteitenlogboek" },
+  { feature: "DSA", competitor: "Niet vermeld op de website", openmod: "Melding en actie, motivering van beslissingen, menselijke beoordeling van betwiste beslissingen, exporteerbare cijfers" },
+  { feature: "Hosting", competitor: "Niet duidelijk vermeld op de website", openmod: "Gehost in de EU, AVG" },
+  { feature: "Prijs", competitor: "Basic $ 79/maand bij jaarlijkse betaling ($ 99 maandelijks), 1 profiel; Pro $ 199 ($ 249 maandelijks), tot 3 profielen; Enterprise op maat. Onbeperkt aantal reacties", openmod: "Gratis tot 1.000 verzoeken/maand; Pro € 99/maand voor 10.000 verzoeken; Enterprise op aanvraag" },
+  { feature: "Uitproberen", competitor: "Gratis proefperiode (duur niet vermeld)", openmod: "Sandboxmodus met je echte reacties, zonder iets te verbergen" },
+];
+
+const faqItems = [
+  {
+    question: "Wat is het beste alternatief voor Smart Moderation?",
+    answer: "OpenModeration past als je naast Facebook, Instagram en YouTube ook je website modereert, als je twijfelgevallen naar menselijke beoordeling wilt sturen en als je een geschreven reden bij elke beslissing, tools voor de DSA en hosting in de EU nodig hebt. Wil je alleen automatisch verbergen op een paar profielen tegen een vaste prijs, dan kan Smart Moderation volstaan.",
+  },
+  {
+    question: "Wat kost Smart Moderation?",
+    answer: "Volgens de prijspagina kost Basic $ 79 per maand bij jaarlijkse betaling ($ 99 maandelijks) voor 1 profiel, Pro $ 199 per maand bij jaarlijkse betaling ($ 249 maandelijks) voor maximaal 3 profielen, en is Enterprise op maat, met een onbeperkt aantal reacties. OpenModeration is gratis tot 1.000 verzoeken per maand en kost daarna € 99 per maand voor 10.000 verzoeken.",
+  },
+  {
+    question: "Smart Moderation vs OpenModeration: wat is het verschil?",
+    answer: "Smart Moderation is een selfservicetool die ongewenste reacties op sociale profielen verbergt. OpenModeration wordt samen met jou ingericht door het team van Logora, dekt ook websites en WordPress, stuurt twijfelgevallen naar menselijke beoordeling in één console en bewaart een geschreven reden en een logboek bij elke beslissing.",
+  },
+  {
+    question: "Kan ik OpenModeration testen zonder Smart Moderation uit te zetten?",
+    answer: "Ja. In sandboxmodus analyseert OpenModeration je echte reacties zonder iets te verbergen, zodat je beide tools op dezelfde reacties vergelijkt voordat je ook maar één instelling aanpast.",
+  },
+  {
+    question: "Modereert OpenModeration ook de reacties op mijn website?",
+    answer: "Ja. Websites koppel je via de API en WordPress heeft een eigen connector, zodat je artikelen en je sociale pagina's dezelfde regels volgen. Media als Estadão, L'Équipe en Sud Ouest gebruiken OpenModeration.",
+  },
+  {
+    question: "Wie richt OpenModeration in?",
+    answer: "Het team van Logora, sinds 2019 in Parijs. We stemmen de moderatie af op je regels en je use cases, starten de sandbox samen met jou en stellen haar bij in de eerste weken.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: "Alternatieven", href: localizePath('/alternatives', locale) }, { label: "Smart Moderation" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Vergelijking
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Alternatief voor Smart Moderation: vergelijking met OpenModeration</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Het beste alternatief voor Smart Moderation hangt af van wat je modereert: heb je naast Facebook, Instagram en YouTube ook je website, een geschreven reden bij elke beslissing en tools voor de DSA nodig, dan is OpenModeration daarvoor gemaakt. Wil je alleen automatisch reacties verbergen op een paar sociale profielen tegen een vaste prijs, dan doet Smart Moderation dat; hier zijn de verschillen, met bronnen.
+      </p>
+      <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a href={localizePath('/book-a-call', locale)} class="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-500">Plan een gesprek</a>
+        <a href={localizePath('/pricing', locale)} class="inline-flex items-center gap-2 rounded-lg border border-surface-200 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">Bekijk de prijzen</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold tracking-tight text-surface-900 sm:text-3xl">Voor wie is Smart Moderation?</h2>
+      <p class="mt-4 text-surface-600">Volgens de website herkent en verbergt Smart Moderation in realtime illegale of ongepaste reacties, spam en trollen op Facebook, Instagram en YouTube, en wordt het gebruikt door „duizenden merken en publieke profielen”. Je meldt je aan met een Facebook-account, koppelt je profielen en de dienst houdt de reacties doorlopend in de gaten.</p>
+      <p class="mt-4 text-surface-600">Het is een selfservicetool met een prijs per profiel en een onbeperkt aantal reacties. De website noemt geen klanten en vermeldt niet duidelijk waar de data worden gehost.</p>
+    </div>
+  </section>
+
+  <section class="bg-white pb-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Kies OpenModeration als…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>de reacties op je eigen website net zo gemodereerd moeten worden als je sociale pagina's;</li>
+          <li>je een team wilt dat de moderatie samen met jou afstemt op je regels en je use cases;</li>
+          <li>twijfelgevallen naar menselijke beoordeling in één console moeten gaan;</li>
+          <li>je een geschreven reden bij elke beslissing, een activiteitenlogboek en tools voor de DSA nodig hebt;</li>
+          <li>je data in de Europese Unie moeten worden gehost.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">Smart Moderation past misschien beter als…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>je maar een paar profielen op Facebook, Instagram of YouTube modereert en selfservice wilt;</li>
+          <li>je een vaste prijs per profiel met een onbeperkt aantal reacties verkiest;</li>
+          <li>je reacties op Facebook-advertenties, de Facebook-reactieplugin of HubSpot-blogs moet dekken;</li>
+          <li>je de moderatie wilt volgen vanuit een iOS-app.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Smart Moderation en OpenModeration, punt voor punt</h2>
+      <p class="mt-4 text-surface-500">Informatie over Smart Moderation afkomstig van de website smartmoderation.com, geraadpleegd op 30 oktober 2026. Zegt de website er niets over, dan geven we dat aan.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Criterium</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Smart Moderation</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.competitor}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Een AI-engine die de markt bijhoudt</h2>
+      <p class="mt-4 text-surface-600">OpenModeration gebruikt een eigen moderatie-AI, en bij gevoelige gevallen controleren andere AI-modellen de beslissingen. De engine is niet aan één model gebonden: komt er een beter of goedkoper model uit, dan sluit ons team het snel aan, zonder dat jij iets hoeft te veranderen.</p>
+      <p class="mt-4 text-surface-600">De website van Smart Moderation spreekt van natuurlijke taalverwerking en machine learning, zonder te zeggen welke modellen het gebruikt. Met OpenModeration gaat je moderatie mee met de vooruitgang van AI-modellen, in plaats van vast te zitten aan één algoritme.</p>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Prijzen van Smart Moderation en van OpenModeration</h2>
+      <p class="mt-4 text-surface-600">Smart Moderation publiceert zijn prijzen: Basic voor $ 79 per maand bij jaarlijkse betaling ($ 99 bij maandelijkse betaling) voor 1 profiel en 1 gebruiker, Pro voor $ 199 per maand bij jaarlijkse betaling ($ 249 maandelijks) voor maximaal 3 profielen, en een Enterprise-abonnement op maat vanaf 4 profielen. Alle abonnementen vermelden een onbeperkt aantal reacties.</p>
+      <p class="mt-4 text-surface-600">OpenModeration is gratis tot 1.000 verzoeken per maand, daarna € 99 per maand voor 10.000 verzoeken met Pro; Enterprise op aanvraag. Eerlijk is eerlijk: met één zeer actieve pagina waarop je alleen automatisch wilt verbergen, kan een vaste prijs per profiel goedkoper uitvallen. Modereer je meerdere pagina's en je website, met menselijke beoordeling en DSA-traceerbaarheid, vergelijk dan het totaal met je echte volumes.</p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Overstappen van Smart Moderation naar OpenModeration in 3 stappen</h2>
+      <ol class="mt-8 grid gap-6 md:grid-cols-3">
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">1</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Koppel in sandboxmodus</h3>
+          <p class="mt-2 text-sm text-surface-600">Koppel je Facebook-pagina's, Instagram-accounts en YouTube-kanalen, en je website via de API of WordPress. Er wordt niets verborgen: Smart Moderation blijft gewoon werken.</p>
+        </li>
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">2</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Vergelijk en stel bij</h3>
+          <p class="mt-2 text-sm text-surface-600">Vergelijk een paar weken lang de beslissingen van beide tools op dezelfde reacties. Ons team stemt de moderatie af op je regels en je use cases.</p>
+        </li>
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">3</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Stap over</h3>
+          <p class="mt-2 text-sm text-surface-600">Zet automatisch verbergen aan in OpenModeration en uit in Smart Moderation, zodat de twee tools nooit op dezelfde reactie ingrijpen.</p>
+        </li>
+      </ol>
+      <p class="mt-8 text-surface-600">Wil je het eerst zien op je eigen reacties? <a href={localizePath('/book-a-call', locale)} class="font-medium text-brand-600 hover:text-brand-500">Plan een gesprek met het team van Logora</a> en we richten de sandbox samen met je in.</p>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Veelgestelde vragen" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        Smart Moderation is een merk van de eigenaar ervan. Bronnen: <a href="https://smartmoderation.com" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">smartmoderation.com</a>, <a href="https://smartmoderation.com/pricing" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">smartmoderation.com/pricing</a>, <a href="https://smartmoderation.com/about" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">smartmoderation.com/about</a>, <a href="https://smartmoderation.com/privacy" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">smartmoderation.com/privacy</a> (geraadpleegd op 30 oktober 2026). Zie je een fout? Schrijf ons op <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Meer weten</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/social-media-moderation', locale)} class="font-medium text-brand-600 hover:text-brand-500">Socialemediamoderatie met OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/blog/hide-facebook-comments-automatically', locale)} class="font-medium text-brand-600 hover:text-brand-500">Zo verberg je Facebook-reacties automatisch &rarr;</a></li>
+        <li><a href={localizePath('/moderation-software', locale)} class="font-medium text-brand-600 hover:text-brand-500">De moderatiesoftware van OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/pricing', locale)} class="font-medium text-brand-600 hover:text-brand-500">Prijzen van OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/alternatives', locale)} class="font-medium text-brand-600 hover:text-brand-500">Alle vergelijkingen &rarr;</a></li>
+        <li><a href={localizePath('/book-a-call', locale)} class="font-medium text-brand-600 hover:text-brand-500">Plan een gesprek met ons team &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Zet OpenModeration naast Smart Moderation, op je eigen reacties." subtitle="Sandboxmodus met echte reacties, zonder iets te verbergen, met een geschreven reden bij elke beslissing. Gratis tot 1.000 verzoeken per maand." />
+</BaseLayout>

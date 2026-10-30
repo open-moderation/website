@@ -1,0 +1,243 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const title = "Lasso alternatief: vergelijking met OpenModeration";
+const description = "Lasso Moderation of OpenModeration? Vergelijking met bronnen: integraties, Facebook en Instagram, openbare prijzen, DSA en EU-hosting van beide tools.";
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/nl/alternatieven/lasso-moderation",
+  "name": "Lasso Moderation alternatief: vergelijking met OpenModeration",
+  "description": description,
+  "inLanguage": "nl",
+  "about": {
+    "@id": "https://www.openmoderation.com/#software"
+  }
+};
+
+const rows = [
+  {
+    "feature": "Hosting",
+    "them": "Ontwikkeld en gehost in de EU, AVG",
+    "openmod": "Gehost in de EU, conform de AVG"
+  },
+  {
+    "feature": "DSA",
+    "them": "Motivering bij elke actie en exporteerbare transparantieverslagen",
+    "openmod": "Melding en actie, motivering, menselijke beoordeling van betwiste beslissingen, exporteerbare cijfers en een volledig activiteitenlogboek"
+  },
+  {
+    "feature": "Content",
+    "them": "Tekst, afbeeldingen, video en audio",
+    "openmod": "Tekstreacties"
+  },
+  {
+    "feature": "Belangrijkste klanten",
+    "them": "Community's, chat en gaming (CrazyGames, Insticator, Tutorful, COOL Media)",
+    "openmod": "Media, merken en overheidsinstellingen"
+  },
+  {
+    "feature": "Integraties",
+    "them": "Slack, Bettermode, Circle, TalkJS, Stream, Sendbird, PubNub, Tencent Cloud Chat, REST API",
+    "openmod": "Websites (API), WordPress, Facebook-pagina's, professionele Instagram-accounts en YouTube-kanalen"
+  },
+  {
+    "feature": "Facebook, Instagram, YouTube, WordPress",
+    "them": "Niet vermeld op de website",
+    "openmod": "Standaardkoppelingen"
+  },
+  {
+    "feature": "Prijs",
+    "them": "Lite vanaf $ 99 per maand (10.000 items, 1 moderator), Pro vanaf $ 499 per maand (100.000, 3 moderatoren), Enterprise op aanvraag",
+    "openmod": "Openbaar: gratis tot 1.000 verzoeken per maand, Pro voor € 99 per maand voor 10.000, Enterprise op aanvraag"
+  },
+  {
+    "feature": "Inrichting",
+    "them": "Niet vermeld op de website",
+    "openmod": "Het team van Logora richt het samen met jou in volgens je regels en je use cases"
+  },
+  {
+    "feature": "Talen",
+    "them": "Meer dan 200",
+    "openmod": "Uitleg in de taal die je kiest"
+  },
+  {
+    "feature": "AI-modellen",
+    "them": "Aanpasbare detectiemodellen en maatwerkmodellen per sector; herkomst niet vermeld",
+    "openmod": "Eigen moderatie-AI, gecontroleerd door andere AI-modellen; nieuwe modellen worden toegevoegd zodra ze uitkomen"
+  }
+];
+
+const faqItems = [
+  {
+    "question": "Wat is het beste alternatief voor Lasso Moderation?",
+    "answer": "Dat hangt af van waar je reacties staan. Modereer je Facebook, Instagram, YouTube of WordPress, dan koppelt OpenModeration daar standaard mee, met een gratis abonnement en een schriftelijke uitleg bij elke beslissing. Modereer je chats, community's, afbeeldingen of audio, dan dekt Lasso die."
+  },
+  {
+    "question": "Wat kost Lasso Moderation?",
+    "answer": "Lasso publiceert zijn prijzen: Lite vanaf $ 99 per maand voor 10.000 items en 1 moderator, Pro vanaf $ 499 per maand voor 100.000 items en 3 moderatoren, Enterprise op aanvraag. OpenModeration begint met een gratis abonnement van 1.000 verzoeken per maand, daarna Pro voor € 99 per maand voor 10.000 verzoeken en Enterprise op aanvraag. Bij 10.000 items per maand ligt de instapprijs dicht bij elkaar; het verschil zit in het gratis abonnement."
+  },
+  {
+    "question": "Lasso Moderation of OpenModeration: welke kies je?",
+    "answer": "Kies Lasso Moderation als je afbeeldingen, video of audio moet modereren. Kies OpenModeration als je reacties modereert op Facebook, Instagram, YouTube of WordPress, als je openbare prijzen en een schriftelijke uitleg bij elke beslissing wilt, met een team dat de moderatie samen met jou inricht volgens je regels en je use cases."
+  },
+  {
+    "question": "Kan ik OpenModeration testen zonder Lasso Moderation te verlaten?",
+    "answer": "Ja. In sandboxmodus analyseert OpenModeration je echte reacties zonder iets te verbergen. Lasso Moderation blijft gewoon werken en je vergelijkt beide reeksen beslissingen, reactie per reactie, voordat je iets verandert."
+  },
+  {
+    "question": "Welke AI-modellen gebruikt OpenModeration?",
+    "answer": "OpenModeration werkt met een eigen moderatie-AI, en bij gevoelige gevallen controleren andere AI-modellen die beslissing. Komt er een beter of goedkoper model uit, dan voegt het team dat snel toe, zonder dat jij iets hoeft te veranderen: je moderatie profiteert van de vooruitgang van AI-modellen."
+  },
+  {
+    "question": "Wie stelt de moderatieregels in?",
+    "answer": "Bij OpenModeration richt het team van Logora de moderatie samen met jou in, op basis van je regels, je use cases en je echte reacties, en stemt die de eerste weken bij."
+  }
+];
+---
+
+<BaseLayout title={title} description={description} jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: "Alternatieven", href: localizePath('/alternatives', locale) }, { label: "Lasso Moderation" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Vergelijking
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Lasso Moderation alternatief: vergelijking met OpenModeration</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Het beste alternatief voor Lasso Moderation hangt af van waar je reacties staan: modereer je Facebook, Instagram, YouTube of WordPress, dan koppelt OpenModeration daar standaard mee, met een gratis abonnement en een schriftelijke uitleg bij elke beslissing. Modereer je chats, community's, afbeeldingen of audio, dan dekt Lasso die.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold tracking-tight text-surface-900">Voor wie is Lasso Moderation?</h2>
+      <p class="mt-4 text-surface-600">Op papier staat Lasso Moderation het dichtst bij OpenModeration: volgens de website is het ontwikkeld en gehost in de EU en geeft het een motivering bij elke actie. Het richt zich op online community's, chat-apps en gaming, modereert tekst, afbeeldingen, video en audio, en integreert met Slack, Circle, Bettermode, Stream, Sendbird of PubNub.</p>
+      <p class="mt-4 text-surface-600">OpenModeration modereert met AI de reacties van media, merken en overheidsinstellingen, op hun website en op hun Facebook-pagina's, Instagram-accounts en YouTube-kanalen. Het verbergt duidelijke overtredingen automatisch, laat legitieme kritiek zichtbaar en laat twijfelgevallen door ons team beoordelen, terwijl je elke beslissing realtime in één console ziet. Het team van Logora, sinds 2019 in Parijs, richt het samen met jou in volgens je regels en je use cases.</p>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Lasso Moderation en OpenModeration, punt voor punt</h2>
+      <p class="mt-4 text-surface-500">Informatie over Lasso Moderation afkomstig van de eigen website, lassomoderation.com, geraadpleegd op 30 oktober 2026.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Criterium</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Lasso Moderation</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.them}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Kies OpenModeration als…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>je reacties modereert op Facebook, Instagram, YouTube of WordPress;</li>
+          <li>je wilt beginnen met een gratis abonnement;</li>
+          <li>je wilt dat een team de moderatie samen met jou inricht volgens je regels en je use cases;</li>
+          <li>je een mediabedrijf leidt en wilt dat de AI elke reactie leest samen met de kop van het artikel en de draad.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">Lasso Moderation past misschien beter als…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>je afbeeldingen, video of audio moet modereren;</li>
+          <li>je community draait op Slack, Circle, Bettermode, Stream, Sendbird of iets vergelijkbaars;</li>
+          <li>je transparantieverslagen wilt die de tool zelf genereert.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h2 class="text-xl font-bold text-surface-900">Een AI die de vooruitgang van AI-modellen volgt</h2>
+          <p class="mt-3 text-sm text-surface-600">OpenModeration werkt met een eigen moderatie-AI, en bij gevoelige gevallen controleren andere AI-modellen die beslissing. Komt er een beter of goedkoper model uit, dan voegt het team dat snel toe, zonder dat jij iets hoeft te veranderen. Zo volgt je moderatie de vooruitgang van de AI-markt in plaats van vast te zitten aan één algoritme. Lasso spreekt op zijn website van aanpasbare modellen en maatwerkmodellen per sector, zonder de herkomst te noemen.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h2 class="text-xl font-bold text-surface-900">Prijzen: Lasso Moderation vs OpenModeration</h2>
+          <p class="mt-3 text-sm text-surface-600">Lasso publiceert zijn prijzen: Lite vanaf $ 99 per maand voor 10.000 items en 1 moderator, Pro vanaf $ 499 per maand voor 100.000 items en 3 moderatoren, Enterprise op aanvraag. OpenModeration begint met een gratis abonnement van 1.000 verzoeken per maand, daarna Pro voor € 99 per maand voor 10.000 verzoeken en Enterprise op aanvraag. Bij 10.000 items per maand ligt de instapprijs dicht bij elkaar; het verschil zit in het gratis abonnement. Een on-premise installatie is mogelijk op aanvraag. <a href={localizePath('/book-a-call', locale)} class="font-medium text-brand-600 hover:text-brand-500">Plan een gesprek</a> om jouw situatie door te rekenen.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">In 3 stappen van Lasso Moderation naar OpenModeration</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">1. Test in sandboxmodus</h3>
+          <p class="mt-2 text-sm text-surface-600">Koppel je website, WordPress of je Facebook-, Instagram- en YouTube-pagina's. OpenModeration analyseert echte reacties zonder iets te verbergen, terwijl Lasso Moderation gewoon blijft werken.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">2. Stem af met het team van Logora</h3>
+          <p class="mt-2 text-sm text-surface-600">We vergelijken de beslissingen met die van je huidige tool en stemmen de moderatie af op je regels en je use cases, met de schriftelijke uitleg bij elke beslissing in beeld.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">3. Activeer kanaal per kanaal</h3>
+          <p class="mt-2 text-sm text-surface-600">Je zet de moderatie aan op één kanaal en daarna op de andere. Twijfelgevallen behandelt ons team, je ziet elke beslissing realtime en je kunt op elk moment ingrijpen.</p>
+        </div>
+      </div>
+      <p class="mt-8 text-center text-surface-600">Wil je het zien met je eigen reacties? <a href={localizePath('/book-a-call', locale)} class="font-medium text-brand-600 hover:text-brand-500">Plan een gesprek met het team</a>.</p>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Veelgestelde vragen" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        Lasso Moderation is een merk van de betreffende eigenaar. Bronnen: <a href="https://www.lassomoderation.com" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">www.lassomoderation.com</a>, <a href="https://www.lassomoderation.com/pricing" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">www.lassomoderation.com/pricing</a> (geraadpleegd op 30 oktober 2026). Fout gezien? Mail ons op <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Meer weten</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/connectors', locale)} class="font-medium text-brand-600 hover:text-brand-500">De koppelingen van OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/dsa-compliance/statement-of-reasons', locale)} class="font-medium text-brand-600 hover:text-brand-500">De motivering die de DSA verplicht stelt &rarr;</a></li>
+        <li><a href={localizePath('/blog/comment-moderation-guide', locale)} class="font-medium text-brand-600 hover:text-brand-500">Gids voor reactiemoderatie &rarr;</a></li>
+        <li><a href={localizePath('/moderation-software', locale)} class="font-medium text-brand-600 hover:text-brand-500">De moderatiesoftware van OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/pricing', locale)} class="font-medium text-brand-600 hover:text-brand-500">De prijzen van OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/alternatives', locale)} class="font-medium text-brand-600 hover:text-brand-500">Alle vergelijkingen &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Vergelijk je huidige moderatie met OpenModeration." subtitle="Test OpenModeration in sandboxmodus op je eigen reacties, zonder iets te verbergen. Gratis tot 1.000 verzoeken per maand." buttonText="Plan een gesprek" buttonHref={localizePath('/book-a-call', locale)} />
+</BaseLayout>

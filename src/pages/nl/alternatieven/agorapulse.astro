@@ -1,0 +1,214 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const title = "Agorapulse alternatief: vergelijking met OpenModeration";
+const description = "Agorapulse of OpenModeration voor het modereren van reacties? Regels op trefwoorden of AI, prijzen, AI-modellen, DSA-tools en hoe je beide samen gebruikt.";
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/nl/alternatieven/agorapulse",
+  "name": "Agorapulse alternatief voor reactiemoderatie: vergelijking met OpenModeration",
+  "description": description,
+  "inLanguage": "nl",
+  "about": {
+    "@id": "https://www.openmoderation.com/#software"
+  }
+};
+
+const rows = [
+  { feature: "Aanbod", competitor: "Suite voor socialemediabeheer: publiceren, inbox, monitoring, rapportages en ROI", openmod: "Alleen automatische moderatie van reacties, samen met je ingericht door het team van Logora" },
+  { feature: "Netwerken", competitor: "Facebook, Instagram, Threads, X, LinkedIn, YouTube, Pinterest, Google Business, TikTok, Bluesky, Reddit", openmod: "Websites (API), Facebook-pagina's, professionele Instagram-accounts, YouTube-kanalen, WordPress" },
+  { feature: "Reacties op je website", competitor: "Niet vermeld op de geraadpleegde pagina's", openmod: "Ja, via de API of de WordPress-koppeling" },
+  { feature: "Hoe de automatische moderatie werkt", competitor: "Regels op basis van trefwoorden, links, emoji's, aantal woorden, taal of type item; acties: verbergen, verwijderen, labelen, toewijzen, blokkeren", openmod: "AI afgestemd op je regels en je use cases: duidelijke overtredingen verborgen, legitieme kritiek zichtbaar, twijfelgevallen beoordeeld door ons team" },
+  { feature: "Automatische regels per abonnement", competitor: "1 regel per sociaal profiel met 1 voorwaarde in Standard, Professional en Advanced; onbeperkt in Custom", openmod: "Automatische moderatie in elk abonnement, ook het gratis abonnement" },
+  { feature: "AI-modellen", competitor: "Niet vermeld; AI wordt ingezet voor schrijven, alt-teksten, samenvattingen van rapportages en antwoordsuggesties, terwijl de moderatieregels volgens het helpcentrum op voorwaarden werken", openmod: "Eigen moderatie-AI, gecontroleerd door andere AI-modellen; nieuwe modellen worden toegevoegd zodra ze uitkomen" },
+  { feature: "Reden bij elke beslissing", competitor: "Niet vermeld op de geraadpleegde pagina's", openmod: "Een schriftelijke reden bij elke beslissing en een volledig activiteitenlogboek" },
+  { feature: "DSA", competitor: "Niet vermeld op de geraadpleegde pagina's", openmod: "Melding en actie, motivering, menselijke beoordeling van betwiste beslissingen, exporteerbare cijfers" },
+  { feature: "Hosting", competitor: "Niet vermeld op de geraadpleegde pagina's", openmod: "Gehost in de EU, AVG" },
+  { feature: "Prijs", competitor: "Per gebruiker: Standard $ 79, Professional $ 119, Advanced $ 149 per maand bij jaarlijkse betaling ($ 99, $ 149, $ 199 maandelijks), 10 profielen; Custom op offerte; 30 dagen gratis proberen", openmod: "Gratis tot 1.000 verzoeken per maand; Pro € 99 per maand voor 10.000 verzoeken; Enterprise op aanvraag" },
+  { feature: "Publiceren, inbox, monitoring, rapportages", competitor: "Ja, de kern van de suite", openmod: "Nee, OpenModeration modereert alleen" },
+];
+
+const faqItems = [
+  {
+    question: "Wat is het beste alternatief voor Agorapulse om reacties te modereren?",
+    answer: "Als je vooral moet modereren, is OpenModeration daarvoor gemaakt: een AI die elke reactie leest, twijfelgevallen door ons team laat behandelen, bij elke beslissing een reden noteert en een logboek bijhoudt voor de DSA, op je sociale kanalen en op je website. Moet je publiceren, monitoren en rapporteren op veel netwerken, dan doet Agorapulse wat OpenModeration niet doet.",
+  },
+  {
+    question: "Wat kost Agorapulse?",
+    answer: "Volgens de prijspagina, per gebruiker: Standard $ 79, Professional $ 119 en Advanced $ 149 per maand bij jaarlijkse betaling ($ 99, $ 149 en $ 199 maandelijks), elk met 10 profielen, en Custom op offerte, met 30 dagen gratis proberen. OpenModeration is gratis tot 1.000 verzoeken per maand en kost daarna € 99 per maand voor 10.000 verzoeken.",
+  },
+  {
+    question: "Agorapulse vs OpenModeration: wat is het verschil?",
+    answer: "Agorapulse is een complete suite voor socialemediabeheer waarvan de automatische moderatie werkt met regels op voorwaarden, één regel per profiel onder het Custom-abonnement. OpenModeration modereert alleen: de AI wordt afgestemd op je regels en je use cases, twijfelgevallen worden door ons team beoordeeld en elke beslissing krijgt een schriftelijke reden.",
+  },
+  {
+    question: "Kan ik Agorapulse houden en OpenModeration gebruiken voor de moderatie?",
+    answer: "Ja. Houd Agorapulse voor publiceren, reageren en rapporteren, en laat de automatische moderatie over aan OpenModeration. Zet alleen de regels voor verbergen en verwijderen in één van de twee tools uit, zodat ze nooit op dezelfde reactie ingrijpen.",
+  },
+  {
+    question: "Kan ik OpenModeration testen zonder mijn Agorapulse-instellingen aan te passen?",
+    answer: "Ja. In sandboxmodus analyseert OpenModeration je echte reacties zonder iets te verbergen, zodat je de beslissingen eerst vergelijkt met je huidige regels.",
+  },
+  {
+    question: "Wie richt OpenModeration in?",
+    answer: "Het team van Logora, sinds 2019 in Parijs. We stemmen de moderatie af op je regels en je use cases, starten de sandbox samen met je en stellen hem bij in de eerste weken. Media als Estadão, L'Équipe en Sud Ouest gebruiken OpenModeration.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: "Alternatieven", href: localizePath('/alternatives', locale) }, { label: "Agorapulse" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Vergelijking
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Agorapulse alternatief voor reactiemoderatie: vergelijking met OpenModeration</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Zoek je automatische moderatie van reacties, dan is OpenModeration het Agorapulse-alternatief dat daarvoor gebouwd is: een AI die elke reactie leest, duidelijke overtredingen verbergt, legitieme kritiek zichtbaar laat en twijfelgevallen door ons team laat behandelen, altijd met een schriftelijke reden die je in realtime ziet. Agorapulse blijft sterker in publiceren, de gedeelde inbox en rapportages, en veel teams kunnen de twee naast elkaar gebruiken.
+      </p>
+      <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a href={localizePath('/book-a-call', locale)} class="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-500">Plan een gesprek</a>
+        <a href={localizePath('/pricing', locale)} class="inline-flex items-center gap-2 rounded-lg border border-surface-200 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">Bekijk de prijzen</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold tracking-tight text-surface-900 sm:text-3xl">Voor wie is Agorapulse?</h2>
+      <p class="mt-4 text-surface-600">Agorapulse is een suite voor socialemediabeheer voor merken en bureaus: publiceren, een gedeelde inbox voor reacties, berichten en reviews, social listening, rapportages en ROI-meting. Volgens de homepage gebruiken meer dan 31.000 socialemediamanagers de tool dagelijks. Hij dekt Facebook, Instagram, Threads, X, LinkedIn, YouTube, Pinterest, Google Business, TikTok, Bluesky en Reddit.</p>
+      <p class="mt-4 text-surface-600">De inbox heeft automatische moderatie: volgens het helpcentrum worden regels geactiveerd door voorwaarden als trefwoorden, links, alleen emoji's, aantal woorden of taal, en kunnen ze verbergen, verwijderen, labelen, toewijzen of blokkeren. De abonnementen Standard, Professional en Advanced geven één regel per sociaal profiel met één voorwaarde; onbeperkte regels komen met het Custom-abonnement.</p>
+    </div>
+  </section>
+
+  <section class="bg-white pb-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Kies OpenModeration als…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>regels op trefwoorden verkeerd gespelde beledigingen doorlaten en kritiek verbergen die toevallig het verkeerde woord bevat;</li>
+          <li>je een AI wilt die elke reactie in context leest, terwijl ons team de twijfelgevallen behandelt;</li>
+          <li>je een schriftelijke reden nodig hebt voor elke verborgen reactie, een activiteitenlogboek en DSA-tools;</li>
+          <li>de reacties op je website of WordPress op dezelfde manier gemodereerd moeten worden als je pagina's;</li>
+          <li>je gegevens in de EU gehost moeten worden en je een team wilt dat de moderatie samen met je inricht.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">Agorapulse past misschien beter als…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>je publiceren, een contentkalender, social listening en rapportages in één tool wilt;</li>
+          <li>je team de meeste tijd besteedt aan het beantwoorden van klanten in reacties, berichten en reviews;</li>
+          <li>je TikTok, LinkedIn, X, Threads, Pinterest, Reddit, Bluesky of Google Business beheert;</li>
+          <li>je teamfuncties wilt zoals toewijzen, botsingsdetectie, opgeslagen antwoorden en CRM-koppelingen.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Agorapulse en OpenModeration naast elkaar</h2>
+      <p class="mt-4 text-surface-500">Informatie over Agorapulse afkomstig van agorapulse.com en het helpcentrum, geraadpleegd op 30 oktober 2026. Waar de website niets zegt, geven we dat aan.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Criterium</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Agorapulse</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.competitor}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Een AI die de vooruitgang van AI-modellen volgt</h2>
+      <p class="mt-4 text-surface-600">OpenModeration gebruikt een eigen moderatie-AI, en in gevoelige gevallen controleren andere AI-modellen de beslissingen. De engine hangt niet af van één model: komt er een beter of goedkoper model uit, dan voegt ons team het snel toe, zonder dat jij iets hoeft te veranderen.</p>
+      <p class="mt-4 text-surface-600">Agorapulse zet AI in voor schrijven, het samenvatten van rapportages en antwoordsuggesties, en het helpcentrum beschrijft de automatische moderatie als regels op voorwaarden zoals trefwoorden. OpenModeration zet AI in de moderatie zelf, en die moderatie volgt de vooruitgang van AI-modellen in plaats van vast te zitten aan één algoritme.</p>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Prijzen: Agorapulse vs OpenModeration</h2>
+      <p class="mt-4 text-surface-600">Agorapulse publiceert prijzen per gebruiker: Standard voor $ 79, Professional voor $ 119 en Advanced voor $ 149 per maand bij jaarlijkse betaling ($ 99, $ 149 en $ 199 bij maandelijkse betaling), elk met 10 sociale profielen, plus een Custom-abonnement op offerte. Je kunt 30 dagen gratis proberen zonder creditcard. Moderatie van reacties op advertenties begint bij Professional; onbeperkte regels vereisen Custom.</p>
+      <p class="mt-4 text-surface-600">OpenModeration is gratis tot 1.000 verzoeken per maand, daarna € 99 per maand voor 10.000 verzoeken met Pro, en Enterprise op aanvraag; er is geen prijs per gebruiker. Het zijn niet dezelfde producten: houd je Agorapulse voor publiceren en reageren, dan is OpenModeration een extra moderatielaag, geen vervanging van je suite.</p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">In 3 stappen OpenModeration naast Agorapulse</h2>
+      <ol class="mt-8 grid gap-6 md:grid-cols-3">
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">1</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Koppel in sandboxmodus</h3>
+          <p class="mt-2 text-sm text-surface-600">Koppel je Facebook-pagina's, Instagram-accounts en YouTube-kanalen, en zo nodig je website. Er wordt niets verborgen: je Agorapulse-regels blijven werken.</p>
+        </li>
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">2</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Vergelijk en stel bij</h3>
+          <p class="mt-2 text-sm text-surface-600">Vergelijk een paar weken lang de beslissingen van OpenModeration met je Agorapulse-regels op dezelfde reacties. Ons team stemt de moderatie af op je regels en je use cases.</p>
+        </li>
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">3</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Verdeel de rollen</h3>
+          <p class="mt-2 text-sm text-surface-600">Zet automatisch verbergen aan in OpenModeration en schakel de regels voor verbergen en verwijderen in Agorapulse uit op dezelfde profielen. Houd Agorapulse voor publiceren, reageren en rapporteren.</p>
+        </li>
+      </ol>
+      <p class="mt-8 text-surface-600">Wil je het eerst zien met je eigen reacties? <a href={localizePath('/book-a-call', locale)} class="font-medium text-brand-600 hover:text-brand-500">Plan een gesprek met het team van Logora</a>, dan richten we de sandbox samen met je in.</p>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Veelgestelde vragen" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        Agorapulse is een merk van de betreffende eigenaar. Bronnen: <a href="https://www.agorapulse.com" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">agorapulse.com</a>, <a href="https://www.agorapulse.com/pricing/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">agorapulse.com/pricing</a>, <a href="https://www.agorapulse.com/features/social-media-inbox/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">agorapulse.com/features/social-media-inbox</a>, <a href="https://support.agorapulse.com/en/articles/10419838-how-to-set-up-automated-moderation-in-the-inbox" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">support.agorapulse.com/en/articles/10419838-how-to-set-up-automated-moderation-in-the-inbox</a> (geraadpleegd op 30 oktober 2026). Fout gezien? Mail ons op <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Meer weten</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/blog/social-media-moderation-guide', locale)} class="font-medium text-brand-600 hover:text-brand-500">Socialemediamoderatie: de complete gids &rarr;</a></li>
+        <li><a href={localizePath('/blog/hide-facebook-comments-automatically', locale)} class="font-medium text-brand-600 hover:text-brand-500">Facebook-reacties automatisch verbergen &rarr;</a></li>
+        <li><a href={localizePath('/moderation-software', locale)} class="font-medium text-brand-600 hover:text-brand-500">De moderatiesoftware van OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/pricing', locale)} class="font-medium text-brand-600 hover:text-brand-500">De prijzen van OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/alternatives', locale)} class="font-medium text-brand-600 hover:text-brand-500">Alle vergelijkingen &rarr;</a></li>
+        <li><a href={localizePath('/book-a-call', locale)} class="font-medium text-brand-600 hover:text-brand-500">Plan een gesprek met ons team &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Vergelijk je huidige moderatie met OpenModeration." subtitle="Test OpenModeration in sandboxmodus op je eigen reacties, zonder iets te verbergen. Gratis tot 1.000 verzoeken per maand." buttonText="Plan een gesprek" buttonHref={localizePath('/book-a-call', locale)} />
+</BaseLayout>

@@ -1,13 +1,15 @@
 ---
+import { bookingUrl } from '../../../i18n/ui';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
 import Breadcrumb from '../../../components/Breadcrumb.astro';
 
 const articleJsonLd = {
   "@context": "https://schema.org",
   "@type": "Article",
-  "headline": "Cumplir la DSA es más sencillo con moderación open source",
-  "description": "Cómo cumplir los requisitos de la Ley de Servicios Digitales de la UE con herramientas open source: registros de auditoría, informes de transparencia y soberanía de los datos.",
+  "headline": "Cumplir la DSA de forma sencilla en la moderación de comentarios",
+  "description": "Cómo cumplir la Ley de Servicios Digitales (DSA): decisiones explicadas por escrito, registro de auditoría, informes de transparencia y datos en la UE.",
   "inLanguage": "es",
   "datePublished": "2026-06-08",
   "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
@@ -22,8 +24,8 @@ const articleJsonLd = {
 };
 ---
 
-<BaseLayout title="Cumplimiento de la DSA con moderación open source" description="Cómo cumplir la Ley de Servicios Digitales (DSA) con herramientas open source: registro de auditoría, informes de transparencia y soberanía de los datos." jsonLd={articleJsonLd}>
-<Breadcrumb items={[{ label: "Inicio", href: "/es" }, { label: "Blog", href: "/es/blog" }, { label: "Cumplimiento de la DSA con open source" }]} />
+<BaseLayout title="Cumplir la DSA de forma sencilla en la moderación" description="Cómo cumplir la Ley de Servicios Digitales (DSA): decisiones explicadas por escrito, registro de auditoría, informes de transparencia y datos en la UE." jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Inicio", href: "/es" }, { label: "Blog", href: "/es/blog" }, { label: "Cumplir la DSA de forma sencilla" }]} />
   <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
     <div class="mb-8">
       <div class="flex items-center gap-3 text-sm text-surface-400">
@@ -31,7 +33,7 @@ const articleJsonLd = {
         <span>&middot;</span>
         <span>6 min de lectura</span>
       </div>
-      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Cumplir la DSA es más sencillo con moderación open source</h1>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Cumplir la DSA de forma sencilla en la moderación de comentarios</h1>
     </div>
 
     <div class="prose prose-surface max-w-none text-surface-600">
@@ -58,49 +60,51 @@ const articleJsonLd = {
         <li><strong>Evaluación de riesgos (art. 34):</strong> las plataformas de muy gran tamaño (más de 45 millones de usuarios mensuales en la UE) deben evaluar los riesgos sistémicos.</li>
       </ul>
 
-      <h2 class="text-xl font-bold text-surface-900">Por qué el open source importa para el cumplimiento</h2>
+      <h2 class="text-xl font-bold text-surface-900">Por qué la transparencia importa para el cumplimiento</h2>
       <p>
         Esta es una pregunta que deberían hacerse los responsables de cumplimiento de la DSA: si tu plataforma
         de moderación es una caja negra propietaria, ¿cómo vas a demostrar a un regulador lo que hace?
       </p>
       <p>
-        Las plataformas propietarias pueden afirmar que moderan el contenido, pero no puedes inspeccionar su
-        lógica, verificar que traten el contenido correctamente ni auditar cómo toman sus
-        decisiones. Te fías de lo que dicen, y esa confianza podría no bastarle a un regulador.
+        Muchas herramientas pueden afirmar que moderan el contenido, pero no explican por qué ocultan un
+        comentario ni dejan rastro de quién tomó cada decisión. Te fías de lo que dicen, y esa confianza
+        podría no bastarle a un regulador.
       </p>
       <p>
-        Con la moderación open source, cada línea de código se puede auditar y cada decisión
-        se puede rastrear. Tu equipo de cumplimiento puede verificar exactamente cómo se modera el contenido,
-        qué criterios se aplican y adónde van los resultados.
+        Con OpenModeration, cada decisión llega con una explicación por escrito y queda en un registro de
+        auditoría completo. Tu equipo de cumplimiento puede verificar exactamente cómo se modera el contenido,
+        qué reglas propias se aplican y si la decisión fue automática o la tomó un moderador.
       </p>
 
       <h2 class="text-xl font-bold text-surface-900">Cómo montar una cadena de moderación conforme a la DSA</h2>
       <p>Así es una configuración conforme a la DSA con OpenModeration:</p>
       <ol>
         <li><strong>Ingesta del contenido:</strong> recibe el contenido por API, webhook o conectores sociales. Cada elemento recibe un identificador único y se almacena cifrado.</li>
-        <li><strong>Moderación con IA:</strong> el contenido se envía al proveedor más adecuado. Los resultados incluyen puntuaciones por categoría y una decisión de marcado o no marcado.</li>
-        <li><strong>Evaluación de reglas:</strong> tus reglas combinan palabras prohibidas para el bloqueo inmediato, umbrales por categoría para las decisiones automáticas y la carta de la comunidad que has redactado.</li>
-        <li><strong>Registro de auditoría:</strong> cada paso queda registrado: contenido, proveedor, puntuaciones, regla aplicada, acción tomada y marca de tiempo.</li>
+        <li><strong>Moderación con IA:</strong> la IA de moderación de OpenModeration analiza el contenido y, en los casos delicados, otros modelos de IA arbitran la decisión. Los resultados incluyen puntuaciones por categoría y una decisión de marcado o no marcado.</li>
+        <li><strong>Evaluación de reglas:</strong> tus reglas combinan palabras prohibidas para el bloqueo inmediato, umbrales por categoría para las decisiones automáticas y las reglas que has redactado según tus casos de uso.</li>
+        <li><strong>Registro de auditoría:</strong> cada paso queda registrado: contenido, puntuaciones, explicación escrita, regla aplicada, acción tomada y marca de tiempo.</li>
         <li><strong>Exportación para la transparencia:</strong> GET /v1/analytics/usage proporciona los datos necesarios para los informes de transparencia de la DSA.</li>
       </ol>
 
       <h2 class="text-xl font-bold text-surface-900">Cómo cumplir requisitos concretos de la DSA</h2>
       <p>
-        <strong>Registro de auditoría:</strong> OpenModeration registra cada moderación con el proveedor, la latencia, las puntuaciones y la decisión.
+        <strong>Registro de auditoría:</strong> OpenModeration registra cada moderación con la latencia, las puntuaciones, la decisión y su explicación por escrito.
         Los datos se conservan según la política que configures (por defecto, 7 días para el texto de entrada y 90 días para los registros).
         Todo se puede exportar para las auditorías regulatorias.
       </p>
       <p>
-        <strong>Informes de transparencia:</strong> la API de analítica ofrece datos de uso por periodo, proveedor y categoría.
-        El total de peticiones, las tasas de marcado y el rendimiento de los proveedores son los datos que piden los informes de transparencia de la DSA.
+        <strong>Informes de transparencia:</strong> la API de analítica ofrece datos de uso por periodo y categoría.
+        El total de peticiones, las tasas de marcado y las acciones aplicadas son los datos que piden los informes de transparencia de la DSA.
       </p>
       <p>
-        <strong>Soberanía de los datos:</strong> si lo autoalojas, todos los datos permanecen en tu infraestructura
-        y ningún tercero los trata. Es un punto clave para el RGPD y para las evaluaciones de riesgos de la DSA.
+        <strong>Datos en la UE:</strong> OpenModeration está alojado en la Unión Europea y puedes exportar tus datos
+        cuando quieras. Es un punto clave para el RGPD y para las evaluaciones de riesgos de la DSA. Si necesitas
+        un despliegue on-premise, es posible bajo petición: <a href={bookingUrl('es')}>hablemos</a>.
       </p>
       <p>
-        <strong>Revisión humana:</strong> la cola de revisión manual permite a los moderadores humanos ocuparse de los casos límite,
-        lo que cubre los requisitos de la DSA sobre la gestión de reclamaciones y recursos.
+        <strong>Revisión humana:</strong> los casos límite, las denuncias y los recursos los gestiona nuestro equipo, no el tuyo,
+        lo que cubre los requisitos de la DSA sobre la gestión de reclamaciones y recursos. Tú ves cada decisión en tiempo real
+        y puedes intervenir cuando quieras.
       </p>
     </div>
   </article>
@@ -115,6 +119,8 @@ const articleJsonLd = {
       </ul>
     </div>
   </section>
+
+  <GuideComparisons />
 
   <CTASection />
 </BaseLayout>

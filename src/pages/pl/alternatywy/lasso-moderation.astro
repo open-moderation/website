@@ -1,0 +1,240 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/pl/alternatywy/lasso-moderation",
+  "name": "Alternatywa dla Lasso Moderation: porównanie z OpenModeration",
+  "description": "Lasso Moderation czy OpenModeration? Porównanie ze źródłami: integracje, Facebook i Instagram, publiczne ceny, DSA i hosting w UE obu rozwiązań.",
+  "inLanguage": "pl",
+  "about": {
+    "@id": "https://www.openmoderation.com/#software"
+  }
+};
+
+const rows = [
+  {
+    "feature": "Hosting",
+    "them": "Rozwijane i hostowane w UE, RODO",
+    "openmod": "Hosting w UE, zgodność z RODO"
+  },
+  {
+    "feature": "DSA",
+    "them": "Uzasadnienie każdego działania i eksportowalne raporty przejrzystości",
+    "openmod": "Zgłoszenia i działania, uzasadnienie decyzji, weryfikacja przez człowieka zakwestionowanych decyzji, eksportowalne dane i pełny dziennik aktywności"
+  },
+  {
+    "feature": "Treści",
+    "them": "Tekst, obrazy, wideo i audio",
+    "openmod": "Komentarze tekstowe"
+  },
+  {
+    "feature": "Główni klienci",
+    "them": "Społeczności, czaty i gry (CrazyGames, Insticator, Tutorful, COOL Media)",
+    "openmod": "Media, marki i instytucje publiczne"
+  },
+  {
+    "feature": "Integracje",
+    "them": "Slack, Bettermode, Circle, TalkJS, Stream, Sendbird, PubNub, Tencent Cloud Chat, REST API",
+    "openmod": "Strony internetowe (API), WordPress, strony na Facebooku, profesjonalne konta na Instagramie i kanały YouTube"
+  },
+  {
+    "feature": "Facebook, Instagram, YouTube, WordPress",
+    "them": "Nie figurują na stronie",
+    "openmod": "Natywne konektory"
+  },
+  {
+    "feature": "Cena",
+    "them": "Lite od 99 $ miesięcznie (10 000 elementów, 1 moderator), Pro od 499 $ miesięcznie (100 000, 3 moderatorów), Enterprise na zapytanie",
+    "openmod": "Publiczna: za darmo do 1000 zapytań miesięcznie, Pro za 99 € miesięcznie (10 000 zapytań), Enterprise – wycena indywidualna"
+  },
+  {
+    "feature": "Wdrożenie",
+    "them": "Nie określono na stronie",
+    "openmod": "Zespół Logora konfiguruje je razem z Tobą, według Twoich zasad i przypadków użycia"
+  },
+  {
+    "feature": "Języki",
+    "them": "Ponad 200",
+    "openmod": "Uzasadnienia w wybranym języku"
+  },
+  {
+    "feature": "Modele AI",
+    "them": "Konfigurowalne modele wykrywania i modele dopasowane do branży; pochodzenie nie zostało określone",
+    "openmod": "Własna AI do moderacji, weryfikowana przez inne modele AI; nowe modele podłączane na bieżąco, gdy się pojawiają"
+  }
+];
+
+const faqItems = [
+  {
+    "question": "Jaka jest najlepsza alternatywa dla Lasso Moderation?",
+    "answer": "Najlepsza alternatywa dla Lasso Moderation zależy od tego, gdzie są Twoje komentarze: jeśli moderujesz Facebooka, Instagram, YouTube lub WordPress, OpenModeration łączy się z nimi natywnie, oferuje darmowy plan i pisemne uzasadnienie każdej decyzji. Jeśli moderujesz czaty, społeczności, obrazy lub audio, obsługuje je Lasso."
+  },
+  {
+    "question": "Ile kosztuje Lasso Moderation?",
+    "answer": "Lasso publikuje swój cennik: Lite od 99 $ miesięcznie za 10 000 elementów i 1 moderatora, Pro od 499 $ miesięcznie za 100 000 elementów i 3 moderatorów, Enterprise na zapytanie. OpenModeration zaczyna się od darmowego planu z 1000 zapytań miesięcznie, potem Pro za 99 € miesięcznie (10 000 zapytań) i Enterprise z wyceną indywidualną. Przy 10 000 elementów miesięcznie cena wejściowa jest podobna; różnicę robi darmowy plan."
+  },
+  {
+    "question": "Lasso Moderation czy OpenModeration: co wybrać?",
+    "answer": "Wybierz Lasso Moderation, jeśli musisz moderować obrazy, wideo lub audio. Wybierz OpenModeration, jeśli moderujesz komentarze na Facebooku, Instagramie, YouTube lub w WordPressie, chcesz publicznych cen i pisemnego uzasadnienia każdej decyzji, a także zespołu, który skonfiguruje moderację razem z Tobą według Twoich zasad i przypadków użycia."
+  },
+  {
+    "question": "Czy mogę przetestować OpenModeration bez rezygnacji z Lasso Moderation?",
+    "answer": "Tak. W trybie sandbox OpenModeration analizuje Twoje prawdziwe komentarze, niczego nie ukrywając. Lasso Moderation działa dalej, a Ty porównujesz obie serie decyzji, komentarz po komentarzu, zanim cokolwiek zmienisz."
+  },
+  {
+    "question": "Z jakich modeli AI korzysta OpenModeration?",
+    "answer": "OpenModeration działa na własnej AI do moderacji, a w trudnych przypadkach jej decyzję weryfikują inne modele AI. Gdy pojawia się lepszy lub tańszy model, zespół szybko go podłącza, a Ty nie musisz niczego zmieniać: Twoja moderacja korzysta z postępu modeli AI."
+  },
+  {
+    "question": "Kto konfiguruje zasady moderacji?",
+    "answer": "W OpenModeration zespół Logora konfiguruje moderację razem z Tobą na podstawie Twoich zasad, przypadków użycia i prawdziwych komentarzy, a potem dopracowuje ją w pierwszych tygodniach."
+  }
+];
+---
+
+<BaseLayout title="Alternatywa dla Lasso: porównanie z OpenModeration" description="Lasso Moderation czy OpenModeration? Porównanie ze źródłami: integracje, Facebook i Instagram, publiczne ceny, DSA i hosting w UE obu rozwiązań." jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Strona główna", href: localizePath('/', locale) }, { label: "Alternatywy", href: localizePath('/alternatives', locale) }, { label: "Lasso Moderation" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Porównanie
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Alternatywa dla Lasso Moderation: porównanie z OpenModeration</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Najlepsza alternatywa dla Lasso Moderation zależy od tego, gdzie są Twoje komentarze: jeśli moderujesz Facebooka, Instagram, YouTube lub WordPress, OpenModeration łączy się z nimi natywnie, oferuje darmowy plan i pisemne uzasadnienie każdej decyzji. Jeśli moderujesz czaty, społeczności, obrazy lub audio, obsługuje je Lasso.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold tracking-tight text-surface-900">Dla kogo jest Lasso Moderation?</h2>
+      <p class="mt-4 text-surface-600">Na papierze Lasso Moderation to narzędzie najbliższe OpenModeration: według jego strony jest rozwijane i hostowane w UE i podaje uzasadnienie każdego działania. Jest skierowane do społeczności internetowych, aplikacji czatowych i gier, moderuje tekst, obrazy, wideo i audio oraz integruje się ze Slackiem, Circle, Bettermode, Stream, Sendbird czy PubNub.</p>
+      <p class="mt-4 text-surface-600">OpenModeration moderuje z pomocą AI komentarze mediów, marek i instytucji publicznych – na ich stronach oraz na stronach na Facebooku, kontach na Instagramie i kanałach YouTube. Automatycznie ukrywa oczywiste naruszenia, pozostawia widoczną uzasadnioną krytykę i przekazuje wątpliwe przypadki do weryfikacji naszemu zespołowi w jednej konsoli. Zespół Logora, działający w Paryżu od 2019 roku, konfiguruje ją razem z Tobą według Twoich zasad i przypadków użycia.</p>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Lasso Moderation i OpenModeration: porównanie punkt po punkcie</h2>
+      <p class="mt-4 text-surface-500">Informacje o Lasso Moderation pochodzą z jego strony, lassomoderation.com (dostęp: 30 października 2026).</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Kryterium</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Lasso Moderation</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.them}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Wybierz OpenModeration, jeśli…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>moderujesz komentarze na Facebooku, Instagramie, YouTube lub w WordPressie;</li>
+          <li>chcesz zacząć od darmowego planu;</li>
+          <li>chcesz, by zespół skonfigurował moderację razem z Tobą według Twoich zasad i przypadków użycia;</li>
+          <li>prowadzisz medium i chcesz, by AI czytała każdy komentarz razem z tytułem artykułu i wątkiem.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">Lasso Moderation może lepiej pasować, jeśli…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>musisz moderować obrazy, wideo lub audio;</li>
+          <li>Twoja społeczność działa na Slacku, Circle, Bettermode, Stream, Sendbird lub podobnych;</li>
+          <li>chcesz raportów przejrzystości generowanych przez narzędzie.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h2 class="text-xl font-bold text-surface-900">AI, która nadąża za postępem modeli</h2>
+          <p class="mt-3 text-sm text-surface-600">OpenModeration działa na własnej AI do moderacji, a w trudnych przypadkach jej decyzję weryfikują inne modele AI. Gdy pojawia się lepszy lub tańszy model, zespół szybko go podłącza, a Ty nie musisz niczego zmieniać. Twoja moderacja nadąża za postępem na rynku AI, zamiast tkwić przy jednym algorytmie. Lasso mówi na swojej stronie o konfigurowalnych modelach i modelach dopasowanych do branży, nie podając ich pochodzenia.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h2 class="text-xl font-bold text-surface-900">Cennik: Lasso Moderation a OpenModeration</h2>
+          <p class="mt-3 text-sm text-surface-600">Lasso publikuje swój cennik: Lite od 99 $ miesięcznie za 10 000 elementów i 1 moderatora, Pro od 499 $ miesięcznie za 100 000 elementów i 3 moderatorów, Enterprise na zapytanie. OpenModeration zaczyna się od darmowego planu z 1000 zapytań miesięcznie, potem Pro za 99 € miesięcznie (10 000 zapytań) i Enterprise z wyceną indywidualną. Przy 10 000 elementów miesięcznie cena wejściowa jest podobna; różnicę robi darmowy plan. Wdrożenie on-premise jest możliwe na życzenie. <a href={localizePath('/book-a-call', locale)} class="font-medium text-brand-600 hover:text-brand-500">Umów rozmowę</a>, aby wycenić swój przypadek.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Przejście z Lasso Moderation na OpenModeration w 3 krokach</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">1. Przetestuj w trybie sandbox</h3>
+          <p class="mt-2 text-sm text-surface-600">Podłącz stronę, WordPress lub swoje profile na Facebooku, Instagramie i YouTube. OpenModeration analizuje prawdziwe komentarze, niczego nie ukrywając, a Lasso Moderation działa dalej.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">2. Dopracuj z zespołem Logora</h3>
+          <p class="mt-2 text-sm text-surface-600">Porównujemy decyzje z decyzjami obecnego narzędzia i dopasowujemy moderację do Twoich zasad i przypadków użycia, z pisemnym uzasadnieniem każdej decyzji na widoku.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">3. Włączaj kanał po kanale</h3>
+          <p class="mt-2 text-sm text-surface-600">Włączasz moderację w jednym kanale, potem w kolejnych. Wątpliwymi przypadkami zajmuje się nasz zespół, a każda decyzja zostaje zapisana w dzienniku aktywności.</p>
+        </div>
+      </div>
+      <p class="mt-8 text-center text-surface-600">Chcesz zobaczyć to na własnych komentarzach? <a href={localizePath('/book-a-call', locale)} class="font-medium text-brand-600 hover:text-brand-500">Umów rozmowę z zespołem</a>.</p>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Najczęstsze pytania" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        Lasso Moderation jest znakiem towarowym jego właściciela. Źródła: <a href="https://www.lassomoderation.com" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">www.lassomoderation.com</a>, <a href="https://www.lassomoderation.com/pricing" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">www.lassomoderation.com/pricing</a> (dostęp: 30 października 2026). Zauważyłeś błąd? Napisz do nas: <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Dowiedz się więcej</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/connectors', locale)} class="font-medium text-brand-600 hover:text-brand-500">Konektory OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/dsa-compliance/statement-of-reasons', locale)} class="font-medium text-brand-600 hover:text-brand-500">Uzasadnienie decyzji wymagane przez DSA &rarr;</a></li>
+        <li><a href={localizePath('/blog/comment-moderation-guide', locale)} class="font-medium text-brand-600 hover:text-brand-500">Poradnik moderacji komentarzy &rarr;</a></li>
+        <li><a href={localizePath('/moderation-software', locale)} class="font-medium text-brand-600 hover:text-brand-500">Oprogramowanie do moderacji OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/pricing', locale)} class="font-medium text-brand-600 hover:text-brand-500">Cennik OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/alternatives', locale)} class="font-medium text-brand-600 hover:text-brand-500">Wszystkie porównania &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Porównaj obecną moderację z OpenModeration." subtitle="Przetestuj OpenModeration w trybie sandbox na własnych komentarzach, niczego nie ukrywając. Za darmo do 1000 zapytań miesięcznie." buttonText="Umów rozmowę" buttonHref={localizePath('/book-a-call', locale)} />
+</BaseLayout>

@@ -1,0 +1,162 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/pl/integracje/moderacja-wordpress",
+  "url": "https://www.openmoderation.com/pl/integracje/moderacja-wordpress",
+  "name": "Moderacja komentarzy w WordPressie z AI: zatwierdzanie, wstrzymanie lub spam",
+  "description": "Automatyczna moderacja komentarzy w WordPressie z AI. Witrynę łączy się hasłem aplikacji, bez tworzenia wtyczki i bez kodu. Komentarze łamiące reguły są zatwierdzane, wstrzymywane lub oznaczane jako spam, ze ścieżką audytu DSA w zestawie.",
+  "inLanguage": "pl"
+};
+
+const faqItems = [
+  {
+    question: "Jak działa moderacja komentarzy w WordPressie?",
+    answer: "Witrynę WordPress łączy się za pomocą hasła aplikacji. Komentarze są automatycznie pobierane przez WordPress REST API i analizowane przez nasz silnik AI. Zgodnie z Twoimi regułami każdy komentarz jest zatwierdzany, wstrzymywany do przeglądu lub oznaczany jako spam, bez ręcznej kolejki."
+  },
+  {
+    question: "Czy do konfiguracji potrzebny jest kod?",
+    answer: "Nie. Wystarczy utworzyć hasło aplikacji w panelu WordPressa (Użytkownicy → Profil), a następnie podać adres witryny, nazwę użytkownika i hasło w konsoli OpenModeration. Witryna zostaje zweryfikowana w kilka sekund i moderacja się rozpoczyna."
+  },
+  {
+    question: "Jakie treści w WordPressie można moderować?",
+    answer: "Wpisy na blogu i komentarze w Twojej witrynie WordPress. Platforma wykrywa mowę nienawiści, nękanie, spam, treści NSFW, dane osobowe, oszustwa i wiele więcej w ponad 120 językach."
+  },
+  {
+    question: "Co dzieje się z komentarzem łamiącym reguły w mojej witrynie WordPress?",
+    answer: "Zgodnie z regułami moderacji komentarz otrzymuje status zatwierdzonego, oczekującego na moderację lub spamu, bezpośrednio przez WordPress REST API. Każde działanie jest rejestrowane wraz z regułą, ocenami AI i pisemnym uzasadnieniem."
+  },
+  {
+    question: "Jakie uprawnienia musi mieć mój użytkownik WordPressa?",
+    answer: "Użytkownik WordPressa musi mieć uprawnienia do moderowania komentarzy, czyli rolę administratora lub redaktora. Konektor sprawdza to przy łączeniu witryny."
+  },
+  {
+    question: "Czy każda decyzja moderacyjna jest rejestrowana na potrzeby audytów DSA?",
+    answer: "Tak. Każdy zatwierdzony, wstrzymany lub oznaczony jako spam komentarz zachowuje w pełnej ścieżce audytu zastosowaną regułę, oceny AI i pisemne uzasadnienie. Eksport do raportów przejrzystości DSA zajmuje jedno kliknięcie."
+  },
+];
+---
+
+<BaseLayout title="Moderacja komentarzy w WordPressie z AI, bez kodu" description="Moderuj komentarze w WordPressie z AI. Połącz witrynę hasłem aplikacji, bez kodu. Zatwierdzaj, wstrzymuj lub oznaczaj spam, ze ścieżką audytu DSA w zestawie." jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Strona główna", href: localizePath('/', locale) }, { label: "Integracje", href: localizePath('/connectors', locale) }, { label: "Moderacja WordPressa" }]} />
+  <section class="bg-gradient-to-b from-sky-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-sky-100 text-sky-700">
+        <svg class="h-8 w-8" fill="currentColor" viewBox="0 0 24 24"><path d="M21.469 6.825c.84 1.537 1.318 3.3 1.318 5.175 0 3.979-2.156 7.456-5.363 9.325l3.295-9.527c.615-1.54.82-2.771.82-3.864 0-.405-.026-.78-.07-1.11m-7.981.105c.647-.03 1.232-.105 1.232-.105.582-.075.514-.93-.067-.899 0 0-1.755.135-2.88.135-1.064 0-2.85-.15-2.85-.15-.585-.03-.661.855-.075.885 0 0 .54.061 1.125.09l1.68 4.605-2.37 7.08L5.354 6.9c.649-.03 1.234-.1 1.234-.1.585-.075.516-.93-.065-.896 0 0-1.746.138-2.874.138-.2 0-.438-.008-.69-.015C4.911 3.15 8.235 1.215 12 1.215c2.809 0 5.365 1.072 7.286 2.833-.046-.003-.091-.009-.141-.009-1.06 0-1.812.923-1.812 1.914 0 .89.513 1.643 1.06 2.531.411.72.89 1.643.89 2.977 0 .915-.354 1.994-.821 3.479l-1.075 3.585-3.9-11.61.001.014zM12 22.784c-1.059 0-2.081-.153-3.048-.437l3.237-9.406 3.315 9.087c.024.053.05.101.078.149-1.12.393-2.325.609-3.582.609M1.211 12c0-1.564.336-3.05.935-4.39L7.29 21.709C3.694 19.96 1.212 16.271 1.211 12M12 0C5.385 0 0 5.385 0 12s5.385 12 12 12 12-5.385 12-12S18.615 0 12 0"/></svg>
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Moderacja komentarzy w WordPressie</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Chroń witrynę WordPress dzięki moderacji opartej na AI. Połączenie odbywa się za pomocą hasła aplikacji, a konfiguracja zajmuje kilka minut, bez kodu.
+      </p>
+      <div class="mt-8 flex items-center justify-center gap-4">
+        <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-medium text-white shadow-sm hover:bg-brand-800">Wypróbuj za darmo</a>
+        <a href={localizePath('/how-it-works', locale)} class="inline-flex items-center gap-2 rounded-lg border border-surface-300 px-6 py-3 text-sm font-medium text-surface-700 hover:border-surface-900">Jak to działa</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Prosta moderacja w 3 krokach</h2>
+        <p class="mt-4 text-lg text-surface-500">Witryna jest chroniona w kilka minut, bez zespołu programistów.</p>
+      </div>
+      <div class="grid gap-8 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-8 text-center">
+          <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-100 text-brand-600">
+            <span class="text-xl font-bold">1</span>
+          </div>
+          <h3 class="text-lg font-semibold text-surface-900">Załóż konto</h3>
+          <p class="mt-2 text-sm text-surface-500">Zarejestruj się za darmo w OpenModeration, bez karty kredytowej i bez zobowiązań. Dane są przechowywane w UE.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-8 text-center">
+          <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-100 text-brand-600">
+            <span class="text-xl font-bold">2</span>
+          </div>
+          <h3 class="text-lg font-semibold text-surface-900">Połącz witrynę WordPress</h3>
+          <p class="mt-2 text-sm text-surface-500">Utwórz hasło aplikacji w panelu WordPressa, a następnie podaj adres witryny, nazwę użytkownika i hasło. Witryna jest weryfikowana automatycznie. Wymagana jest rola administratora lub redaktora.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-8 text-center">
+          <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-100 text-brand-600">
+            <span class="text-xl font-bold">3</span>
+          </div>
+          <h3 class="text-lg font-semibold text-surface-900">Ustal reguły</h3>
+          <p class="mt-2 text-sm text-surface-500">Zapisz reguły moderacji zwykłym językiem. Nasza AI stosuje je automatycznie i zatwierdza, wstrzymuje lub oznacza komentarze jako spam.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Co można wykrywać</h2>
+        <p class="mt-4 text-lg text-surface-500">Ponad 20 gotowych modeli wykrywania, wytrenowanych na miliardach etykiet.</p>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="rounded-xl border border-surface-200 bg-white p-4 text-center"><span class="text-sm font-medium text-surface-900">Toksyczność</span></div>
+        <div class="rounded-xl border border-surface-200 bg-white p-4 text-center"><span class="text-sm font-medium text-surface-900">Mowa nienawiści</span></div>
+        <div class="rounded-xl border border-surface-200 bg-white p-4 text-center"><span class="text-sm font-medium text-surface-900">Nękanie</span></div>
+        <div class="rounded-xl border border-surface-200 bg-white p-4 text-center"><span class="text-sm font-medium text-surface-900">Spam</span></div>
+        <div class="rounded-xl border border-surface-200 bg-white p-4 text-center"><span class="text-sm font-medium text-surface-900">NSFW</span></div>
+        <div class="rounded-xl border border-surface-200 bg-white p-4 text-center"><span class="text-sm font-medium text-surface-900">Oszustwa i phishing</span></div>
+        <div class="rounded-xl border border-surface-200 bg-white p-4 text-center"><span class="text-sm font-medium text-surface-900">Dane osobowe</span></div>
+        <div class="rounded-xl border border-surface-200 bg-white p-4 text-center"><span class="text-sm font-medium text-surface-900">Samookaleczenia</span></div>
+        <div class="rounded-xl border border-surface-200 bg-white p-4 text-center"><span class="text-sm font-medium text-surface-900">Wulgaryzmy</span></div>
+        <div class="rounded-xl border border-surface-200 bg-white p-4 text-center"><span class="text-sm font-medium text-surface-900">Wydźwięk</span></div>
+        <div class="rounded-xl border border-surface-200 bg-white p-4 text-center"><span class="text-sm font-medium text-surface-900">Tematy drażliwe</span></div>
+        <div class="rounded-xl border border-surface-200 bg-white p-4 text-center"><span class="text-sm font-medium text-surface-900">Ryzykowne linki</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Dlaczego moderacja WordPressa z OpenModeration jest prosta</h2>
+      </div>
+      <div class="grid gap-6 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Bez kodu</h3>
+          <p class="mt-2 text-sm text-surface-500">Wszystko ustawia się w konsoli. Wygeneruj hasło aplikacji, połącz witrynę i zapisz reguły zwykłym językiem. Resztą zajmie się AI.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Twoje dane dostępowe, Twoja kontrola</h3>
+          <p class="mt-2 text-sm text-surface-500">Połączenie odbywa się za pomocą własnego hasła aplikacji. Dane dostępowe są szyfrowane, nigdy nie są przechowywane otwartym tekstem, a dostęp można w każdej chwili cofnąć w panelu WordPressa.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Automatyczne egzekwowanie reguł w WordPressie</h3>
+          <p class="mt-2 text-sm text-surface-500">Każdy komentarz jest zatwierdzany, wstrzymywany do przeglądu lub oznaczany jako spam bezpośrednio przez WordPress REST API, więc ręczna kolejka moderacji nie jest potrzebna.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Ponad 120 języków</h3>
+          <p class="mt-2 text-sm text-surface-500">Moderuj komentarze w każdym języku, w którym piszą czytelnicy. Nasza AI obsługuje główne języki, a trudne przypadki weryfikują inne modele AI.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Własne reguły zwykłym językiem</h3>
+          <p class="mt-2 text-sm text-surface-500">Opisz zasady moderacji tak, jak tłumaczy się je współpracownikowi. Bez inżynierii promptów i wyrażeń regularnych.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Wyjaśnione decyzje, hosting w UE</h3>
+          <p class="mt-2 text-sm text-surface-500">Każdej decyzji towarzyszy pisemne uzasadnienie. Dane są przechowywane w Unii Europejskiej i można je w każdej chwili wyeksportować.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ items={faqItems} title="Najczęstsze pytania o moderację WordPressa" />
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

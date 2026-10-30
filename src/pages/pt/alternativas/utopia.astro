@@ -1,0 +1,241 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+const L = (p: string) => localizePath(p, locale);
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/pt/alternativas/utopia",
+  "name": "Alternativa ao Utopia AI Moderator: comparativo com o OpenModeration",
+  "description": "Utopia AI Moderator ou OpenModeration? Comparativo com fontes: modelo sob medida ou IA verificada, conectores sociais, preços públicos e DSA na UE.",
+  "inLanguage": "pt",
+  "about": {
+    "@id": "https://www.openmoderation.com/#software"
+  }
+};
+
+const rows = [
+  {
+    "feature": "O que oferece",
+    "them": "Moderação com IA via API, com um modelo feito sob medida para cada cliente",
+    "openmod": "Moderação de comentários com IA, configurada com a equipe da Logora segundo as suas regras e os seus casos de uso"
+  },
+  {
+    "feature": "Integração",
+    "them": "API ao lado do seu fluxo de publicação; nenhum conector de redes sociais ou de WordPress citado",
+    "openmod": "Sites (API), WordPress, páginas do Facebook, contas profissionais do Instagram e canais do YouTube"
+  },
+  {
+    "feature": "Preço",
+    "them": "Não divulgado; contato com a equipe",
+    "openmod": "Público: grátis até 1.000 requisições/mês, Pro a 99 €/mês para 10 mil requisições, Enterprise sob consulta"
+  },
+  {
+    "feature": "Ponto de partida",
+    "them": "A sua política e exemplos de decisões passadas para treinar o modelo",
+    "openmod": "As suas regras e os seus casos de uso; não é preciso um arquivo de decisões passadas"
+  },
+  {
+    "feature": "Idiomas",
+    "them": "Independente do idioma, inclusive dialetos, segundo o seu site",
+    "openmod": "Explicações no idioma que você escolher"
+  },
+  {
+    "feature": "Explicação por escrito de cada decisão",
+    "them": "Não especificado no seu site",
+    "openmod": "Sim, uma explicação por escrito para cada decisão"
+  },
+  {
+    "feature": "DSA",
+    "them": "Geração automática de relatórios de transparência do DSA",
+    "openmod": "Notificação e ação, declaração de motivos, revisão humana de decisões contestadas, números exportáveis e registro de atividade completo"
+  },
+  {
+    "feature": "Hospedagem dos dados",
+    "them": "Não especificado no seu site",
+    "openmod": "Hospedado na UE, em conformidade com o RGPD"
+  },
+  {
+    "feature": "Modelos de IA",
+    "them": "Modelo próprio, feito sob medida para cada cliente e retreinado pela sua equipe",
+    "openmod": "IA de moderação própria, verificada por outros modelos de IA; novos modelos integrados assim que são lançados"
+  },
+  {
+    "feature": "Referências",
+    "them": "Deutsche Welle, Kronen Zeitung, Star Stable, Decathlon, Alma Media, Watson",
+    "openmod": "L'Équipe, Challenges, Sud Ouest, actu.fr, Estadão, Südkurier, Egora"
+  }
+];
+
+const faqItems = [
+  {
+    "question": "Qual é a melhor alternativa ao Utopia AI Moderator?",
+    "answer": "A melhor alternativa ao Utopia AI Moderator depende da sua forma de trabalhar: se você quer preços públicos, conectores prontos para Facebook, Instagram, YouTube e WordPress, e uma explicação por escrito para cada decisão, o OpenModeration atende a esses critérios. Se você tem anos de decisões de moderação e quer um modelo treinado só com elas, o Utopia foi construído em torno dessa abordagem."
+  },
+  {
+    "question": "Quanto custa o Utopia AI Moderator?",
+    "answer": "A Utopia Analytics não divulga os seus preços e direciona para a sua equipe. O OpenModeration divulga os seus: grátis até 1.000 requisições por mês, Pro a 99 €/mês para 10 mil requisições e Enterprise sob consulta para grandes volumes."
+  },
+  {
+    "question": "Utopia AI Moderator ou OpenModeration: qual escolher?",
+    "answer": "Escolha o Utopia AI Moderator se você tem anos de decisões de moderação humana e quer um modelo treinado só com elas. Escolha o OpenModeration se quer saber o preço antes de falar com um vendedor e quer uma explicação por escrito para cada decisão, com uma equipe que configura a moderação com você segundo as suas regras e os seus casos de uso."
+  },
+  {
+    "question": "Posso testar o OpenModeration sem sair do Utopia AI Moderator?",
+    "answer": "Sim. No modo sandbox, o OpenModeration analisa os seus comentários reais sem ocultar nada. O Utopia AI Moderator continua funcionando e você compara as duas séries de decisões, comentário por comentário, antes de mudar qualquer coisa."
+  },
+  {
+    "question": "Quais modelos de IA o OpenModeration usa?",
+    "answer": "O OpenModeration funciona com a sua própria IA de moderação e, nos casos delicados, outros modelos de IA verificam a decisão. Quando sai um modelo melhor ou mais econômico, a equipe o integra rapidamente, sem que você precise mudar nada: a sua moderação aproveita o progresso dos modelos de IA."
+  },
+  {
+    "question": "Preciso de um histórico de decisões de moderação para começar?",
+    "answer": "Não. O OpenModeration parte das suas regras e dos seus casos de uso. A equipe da Logora configura a moderação com você a partir dos seus comentários reais e a ajusta durante as primeiras semanas."
+  }
+];
+---
+
+<BaseLayout title="Alternativa ao Utopia: comparativo com o OpenModeration" description="Utopia AI Moderator ou OpenModeration? Comparativo com fontes: modelo sob medida ou IA verificada, conectores sociais, preços públicos e DSA na UE." jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Início", href: L('/') }, { label: "Alternativas", href: L('/alternatives') }, { label: "Utopia AI Moderator" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Comparativo
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Alternativa ao Utopia AI Moderator: comparativo com o OpenModeration</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        A melhor alternativa ao Utopia AI Moderator depende da sua forma de trabalhar: se você quer preços públicos, conectores prontos para Facebook, Instagram, YouTube e WordPress, e uma explicação por escrito para cada decisão, o OpenModeration atende a esses critérios. Se você tem anos de decisões de moderação e quer um modelo treinado só com elas, o Utopia foi construído em torno dessa abordagem.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold tracking-tight text-surface-900">Para quem é o Utopia AI Moderator?</h2>
+      <p class="mt-4 text-surface-600">O Utopia AI Moderator, da finlandesa Utopia Analytics, cria segundo o seu site um modelo sob medida para cada cliente, que aprende a sua política de publicação a partir das suas decisões de moderação e que a sua equipe retreina regularmente. Ele se apresenta como independente do idioma e cita Deutsche Welle, Kronen Zeitung, Star Stable, Decathlon, Alma Media e Watson.</p>
+      <p class="mt-4 text-surface-600">O OpenModeration modera com IA os comentários de veículos de mídia, marcas e instituições públicas, no site deles e nas suas páginas do Facebook, contas do Instagram e canais do YouTube. Ele oculta automaticamente as violações claras, mantém visível a crítica legítima e deixa os casos duvidosos com a nossa equipe, com cada decisão visível em tempo real em um único console. A equipe da Logora, em Paris desde 2019, configura tudo com você segundo as suas regras e os seus casos de uso.</p>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Utopia AI Moderator e OpenModeration, ponto por ponto</h2>
+      <p class="mt-4 text-surface-500">Informações sobre o Utopia AI Moderator retiradas do seu site, utopiaanalytics.com, consultado em 30 de outubro de 2026.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Critério</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Utopia AI Moderator</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.them}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Escolha o OpenModeration se…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>você quer saber o preço antes de falar com um vendedor;</li>
+          <li>quer começar a partir das suas regras, sem um grande arquivo de decisões passadas;</li>
+          <li>modera Facebook, Instagram, YouTube ou WordPress e quer um conector pronto;</li>
+          <li>precisa de uma explicação por escrito para cada comentário ocultado.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">O Utopia AI Moderator pode ser mais indicado se…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>você tem anos de decisões de moderação humana e quer um modelo treinado só com elas;</li>
+          <li>modera em muitos idiomas ou dialetos e quer um único modelo do fornecedor;</li>
+          <li>quer relatórios de transparência do DSA gerados automaticamente.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h2 class="text-xl font-bold text-surface-900">Uma IA que acompanha o progresso dos modelos</h2>
+          <p class="mt-3 text-sm text-surface-600">O OpenModeration funciona com a sua própria IA de moderação e, nos casos delicados, outros modelos de IA verificam a decisão. Quando sai um modelo melhor ou mais econômico, a equipe o integra rapidamente, sem que você precise mudar nada. A sua moderação acompanha o progresso do mercado de IA em vez de ficar presa a um único algoritmo. O Utopia aposta, segundo o seu site, em um modelo próprio, feito sob medida e retreinado para cada cliente; é uma abordagem coerente se você tem um grande histórico de decisões.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h2 class="text-xl font-bold text-surface-900">Preços: Utopia AI Moderator vs OpenModeration</h2>
+          <p class="mt-3 text-sm text-surface-600">A Utopia Analytics não divulga os seus preços e direciona para a sua equipe. O OpenModeration divulga os seus: grátis até 1.000 requisições por mês, Pro a 99 €/mês para 10 mil requisições e Enterprise sob consulta para grandes volumes. A implantação on-premise é possível sob consulta. <a href={L('/book-a-call')} class="font-medium text-brand-600 hover:text-brand-500">Agende uma reunião</a> para avaliar o seu caso.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Migrar do Utopia AI Moderator para o OpenModeration em 3 etapas</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">1. Teste no modo sandbox</h3>
+          <p class="mt-2 text-sm text-surface-600">Conecte o seu site, o WordPress ou as suas páginas do Facebook, Instagram e YouTube. O OpenModeration analisa comentários reais sem ocultar nada, enquanto o Utopia AI Moderator continua funcionando.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">2. Ajuste com a equipe da Logora</h3>
+          <p class="mt-2 text-sm text-surface-600">Comparamos as decisões com as da sua ferramenta atual e adaptamos a moderação às suas regras e aos seus casos de uso, com a explicação por escrito de cada decisão à vista.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">3. Ative canal por canal</h3>
+          <p class="mt-2 text-sm text-surface-600">Você ativa a moderação em um canal e depois nos outros. Os casos duvidosos são tratados pela nossa equipe, e você vê cada decisão em tempo real no registro de atividade, podendo intervir quando quiser.</p>
+        </div>
+      </div>
+      <p class="mt-8 text-center text-surface-600">Quer ver com os seus próprios comentários? <a href={L('/book-a-call')} class="font-medium text-brand-600 hover:text-brand-500">Agende uma reunião com a nossa equipe</a>.</p>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Perguntas frequentes" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        Utopia AI Moderator é uma marca da sua empresa titular. Fontes: <a href="https://www.utopiaanalytics.com/utopia-ai-moderator" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">www.utopiaanalytics.com/utopia-ai-moderator</a> (consultado em 30 de outubro de 2026). Viu algum erro? Escreva para <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Para saber mais</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={L('/use-cases/news-publishers')} class="font-medium text-brand-600 hover:text-brand-500">Moderação de comentários para veículos de mídia &rarr;</a></li>
+        <li><a href={L('/automatic-comment-moderation')} class="font-medium text-brand-600 hover:text-brand-500">Moderação automática de comentários &rarr;</a></li>
+        <li><a href={L('/blog/comment-moderation-guide')} class="font-medium text-brand-600 hover:text-brand-500">Guia de moderação de comentários &rarr;</a></li>
+        <li><a href={L('/moderation-software')} class="font-medium text-brand-600 hover:text-brand-500">O software de moderação OpenModeration &rarr;</a></li>
+        <li><a href={L('/pricing')} class="font-medium text-brand-600 hover:text-brand-500">Os preços do OpenModeration &rarr;</a></li>
+        <li><a href={L('/alternatives')} class="font-medium text-brand-600 hover:text-brand-500">Todos os comparativos &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Compare a sua moderação atual com o OpenModeration." subtitle="Teste o OpenModeration no modo sandbox com os seus próprios comentários, sem ocultar nada. Grátis até 1.000 requisições por mês." buttonText="Agende uma reunião" buttonHref={L('/book-a-call')} />
+</BaseLayout>

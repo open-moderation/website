@@ -3,6 +3,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import CharterSupport from '../../../components/CharterSupport.astro';
 import Breadcrumb from '../../../components/Breadcrumb.astro';
 import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
 import FAQ from '../../../components/FAQ.astro';
 
 const pageJsonLd = {
@@ -10,7 +11,7 @@ const pageJsonLd = {
   "@type": "WebPage",
   "@id": "https://www.openmoderation.com/fr/alternatives/coral",
   "name": "Alternative à Coral : le comparatif avec OpenModeration",
-  "description": "Coral by Vox Media ou OpenModeration ? Deux projets open source comparés, sources à l'appui : un système de commentaires que vous exploitez, et une couche de modération qui couvre aussi les réseaux sociaux.",
+  "description": "Coral by Vox Media ou OpenModeration ? Deux outils comparés, sources à l'appui : un système de commentaires que vous exploitez, et une couche de modération qui couvre aussi les réseaux sociaux.",
   "inLanguage": "fr",
   "about": { "@id": "https://www.openmoderation.com/#software" }
 };
@@ -18,29 +19,24 @@ const pageJsonLd = {
 const rows = [
   { feature: "Nature de l'outil", coral: "Une plateforme de commentaires open source pour les rédactions, avec des outils de modération", openmod: "Une couche de modération : elle décide sur les commentaires là où ils se trouvent déjà, sans les afficher elle-même" },
   { feature: "Où il modère", coral: "Les commentaires de votre site. Réseaux sociaux : non précisé", openmod: "Facebook, Instagram, YouTube et WordPress en natif, plus une API REST et des webhooks" },
-  { feature: "Code source", coral: "Open source sous licence Apache 2.0, publié sur GitHub", openmod: "Open source sous licence AGPL v3, publié sur GitHub" },
-  { feature: "Auto-hébergement", coral: "Oui (Docker, MongoDB, Redis, Node)", openmod: "Oui, avec Docker" },
+  { feature: "Hébergement", coral: "À héberger soi-même (MongoDB, Redis, Node) ou offre hébergée sur devis", openmod: "Service hébergé dans l'UE ; déploiement sur site possible sur demande" },
   { feature: "Offre hébergée et prix", coral: "Offre hébergée sur devis. Prix non indiqués", openmod: "Publics : gratuit jusqu'à 1 000 requêtes par mois, Pro à 99 € par mois pour 10 000, sur mesure pour les gros volumes" },
   { feature: "Lieu d'hébergement de l'offre hébergée", coral: "Non précisé", openmod: "Conçu et hébergé dans l'Union européenne" },
-  { feature: "Rôle de l'IA", coral: "Des outils pour les modérateurs humains, avec une assistance par IA", openmod: "Décisions automatiques selon des règles en langage courant, un seuil par catégorie, une zone grise envoyée à vos modérateurs" },
+  { feature: "Rôle de l'IA", coral: "Des outils pour les modérateurs humains, avec une assistance par IA", openmod: "Décisions automatiques selon des règles en langage courant, un seuil par catégorie, une zone grise traitée par notre équipe, visible en temps réel" },
   { feature: "Explication écrite de chaque décision", coral: "Non précisé", openmod: "Oui, dans la langue de votre choix, renvoyée par l'API" },
   { feature: "DSA", coral: "Non précisé", openmod: "Journal d'activité qui indique si chaque décision est automatique ou prise par quel modérateur" },
-  { feature: "Langues", coral: "Utilisé dans 23 langues et 30 pays, selon son site", openmod: "Selon les modèles d'IA choisis" },
+  { feature: "Langues", coral: "Utilisé dans 23 langues et 30 pays, selon son site", openmod: "Définies avec vous lors de la mise en place" },
   { feature: "Références médias", coral: "The Intercept, The Washington Post, Fairfax Media (témoignages)", openmod: "L'Équipe, Challenges, Sud Ouest, actu.fr, Estadão, Südkurier" },
 ];
 
 const faqItems = [
   {
     question: "Quelle est la meilleure alternative à Coral ?",
-    answer: "Tout dépend de ce que vous remplacez. Si vous avez besoin d'un système de commentaires complet, hébergé et exploité par vos soins, Coral est un bon choix open source et OpenModeration ne le remplace pas. Si vous avez déjà des commentaires (sur WordPress, Facebook, Instagram ou YouTube) et voulez les modérer automatiquement, avec une explication écrite pour chaque décision, OpenModeration est conçu pour cela.",
+    answer: "Tout dépend de ce que vous remplacez. Si vous avez besoin d'un système de commentaires complet, hébergé et exploité par vos soins, Coral est un bon choix et OpenModeration ne le remplace pas. Si vous avez déjà des commentaires (sur WordPress, Facebook, Instagram ou YouTube) et voulez les modérer automatiquement, avec une explication écrite pour chaque décision, OpenModeration est conçu pour cela.",
   },
   {
     question: "Combien coûte Coral par rapport à OpenModeration ?",
-    answer: "Le code de Coral s'auto-héberge gratuitement. Son offre hébergée est vendue sur devis et aucun prix n'apparaît sur coralproject.net. OpenModeration publie ses tarifs : gratuit jusqu'à 1 000 requêtes par mois, Pro à 99 € par mois pour 10 000 requêtes, offre sur mesure pour les gros volumes, et auto-hébergement gratuit avec Docker.",
-  },
-  {
-    question: "Coral et OpenModeration sont-ils tous les deux open source ?",
-    answer: "Oui. Coral est publié sous licence Apache 2.0, OpenModeration sous AGPL v3. Les deux s'auto-hébergent. La différence tient au périmètre : Coral est l'espace de commentaires que voient vos lecteurs, OpenModeration est la couche qui décide de ce qui est publié, sur votre site comme sur vos pages de réseaux sociaux.",
+    answer: "Coral peut s'installer gratuitement sur vos propres serveurs. Son offre hébergée est vendue sur devis et aucun prix n'apparaît sur coralproject.net. OpenModeration publie ses tarifs : gratuit jusqu'à 1 000 requêtes par mois, Pro à 99 € par mois pour 10 000 requêtes et offre sur mesure pour les gros volumes.",
   },
   {
     question: "Peut-on tester OpenModeration sans quitter Coral ?",
@@ -53,7 +49,7 @@ const faqItems = [
 ];
 ---
 
-<BaseLayout title="Alternative à Coral : comparatif avec OpenModeration (2026)" description="Coral ou OpenModeration ? Deux outils open source comparés : système de commentaires ou couche de modération, réseaux sociaux, prix, DSA." jsonLd={pageJsonLd}>
+<BaseLayout title="Alternative à Coral : comparatif avec OpenModeration (2026)" description="Coral ou OpenModeration ? Deux outils comparés : système de commentaires ou couche de modération, réseaux sociaux, prix, DSA." jsonLd={pageJsonLd}>
   <Breadcrumb items={[{ label: "Accueil", href: "/fr" }, { label: "Alternatives", href: "/fr/alternatives" }, { label: "Coral" }]} />
   <section class="bg-gradient-to-b from-brand-50 to-white py-20">
     <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
@@ -62,7 +58,7 @@ const faqItems = [
       </div>
       <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Alternative à Coral : OpenModeration comparé</h1>
       <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
-        Coral by Vox Media et OpenModeration sont tous deux open source, mais ils ne font pas le même travail. Coral est une plateforme de commentaires qu'une rédaction installe et exploite sur son site. OpenModeration est une couche de modération qui décide sur les commentaires là où ils se trouvent déjà, sur votre site comme sur vos pages Facebook, Instagram et YouTube. Voici les différences, sources à l'appui.
+        Coral by Vox Media et OpenModeration ne font pas le même travail. Coral est une plateforme de commentaires qu'une rédaction installe et exploite sur son site. OpenModeration est une couche de modération qui décide sur les commentaires là où ils se trouvent déjà, sur votre site comme sur vos pages Facebook, Instagram et YouTube. Voici les différences, sources à l'appui.
       </p>
     </div>
   </section>
@@ -76,15 +72,15 @@ const faqItems = [
           <li>vous modérez aussi les commentaires sur Facebook, Instagram ou YouTube ;</li>
           <li>vous voulez une explication écrite pour chaque commentaire masqué et un journal d'activité pour le DSA ;</li>
           <li>vous préférez un service hébergé dans l'UE, à prix publics, plutôt que de gérer des serveurs ;</li>
-          <li>vous voulez que nous rédigions votre charte avec vous, à partir de vos vrais commentaires.</li>
+          <li>vous voulez que nous adaptions la modération à vos règles et à vos cas d'usage, à partir de vos vrais commentaires.</li>
         </ul>
       </div>
       <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
         <h2 class="text-lg font-semibold text-surface-900">Coral peut mieux vous convenir si…</h2>
         <ul class="mt-4 space-y-2 text-sm text-surface-600">
           <li>vous avez besoin de l'espace de commentaires lui-même : affichage, notifications, badges journalistes ;</li>
-          <li>vous avez l'équipe technique pour l'héberger et l'exploiter (Docker, MongoDB, Redis, Node) ;</li>
-          <li>vous préférez la licence permissive Apache 2.0 à l'AGPL v3 ;</li>
+          <li>vous avez l'équipe technique pour l'héberger et l'exploiter (MongoDB, Redis, Node) ;</li>
+          <li>vous voulez un logiciel que vous pouvez modifier vous-même (Coral est publié sous licence Apache 2.0) ;</li>
           <li>vos modérateurs relisent à la main et veulent des outils intégrés au fil des commentaires.</li>
         </ul>
       </div>
@@ -128,11 +124,11 @@ const faqItems = [
         </div>
         <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
           <h3 class="font-semibold text-surface-900">Des décisions prises pour vous, et expliquées</h3>
-          <p class="mt-2 text-sm text-surface-600">L'IA lit chaque commentaire avec le titre de l'article et le fil de discussion, puis le publie ou le masque selon vos règles. Chaque décision porte une explication écrite, et seule la zone grise arrive à votre équipe.</p>
+          <p class="mt-2 text-sm text-surface-600">L'IA lit chaque commentaire avec le titre de l'article et le fil de discussion, puis le publie ou le masque selon vos règles. Chaque décision porte une explication écrite, la zone grise est traitée par notre équipe, et vous voyez tout en temps réel sans avoir rien à faire.</p>
         </div>
         <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-          <h3 class="font-semibold text-surface-900">Une charte rédigée avec vous</h3>
-          <p class="mt-2 text-sm text-surface-600">Notre équipe rédige votre charte de modération à partir de vos règles actuelles et de vrais commentaires, puis l'ajuste pendant les premières semaines. Le système apprend des décisions de vos modérateurs et propose des ajustements qu'un administrateur applique en un clic.</p>
+          <h3 class="font-semibold text-surface-900">Une modération adaptée à vos règles</h3>
+          <p class="mt-2 text-sm text-surface-600">Notre équipe adapte la modération à vos règles actuelles et à vos cas d'usage, à partir de vrais commentaires, puis l'ajuste pendant les premières semaines. Vous pouvez intervenir à tout moment : le système apprend de vos corrections et propose des ajustements qu'un administrateur applique en un clic.</p>
         </div>
         <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
           <h3 class="font-semibold text-surface-900">Un test en parallèle avant de changer quoi que ce soit</h3>
@@ -166,5 +162,7 @@ const faqItems = [
     </div>
   </section>
 
-  <CTASection title="Ajoutez une modération open source aux commentaires que vous avez déjà." subtitle="Connectez votre site et vos pages, écrivez vos règles en langage courant et lisez l'explication de chaque décision. Gratuit pour commencer." />
+  <RelatedComparisons />
+
+  <CTASection title="Ajoutez une modération expliquée aux commentaires que vous avez déjà." subtitle="Connectez votre site et vos pages, écrivez vos règles en langage courant et lisez l'explication de chaque décision. Gratuit pour commencer." />
 </BaseLayout>

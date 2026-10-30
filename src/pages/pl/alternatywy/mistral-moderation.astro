@@ -1,0 +1,245 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/pl/alternatywy/mistral-moderation",
+  "name": "Alternatywa dla Mistral Moderation: porównanie z OpenModeration",
+  "description": "Mistral Moderation czy OpenModeration? API z wynikami kontra gotowa moderacja komentarzy: reguły, weryfikacja przez człowieka, DSA, hosting w UE i ceny.",
+  "inLanguage": "pl",
+  "about": {
+    "@id": "https://www.openmoderation.com/#software"
+  }
+};
+
+const rows = [
+  {
+    "feature": "Czym jest",
+    "them": "API do moderacji (endpoint moderacji Mistral)",
+    "openmod": "Oprogramowanie do moderacji komentarzy z konsolą, regułami i weryfikacją przez człowieka"
+  },
+  {
+    "feature": "Kategorie",
+    "them": "11 stałych kategorii w obecnym modelu, m.in. dane osobowe i jailbreak",
+    "openmod": "Dopasowane do Twoich zasad i przypadków użycia, konfigurowane razem z zespołem Logora"
+  },
+  {
+    "feature": "Języki",
+    "them": "Bardzo dobra obsługa wielu języków (francuski, niemiecki, hiszpański, włoski, portugalski itd.)",
+    "openmod": "Komentarze w wielu językach, uzasadnienia w wybranym języku"
+  },
+  {
+    "feature": "Maksymalna długość wejścia",
+    "them": "32 000 znaków",
+    "openmod": "Dostosowana do komentarzy; przetwarzanie wsadowe przy dużych wolumenach"
+  },
+  {
+    "feature": "Silnik decyzji",
+    "them": "Wyłącznie surowe wyniki",
+    "openmod": "Automatycznie ukrywa oczywiste naruszenia, pozostawia widoczną uzasadnioną krytykę, wątpliwe przypadki przekazuje naszemu zespołowi"
+  },
+  {
+    "feature": "Konsola",
+    "them": "Tylko API, bez interfejsu weryfikacji",
+    "openmod": "Konsola w czasie rzeczywistym; wątpliwymi przypadkami zajmuje się nasz zespół"
+  },
+  {
+    "feature": "Gdzie moderuje",
+    "them": "Tam, gdzie zintegrujesz API",
+    "openmod": "Strony internetowe (API), WordPress, strony na Facebooku, profesjonalne konta na Instagramie i kanały YouTube"
+  },
+  {
+    "feature": "DSA",
+    "them": "Podstawowe logi API",
+    "openmod": "Zgłoszenia i działania, uzasadnienie decyzji, weryfikacja przez człowieka zakwestionowanych decyzji, eksportowalne dane i pełny dziennik aktywności"
+  },
+  {
+    "feature": "Hosting",
+    "them": "Wyłącznie API w chmurze",
+    "openmod": "Chmura zarządzana w UE, RODO; wdrożenie on-premise na życzenie"
+  },
+  {
+    "feature": "Modele AI",
+    "them": "Model moderacji Mistral",
+    "openmod": "Własna AI do moderacji, weryfikowana przez inne modele AI; nowe modele podłączane na bieżąco, gdy się pojawiają"
+  },
+  {
+    "feature": "Cena",
+    "them": "Ustalana przez Mistral w ramach jego API",
+    "openmod": "Publiczna: za darmo do 1000 zapytań miesięcznie, Pro za 99 € miesięcznie (10 000 zapytań), Enterprise – wycena indywidualna"
+  }
+];
+
+const faqItems = [
+  {
+    "question": "Jaka jest najlepsza alternatywa dla Mistral Moderation?",
+    "answer": "Jeśli potrzebujesz jedynie wyników z API i masz zespół, który zbuduje wokół nich resztę, Mistral Moderation dobrze sprawdza się w językach europejskich. Jeśli chcesz gotowej moderacji komentarzy – z ukrywaniem naruszeń, weryfikacją przez człowieka, pisemnym uzasadnieniem każdej decyzji i dziennikiem na potrzeby DSA – najlepszą alternatywą jest OpenModeration."
+  },
+  {
+    "question": "Ile kosztuje Mistral Moderation w porównaniu z OpenModeration?",
+    "answer": "Mistral ustala cenę swojego modelu moderacji w ramach własnego API. OpenModeration publikuje swój cennik: za darmo do 1000 zapytań miesięcznie, Pro za 99 € miesięcznie (10 000 zapytań) i Enterprise z wyceną indywidualną."
+  },
+  {
+    "question": "Mistral Moderation czy OpenModeration: co wybrać?",
+    "answer": "Wybierz Mistral Moderation, jeśli budujesz własne narzędzie i potrzebujesz klasyfikatora przez API. Wybierz OpenModeration, jeśli moderujesz komentarze na stronie, w WordPressie, na Facebooku, Instagramie lub YouTube i chcesz konsoli, reguł oraz zespołu, który skonfiguruje moderację razem z Tobą według Twoich zasad i przypadków użycia."
+  },
+  {
+    "question": "Czy mogę przetestować OpenModeration bez rezygnacji z obecnej integracji?",
+    "answer": "Tak. W trybie sandbox OpenModeration analizuje Twoje prawdziwe komentarze, niczego nie ukrywając. Obecna integracja działa dalej, a Ty porównujesz decyzje, zanim cokolwiek zmienisz."
+  },
+  {
+    "question": "Z jakich modeli AI korzysta OpenModeration?",
+    "answer": "OpenModeration działa na własnej AI do moderacji, a w trudnych przypadkach jej decyzję weryfikują inne modele AI. Gdy pojawia się lepszy lub tańszy model, zespół szybko go podłącza, a Ty nie musisz niczego zmieniać: Twoja moderacja korzysta z postępu modeli AI."
+  },
+  {
+    "question": "Czy każda decyzja jest zapisywana na potrzeby DSA?",
+    "answer": "Tak. Każda decyzja, automatyczna lub podjęta przez moderatora, trafia do dziennika aktywności z pisemnym uzasadnieniem. Dane można wyeksportować do raportów przejrzystości wymaganych przez DSA."
+  }
+];
+---
+
+<BaseLayout title="Alternatywa dla Mistral Moderation: porównanie" description="Mistral Moderation czy OpenModeration? API z wynikami kontra gotowa moderacja komentarzy: reguły, weryfikacja przez człowieka, DSA, hosting w UE i ceny." jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Strona główna", href: localizePath('/', locale) }, { label: "Alternatywy", href: localizePath('/alternatives', locale) }, { label: "Mistral Moderation" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Porównanie
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Alternatywa dla Mistral Moderation: porównanie z OpenModeration</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Mistral Moderation to API, które dobrze radzi sobie z językami europejskimi, ale zwraca jedynie wyniki. Jeśli chcesz moderować komentarze bez budowania konsoli, reguł i dziennika od zera, najlepszą alternatywą jest OpenModeration: gotowa moderacja z weryfikacją przez człowieka i uzasadnieniem każdej decyzji.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold tracking-tight text-surface-900">Dla kogo jest Mistral Moderation?</h2>
+      <p class="mt-4 text-surface-600">Mistral Moderation to API klasyfikujące treści w 11 stałych kategoriach, m.in. dane osobowe i jailbreak, z bardzo dobrą obsługą języków europejskich. Zwraca wyniki: interfejs weryfikacji, działania (ukrywanie, usuwanie, oznaczanie), role zespołu i dziennik na potrzeby DSA trzeba zbudować samodzielnie. To dobre rozwiązanie dla programistów, którzy tworzą własne narzędzie.</p>
+      <p class="mt-4 text-surface-600">OpenModeration moderuje z pomocą AI komentarze mediów, marek i instytucji publicznych – na ich stronach oraz na stronach na Facebooku, kontach na Instagramie i kanałach YouTube. Automatycznie ukrywa oczywiste naruszenia, pozostawia widoczną uzasadnioną krytykę i przekazuje wątpliwe przypadki do weryfikacji naszemu zespołowi w jednej konsoli. Zespół Logora, działający w Paryżu od 2019 roku, konfiguruje ją razem z Tobą według Twoich zasad i przypadków użycia.</p>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Mistral Moderation i OpenModeration: porównanie punkt po punkcie</h2>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Kryterium</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Mistral Moderation</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.them}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Wybierz OpenModeration, jeśli…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>chcesz gotowej moderacji komentarzy, a nie samego klasyfikatora;</li>
+          <li>moderujesz stronę, WordPress, Facebooka, Instagram lub YouTube;</li>
+          <li>potrzebujesz pisemnego uzasadnienia każdej decyzji i dziennika na potrzeby DSA;</li>
+          <li>chcesz zespołu, który skonfiguruje moderację według Twoich zasad i przypadków użycia.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">Mistral Moderation może lepiej pasować, jeśli…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>budujesz własne narzędzie i potrzebujesz jedynie API;</li>
+          <li>potrzebujesz kategorii takich jak dane osobowe czy jailbreak, np. dla aplikacji AI;</li>
+          <li>Twój zespół techniczny sam zbuduje konsolę, działania i dziennik.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h2 class="text-xl font-bold text-surface-900">AI, która nadąża za postępem modeli</h2>
+          <p class="mt-3 text-sm text-surface-600">OpenModeration działa na własnej AI do moderacji, a w trudnych przypadkach jej decyzję weryfikują inne modele AI. Gdy pojawia się lepszy lub tańszy model, zespół szybko go podłącza, a Ty nie musisz niczego zmieniać. Twoja moderacja nadąża za postępem na rynku AI, zamiast tkwić przy jednym modelu.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h2 class="text-xl font-bold text-surface-900">Cennik: Mistral Moderation a OpenModeration</h2>
+          <p class="mt-3 text-sm text-surface-600">Mistral ustala cenę swojego modelu moderacji w ramach własnego API. OpenModeration publikuje swój cennik: za darmo do 1000 zapytań miesięcznie, Pro za 99 € miesięcznie (10 000 zapytań) i Enterprise z wyceną indywidualną. Wdrożenie on-premise jest możliwe na życzenie. <a href={localizePath('/book-a-call', locale)} class="font-medium text-brand-600 hover:text-brand-500">Umów rozmowę</a>, aby wycenić swój przypadek.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Przejście z Mistral Moderation na OpenModeration w 3 krokach</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">1. Przetestuj w trybie sandbox</h3>
+          <p class="mt-2 text-sm text-surface-600">Podłącz stronę, WordPress lub swoje profile na Facebooku, Instagramie i YouTube. OpenModeration analizuje prawdziwe komentarze, niczego nie ukrywając, a obecna integracja działa dalej.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">2. Dopracuj z zespołem Logora</h3>
+          <p class="mt-2 text-sm text-surface-600">Porównujemy decyzje z obecnymi wynikami i dopasowujemy moderację do Twoich zasad i przypadków użycia, z pisemnym uzasadnieniem każdej decyzji na widoku.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">3. Włączaj kanał po kanale</h3>
+          <p class="mt-2 text-sm text-surface-600">Włączasz moderację w jednym kanale, potem w kolejnych. Wątpliwymi przypadkami zajmuje się nasz zespół, a każda decyzja zostaje zapisana w dzienniku aktywności.</p>
+        </div>
+      </div>
+      <p class="mt-8 text-center text-surface-600">Chcesz zobaczyć to na własnych komentarzach? <a href={localizePath('/book-a-call', locale)} class="font-medium text-brand-600 hover:text-brand-500">Umów rozmowę z zespołem</a>.</p>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Najczęstsze pytania" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        Mistral jest znakiem towarowym jego właściciela. Źródło: dokumentacja <a href="https://docs.mistral.ai" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">docs.mistral.ai</a>. Zauważyłeś błąd? Napisz do nas: <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Dowiedz się więcej</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/text-moderation-api', locale)} class="font-medium text-brand-600 hover:text-brand-500">API do moderacji tekstu &rarr;</a></li>
+        <li><a href={localizePath('/blog/ai-content-moderation-developer-guide', locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderacja treści z AI: poradnik dla programistów &rarr;</a></li>
+        <li><a href={localizePath('/alternatives/openai-moderation', locale)} class="font-medium text-brand-600 hover:text-brand-500">Alternatywa dla OpenAI Moderation &rarr;</a></li>
+        <li><a href={localizePath('/alternatives/perspective-api', locale)} class="font-medium text-brand-600 hover:text-brand-500">Alternatywa dla Perspective API &rarr;</a></li>
+        <li><a href={localizePath('/moderation-software', locale)} class="font-medium text-brand-600 hover:text-brand-500">Oprogramowanie do moderacji OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/pricing', locale)} class="font-medium text-brand-600 hover:text-brand-500">Cennik OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/alternatives', locale)} class="font-medium text-brand-600 hover:text-brand-500">Wszystkie porównania &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Porównaj obecną moderację z OpenModeration." subtitle="Przetestuj OpenModeration w trybie sandbox na własnych komentarzach, niczego nie ukrywając. Za darmo do 1000 zapytań miesięcznie." buttonText="Umów rozmowę" buttonHref={localizePath('/book-a-call', locale)} />
+</BaseLayout>

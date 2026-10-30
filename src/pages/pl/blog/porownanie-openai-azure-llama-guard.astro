@@ -1,0 +1,169 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "OpenAI Moderation, Azure czy Llama Guard: porównanie 2026",
+  "description": "Rzetelne porównanie głównych dostawców moderacji AI: wydajność, ceny i obsługiwane języki.",
+  "inLanguage": "pl",
+  "datePublished": "2026-06-10",
+  "dateModified": "2026-09-04",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/pl/blog/porownanie-openai-azure-llama-guard" }
+};
+---
+
+<BaseLayout title="OpenAI Moderation, Azure czy Llama Guard: porównanie" description="OpenAI Moderation API, Azure AI Content Safety i Llama Guard obok siebie: wydajność, ceny, obsługiwane języki oraz wskazówki, kiedy wybrać które narzędzie." jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Strona główna", href: localizePath('/', locale) }, { label: "Blog", href: localizePath('/blog', locale) }, { label: "Porównanie dostawców" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-06-10">10 czerwca 2026</time>
+        <span>&middot;</span>
+        <span>Aktualizacja: 4 września 2026</span>
+        <span>&middot;</span>
+        <span>8 min czytania</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">OpenAI Moderation, Azure czy Llama Guard: porównanie 2026</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Wybór dostawcy moderacji to jedna z ważniejszych decyzji dla każdej platformy, która
+        publikuje treści użytkowników. Porównanie nie jest proste, bo każdy z nich ma własne API,
+        własne kategorie, własny cennik i inny zakres obsługiwanych języków.
+      </p>
+      <p>
+        W tym artykule porównujemy trzy najczęściej wybierane rozwiązania: <strong>OpenAI Moderation API</strong>,
+        <strong>Azure AI Content Safety</strong> oraz <strong>Llama Guard od Meta</strong>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">OpenAI Moderation API</h2>
+      <p>
+        Moderation API od OpenAI to najpowszechniej używana usługa moderacji oparta na AI. Działa
+        w ramach platformy OpenAI i nie wymaga dodatkowej infrastruktury.
+      </p>
+      <p><strong>Mocne strony:</strong></p>
+      <ul>
+        <li>Bardzo wysoka trafność w języku angielskim, niezmiennie najlepsza z całej trójki</li>
+        <li>Szczegółowe kategorie, m.in. mowa nienawiści, nękanie, treści seksualne, przemoc, samookaleczenia i działania nielegalne</li>
+        <li>Proste API: wysyłasz tekst, otrzymujesz wyniki punktowe</li>
+        <li>Niskie opóźnienie, zwykle 200-300 ms</li>
+      </ul>
+      <p><strong>Ograniczenia:</strong></p>
+      <ul>
+        <li>Uzależnienie od dostawcy: zmiana oznacza przepisanie integracji</li>
+        <li>Limit danych wejściowych: 32 tys. znaków</li>
+        <li>Nierówna jakość poza angielskim: dobra dla głównych języków europejskich, słabsza dla pozostałych</li>
+        <li>Brak moderacji obrazów i wideo</li>
+        <li>Cena: bezpłatnie (OpenAI deklaruje, że endpoint moderacji jest darmowy)</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Azure AI Content Safety</h2>
+      <p>
+        Azure AI Content Safety od Microsoftu to typowy wybór dużych firm. Jest częścią Azure,
+        oferuje rozbudowane funkcje zgodności i obsługuje zarówno tekst, jak i obrazy.
+      </p>
+      <p><strong>Mocne strony:</strong></p>
+      <ul>
+        <li>Certyfikaty zgodności dla przedsiębiorstw: SOC 2, ISO 27001, HIPAA</li>
+        <li>Moderacja tekstu i obrazów</li>
+        <li>Własne progi istotności i listy blokowanych słów</li>
+        <li>Dobra integracja z innymi usługami Azure</li>
+      </ul>
+      <p><strong>Ograniczenia:</strong></p>
+      <ul>
+        <li>Wymaga subskrypcji Azure, co może zniechęcić mniejsze zespoły</li>
+        <li>Uzależnienie od Microsoftu</li>
+        <li>Bardziej złożone uwierzytelnianie i struktura API</li>
+        <li>Cena: rozliczenie za 1000 rekordów tekstowych (jeden rekord to do 1000 znaków), z darmowym limitem 5000 rekordów miesięcznie; stawka płatna zależy od regionu Azure</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Llama Guard (HuggingFace)</h2>
+      <p>
+        Llama Guard od Meta to model klasyfikacji bezpieczeństwa stworzony właśnie do tego zadania i dostępny na HuggingFace.
+        Jest open source, darmowy i można go uruchomić na własnym sprzęcie.
+      </p>
+      <p><strong>Mocne strony:</strong></p>
+      <ul>
+        <li>Darmowy: bez kosztów API i bez limitów użycia</li>
+        <li>Działa lokalnie, więc żadne dane nie opuszczają Twojej infrastruktury</li>
+        <li>Open source: można go audytować i dostosowywać</li>
+        <li>Brak uzależnienia od dostawcy</li>
+      </ul>
+      <p><strong>Ograniczenia:</strong></p>
+      <ul>
+        <li>Do rozsądnego opóźnienia potrzebny jest GPU</li>
+        <li>Opóźnienie 1-2 sekundy na GPU, znacznie więcej na CPU</li>
+        <li>W praktyce tylko język angielski</li>
+        <li>Brak zarządzanego API: hostujesz go sam albo korzystasz z HF Inference API</li>
+        <li>Mniej kategorii niż w OpenAI</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Porównanie w tabeli</h2>
+      <div class="overflow-hidden rounded-xl border border-surface-200">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-4 py-3 text-left font-semibold text-surface-900">Kryterium</th>
+              <th class="px-4 py-3 text-left font-semibold text-surface-900">OpenAI</th>
+              <th class="px-4 py-3 text-left font-semibold text-surface-900">Azure</th>
+              <th class="px-4 py-3 text-left font-semibold text-surface-900">Llama Guard</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200">
+            <tr><td class="px-4 py-3">Trafność (angielski)</td><td class="px-4 py-3 text-accent-600">Najlepsza</td><td class="px-4 py-3">Dobra</td><td class="px-4 py-3">Dobra</td></tr>
+            <tr><td class="px-4 py-3">Inne języki</td><td class="px-4 py-3">Dobra (główne języki)</td><td class="px-4 py-3">Dobra</td><td class="px-4 py-3">Ograniczona</td></tr>
+            <tr><td class="px-4 py-3">Opóźnienie</td><td class="px-4 py-3">~250 ms</td><td class="px-4 py-3">~300 ms</td><td class="px-4 py-3">~1,5 s (GPU)</td></tr>
+            <tr><td class="px-4 py-3">Cena</td><td class="px-4 py-3">Bezpłatnie</td><td class="px-4 py-3">Za 1000 rekordów tekstowych, zależnie od regionu</td><td class="px-4 py-3">0 USD (własny hosting)</td></tr>
+            <tr><td class="px-4 py-3">Własny hosting</td><td class="px-4 py-3">Nie</td><td class="px-4 py-3">Nie</td><td class="px-4 py-3">Tak</td></tr>
+            <tr><td class="px-4 py-3">Open source</td><td class="px-4 py-3">Nie</td><td class="px-4 py-3">Nie</td><td class="px-4 py-3">Tak</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="text-xl font-bold text-surface-900">Nasza rada: korzystaj ze wszystkich trzech</h2>
+      <p>
+        Nie trzeba wybierać jednego dostawcy. Kilku dostawców działających razem zwykle daje
+        lepsze wyniki. OpenAI sprawdzi się przy komentarzach po angielsku, które wymagają
+        szczegółowych kategorii. Azure wybierz tam, gdzie wymagają tego standardy zgodności
+        w firmie. Llama Guard nada się do wrażliwych treści, które muszą zostać na Twoich
+        serwerach, bez kosztów API.
+      </p>
+      <p>
+        OpenModeration działa inaczej: korzysta z własnej AI do moderacji, a trudne przypadki
+        weryfikują inne modele AI. Silnik nie jest przywiązany do jednego modelu, więc gdy pojawia się
+        lepszy lub tańszy, szybko go podłączamy, a po Twojej stronie nic się nie zmienia.
+      </p>
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Czytaj dalej</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/content-moderation-api', locale)} class="font-medium text-brand-600 hover:text-brand-500">Jedno API do moderacji treści dla wszystkich trzech dostawców &rarr;</a></li>
+        <li><a href={localizePath('/alternatives/openai-moderation', locale)} class="font-medium text-brand-600 hover:text-brand-500">Alternatywa dla OpenAI Moderation: cały proces wokół wyników &rarr;</a></li>
+        <li><a href={localizePath('/alternatives/azure-content-safety', locale)} class="font-medium text-brand-600 hover:text-brand-500">Alternatywa dla Azure Content Safety: bez uzależnienia od dostawcy &rarr;</a></li>
+        <li><a href={localizePath('/features', locale)} class="font-medium text-brand-600 hover:text-brand-500">Jedna integracja, wszyscy dostawcy &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

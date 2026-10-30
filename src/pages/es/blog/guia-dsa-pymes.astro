@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
 import Breadcrumb from '../../../components/Breadcrumb.astro';
 
 const articleJsonLd = {
@@ -104,13 +105,13 @@ const articleJsonLd = {
         Con OpenModeration puedes ponerla en marcha en menos de una hora:
       </p>
       <ol>
-        <li>Despliega con Docker Compose: docker compose up</li>
-        <li>Elige un proveedor (OpenAI, Azure, HuggingFace, Mistral o un LLM autoalojado)</li>
+        <li>Crea tu cuenta y conecta tu plataforma (API REST, WordPress o tus redes sociales)</li>
+        <li>Escribe tus reglas en lenguaje natural, según tus casos de uso: la IA de moderación de OpenModeration las aplica, y otros modelos de IA arbitran los casos delicados</li>
         <li>Configura los umbrales en el panel de control: define los niveles de aceptación y de rechazo por categoría</li>
-        <li>Activa la cola de revisión manual para el contenido dudoso</li>
+        <li>Y ya está: nuestro equipo se ocupa de los casos dudosos, y tú ves cada decisión en tiempo real y puedes intervenir cuando quieras</li>
       </ol>
       <p>
-        Así obtienes un sistema conforme al artículo 17: cada decisión incluye el proveedor, las puntuaciones,
+        Así obtienes un sistema conforme al artículo 17: cada decisión incluye las puntuaciones, la explicación por escrito,
         la regla que se ha activado y la acción tomada.
       </p>
 
@@ -124,12 +125,12 @@ const articleJsonLd = {
       </p>
       <ul>
         <li>El identificador y el texto del contenido (cifrado mediante hash o almacenado según tu política de conservación)</li>
-        <li>El proveedor utilizado y el tiempo de respuesta</li>
+        <li>La explicación escrita de la decisión y el tiempo de respuesta</li>
         <li>Las puntuaciones por categoría (odio, acoso, violencia, etc.)</li>
         <li>La regla aplicada y la acción tomada (permitir, ocultar, eliminar, marcar)</li>
         <li>La marca de tiempo en UTC</li>
         <li>La denuncia del usuario, si el proceso empezó con una notificación</li>
-        <li>El revisor humano y su decisión, en las revisiones manuales</li>
+        <li>El revisor humano de nuestro equipo y su decisión, en las revisiones manuales</li>
       </ul>
       <p>
         Estos registros se almacenan en PostgreSQL y se pueden exportar por API. Para una auditoría de la DSA,
@@ -144,13 +145,13 @@ const articleJsonLd = {
       <ul>
         <li><strong>Endpoint de notificación:</strong> expón una API o una interfaz en la que los usuarios puedan denunciar contenido. Incluye el identificador del contenido, la categoría del motivo y una explicación opcional.</li>
         <li><strong>Nueva evaluación de la moderación:</strong> cuando llega una notificación, vuelve a moderar el contenido y registra el resultado vinculado a esa notificación.</li>
-        <li><strong>Endpoint de recurso:</strong> permite a los usuarios solicitar una revisión humana de las decisiones automatizadas. Envía estas solicitudes a tu cola de revisión manual.</li>
+        <li><strong>Endpoint de recurso:</strong> permite a los usuarios solicitar una revisión humana de las decisiones automatizadas. Estas solicitudes deben llegar a una persona.</li>
         <li><strong>Notificación al usuario:</strong> informa a los usuarios de las decisiones dentro de los plazos de la DSA (normalmente con rapidez: no hay un plazo fijo definido para las pymes, pero la norma es «sin demora indebida»).</li>
       </ul>
       <p>
-        El motor de acciones de OpenModeration admite este flujo de forma nativa. Puedes configurar reglas que
-        envíen el contenido a revisión humana cuando llegan notificaciones de usuarios, y el registro de auditoría
-        sigue todo el ciclo de vida, desde la notificación hasta la decisión.
+        Con OpenModeration no tienes que montar este flujo: las denuncias de usuarios y los recursos los gestiona
+        nuestro equipo, no el tuyo. El registro de auditoría sigue todo el ciclo de vida, desde la notificación hasta
+        la decisión, y tú lo ves en tiempo real y puedes intervenir cuando quieras.
       </p>
 
       <h2 class="text-xl font-bold text-surface-900">Paso 4: genera los informes de transparencia</h2>
@@ -221,6 +222,8 @@ const articleJsonLd = {
       </ul>
     </div>
   </section>
+
+  <GuideComparisons />
 
   <CTASection />
 </BaseLayout>

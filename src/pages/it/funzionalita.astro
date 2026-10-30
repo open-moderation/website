@@ -10,25 +10,23 @@ const pageJsonLd = {
   "@id": "https://www.openmoderation.com/it/funzionalita",
   "url": "https://www.openmoderation.com/it/funzionalita",
   "name": "Funzionalità di moderazione dei contenuti: API unificata e motore di regole",
-  "description": "Tutte le funzionalità di OpenModeration: API unificata, console di amministrazione, motore di azioni, connettori nativi, BYOK, elaborazione in blocco e registri di audit conformi al DSA.",
+  "description": "Tutte le funzionalità di OpenModeration: API di moderazione, console di amministrazione, motore di azioni, connettori nativi, elaborazione in blocco e registri di audit conformi al DSA.",
   "inLanguage": "it",
   "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
 };
 
-const curlExample = `# Funziona allo stesso modo con ogni fornitore
+const curlExample = `# Una chiamata, punteggi standardizzati
 curl -X POST https://api.openmoderation.com/v1/moderation \\
   -H "Authorization: Bearer om_key_..." \\
   -H "Content-Type: application/json" \\
   -d '{
     "input": "Your text to moderate here",
-    "model": "openai/omni-moderation-latest",
     "language": "en"
   }'
 
 # Risposta (stesso formato, sempre)
 {
   "id": "modr_01JXK...",
-  "model": "openai/omni-moderation-latest",
   "results": [{
     "category": "hate",
     "score": 0.02,
@@ -36,47 +34,46 @@ curl -X POST https://api.openmoderation.com/v1/moderation \\
   }],
   "flagged": false,
   "usage": {
-    "latency_ms": 243,
-    "provider": "openai"
+    "latency_ms": 243
   }
 }`;
 
 const featureCategories = [
   {
     title: 'Un\'unica integrazione',
-    description: 'Un solo endpoint API che funziona allo stesso modo qualunque fornitore tu scelga. I risultati hanno sempre la stessa forma e non devi scrivere codice in più.',
+    description: 'Un solo endpoint API, un solo formato di risposta. Quando colleghiamo un modello di IA migliore, nel tuo codice non cambia nulla.',
     items: [
-      { title: 'Una connessione per tutti i fornitori di moderazione', desc: 'Invii il contenuto una volta e ricevi un verdetto chiaro (approvato o respinto) con i punteggi per categoria, che tu usi OpenAI, Azure o un LLM.' },
+      { title: 'La nostra IA di moderazione', desc: 'Invii il contenuto una volta e ricevi un verdetto chiaro (approvato o respinto) con i punteggi per categoria, configurato sulle tue regole e sui tuoi casi d\'uso.' },
       { title: 'Categorie di contenuto predefinite', desc: 'Categorie pronte all\'uso per odio, molestie, contenuti sessuali, violenza, autolesionismo, spam, disinformazione, dati personali (PII) e altro ancora.' },
-      { title: 'Scelta automatica del fornitore', desc: 'Indichi lingua, tipo di contenuto e budget: noi indirizziamo automaticamente ogni richiesta al fornitore più adatto.' },
-      { title: 'Decisioni di moderazione più intelligenti', desc: 'Tieni conto del contesto della conversazione, dello storico dell\'autore, del tipo di canale e delle tue policy per decisioni più accurate.' },
+      { title: 'Verificata da altre IA', desc: 'Sui casi delicati, altri modelli di IA arbitrano la decisione prima che venga applicata. Meno errori, meno commenti nascosti per sbaglio.' },
+      { title: 'Decisioni di moderazione più intelligenti', desc: 'Tieni conto del contesto della conversazione, dello storico dell\'autore, del tipo di canale e delle tue regole per decisioni più accurate.' },
       { title: 'Revisione dei contenuti in blocco', desc: 'Invia fino a 10.000 elementi alla volta per un\'elaborazione asincrona. I risultati arrivano al tuo sistema appena sono pronti.' },
-      { title: 'Policy di moderazione personalizzate', desc: 'Definisci le tue categorie con qualsiasi LLM. Fornisci qualche esempio e lascia che il modello classifichi i contenuti a modo tuo.' },
+      { title: 'Moderazione adattata ai tuoi casi d\'uso', desc: 'Definisci le tue categorie. Fornisci qualche esempio e lascia che l\'IA classifichi i contenuti a modo tuo.' },
     ],
   },
   {
     title: 'Console di moderazione',
     description: 'Un\'interfaccia web completa per gestire le tue attività di moderazione dei contenuti.',
     items: [
-      { title: 'Gestione degli accessi', desc: 'Crea e gestisci le chiavi di accesso. Imposta limiti di utilizzo per chiave e configura le credenziali dei fornitori.' },
-      { title: 'Gestione del team e dei ruoli', desc: 'Gestisci facilmente i tuoi moderatori, assegna ruoli e imposta permessi senza dipendere dal reparto IT.' },
-      { title: 'Gestione delle segnalazioni', desc: 'Una coda centralizzata per trattare le segnalazioni degli utenti, seguirne lo stato e fare in modo che nessun contenuto segnalato passi inosservato.' },
-      { title: 'Cronologia delle attività', desc: 'Ogni richiesta di moderazione viene registrata con verdetto, fornitore, tempo di risposta e punteggi per categoria.' },
-      { title: 'Monitoraggio dei fornitori', desc: 'Lo stato in tempo reale di tutti i tuoi fornitori: disponibilità, tempi di risposta e tassi di errore.' },
-      { title: 'Report sulle prestazioni', desc: 'Segui il volume di moderazione e i tassi di segnalazione, confronta le prestazioni dei fornitori e analizza l\'andamento dei costi.' },
+      { title: 'Gestione degli accessi', desc: 'Crea e gestisci le chiavi di accesso. Imposta limiti di utilizzo per chiave.' },
+      { title: 'Gestione del team e dei ruoli', desc: 'Dai accesso alla console a chi vuoi nel tuo team, assegna ruoli e imposta permessi senza dipendere dal reparto IT.' },
+      { title: 'Gestione delle segnalazioni', desc: 'Le segnalazioni degli utenti le tratta il nostro team. Tu ne segui lo stato in tempo reale e nessun contenuto segnalato passa inosservato.' },
+      { title: 'Cronologia delle attività', desc: 'Ogni richiesta di moderazione viene registrata con verdetto, tempo di risposta e punteggi per categoria.' },
+      { title: 'Monitoraggio del servizio', desc: 'Lo stato del servizio in tempo reale: disponibilità, tempi di risposta e tassi di errore.' },
+      { title: 'Report sulle prestazioni', desc: 'Segui il volume di moderazione e i tassi di segnalazione e analizza l\'andamento dei costi.' },
       { title: 'Gestione dei connettori', desc: 'Collega gli account delle tue piattaforme social con le tue credenziali.' },
-      { title: 'Configurazione delle regole', desc: 'Definisci le parole vietate, imposta le soglie per categoria e scrivi la carta della tua community: tre strumenti semplici, senza codice.' },
+      { title: 'Configurazione delle regole', desc: 'Definisci le parole vietate, imposta le soglie per categoria e scrivi le tue regole in linguaggio naturale: tre strumenti semplici, senza codice.' },
     ],
   },
   {
     title: 'Moderazione automatica',
-    description: 'Definisci le regole di moderazione con tre strumenti semplici: parole vietate, soglie per categoria e la carta della tua community scritta in linguaggio naturale.',
+    description: 'Definisci le regole di moderazione con tre strumenti semplici: parole vietate, soglie per categoria e le tue regole scritte in linguaggio naturale.',
     items: [
-      { title: 'Regole di IA attente al contesto', desc: 'Combina i punteggi di affidabilità dell\'IA con le linee guida della tua community e lasciati alle spalle una logica per parole chiave rigida e fragile.' },
+      { title: 'Regole di IA attente al contesto', desc: 'Combina i punteggi di affidabilità dell\'IA con le regole della tua community e lasciati alle spalle una logica per parole chiave rigida e fragile.' },
       { title: 'Azioni automatiche', desc: 'Quando una soglia viene superata entra in gioco il motore di azioni: nasconde, elimina, segnala, notifica o marca come spam.' },
-      { title: 'Human-in-the-loop', desc: 'I casi sfumati o al limite passano ai tuoi moderatori, che prendono la decisione finale con tutte le informazioni.' },
-      { title: 'Coda di revisione manuale', desc: 'I contenuti segnalati finiscono in una coda dove i moderatori li approvano o li respingono.' },
-      { title: 'Notifiche via webhook', desc: 'Ricevi avvisi in tempo reale per contenuti segnalati, elaborazioni in blocco completate, errori dei fornitori e altro.' },
+      { title: 'Human-in-the-loop', desc: 'I casi sfumati o al limite li esamina il nostro team, con tutte le informazioni. Tu puoi sempre avere l\'ultima parola.' },
+      { title: 'Revisione manuale', desc: 'I contenuti dubbi li approva o li respinge il nostro team. Tu vedi ogni decisione in tempo reale e puoi intervenire quando vuoi.' },
+      { title: 'Notifiche via webhook', desc: 'Ricevi avvisi in tempo reale per contenuti segnalati, elaborazioni in blocco completate, errori e altro.' },
       { title: 'Registro di audit completo', desc: 'Ogni azione viene registrata: quale regola è scattata, quale azione è stata eseguita e con quale esito.' },
     ],
   },
@@ -86,7 +83,7 @@ const featureCategories = [
     items: [
       { title: 'Facebook', desc: 'Ricevi commenti e post. Nascondi o rimuovi automaticamente i contenuti che violano le tue regole.' },
       { title: 'Instagram', desc: 'Modera commenti e messaggi su Instagram e proteggi il tuo profilo da contenuti tossici o spam.' },
-      { title: 'YouTube', desc: 'Acquisisci i commenti ai video. Marcali come spam o mandali nella tua coda di revisione.' },
+      { title: 'YouTube', desc: 'Acquisisci i commenti ai video. Marcali come spam o mettili in attesa di revisione.' },
       { title: 'WordPress', desc: 'Modera i commenti del tuo blog. Approva, metti in attesa di revisione o marca come spam in automatico.' },
       { title: 'Usa i tuoi accessi alle piattaforme', desc: 'Porti i tuoi token delle piattaforme. Non li conserviamo mai in chiaro.' },
       { title: 'Ricevitore webhook generico', desc: 'Acquisisci contenuti da qualsiasi piattaforma che supporti i webhook in uscita.' },
@@ -96,7 +93,7 @@ const featureCategories = [
 ];
 ---
 
-<BaseLayout title="Funzionalità di moderazione: API unificata e regole" description="Tutte le funzionalità di OpenModeration: API unificata, console, motore di azioni, connettori nativi, BYOK, elaborazione in blocco e registri di audit DSA." jsonLd={pageJsonLd}>
+<BaseLayout title="Funzionalità di moderazione: API unificata e regole" description="Tutte le funzionalità di OpenModeration: API di moderazione, console, motore di azioni, connettori nativi, elaborazione in blocco e registri di audit DSA." jsonLd={pageJsonLd}>
 <Breadcrumb items={[{ label: "Home", href: "/it" }, { label: "Funzionalità" }]} />
   <section class="bg-gradient-to-b from-brand-50 to-white py-20">
     <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
@@ -133,12 +130,12 @@ const featureCategories = [
         <div>
           <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Un'API semplice e prevedibile</h2>
           <p class="mt-4 text-lg text-surface-500">
-            Qualunque sia il fornitore, la risposta ha lo stesso formato e ti basta una sola integrazione.
+            Quando colleghiamo un modello di IA migliore o più economico, la risposta mantiene lo stesso formato: ti basta una sola integrazione.
           </p>
           <div class="mt-6 space-y-4">
             <div class="flex items-start gap-3">
               <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <p class="text-sm text-surface-600"><strong>Lo stesso formato</strong> per OpenAI, Azure, HuggingFace, Mistral o qualsiasi LLM, senza codice aggiuntivo da scrivere.</p>
+              <p class="text-sm text-surface-600"><strong>Lo stesso formato</strong> ogni volta, senza codice aggiuntivo da scrivere quando l'IA migliora.</p>
             </div>
             <div class="flex items-start gap-3">
               <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>

@@ -1,0 +1,229 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const title = "Interactora alternatief: vergelijking met OpenModeration";
+const description = "Interactora of OpenModeration? Uitbestede dienst tegenover automatische moderatie die je realtime volgt: openbare prijzen en uitleg per beslissing.";
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/nl/alternatieven/interactora",
+  "name": title,
+  "description": description,
+  "inLanguage": "nl",
+  "about": { "@id": "https://www.openmoderation.com/#software" }
+};
+
+const rows = [
+  { feature: "Soort aanbod", interactora: "Uitbestede moderatiedienst: een menselijk team ondersteund door automatische filters (Xataka, 2015)", openmod: "Automatische moderatie met AI die je regels toepast; ons team behandelt de twijfelgevallen" },
+  { feature: "Wie beslist", interactora: "De moderatoren van Interactora", openmod: "De AI past je regels toe; ons team handelt de twijfelgevallen af en jij ziet alles realtime" },
+  { feature: "Wat de website beschrijft", interactora: "Diensten rond door gebruikers gegenereerde content: mobiele chat, chat voor interviews en chat voor de dovengemeenschap", openmod: "Moderatie van reacties op je website en je sociale media" },
+  { feature: "Sociale media", interactora: "Niet vermeld", openmod: "Facebook, Instagram, YouTube en WordPress standaard; REST API en webhooks voor de rest" },
+  { feature: "Prijs", interactora: "Publiceert geen tarieven", openmod: "Openbaar: gratis tot 1.000 verzoeken per maand, Pro voor € 99 per maand voor 10.000, Enterprise op aanvraag voor grote volumes" },
+  { feature: "Context", interactora: "Niet vermeld", openmod: "De AI leest elke reactie samen met de kop en de discussiedraad" },
+  { feature: "Uitleg bij elke beslissing", interactora: "Niet vermeld", openmod: "Een schriftelijke uitleg bij elke beslissing, in de taal die je kiest, teruggegeven door de API" },
+  { feature: "Logboek voor de DSA", interactora: "Niet vermeld", openmod: "Activiteitenlogboek: bij elke beslissing staat of die automatisch was of welke moderator die nam" },
+  { feature: "Hosting van de gegevens", interactora: "Niet vermeld", openmod: "Ontwikkeld en gehost in de Europese Unie, AVG" },
+  { feature: "AI-modellen", interactora: "Niet vermeld op de website", openmod: "Eigen moderatie-AI, gecontroleerd door andere AI-modellen; nieuwe modellen worden toegevoegd zodra ze uitkomen" },
+  { feature: "Genoemde referenties", interactora: "El País en El Mundo (Xataka, 2015); Prisa en Vocento (studie in El Profesional de la Información, 2021)", openmod: "L'Équipe, Challenges, Sud Ouest, actu.fr, Estadão, Südkurier, Egora" },
+];
+
+const faqItems = [
+  {
+    question: "Wat is het beste alternatief voor Interactora?",
+    answer: "Dat hangt af van hoe je wilt modereren. Wil je dat een extern team de reacties voor je leest, dan past een dienst zoals die van Interactora. Wil je dat je redactie de regels bepaalt, ziet waarom elke reactie verborgen is en de prijs vooraf kent, dan is OpenModeration daarvoor gemaakt: je koppelt je pagina's en wij doen de rest.",
+  },
+  {
+    question: "Wat kost Interactora?",
+    answer: "Interactora publiceert geen tarieven op zijn website. OpenModeration publiceert ze wel: gratis tot 1.000 verzoeken per maand, Pro voor € 99 per maand voor 10.000 verzoeken en Enterprise op aanvraag voor grote volumes.",
+  },
+  {
+    question: "Interactora vs OpenModeration: wat is het verschil?",
+    answer: "Interactora is een uitbestede dienst: zijn moderatoren lezen en beoordelen de reacties. Bij OpenModeration past de AI je regels en je use cases toe, behandelt ons team de twijfelgevallen en zie jij alles realtime in één console; elke beslissing krijgt een schriftelijke uitleg en een plek in het activiteitenlogboek.",
+  },
+  {
+    question: "Kan ik OpenModeration testen zonder Interactora te verlaten?",
+    answer: "Ja. In sandboxmodus analyseert OpenModeration de echte reacties op je website of je pagina's en laat zien wat het zou hebben beslist, zonder iets te verbergen of te verwijderen. Je vergelijkt die beslissingen met die van je huidige dienst voordat je iets verandert.",
+  },
+  {
+    question: "Wie modereert de reacties bij de grote Spaanse kranten?",
+    answer: "Volgens een wetenschappelijke studie uit 2021 in El Profesional de la Información werkten Vocento en Prisa met Interactora, Unidad Editorial met Netino, Henneo met opensourcesoftware en El Confidencial met een eigen tool. Elke groep kiest tussen uitbesteden en zelf aansturen vanuit de redactie.",
+  },
+  {
+    question: "Welke AI-modellen gebruikt OpenModeration?",
+    answer: "OpenModeration werkt met een eigen moderatie-AI, en bij gevoelige gevallen controleren andere AI-modellen die beslissing. Komt er een beter of goedkoper model uit, dan voegt het team dat snel toe, zonder dat jij iets hoeft te veranderen: je moderatie profiteert van de vooruitgang van AI-modellen.",
+  },
+  {
+    question: "Levert OpenModeration een team moderatoren?",
+    answer: "Ja, voor wat de AI niet alleen kan beslissen. De automatisering doet het meeste werk; twijfelgevallen, meldingen van gebruikers en betwiste beslissingen behandelt ons team. Je redactie hoeft niets te doen, maar ziet elke beslissing realtime en kan op elk moment ingrijpen. Ons team richt de moderatie ook samen met jou in, op basis van je huidige regels, je use cases en echte reacties, en stemt die de eerste weken bij.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: "Alternatieven", href: localizePath('/alternatives', locale) }, { label: "Interactora" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Vergelijking
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Interactora alternatief: reactiemoderatie in handen van je redactie</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Interactora is een Spaans bedrijf dat lezersreacties modereert voor grote media, met een menselijk team en automatische filters. Bij OpenModeration past de AI de regels van je redactie toe, handelt ons team de twijfelgevallen af en elke beslissing krijgt een schriftelijke uitleg. Dit zijn de verschillen, met bronnen.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold tracking-tight text-surface-900">Voor wie is Interactora?</h2>
+      <p class="mt-4 text-surface-600">Interactora richt zich op media die het lezen en modereren van reacties willen uitbesteden. Volgens Xataka (2015) werkte het met een menselijk team ondersteund door automatische filters, voor onder meer El País en El Mundo; een studie uit 2021 noemt Prisa en Vocento als klanten. De eigen website beschrijft diensten rond door gebruikers gegenereerde content, zoals mobiele chat, chat voor interviews en chat voor de dovengemeenschap.</p>
+      <p class="mt-4 text-surface-600">OpenModeration modereert met AI de reacties van media, merken en overheidsinstellingen, op hun website en op hun Facebook-pagina's, Instagram-accounts en YouTube-kanalen. Het verbergt duidelijke overtredingen automatisch, laat legitieme kritiek zichtbaar en laat twijfelgevallen door ons team beoordelen, terwijl je elke beslissing realtime in één console ziet. Het team van Logora, sinds 2019 in Parijs, richt het samen met jou in volgens je regels en je use cases.</p>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Interactora en OpenModeration, punt voor punt</h2>
+      <p class="mt-4 text-surface-500">Informatie over Interactora afkomstig van de eigen website, interactora.com, en van de bronnen in de tabel, geraadpleegd op 20 oktober 2026.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Criterium</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Interactora</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.interactora}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Kies OpenModeration als…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>je wilt dat je redactie de regels bepaalt en aanpast wanneer de actualiteit daarom vraagt;</li>
+          <li>je de prijs wilt kennen voordat je met een verkoper praat;</li>
+          <li>je elke verwijderde reactie moet kunnen uitleggen, zoals de DSA vereist;</li>
+          <li>je ook de reacties op Facebook, Instagram of YouTube modereert;</li>
+          <li>je gegevens in de Europese Unie moeten blijven.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">Interactora past misschien beter als…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>je wilt dat een extern team de reacties voor je leest en modereert;</li>
+                    <li>je waarde hecht aan een team van gekwalificeerde, gespecialiseerde moderatoren, een punt waar Interactora volgens de studie uit 2021 de nadruk op legt.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Wat er in de praktijk echt verandert</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">De regels zijn van je redactie</h3>
+          <p class="mt-2 text-sm text-surface-600">Het team van Logora zet de moderatie samen met jou op volgens je regels en je use cases, met een drempel per categorie. Een verkiezingscampagne of een nieuwsfeit dat de reacties doet oplaaien: je past de regels aan zonder te wachten op een externe dienstverlener.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">Je weet waarom elke reactie verborgen is</h3>
+          <p class="mt-2 text-sm text-surface-600">Elke beslissing krijgt een schriftelijke uitleg, en het activiteitenlogboek laat zien of de AI of welke moderator die nam. Zo kun je een lezer die protesteert antwoorden, en de DSA vraagt juist om elke verwijdering uit te leggen.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">Een prijs die je vooraf kent</h3>
+          <p class="mt-2 text-sm text-surface-600">De tarieven zijn openbaar en je begint gratis. Je betaalt naar het aantal geanalyseerde reacties.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">Een test zonder risico</h3>
+          <p class="mt-2 text-sm text-surface-600">In sandboxmodus analyseert OpenModeration je echte reacties zonder actie te ondernemen. Je vergelijkt de beslissingen een paar weken met die van je huidige dienst en beslist op basis van data.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h2 class="text-xl font-bold text-surface-900">Een AI die de vooruitgang van AI-modellen volgt</h2>
+          <p class="mt-3 text-sm text-surface-600">OpenModeration werkt met een eigen moderatie-AI, en bij gevoelige gevallen controleren andere AI-modellen die beslissing. Komt er een beter of goedkoper model uit, dan voegt het team dat snel toe, zonder dat jij iets hoeft te veranderen. Zo volgt je moderatie de vooruitgang van de AI-markt in plaats van vast te zitten aan één algoritme.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h2 class="text-xl font-bold text-surface-900">Prijzen: Interactora vs OpenModeration</h2>
+          <p class="mt-3 text-sm text-surface-600">Interactora publiceert geen tarieven op zijn website. OpenModeration wel: gratis tot 1.000 verzoeken per maand, Pro voor € 99 per maand voor 10.000 verzoeken en Enterprise op aanvraag voor grote volumes. Een on-premise installatie is mogelijk op aanvraag. <a href={localizePath('/book-a-call', locale)} class="font-medium text-brand-600 hover:text-brand-500">Plan een gesprek</a> om jouw situatie door te rekenen.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">In 3 stappen van Interactora naar OpenModeration</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">1. Test in sandboxmodus</h3>
+          <p class="mt-2 text-sm text-surface-600">Koppel je website, WordPress of je Facebook-, Instagram- en YouTube-pagina's. OpenModeration analyseert echte reacties zonder iets te verbergen, terwijl je huidige dienst gewoon doorloopt.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">2. Stem af met het team van Logora</h3>
+          <p class="mt-2 text-sm text-surface-600">We vergelijken de beslissingen met die van je huidige moderatie en stemmen ze af op je regels en je use cases, met de schriftelijke uitleg bij elke beslissing in beeld.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">3. Activeer kanaal per kanaal</h3>
+          <p class="mt-2 text-sm text-surface-600">Je zet de moderatie aan op één kanaal en daarna op de andere. Twijfelgevallen behandelt ons team. Elke beslissing komt in het activiteitenlogboek, dat je in realtime volgt.</p>
+        </div>
+      </div>
+      <p class="mt-8 text-center text-surface-600">Wil je het zien met je eigen reacties? <a href={localizePath('/book-a-call', locale)} class="font-medium text-brand-600 hover:text-brand-500">Plan een gesprek met het team</a>.</p>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Veelgestelde vragen" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        Interactora is een merk van de betreffende eigenaar. Bronnen: <a href="http://interactora.com/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">interactora.com</a>, <a href="https://www.xataka.com/especiales/la-transformacion-de-los-comentarios-en-medios-online-la-conversacion-evoluciona" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">Xataka</a> en de <a href="https://revista.profesionaldelainformacion.com/index.php/EPI/article/download/86568/63065/290349" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">studie van Paz-Rebollo et al. (2021)</a>, geraadpleegd op 20 oktober 2026. Fout gezien? Mail ons op <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Meer weten</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/use-cases/news-publishers', locale)} class="font-medium text-brand-600 hover:text-brand-500">Reactiemoderatie voor media &rarr;</a></li>
+        <li><a href={localizePath('/alternatives/netino', locale)} class="font-medium text-brand-600 hover:text-brand-500">OpenModeration of Netino: de vergelijking &rarr;</a></li>
+        <li><a href={localizePath('/dsa-compliance/statement-of-reasons', locale)} class="font-medium text-brand-600 hover:text-brand-500">De motivering die de DSA verplicht stelt &rarr;</a></li>
+        <li><a href={localizePath('/moderation-software', locale)} class="font-medium text-brand-600 hover:text-brand-500">De moderatiesoftware van OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/alternatives', locale)} class="font-medium text-brand-600 hover:text-brand-500">Alle vergelijkingen &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Test OpenModeration naast je huidige moderatiedienst." subtitle="Koppel je website of je pagina's in sandboxmodus: je ziet wat OpenModeration zou hebben beslist en waarom, zonder je moderatie te raken." buttonText="Plan een gesprek" buttonHref={localizePath('/book-a-call', locale)} />
+</BaseLayout>

@@ -1,0 +1,255 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+const title = "Jak automatycznie ukrywać komentarze na Facebooku (2026)";
+const description = "Jak moderować i automatycznie ukrywać komentarze na stronie na Facebooku: ukrycie, usunięcie czy blokada, wbudowane filtry, ich granice i wybór narzędzia.";
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Jak automatycznie ukrywać komentarze na Facebooku: poradnik moderacji komentarzy na Facebooku",
+  "description": description,
+  "inLanguage": "pl",
+  "datePublished": "2026-10-30",
+  "dateModified": "2026-10-30",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/pl/blog/automatyczne-ukrywanie-komentarzy-facebook" }
+};
+
+const comparison = [
+  { need: "Wychwycenie znanej obelgi lub zakazanego słowa", builtin: "Tak, jeśli jest na liście słów i ma identyczną pisownię", tool: "Tak, łącznie z literówkami i wariantami" },
+  { need: "Rozumienie sarkazmu, szyfrowanego języka i kontekstu", builtin: "Nie, słowa kluczowe dopasowują ciągi znaków, nie znaczenie", tool: "Tak, komentarz jest czytany w kontekście" },
+  { need: "Moderacja w wielu językach", builtin: "Tylko słowa, które ktoś pomyślał, by dodać, język po języku", tool: "Tak, bez osobnej listy dla każdego języka" },
+  { need: "Zasady specyficzne dla Twojej strony", builtin: "Ograniczone do słów i filtra wulgaryzmów", tool: "Tak, Twoje zasady i przypadki użycia zapisane zwykłym językiem" },
+  { need: "Przekazanie wątpliwych komentarzy człowiekowi", builtin: "Nie, komentarz jest albo ukryty, albo nie", tool: "Tak, do weryfikacji przez człowieka" },
+  { need: "Pisemne uzasadnienie każdej decyzji", builtin: "Nie", tool: "Tak, dla każdego ukrytego lub odrzuconego komentarza" },
+  { need: "Ścieżka audytu decyzji", builtin: "Nie", tool: "Tak, każda decyzja jest rejestrowana" },
+  { need: "Kilka stron i inne sieci w jednym miejscu", builtin: "Nie, strona po stronie", tool: "Tak, Facebook, Instagram, YouTube i WordPress razem" },
+];
+
+const faqItems = [
+  {
+    question: "Czy Facebook może automatycznie ukrywać komentarze?",
+    answer: "Tak, częściowo. W ustawieniach moderacji strony można dodać blokowane słowa kluczowe i włączyć filtr wulgaryzmów: pasujące komentarze są ukrywane automatycznie. Działa to tylko na dokładne słowa, więc pomija obelgi z literówkami, sarkastyczne, zaszyfrowane lub napisane w innym języku.",
+  },
+  {
+    question: "Czym różni się ukrycie komentarza na Facebooku od jego usunięcia?",
+    answer: "Ukryty komentarz pozostaje widoczny dla autora i jego znajomych, ale nikt inny go nie widzi, a autor nie dostaje powiadomienia. Usunięty komentarz znika dla wszystkich, także dla autora, który może to zauważyć. Ukrycie jest zwykle lepszym domyślnym wyborem, bo nie prowokuje autora do ponownego wpisu.",
+  },
+  {
+    question: "Czy autor wie, że ukryłem jego komentarz na Facebooku?",
+    answer: "Nie. Facebook nie wysyła powiadomienia, gdy strona ukrywa komentarz. Autor i jego znajomi nadal go widzą, więc z perspektywy autora nic się nie zmieniło.",
+  },
+  {
+    question: "Czego potrzeba, by podłączyć narzędzie do moderacji komentarzy do strony na Facebooku?",
+    answer: "Trzeba być administratorem strony (lub mieć pełną kontrolę w Meta Business Suite) i zatwierdzić uprawnienia, o które narzędzie prosi Metę, np. odczyt komentarzy strony i zarządzanie interakcjami. W OpenModeration nie trzeba pisać kodu: podłączasz stronę, a nasz zespół razem z Tobą konfiguruje zasady.",
+  },
+  {
+    question: "Czy narzędzie może moderować komentarze pod reklamami na Facebooku?",
+    answer: "Komentarze pod reklamami są powiązane z postami Twojej strony, więc narzędzie podłączone do strony przez API Mety zazwyczaj może je odbierać i moderować jak inne komentarze. Sprawdź ten punkt u każdego dostawcy przed podpisaniem umowy, bo to właśnie pod reklamami lądują najgorsze komentarze.",
+  },
+  {
+    question: "Czy automatyczna moderacja komentarzy jest zgodna z DSA?",
+    answer: "Może być, jeśli każda decyzja jest uzasadniona i zarejestrowana. Akt o usługach cyfrowych (DSA) wymaga od usług internetowych przedstawienia uzasadnienia przy ograniczaniu treści oraz informacji, czy użyto środków zautomatyzowanych. OpenModeration zapisuje uzasadnienie każdej decyzji, prowadzi pełny rejestr i jest hostowany w UE.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} ogType="article" jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Strona główna", href: localizePath('/', locale) }, { label: "Blog", href: localizePath('/blog', locale) }, { label: "Automatyczne ukrywanie komentarzy na Facebooku" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-30">30 października 2026</time>
+        <span>&middot;</span>
+        <span>8 min czytania</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Jak automatycznie ukrywać komentarze na Facebooku: praktyczny poradnik moderacji komentarzy</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Popularna strona na Facebooku może dostawać setki komentarzy dziennie, a jeden sponsorowany post
+        nawet tysiące. Część z nich to obelgi, oszustwa lub spam, które wiszą pod nazwą Twojej marki, dopóki
+        ktoś się nimi nie zajmie. Ten poradnik wyjaśnia, co Facebook pozwala zrobić samodzielnie, gdzie kończą
+        się możliwości tych narzędzi i jak automatyczne narzędzie do moderacji komentarzy na Facebooku
+        uzupełnia tę lukę.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Odpowiedź w skrócie</h2>
+      <ul>
+        <li><strong>Domyślnie ukrywaj, nie usuwaj.</strong> Ukryty komentarz pozostaje widoczny tylko dla autora i jego znajomych, więc autor rzadko to zauważa.</li>
+        <li><strong>Wbudowane narzędzia Facebooka</strong> (blokowane słowa kluczowe, filtr wulgaryzmów, ręczne ukrywanie) radzą sobie z oczywistymi słowami, nie ze znaczeniem.</li>
+        <li><strong>Narzędzie do automatycznej moderacji</strong> czyta każdy komentarz w kontekście, stosuje Twoje zasady i Twoje przypadki użycia, przekazuje wątpliwe przypadki naszemu zespołowi i zapisuje uzasadnienie każdej decyzji.</li>
+        <li><strong>Aby je podłączyć,</strong> potrzebny jest dostęp administratora do strony i zatwierdzenie uprawnień Mety, o które prosi narzędzie. Kod nie jest potrzebny.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Ukryć, usunąć czy zablokować: czym to się różni?</h2>
+      <p>Facebook daje stronie trzy główne sposoby reagowania na komentarz. Nie mają one tego samego skutku.</p>
+      <ul>
+        <li>
+          <strong>Ukrycie.</strong> Komentarz znika dla wszystkich poza autorem i jego znajomymi. Autor nie
+          dostaje powiadomienia. Dla niego rozmowa wygląda tak samo, co pozwala uniknąć klasycznego „ocenzurowaliście
+          mnie”. Komentarz można w każdej chwili odkryć.
+        </li>
+        <li>
+          <strong>Usunięcie.</strong> Komentarz znika dla wszystkich, także dla autora. Nie da się go przywrócić,
+          a autor, który go szuka, zobaczy, że go nie ma. Usuwanie zostaw dla treści, które w żadnej formie nie
+          mogą pozostać w sieci, takich jak dane osobowe, treści nielegalne czy linki do oszustw.
+        </li>
+        <li>
+          <strong>Blokada.</strong> Dana osoba nie może już komentować ani wchodzić w interakcje z Twoją stroną.
+          To właściwa odpowiedź na recydywistów i konta spamerskie, ale to mocny środek: stosuj go wobec
+          osób, a nie z powodu jednego złego komentarza.
+        </li>
+      </ul>
+      <p>
+        Dla większości marek i mediów ukrycie jest działaniem domyślnym, usunięcie wyjątkiem, a blokada
+        ostatecznością.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Jakie wbudowane narzędzia do moderacji komentarzy ma Facebook?</h2>
+      <p>Każda strona ma bezpłatne ustawienia moderacji. Nazwy i menu co jakiś czas się zmieniają, ale same funkcje istnieją od lat.</p>
+      <ul>
+        <li>
+          <strong>Blokowanie słów kluczowych.</strong> Dodajesz listę słów, fraz lub emoji. Komentarze, które je
+          zawierają, są ukrywane automatycznie, z takim samym skutkiem jak ręczne ukrycie.
+        </li>
+        <li>
+          <strong>Filtr wulgaryzmów.</strong> Facebook ukrywa komentarze zawierające słowa, które uznaje za
+          wulgarne, na podstawie własnej listy. Wybierasz poziom restrykcyjności, ale nie możesz zobaczyć ani edytować listy.
+        </li>
+        <li>
+          <strong>Ręczne ukrywanie i usuwanie.</strong> Z poziomu posta, Meta Business Suite lub powiadomień
+          administrator lub moderator strony może ukryć, usunąć lub zgłosić dowolny komentarz oraz zablokować jego autora.
+        </li>
+      </ul>
+      <p>
+        Dla małej strony to dobry początek. Skonfiguruj je, nawet jeśli później dodasz narzędzie do moderacji:
+        nic nie kosztują i wyłapują najbardziej oczywiste przypadki.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Dlaczego filtry słów kluczowych nie wystarczą</h2>
+      <p>Wbudowane narzędzia działają na ciągach znaków. Komentarze, które szkodzą marce, rzadko trzymają się tych reguł.</p>
+      <ul>
+        <li><strong>Literówki i sposoby obejścia.</strong> „Id1ota”, „i.d.i.o.t.a” albo dodatkowa litera wystarczą, by przejść przez listę.</li>
+        <li><strong>Sarkazm i szyfrowany język.</strong> „Świetna obsługa, jak zwykle” pod reklamacją albo aluzja zrozumiała tylko dla wtajemniczonych nie zawiera żadnego zakazanego słowa.</li>
+        <li><strong>Wiele języków.</strong> Odbiorcy mogą komentować po polsku, angielsku, ukraińsku czy niemiecku. Lista obejmuje tylko słowa, które ktoś pomyślał, by dodać, język po języku.</li>
+        <li><strong>Fałszywe alarmy.</strong> Zablokowane słowo może pojawić się w niewinnym komentarzu, który zostaje ukryty bez powodu.</li>
+        <li><strong>Brak pisemnego uzasadnienia.</strong> Facebook ukrywa komentarz, ale nie mówi, która zasada miała zastosowanie ani dlaczego.</li>
+        <li><strong>Brak ścieżki audytu.</strong> Nie ma historii tego, co, kiedy i przez kogo zostało ukryte, a jest ona potrzebna do wewnętrznych przeglądów i na potrzeby DSA.</li>
+        <li><strong>Brak skali.</strong> Pod viralowym postem lub płatną kampanią komentarze napływają szybciej, niż community manager jest w stanie je przeczytać, często w nocy lub w weekendy.</li>
+      </ul>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Czego potrzebujesz</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Wbudowane narzędzia Facebooka</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Narzędzie do automatycznej moderacji</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {comparison.map((row) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{row.need}</td>
+              <td class="px-4 py-3 text-surface-600">{row.builtin}</td>
+              <td class="px-4 py-3 text-surface-600">{row.tool}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">Co daje narzędzie do automatycznej moderacji Facebooka?</h2>
+      <p>
+        Narzędzie AI do moderacji komentarzy na Facebooku łączy się ze stroną przez API Mety. Każdy nowy komentarz
+        trafia do niego w chwili publikacji, jest analizowany, a następnie ukrywany, odrzucany lub pozostawiany
+        zgodnie z Twoimi zasadami. W praktyce daje to cztery rzeczy.
+      </p>
+      <ul>
+        <li><strong>Rozumienie zamiast dopasowywania.</strong> Komentarz jest czytany w kontekście, więc zamaskowana obelga zostaje wychwycona, a niewinne zdanie zawierające „złe” słowo nie.</li>
+        <li><strong>Twoje własne zasady.</strong> Redakcja, sklep i klub piłkarski nie stawiają granicy w tym samym miejscu. Opisujesz swoje zasady i przypadki użycia zwykłym językiem: linki konkurencji, debata polityczna nie na temat, dane klientów publikowane publicznie.</li>
+        <li><strong>Człowiek w procesie.</strong> Jasne przypadki są obsługiwane automatycznie. Wątpliwe weryfikuje człowiek, a Ty widzisz każdą decyzję w czasie rzeczywistym.</li>
+        <li><strong>Identyfikowalność.</strong> Każda decyzja ma pisemne uzasadnienie i jest rejestrowana, więc możesz odpowiedzieć autorowi, przełożonemu lub regulatorowi.</li>
+      </ul>
+      <p>
+        Tak działa <a href={localizePath('/integrations/facebook', locale)} class="text-brand-600 hover:text-brand-500">integracja OpenModeration z Facebookiem</a>.
+        Ukrywa lub odrzuca komentarze zgodnie z Twoimi zasadami, przekazuje wątpliwe przypadki do weryfikacji naszemu zespołowi
+        w jednej konsoli i podaje pisemne uzasadnienie każdej decyzji. Marki korzystają z niej, by chronić swoje strony
+        i kampanie reklamowe: zobacz <a href={localizePath('/use-cases/brands-retail', locale)} class="text-brand-600 hover:text-brand-500">zastosowanie dla marek i handlu</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Jak wybrać narzędzie do moderacji komentarzy na Facebooku</h2>
+      <p>Zanim zaczniesz porównywać „najlepsze narzędzia do moderacji komentarzy na Facebooku”, sprawdź każde według tej listy.</p>
+      <ol>
+        <li><strong>Działanie w czasie rzeczywistym.</strong> Czy reaguje w chwili publikacji komentarza, czy sprawdza stronę co kilka minut lub godzin?</li>
+        <li><strong>Ukrywanie zamiast usuwania.</strong> Czy można wybrać działanie dla każdej zasady, z ukryciem jako domyślnym?</li>
+        <li><strong>Własne zasady.</strong> Czy można pisać zasady dopasowane do strony, czy tylko włączać i wyłączać ogólne kategorie?</li>
+        <li><strong>Kontekst i języki.</strong> Czy radzi sobie z sarkazmem, literówkami i językami, których używają Twoi odbiorcy?</li>
+        <li><strong>Weryfikacja przez człowieka.</strong> Czy jest kolejka wątpliwych komentarzy wspólna dla zespołu?</li>
+        <li><strong>Wyjaśnienia.</strong> Czy każda decyzja ma uzasadnienie, które można przeczytać?</li>
+        <li><strong>Rejestr audytu i DSA.</strong> Czy każda decyzja jest zapisywana i można ją wyeksportować? Czy dostawca spełnia <a href={localizePath('/dsa-compliance', locale)} class="text-brand-600 hover:text-brand-500">wymogi DSA</a>, np. dotyczące uzasadnień decyzji?</li>
+        <li><strong>Lokalizacja danych.</strong> Gdzie komentarze są przetwarzane i przechowywane? Dla firm europejskich hosting w UE upraszcza kwestie RODO.</li>
+        <li><strong>Inne sieci.</strong> Czy te same zasady będą potrzebne na Instagramie, YouTube lub stronie internetowej?</li>
+        <li><strong>Wsparcie.</strong> Czy ktoś pomoże skonfigurować zasady, czy zostajesz sam z panelem?</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Jak podłączyć narzędzie do moderacji do strony na Facebooku?</h2>
+      <p>Każde poważne narzędzie korzysta z oficjalnego API Mety. Kroki są takie same niezależnie od narzędzia.</p>
+      <ol>
+        <li><strong>Dostęp administratora do strony.</strong> Potrzebna jest pełna kontrola nad stroną, jako administrator lub przez Meta Business Suite. Rola moderatora lub analityka nie wystarcza do nadania dostępu.</li>
+        <li><strong>Logowanie przez Facebooka.</strong> Autoryzujesz aplikację Meta narzędzia i wybierasz, do których stron ma mieć dostęp.</li>
+        <li><strong>Zatwierdzenie uprawnień.</strong> Narzędzie prosi o odczyt postów i komentarzy strony oraz zarządzanie interakcjami, co pozwala mu ukrywać lub usuwać komentarze. Nigdy nie potrzebuje Twojego hasła.</li>
+        <li><strong>Webhooki.</strong> Po podłączeniu Meta powiadamia narzędzie o każdym nowym komentarzu zaraz po jego publikacji. Bez odpytywania, bez opóźnień.</li>
+        <li><strong>Zasady i testy.</strong> Ustalasz zasady, sprawdzasz decyzje na prawdziwych komentarzach, a potem pozwalasz narzędziu działać samodzielnie.</li>
+      </ol>
+      <p>
+        W OpenModeration nie trzeba pisać kodu. Podłączasz stronę, a nasz zespół razem z Tobą konfiguruje
+        zasady i przypadki użycia. Komentarze są przetwarzane w UE. Aby zobaczyć, jak ocenia Twoje własne
+        komentarze, <a href={localizePath('/demo', locale)} class="text-brand-600 hover:text-brand-500">wypróbuj demo na żywo</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Moderujesz też Instagrama?</h2>
+      <p>
+        Jeśli Twoja marka jest na Instagramie, pojawiają się te same problemy, tylko z innymi wbudowanymi narzędziami.
+        Przeczytaj nasz poradnik o <a href={localizePath('/blog/instagram-comment-moderation', locale)} class="text-brand-600 hover:text-brand-500">moderacji i automoderacji komentarzy na Instagramie</a>.
+      </p>
+    </div>
+
+    <div class="mt-12">
+      <FAQ title="Najczęstsze pytania" items={faqItems} />
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Czytaj dalej</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/integrations/facebook', locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderacja komentarzy na Facebooku z OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/blog/instagram-comment-moderation', locale)} class="font-medium text-brand-600 hover:text-brand-500">Jak moderować komentarze na Instagramie &rarr;</a></li>
+        <li><a href={localizePath('/use-cases/brands-retail', locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderacja komentarzy dla marek i handlu &rarr;</a></li>
+        <li><a href={localizePath('/dsa-compliance', locale)} class="font-medium text-brand-600 hover:text-brand-500">Czego DSA wymaga od decyzji moderacyjnych &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

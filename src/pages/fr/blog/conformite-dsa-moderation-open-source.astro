@@ -1,13 +1,15 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
 import Breadcrumb from '../../../components/Breadcrumb.astro';
+import { bookingUrl } from '../../../i18n/ui';
 
 const articleJsonLd = {
   "@context": "https://schema.org",
   "@type": "Article",
-  "headline": "La conformité DSA simplifiée grâce à la modération open source",
-  "description": "Comment respecter le règlement européen sur les services numériques (DSA) avec des outils open source : journal d'audit, rapports de transparence et souveraineté des données.",
+  "headline": "La conformité DSA simplifiée pour la modération des commentaires",
+  "description": "Comment respecter le règlement européen sur les services numériques (DSA) : exposé des motifs, journal d'audit, rapports de transparence et souveraineté des données.",
   "inLanguage": "fr",
   "datePublished": "2026-06-08",
   "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
@@ -22,8 +24,8 @@ const articleJsonLd = {
 };
 ---
 
-<BaseLayout title="Conformité DSA simplifiée avec la modération open source" description="Respecter le règlement sur les services numériques (DSA) avec des outils open source : journal d'audit, rapports de transparence, souveraineté des données." jsonLd={articleJsonLd}>
-<Breadcrumb items={[{ label: "Accueil", href: "/fr" }, { label: "Blog", href: "/fr/blog" }, { label: "Conformité DSA et open source" }]} />
+<BaseLayout title="Conformité DSA simplifiée pour la modération" description="Respecter le DSA : exposé des motifs, journal d'audit, rapports de transparence et données hébergées dans l'UE." jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Accueil", href: "/fr" }, { label: "Blog", href: "/fr/blog" }, { label: "Conformité DSA simplifiée" }]} />
   <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
     <div class="mb-8">
       <div class="flex items-center gap-3 text-sm text-surface-400">
@@ -31,7 +33,7 @@ const articleJsonLd = {
         <span>&middot;</span>
         <span>6 min de lecture</span>
       </div>
-      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">La conformité DSA simplifiée grâce à la modération open source</h1>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">La conformité DSA simplifiée pour la modération des commentaires</h1>
     </div>
 
     <div class="prose prose-surface max-w-none text-surface-600">
@@ -57,7 +59,7 @@ const articleJsonLd = {
         <li><strong>Évaluation des risques (art. 34) :</strong> les très grandes plateformes (plus de 45 millions d'utilisateurs mensuels dans l'UE) doivent évaluer les risques systémiques.</li>
       </ul>
 
-      <h2 class="text-xl font-bold text-surface-900">Pourquoi l'open source compte pour la conformité</h2>
+      <h2 class="text-xl font-bold text-surface-900">Pourquoi des décisions expliquées comptent pour la conformité</h2>
       <p>
         Voici une question que tout responsable de la conformité DSA devrait se poser : si votre plateforme
         de modération est une boîte noire propriétaire, comment prouver à une autorité ce qu'elle fait ?
@@ -68,38 +70,40 @@ const articleJsonLd = {
         Vous vous fiez à ses affirmations, et cette confiance pourrait ne pas suffire à une autorité de régulation.
       </p>
       <p>
-        La modération open source règle ce problème. Chaque ligne de code peut être auditée. Chaque décision
-        peut être retracée. Votre équipe conformité peut vérifier précisément comment les contenus sont modérés,
-        quels critères sont appliqués et où vont les résultats.
+        Des décisions expliquées par écrit et une piste d'audit complète règlent ce problème. Avec OpenModeration,
+        chaque décision s'accompagne d'une explication écrite et chaque étape est consignée. Votre équipe conformité
+        peut vérifier précisément comment les contenus sont modérés, quelles règles, les vôtres, ont été appliquées
+        et qui a pris la décision.
       </p>
 
       <h2 class="text-xl font-bold text-surface-900">Construire un pipeline de modération conforme au DSA</h2>
       <p>Voici à quoi ressemble une configuration conforme au DSA avec OpenModeration :</p>
       <ol>
         <li><strong>Réception des contenus :</strong> les contenus arrivent par API, par webhook ou via les connecteurs pour réseaux sociaux. Chaque élément reçoit un identifiant unique et est stocké chiffré.</li>
-        <li><strong>Modération par IA :</strong> le contenu est routé vers le fournisseur le plus adapté. Les résultats comprennent un score par catégorie et une décision signalé / non signalé.</li>
-        <li><strong>Évaluation des règles :</strong> vos règles combinent des mots interdits pour un blocage immédiat, des seuils par catégorie pour les décisions automatiques et votre charte de la communauté rédigée.</li>
-        <li><strong>Journal d'audit :</strong> chaque étape est consignée : contenu, fournisseur, scores, règle déclenchée, action effectuée, horodatage.</li>
+        <li><strong>Modération par IA :</strong> le contenu est analysé par notre propre IA, et les cas délicats sont arbitrés par d'autres modèles d'IA. Les résultats comprennent un score par catégorie et une décision signalé / non signalé.</li>
+        <li><strong>Évaluation des règles :</strong> vos règles combinent des mots interdits pour un blocage immédiat, des seuils par catégorie pour les décisions automatiques et des consignes rédigées en langage courant.</li>
+        <li><strong>Journal d'audit :</strong> chaque étape est consignée : contenu, modèle utilisé, scores, règle déclenchée, action effectuée, horodatage.</li>
         <li><strong>Export pour la transparence :</strong> GET /v1/analytics/usage fournit les données nécessaires aux rapports de transparence du DSA.</li>
       </ol>
 
       <h2 class="text-xl font-bold text-surface-900">Répondre aux exigences précises du DSA</h2>
       <p>
-        <strong>Journal d'audit :</strong> OpenModeration consigne chaque modération avec le fournisseur, la latence, les scores et la décision.
+        <strong>Journal d'audit :</strong> OpenModeration consigne chaque modération avec le modèle utilisé, la latence, les scores et la décision.
         Les données sont conservées selon la politique que vous avez configurée (par défaut 7 jours pour le texte soumis, 90 jours pour les journaux).
         Tout est exportable pour les audits réglementaires.
       </p>
       <p>
-        <strong>Rapports de transparence :</strong> l'API d'analyse fournit les données d'utilisation par période, par fournisseur et par catégorie.
-        Nombre total de requêtes, taux de contenus signalés, performances des fournisseurs : exactement ce qu'exigent les rapports de transparence du DSA.
+        <strong>Rapports de transparence :</strong> l'API d'analyse fournit les données d'utilisation par période, par règle et par catégorie.
+        Nombre total de requêtes, taux de contenus signalés, décisions par catégorie : exactement ce qu'exigent les rapports de transparence du DSA.
       </p>
       <p>
-        <strong>Souveraineté des données :</strong> auto-hébergez la plateforme sur votre infrastructure. Toutes les données restent sous votre contrôle.
-        Aucun traitement de données par un tiers. C'est essentiel pour la conformité au RGPD et pour les évaluations des risques exigées par le DSA.
+        <strong>Souveraineté des données :</strong> OpenModeration est hébergé dans l'Union européenne et vos données restent exportables.
+        Un déploiement sur site est possible sur demande : <a href={bookingUrl('fr')} class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">parlons-en</a>. C'est essentiel pour la conformité au RGPD et pour les évaluations des risques exigées par le DSA.
       </p>
       <p>
-        <strong>Revue humaine :</strong> la file de modération manuelle permet aux modérateurs humains de traiter les cas limites,
-        ce qui répond aux exigences du DSA en matière de traitement des réclamations et de recours.
+        <strong>Revue humaine :</strong> les cas douteux, les signalements et les contestations sont traités par notre équipe,
+        ce qui répond aux exigences du DSA en matière de traitement des réclamations et de recours. Vous n'avez rien à faire :
+        vous voyez chaque décision et son motif en temps réel, et pouvez intervenir quand vous voulez.
       </p>
     </div>
   </article>
@@ -114,6 +118,8 @@ const articleJsonLd = {
       </ul>
     </div>
   </section>
+
+  <GuideComparisons />
 
   <CTASection />
 </BaseLayout>

@@ -3,13 +3,14 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import CharterSupport from '../../../components/CharterSupport.astro';
 import Breadcrumb from '../../../components/Breadcrumb.astro';
 import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
 import FAQ from '../../../components/FAQ.astro';
 
 const pageJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
   "name": "Bodyguard-Alternative: OpenModeration im Vergleich",
-  "description": "Bodyguard oder OpenModeration? Ein Vergleich der beiden Moderationstools mit Quellen: abgedeckte Netzwerke, Preise, Open Source, Datenhosting und schriftliche Begründung jeder Entscheidung.",
+  "description": "Bodyguard oder OpenModeration? Ein Vergleich der beiden Moderationstools mit Quellen: abgedeckte Netzwerke, Preise, Datenhosting und schriftliche Begründung jeder Entscheidung.",
   "inLanguage": "de",
   "about": { "@id": "https://www.openmoderation.com/#software" }
 };
@@ -17,25 +18,23 @@ const pageJsonLd = {
 const rows = [
   { feature: "Angebote", bodyguard: "Eine Moderations-API für Plattformen und ein Angebot zur Social-Media-Moderation für Marken, Agenturen und öffentliche Einrichtungen", openmod: "Eine einzige Plattform: Konnektoren für soziale Netzwerke und WordPress, REST-API und Webhooks für alles andere" },
   { feature: "Abgedeckte soziale Netzwerke", bodyguard: "Facebook, Instagram, TikTok, X, LinkedIn, YouTube, Twitch, Discord", openmod: "Facebook, Instagram, YouTube und WordPress nativ, alles andere über die API" },
-  { feature: "Preise", bodyguard: "Guardian ab 1.000 € pro Monat, Sentinel ab 3.000 € pro Monat, Commander auf Anfrage; Preis abhängig von der Reichweite", openmod: "Öffentlich: kostenlos bis 1.000 Anfragen pro Monat, Pro für 99 € pro Monat, Self-Hosting kostenlos" },
-  { feature: "Quellcode", bodyguard: "Nicht erwähnt", openmod: "Open Source unter AGPL v3, auf GitHub veröffentlicht" },
-  { feature: "Self-Hosting", bodyguard: "Nicht erwähnt", openmod: "Ja, mit Docker" },
+  { feature: "Preise", bodyguard: "Guardian ab 1.000 € pro Monat, Sentinel ab 3.000 € pro Monat, Commander auf Anfrage; Preis abhängig von der Reichweite", openmod: "Öffentlich: kostenlos bis 1.000 Anfragen pro Monat, Pro für 99 € pro Monat, individuelle Angebote für große Volumen" },
   { feature: "Datenhosting", bodyguard: "Auf der Startseite nicht angegeben", openmod: "In der Europäischen Union entwickelt und gehostet" },
-  { feature: "KI-Modelle", bodyguard: "Von Bodyguard entwickelte Technologie", openmod: "Frei wählbar: OpenAI, Azure, Mistral, Llama Guard, Perspective, LLMs … auf Wunsch mit eigenen API-Schlüsseln" },
+  { feature: "KI-Modelle", bodyguard: "Von Bodyguard entwickelte Technologie", openmod: "Eigene Moderations-KI, bei heiklen Fällen von weiteren KI-Modellen geprüft; neue Modelle werden schnell angebunden" },
   { feature: "Schriftliche Begründung jeder Entscheidung", bodyguard: "Nicht erwähnt", openmod: "Ja, für jede Entscheidung, in der Sprache Ihrer Wahl" },
   { feature: "DSA", bodyguard: "Auf der Startseite nicht erwähnt", openmod: "Audit-Trail aller Entscheidungen, ob automatisch oder menschlich" },
-  { feature: "Ausgewiesene Konformität", bodyguard: "DSGVO, SOC 2 Type 2", openmod: "DSGVO; Code für alle überprüfbar" },
-  { feature: "Sprachen", bodyguard: "46 Sprachen nach eigenen Angaben", openmod: "Abhängig von den gewählten KI-Modellen" },
+  { feature: "Ausgewiesene Konformität", bodyguard: "DSGVO, SOC 2 Type 2", openmod: "DSGVO, DSA: Begründung und Aktivitätsprotokoll für jede Entscheidung" },
+  { feature: "Sprachen", bodyguard: "46 Sprachen nach eigenen Angaben", openmod: "Alle Sprachen Ihrer Community, über unsere eigene KI und die Prüfung durch weitere Modelle" },
 ];
 
 const faqItems = [
   {
     question: "Was ist die beste Alternative zu Bodyguard?",
-    answer: "Das hängt davon ab, was Sie suchen. Wenn Sie offenen Code, einen kostenlosen Einstieg, Datenhosting in der EU und eine schriftliche Begründung für jeden ausgeblendeten Kommentar wollen, erfüllt OpenModeration diese Kriterien. Wenn Sie TikTok, X, LinkedIn, Twitch oder Discord nativ moderieren müssen, deckt Bodyguard diese Netzwerke ab, OpenModeration dagegen nicht.",
+    answer: "Das hängt davon ab, was Sie suchen. Wenn Sie einen kostenlosen Einstieg, Datenhosting in der EU und eine schriftliche Begründung für jeden ausgeblendeten Kommentar wollen, erfüllt OpenModeration diese Kriterien. Wenn Sie TikTok, X, LinkedIn, Twitch oder Discord nativ moderieren müssen, deckt Bodyguard diese Netzwerke ab, OpenModeration dagegen nicht.",
   },
   {
     question: "Was kostet Bodyguard im Vergleich zu OpenModeration?",
-    answer: "Laut seiner Preisseite startet Bodyguard mit dem Guardian-Paket ab 1.000 € pro Monat, das Sentinel-Paket beginnt bei 3.000 € pro Monat, und der Preis hängt von der Reichweite ab. OpenModeration bietet ein kostenloses Angebot bis 1.000 Anfragen pro Monat, ein Pro-Angebot für 99 € pro Monat mit 10.000 Anfragen und kostenloses Self-Hosting, da der Code Open Source ist.",
+    answer: "Laut seiner Preisseite startet Bodyguard mit dem Guardian-Paket ab 1.000 € pro Monat, das Sentinel-Paket beginnt bei 3.000 € pro Monat, und der Preis hängt von der Reichweite ab. OpenModeration bietet ein kostenloses Angebot bis 1.000 Anfragen pro Monat, ein Pro-Angebot für 99 € pro Monat mit 10.000 Anfragen und individuelle Angebote für große Volumen.",
   },
   {
     question: "Ist OpenModeration DSA-konform?",
@@ -48,7 +47,7 @@ const faqItems = [
 ];
 ---
 
-<BaseLayout title="Bodyguard-Alternative: Vergleich mit OpenModeration (2026)" description="Bodyguard oder OpenModeration? Vergleich mit Quellen: Netzwerke, Preise, Open Source, EU-Hosting und schriftliche Begründung jeder Entscheidung." jsonLd={pageJsonLd}>
+<BaseLayout title="Bodyguard-Alternative: Vergleich mit OpenModeration (2026)" description="Bodyguard oder OpenModeration? Vergleich mit Quellen: Netzwerke, Preise, EU-Hosting und schriftliche Begründung jeder Entscheidung." jsonLd={pageJsonLd}>
   <Breadcrumb items={[{ label: "Startseite", href: "/de" }, { label: "Alternativen", href: "/de/alternativen" }, { label: "Bodyguard" }]} />
   <section class="bg-gradient-to-b from-brand-50 to-white py-20">
     <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
@@ -57,7 +56,7 @@ const faqItems = [
       </div>
       <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Bodyguard-Alternative: OpenModeration im Vergleich</h1>
       <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
-        Bodyguard ist ein etablierter französischer Anbieter für KI-Moderation. OpenModeration setzt andere Schwerpunkte: offener Code, ein kostenloser Einstieg und Pro für 99 € pro Monat, Datenhosting in der EU und eine schriftliche Begründung für jede Entscheidung. Hier sind die Unterschiede mit Quellen, damit Sie fundiert entscheiden können.
+        Bodyguard ist ein etablierter französischer Anbieter für KI-Moderation. OpenModeration setzt andere Schwerpunkte: ein kostenloser Einstieg und Pro für 99 € pro Monat, Datenhosting in der EU und eine schriftliche Begründung für jede Entscheidung. Hier sind die Unterschiede mit Quellen, damit Sie fundiert entscheiden können.
       </p>
     </div>
   </section>
@@ -68,7 +67,7 @@ const faqItems = [
         <h2 class="text-lg font-semibold text-brand-700">Wählen Sie OpenModeration, wenn …</h2>
         <ul class="mt-4 space-y-2 text-sm text-surface-700">
           <li>Sie kostenlos starten und danach weniger als 100 € im Monat zahlen möchten;</li>
-          <li>Ihnen überprüfbarer Code wichtig ist, den Sie selbst hosten können;</li>
+          <li>unser Team die Moderation mit Ihnen an Ihre Regeln und Anwendungsfälle anpassen soll;</li>
           <li>Ihre Daten in der Europäischen Union bleiben müssen;</li>
           <li>Sie jede Entfernung eines Kommentars begründen müssen, wie es der DSA verlangt;</li>
           <li>Sie die KI-Modelle, die Ihre Inhalte bewerten, selbst wählen oder wechseln möchten.</li>
@@ -122,15 +121,15 @@ const faqItems = [
         </div>
         <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
           <h3 class="font-semibold text-surface-900">Ihre Regeln, so formuliert, wie Sie denken</h3>
-          <p class="mt-2 text-sm text-surface-600">Sie schreiben Ihre Moderationsrichtlinien in natürlicher Sprache, ergänzen verbotene Wörter und legen pro Kategorie einen Schwellenwert fest. Grenzfälle landen in einem Graubereich, den Ihr Team mit einem Klick entscheidet.</p>
+          <p class="mt-2 text-sm text-surface-600">Sie formulieren Ihre Regeln in natürlicher Sprache, ergänzen verbotene Wörter und legen pro Kategorie einen Schwellenwert fest. Grenzfälle landen in einem Graubereich, den unser Team entscheidet. Sie können jederzeit eingreifen.</p>
         </div>
         <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
           <h3 class="font-semibold text-surface-900">Ein deutlich niedrigerer Einstiegspreis</h3>
-          <p class="mt-2 text-sm text-surface-600">Bodyguard startet bei 1.000 € pro Monat. OpenModeration ist bis 1.000 Anfragen pro Monat kostenlos, Pro kostet 99 € pro Monat. Wenn Sie lieber alles bei sich behalten, kostet Self-Hosting nichts.</p>
+          <p class="mt-2 text-sm text-surface-600">Bodyguard startet bei 1.000 € pro Monat. OpenModeration ist bis 1.000 Anfragen pro Monat kostenlos, Pro kostet 99 € pro Monat.</p>
         </div>
         <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
           <h3 class="font-semibold text-surface-900">Keine Abhängigkeit von einem einzigen Modell</h3>
-          <p class="mt-2 text-sm text-surface-600">OpenModeration fragt die Modelle Ihrer Wahl (OpenAI, Azure, Mistral und weitere) über eine einzige API ab. Sie wechseln das Modell, ohne Ihre Integration neu zu schreiben.</p>
+          <p class="mt-2 text-sm text-surface-600">OpenModeration arbeitet mit einer eigenen Moderations-KI, die bei heiklen Fällen von weiteren KI-Modellen geprüft wird. Kommt ein besseres oder günstigeres Modell heraus, binden wir es schnell an. Für Sie ändert sich nichts.</p>
         </div>
       </div>
     </div>
@@ -159,5 +158,7 @@ const faqItems = [
     </div>
   </section>
 
-  <CTASection title="Testen Sie die Open-Source-Alternative zu Bodyguard." subtitle="Verbinden Sie Ihre Seiten, formulieren Sie Ihre Regeln und sehen Sie die schriftliche Begründung für jeden ausgeblendeten Kommentar. Kostenlos starten." />
+  <RelatedComparisons />
+
+  <CTASection title="Testen Sie die transparente Alternative zu Bodyguard." subtitle="Verbinden Sie Ihre Seiten, formulieren Sie Ihre Regeln und sehen Sie die schriftliche Begründung für jeden ausgeblendeten Kommentar. Kostenlos starten." />
 </BaseLayout>

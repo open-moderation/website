@@ -1,0 +1,255 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const title = "Facebook-reacties automatisch verbergen (2026)";
+const description = "Reacties op een Facebook-pagina modereren en automatisch verbergen: verbergen, verwijderen of verbannen, de filters van Facebook en hoe je een tool kiest.";
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Facebook-reacties automatisch verbergen: een gids voor reactiemoderatie op Facebook",
+  "description": description,
+  "inLanguage": "nl",
+  "datePublished": "2026-10-30",
+  "dateModified": "2026-10-30",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/nl/blog/facebook-reacties-automatisch-verbergen" }
+};
+
+const comparison = [
+  { need: "Een bekende belediging of verboden woord opvangen", builtin: "Ja, als het op je trefwoordenlijst staat en precies zo gespeld is", tool: "Ja, inclusief spelfouten en varianten" },
+  { need: "Sarcasme, codetaal en context begrijpen", builtin: "Nee, trefwoorden vergelijken tekenreeksen, geen betekenis", tool: "Ja, de reactie wordt in context gelezen" },
+  { need: "Meerdere talen modereren", builtin: "Alleen de woorden die je zelf hebt toegevoegd, taal per taal", tool: "Ja, zonder lijst per taal" },
+  { need: "Regels toepassen die specifiek zijn voor je pagina", builtin: "Beperkt tot woorden en het filter voor grof taalgebruik", tool: "Ja, je regels en je use cases in gewone taal" },
+  { need: "Twijfelachtige reacties naar een mens sturen", builtin: "Nee, een reactie is verborgen of niet", tool: "Ja, ons team behandelt ze en jij ziet alles in één console" },
+  { need: "Schriftelijke reden bij elke beslissing", builtin: "Nee", tool: "Ja, bij elke verborgen of geweigerde reactie" },
+  { need: "Audittrail van beslissingen", builtin: "Nee", tool: "Ja, elke beslissing wordt gelogd" },
+  { need: "Meerdere pagina's en andere netwerken op één plek", builtin: "Nee, pagina per pagina", tool: "Ja, Facebook, Instagram, YouTube en WordPress samen" },
+];
+
+const faqItems = [
+  {
+    question: "Kan Facebook reacties automatisch verbergen?",
+    answer: "Ja, gedeeltelijk. In de moderatie-instellingen van je pagina kun je geblokkeerde trefwoorden toevoegen en het filter voor grof taalgebruik aanzetten: reacties die daarmee overeenkomen, worden automatisch verborgen. Het werkt alleen op exacte woorden, dus beledigingen met spelfouten, sarcasme, codetaal of in een andere taal glippen erdoor.",
+  },
+  {
+    question: "Wat is het verschil tussen een Facebook-reactie verbergen en verwijderen?",
+    answer: "Een verborgen reactie blijft zichtbaar voor de auteur en diens vrienden, maar niemand anders ziet haar, en de auteur krijgt geen melding. Een verwijderde reactie is voor iedereen weg, ook voor de auteur, die kan merken dat ze verdwenen is. Verbergen is meestal de betere standaard, omdat de auteur dan niet geprikkeld wordt om opnieuw te posten.",
+  },
+  {
+    question: "Weet iemand dat ik zijn reactie op Facebook heb verborgen?",
+    answer: "Nee. Facebook stuurt geen melding als een pagina een reactie verbergt. De auteur en diens vrienden zien haar nog steeds, dus voor de auteur lijkt er niets veranderd.",
+  },
+  {
+    question: "Wat heb ik nodig om een moderatietool aan mijn Facebook-pagina te koppelen?",
+    answer: "Je moet beheerder van de pagina zijn (of volledige controle hebben in Meta Business Suite) en de rechten goedkeuren die de tool bij Meta aanvraagt, zoals het lezen van de reacties op de pagina en het beheren van interacties. Met OpenModeration hoef je geen code te schrijven: je koppelt de pagina en ons team stelt samen met je je regels in.",
+  },
+  {
+    question: "Kan een tool reacties op Facebook-advertenties modereren?",
+    answer: "Reacties op advertenties hangen aan posts van je pagina, dus een tool die via de API van Meta aan de pagina is gekoppeld, kan ze over het algemeen ontvangen en modereren zoals andere reacties. Controleer dit punt bij elke leverancier voordat je tekent, want juist onder advertenties komen vaak de ergste reacties terecht.",
+  },
+  {
+    question: "Is automatische reactiemoderatie in lijn met de DSA?",
+    answer: "Dat kan, als elke beslissing wordt uitgelegd en vastgelegd. De Digital Services Act vraagt onlinediensten om een motivering als ze content beperken en om te vermelden of er geautomatiseerde middelen zijn gebruikt. OpenModeration schrijft bij elke beslissing een reden, houdt een volledige log bij en wordt in de EU gehost.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} ogType="article" jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: "Blog", href: localizePath('/blog', locale) }, { label: "Facebook-reacties automatisch verbergen" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-30">30 oktober 2026</time>
+        <span>&middot;</span>
+        <span>8 min lezen</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Facebook-reacties automatisch verbergen: een praktische gids voor reactiemoderatie op Facebook</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Een drukke Facebook-pagina kan honderden reacties per dag krijgen, en één gesponsorde post kan er
+        duizenden opleveren. Een deel daarvan bestaat uit beledigingen, oplichting of spam, en die staan onder de naam van je merk tot
+        iemand ze aanpakt. Deze gids legt uit wat Facebook je zelf laat doen, waar die
+        tools ophouden en hoe een tool voor automatische reactiemoderatie op Facebook dat gat vult.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Het korte antwoord</h2>
+      <ul>
+        <li><strong>Standaard verbergen, niet verwijderen.</strong> Een verborgen reactie blijft alleen zichtbaar voor de auteur en diens vrienden, dus de auteur merkt het zelden.</li>
+        <li><strong>De ingebouwde tools van Facebook</strong> (geblokkeerde trefwoorden, het filter voor grof taalgebruik, handmatig verbergen) vangen duidelijke woorden op, geen betekenis.</li>
+        <li><strong>Een tool voor automatische moderatie</strong> leest elke reactie in context, past je regels en je use cases toe, stuurt twijfelgevallen naar een mens en legt bij elke beslissing een reden vast.</li>
+        <li><strong>Om er een te koppelen</strong> heb je beheerrechten op de pagina nodig en moet je de rechten van Meta goedkeuren die de tool vraagt. Code is niet nodig.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Verbergen, verwijderen of verbannen: wat is het verschil?</h2>
+      <p>Facebook geeft een pagina drie belangrijke manieren om met een reactie om te gaan. Ze hebben niet hetzelfde effect.</p>
+      <ul>
+        <li>
+          <strong>Verbergen.</strong> De reactie verdwijnt voor iedereen behalve de auteur en diens
+          vrienden. De auteur krijgt geen melding. Voor hem lijkt het gesprek onveranderd, wat de
+          klassieke reactie "jullie censureren mij" voorkomt. Je kunt de reactie op elk moment weer zichtbaar maken.
+        </li>
+        <li>
+          <strong>Verwijderen.</strong> De reactie is voor iedereen weg, ook voor de auteur. Ze kan niet
+          worden hersteld, en een auteur die haar zoekt, ziet dat ze verdwenen is. Bewaar verwijderen voor content die
+          in geen enkele vorm online mag blijven, zoals persoonsgegevens, illegale content of oplichterslinks.
+        </li>
+        <li>
+          <strong>Verbannen.</strong> De persoon kan niet meer reageren op of interactie hebben met je pagina. Dat is het
+          juiste antwoord op notoire overtreders en spamaccounts, maar het is een zware maatregel: gebruik hem voor
+          personen, niet voor één enkele slechte reactie.
+        </li>
+      </ul>
+      <p>
+        Voor de meeste merken en media is verbergen de standaardactie, verwijderen de uitzondering en verbannen
+        het laatste redmiddel.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Welke moderatietools heeft Facebook zelf?</h2>
+      <p>Elke pagina heeft gratis moderatie-instellingen. De namen en menu's verschuiven af en toe, maar de functies bestaan al jaren.</p>
+      <ul>
+        <li>
+          <strong>Trefwoorden blokkeren.</strong> Je voegt een lijst met woorden, zinnen of emoji's toe. Reacties waarin
+          die voorkomen, worden automatisch verborgen, met hetzelfde effect als handmatig verbergen.
+        </li>
+        <li>
+          <strong>Filter voor grof taalgebruik.</strong> Facebook verbergt reacties met woorden die het als
+          grof beschouwt, op basis van een eigen lijst. Je kiest hoe streng het filter is, maar je kunt de lijst niet inzien of aanpassen.
+        </li>
+        <li>
+          <strong>Handmatig verbergen en verwijderen.</strong> Vanuit de post, vanuit Meta Business Suite of vanuit de
+          meldingen kan een beheerder of moderator van de pagina elke reactie verbergen, verwijderen of rapporteren, en de auteur verbannen.
+        </li>
+      </ul>
+      <p>
+        Voor een kleine pagina zijn deze tools een goed begin. Stel ze in, ook als je later een moderatietool toevoegt:
+        ze kosten niets en vangen de meest voor de hand liggende gevallen op.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Waarom trefwoordfilters niet genoeg zijn</h2>
+      <p>De ingebouwde tools werken met tekenreeksen. Reacties die een merk schaden, houden zich zelden aan die regels.</p>
+      <ul>
+        <li><strong>Spelfouten en omwegen.</strong> "Id1oot", "i.d.i.o.o.t" of een extra letter is genoeg om langs een lijst te komen.</li>
+        <li><strong>Sarcasme en codetaal.</strong> "Geweldige service, zoals altijd" onder een klacht, of een verborgen boodschap die alleen ingewijden begrijpen, bevat geen verboden woord.</li>
+        <li><strong>Meerdere talen.</strong> Je publiek reageert misschien in het Nederlands, Engels, Turks of Arabisch. Een lijst dekt alleen de woorden die je zelf hebt bedacht, taal per taal.</li>
+        <li><strong>Valse positieven.</strong> Een geblokkeerd woord kan in een onschuldige reactie staan, die dan zonder goede reden wordt verborgen.</li>
+        <li><strong>Geen schriftelijke reden.</strong> Facebook verbergt de reactie, maar vertelt je niet welke regel gold of waarom.</li>
+        <li><strong>Geen audittrail.</strong> Er is geen geschiedenis van wat er is verborgen, wanneer en door wie, terwijl je dat nodig hebt voor interne evaluaties en voor de DSA.</li>
+        <li><strong>Geen schaal.</strong> Bij een virale post of een betaalde campagne komen reacties sneller binnen dan een communitymanager ze kan lezen, vaak 's nachts of in het weekend.</li>
+      </ul>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Wat je nodig hebt</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Ingebouwde tools van Facebook</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Tool voor automatische moderatie</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {comparison.map((row) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{row.need}</td>
+              <td class="px-4 py-3 text-surface-600">{row.builtin}</td>
+              <td class="px-4 py-3 text-surface-600">{row.tool}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">Wat voegt een tool voor automatische moderatie op Facebook toe?</h2>
+      <p>
+        Een AI-tool voor reactiemoderatie op Facebook koppelt via de API van Meta met je pagina. Elke nieuwe reactie
+        wordt bij plaatsing naar de tool gestuurd, geanalyseerd en vervolgens verborgen, geweigerd of online gelaten volgens je
+        regels. In de praktijk voegt dat vier dingen toe.
+      </p>
+      <ul>
+        <li><strong>Begrijpen in plaats van vergelijken.</strong> De reactie wordt in context gelezen, dus een verhulde belediging wordt opgevangen en een onschuldige zin met een "fout" woord niet.</li>
+        <li><strong>Je eigen regels.</strong> Een nieuwsmedium, een retailer en een voetbalclub trekken de grens niet op dezelfde plek. Je beschrijft je regels en je use cases in gewone taal: links naar concurrenten, politieke discussies die niets met het onderwerp te maken hebben, klantgegevens die openbaar worden geplaatst.</li>
+        <li><strong>Een mens in de lus.</strong> Duidelijke gevallen worden automatisch afgehandeld. Twijfelgevallen worden door een mens behandeld; bij OpenModeration doet ons team dat, en jij ziet elke beslissing in realtime.</li>
+        <li><strong>Traceerbaarheid.</strong> Elke beslissing komt met een schriftelijke reden en wordt gelogd, zodat je een auteur, een leidinggevende of een toezichthouder kunt antwoorden.</li>
+      </ul>
+      <p>
+        Zo werkt de <a href={localizePath('/integrations/facebook', locale)} class="text-brand-600 hover:text-brand-500">Facebook-integratie van OpenModeration</a>.
+        Ze verbergt of weigert reacties volgens je regels, laat twijfelgevallen door ons team behandelen, toont je alles in realtime in één
+        console en geeft bij elke beslissing een schriftelijke reden. Merken gebruiken haar om hun pagina's en
+        hun advertentiecampagnes te beschermen: bekijk de <a href={localizePath('/use-cases/brands-retail', locale)} class="text-brand-600 hover:text-brand-500">toepassing voor merken en retail</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Zo kies je een tool voor reactiemoderatie op Facebook</h2>
+      <p>Voordat je de "beste tools voor reactiemoderatie op Facebook" vergelijkt, toets je ze elk aan deze lijst.</p>
+      <ol>
+        <li><strong>Realtime actie.</strong> Grijpt de tool in zodra de reactie wordt geplaatst, of door de pagina om de paar minuten of uren te controleren?</li>
+        <li><strong>Verbergen in plaats van verwijderen.</strong> Kun je de actie per regel kiezen, met verbergen als standaard?</li>
+        <li><strong>Eigen regels.</strong> Kun je regels schrijven die bij je pagina passen, of alleen generieke categorieën aan- en uitzetten?</li>
+        <li><strong>Context en talen.</strong> Kan de tool overweg met sarcasme, spelfouten en de talen van je publiek?</li>
+        <li><strong>Menselijke beoordeling.</strong> Wie behandelt de twijfelachtige reacties: je eigen team, of de leverancier? En kun je zelf ingrijpen wanneer je wilt?</li>
+        <li><strong>Uitleg.</strong> Komt elke beslissing met een reden die je kunt lezen?</li>
+        <li><strong>Auditlog en DSA.</strong> Wordt elke beslissing vastgelegd en is ze exporteerbaar? Regelt de leverancier de <a href={localizePath('/dsa-compliance', locale)} class="text-brand-600 hover:text-brand-500">DSA-verplichtingen</a>, zoals de motivering?</li>
+        <li><strong>Locatie van gegevens.</strong> Waar worden je reacties verwerkt en opgeslagen? Voor Europese bedrijven maakt hosting in de EU AVG-vragen eenvoudiger.</li>
+        <li><strong>Andere netwerken.</strong> Heb je dezelfde regels nodig op Instagram, YouTube of je website?</li>
+        <li><strong>Ondersteuning.</strong> Helpt iemand je de regels op te zetten, of sta je er alleen voor met een dashboard?</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Hoe koppel je een moderatietool aan een Facebook-pagina?</h2>
+      <p>Elke serieuze tool gebruikt de officiële API van Meta. De stappen zijn bij elke tool hetzelfde.</p>
+      <ol>
+        <li><strong>Beheerrechten op de pagina.</strong> Je hebt volledige controle over de pagina nodig, als beheerder of via Meta Business Suite. Een rol als moderator of analist is niet genoeg om toegang te verlenen.</li>
+        <li><strong>Inloggen met Facebook.</strong> Je geeft de Meta-app van de tool toestemming en kiest tot welke pagina's die toegang krijgt.</li>
+        <li><strong>De rechten goedkeuren.</strong> De tool vraagt om de posts en reacties van de pagina te lezen en interacties te beheren, waardoor hij reacties kan verbergen of verwijderen. Je wachtwoord heeft hij nooit nodig.</li>
+        <li><strong>Webhooks.</strong> Na het koppelen meldt Meta elke nieuwe reactie aan de tool zodra die is geplaatst. Geen polling, geen vertraging.</li>
+        <li><strong>Regels en testen.</strong> Je stelt je regels in, controleert de beslissingen op echte reacties en laat de tool daarna zelfstandig werken.</li>
+      </ol>
+      <p>
+        Met OpenModeration hoef je geen code te schrijven. Je koppelt de pagina, en ons team stelt samen met je je
+        regels en je use cases in. Je reacties worden in de EU verwerkt. Wil je zien hoe de tool je eigen
+        reacties beoordeelt, <a href={localizePath('/demo', locale)} class="text-brand-600 hover:text-brand-500">probeer dan de live demo</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Modereer je ook Instagram?</h2>
+      <p>
+        Staat je merk op Instagram, dan spelen dezelfde problemen, met andere ingebouwde tools. Lees onze
+        gids over <a href={localizePath('/blog/instagram-comment-moderation', locale)} class="text-brand-600 hover:text-brand-500">Instagram-reacties modereren en automoderatie</a>.
+      </p>
+    </div>
+
+    <div class="mt-12">
+      <FAQ title="Veelgestelde vragen" items={faqItems} />
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Lees verder</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/integrations/facebook', locale)} class="font-medium text-brand-600 hover:text-brand-500">Facebook-reacties modereren met OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/blog/instagram-comment-moderation', locale)} class="font-medium text-brand-600 hover:text-brand-500">Zo modereer je Instagram-reacties &rarr;</a></li>
+        <li><a href={localizePath('/use-cases/brands-retail', locale)} class="font-medium text-brand-600 hover:text-brand-500">Reactiemoderatie voor merken en retail &rarr;</a></li>
+        <li><a href={localizePath('/dsa-compliance', locale)} class="font-medium text-brand-600 hover:text-brand-500">Wat de DSA eist van moderatiebeslissingen &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

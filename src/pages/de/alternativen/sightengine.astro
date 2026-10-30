@@ -1,0 +1,270 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/de/alternativen/sightengine",
+  "name": "Sightengine Alternative: Vergleich mit OpenModeration",
+  "description": "Sightengine oder OpenModeration? Vergleich mit Quellen: Bilder oder Kommentare, Sprachen, menschliche Prüfung, DSA, EU-Hosting, KI-Modelle und Preise.",
+  "inLanguage": "de",
+  "about": {
+    "@id": "https://www.openmoderation.com/#software"
+  }
+};
+
+const rows = [
+  {
+    "feature": "Angebot",
+    "competitor": "API für Moderation und Bildanalyse: Bilder, Video, Text, Audio, Erkennung KI-generierter Inhalte, Identitätsprüfung",
+    "openmod": "KI-Kommentarmoderation für Medien, Marken und öffentliche Einrichtungen, gemeinsam mit Ihnen vom Logora-Team eingerichtet"
+  },
+  {
+    "feature": "Moderierte Inhalte",
+    "competitor": "Bilder (über 150 Klassen), Video und Livestreams, Text, Audio. ML-Textmodelle in 7 Sprachen (en, fr, it, pt, es, ru, tr), Deutsch nur im regelbasierten Filter (18 Sprachen)",
+    "openmod": "Kommentare auf Ihren Websites und Social-Media-Seiten"
+  },
+  {
+    "feature": "Integrationen",
+    "competitor": "REST-API; Regeln und Workflows im eigenen Dashboard. Keine Social-Media- oder WordPress-Konnektoren auf den geprüften Seiten",
+    "openmod": "API für Websites, Facebook-Seiten, professionelle Instagram-Konten, YouTube-Kanäle, WordPress"
+  },
+  {
+    "feature": "KI-Modelle",
+    "competitor": "Eigene Modelle: „State-of-the-Art-Modelle und proprietäre Technologie“, individuelle Modelle im Enterprise-Tarif",
+    "openmod": "Eigene Moderations-KI, von weiteren KI-Modellen gegengeprüft; neue Modelle werden eingebunden, sobald sie erscheinen"
+  },
+  {
+    "feature": "Menschliche Prüfung",
+    "competitor": "Optionaler Hybridmodus: Schwellenwerte schicken Inhalte an „Ihre Plattform für menschliche Moderation“, geprüft von Ihrem eigenen Team",
+    "openmod": "Eindeutige Verstöße automatisch ausgeblendet, Zweifelsfälle übernimmt unser Team; Sie sehen alles in einer einzigen Konsole"
+  },
+  {
+    "feature": "Begründung der Entscheidungen",
+    "competitor": "Ein Tag, der die Art des gefundenen Inhalts beschreibt, mit Scores pro Kategorie",
+    "openmod": "Eine schriftliche Begründung für jede Entscheidung und ein vollständiges Aktivitätsprotokoll"
+  },
+  {
+    "feature": "DSA",
+    "competitor": "Auf der Website nicht angegeben",
+    "openmod": "Melde- und Abhilfeverfahren, Begründung, menschliche Überprüfung angefochtener Entscheidungen, exportierbare Kennzahlen"
+  },
+  {
+    "feature": "Hosting und Daten",
+    "competitor": "Unternehmen in Paris; „Rechenzentren in zahlreichen Ländern“; regionale Endpunkte nicht in Free, Starter oder Pro",
+    "openmod": "Gehostet in der Europäischen Union, DSGVO; On-Premise-Betrieb auf Anfrage"
+  },
+  {
+    "feature": "Öffentliche Preise",
+    "competitor": "Kostenlos (2.000 Operationen/Monat), Starter 29 $/Monat (10.000), Pro 99 $/Monat (40.000), Enterprise auf Anfrage",
+    "openmod": "Kostenlos bis 1.000 Anfragen/Monat, Pro 99 €/Monat für 10.000 Anfragen, Enterprise auf Anfrage"
+  },
+  {
+    "feature": "Referenzen",
+    "competitor": "Kundenlogos ohne Namen; genannte Partner u. a. NVIDIA, PubNub, Tremau und Checkstep",
+    "openmod": "L'Équipe, Challenges, Sud Ouest, actu.fr, Estadão, Südkurier, Egora"
+  }
+];
+
+const faqItems = [
+  {
+    "question": "Was ist die beste Sightengine Alternative?",
+    "answer": "Für die Moderation von Kommentaren auf Nachrichtenseiten, Markenseiten und öffentlichen Kanälen ist OpenModeration gemacht: Social-Media- und WordPress-Konnektoren, Prüfkonsole, schriftliche Begründung jeder Entscheidung, DSA-Bausteine und Hosting in der EU. Für Bilder, Video, Deepfakes oder Altersschätzung bleibt Sightengine eine spezialisierte Option."
+  },
+  {
+    "question": "Was kostet Sightengine?",
+    "answer": "Laut Preisseite: kostenlos bis 2.000 Operationen pro Monat, Starter 29 $ pro Monat für 10.000 Operationen, Pro 99 $ pro Monat für 40.000, 0,002 $ pro zusätzlicher Operation, Enterprise auf Anfrage. OpenModeration ist bis 1.000 Anfragen pro Monat kostenlos, danach 99 € pro Monat für 10.000 Anfragen."
+  },
+  {
+    "question": "Sightengine vs OpenModeration: Was ist der Unterschied?",
+    "answer": "Sightengine ist eine Entwickler-API mit Schwerpunkt auf visuellen Inhalten, die Tags und Scores liefert. OpenModeration ist ein Dienst für Kommentarmoderation: Er verbindet sich mit Ihrer Website und Ihren Social-Media-Seiten, handelt bei Kommentaren, lässt Zweifelsfälle von unserem Team prüfen und begründet jede Entscheidung schriftlich."
+  },
+  {
+    "question": "Kann ich OpenModeration testen, ohne Sightengine abzuschalten?",
+    "answer": "Ja. Im Sandbox-Modus analysiert OpenModeration Ihre echten Kommentare, ohne etwas auszublenden. Sightengine läuft weiter, und Sie vergleichen beide Entscheidungsreihen an denselben Kommentaren, jede Entscheidung von OpenModeration mit ihrer schriftlichen Begründung."
+  },
+  {
+    "question": "Welche KI nutzt OpenModeration?",
+    "answer": "OpenModeration arbeitet mit einer eigenen Moderations-KI, deren Entscheidungen in heiklen Fällen von weiteren KI-Modellen gegengeprüft werden. Erscheint ein besseres oder günstigeres Modell, bindet unser Team es ein, ohne dass Sie etwas ändern müssen: Sie profitieren vom Fortschritt der KI-Modelle."
+  },
+  {
+    "question": "Moderiert Sightengine deutsche Kommentare?",
+    "answer": "Laut FAQ von Sightengine gehört Deutsch nicht zu den 7 Sprachen der ML-Textmodelle (Englisch, Französisch, Italienisch, Portugiesisch, Spanisch, Russisch, Türkisch), wird aber vom regelbasierten Filter abgedeckt. Für weitere Sprachen verweist Sightengine auf eine Anfrage."
+  }
+];
+---
+
+<BaseLayout title="Sightengine Alternative: Vergleich mit OpenModeration" description="Sightengine oder OpenModeration? Vergleich mit Quellen: Bilder oder Kommentare, Sprachen, menschliche Prüfung, DSA, EU-Hosting, KI-Modelle und Preise." jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Startseite", href: "/de" }, { label: "Alternativen", href: "/de/alternativen" }, { label: "Sightengine" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Vergleich
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Sightengine Alternative: OpenModeration im Vergleich</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Die beste Sightengine Alternative hängt davon ab, was Sie moderieren: Für Bilder, Videos und Identitätsprüfungen ist Sightengine gebaut, für Kommentare auf Nachrichtenseiten, Markenseiten und öffentlichen Kanälen OpenModeration. OpenModeration blendet eindeutige Verstöße aus, lässt Zweifelsfälle von unserem Team prüfen und begründet jede Entscheidung schriftlich, eingerichtet gemeinsam mit einem Logora-Team.
+      </p>
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+        <a href="/de/termin-vereinbaren" class="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-700">Termin vereinbaren</a>
+        <a href="#comparison" class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700">Zum Vergleich</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold tracking-tight text-surface-900 sm:text-3xl">Für wen Sightengine gedacht ist</h2>
+      <p class="mt-4 text-surface-600">Laut eigener Website ist Sightengine eine API mit Sitz in Paris, die unerwünschte Inhalte in Bildern, Videos, Livestreams, Texten und Audio erkennt, dazu KI-generierte Bilder, Deepfakes und Identitätssignale wie Altersschätzung. Sie richtet sich an Entwicklerteams von Plattformen mit Nutzer-Uploads: Marktplätze, Dating-Apps, Gaming, Foto- und Creator-Netzwerke. Sie binden die API in Ihren eigenen Code ein und erhalten Tags und Scores pro Kategorie.</p>
+    </div>
+  </section>
+
+  <section class="bg-white pb-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Wählen Sie OpenModeration, wenn…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>Sie Kommentare auf einer Nachrichtenseite, auf Markenseiten oder öffentlichen Kanälen moderieren, keine Bild-Uploads;</li>
+          <li>Sie Facebook, Instagram, YouTube und WordPress ohne Entwicklungsaufwand anbinden möchten;</li>
+          <li>Sie eine Konsole für die menschliche Prüfung und eine schriftliche Begründung für jeden ausgeblendeten Kommentar brauchen;</li>
+          <li>Sie DSA-Bausteine und Hosting in der EU benötigen;</li>
+          <li>Sie ein Team möchten, das die Moderation an Ihre Regeln und Anwendungsfälle anpasst.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">Sightengine passt besser zu Ihnen, wenn…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>Bilder, Videos und Livestreams Ihr größtes Risiko sind;</li>
+          <li>Sie KI-generierte Bilder oder Deepfakes erkennen oder das Alter schätzen müssen;</li>
+          <li>Ihr Entwicklerteam eine reine API möchte und Abläufe und Prüfwerkzeuge selbst baut.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="comparison" class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Sightengine und OpenModeration im direkten Vergleich</h2>
+      <p class="mt-4 text-surface-500">Angaben zu Sightengine aus der eigenen Website, sightengine.com, abgerufen am 30. Oktober 2026. Preise ohne Steuern.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Kriterium</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Sightengine</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.competitor}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Eine KI, die mit dem Fortschritt der Modelle mitgeht</h2>
+      <p class="mt-4 text-surface-600">Sightengine nennt „State-of-the-Art-Modelle und proprietäre Technologie“ als Grundlage, mit individuellen Modellen und Klassen im Enterprise-Tarif. Laut FAQ decken die ML-Textmodelle 7 Sprachen ab, Deutsch gehört nicht dazu.</p>
+      <p class="mt-4 text-surface-600">OpenModeration arbeitet mit einer eigenen Moderations-KI, deren Entscheidungen in heiklen Fällen von weiteren KI-Modellen gegengeprüft werden. Die Technik ist an kein Modell gebunden: Erscheint ein besseres oder günstigeres Modell, bindet unser Team es schnell ein, ohne dass Sie etwas ändern müssen. So folgt Ihre Moderation dem Fortschritt des KI-Markts, statt auf einem einzigen hauseigenen Algorithmus stehen zu bleiben.</p>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Sightengine Preise und OpenModeration Preise</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">Sightengine</h3>
+          <ul class="mt-4 list-disc space-y-2 pl-5 text-sm text-surface-600">
+          <li>Kostenlos: 2.000 Operationen pro Monat, höchstens 500 pro Tag</li>
+          <li>Starter: 29 $ pro Monat für 10.000 Operationen</li>
+          <li>Pro: 99 $ pro Monat für 40.000 Operationen</li>
+          <li>Zusätzliche Operation: 0,002 $</li>
+          <li>Enterprise: auf Anfrage</li>
+          </ul>
+        </div>
+        <div class="rounded-xl border border-brand-200 bg-brand-50 p-6">
+          <h3 class="font-semibold text-brand-700">OpenModeration</h3>
+          <ul class="mt-4 list-disc space-y-2 pl-5 text-sm text-surface-700">
+          <li>Kostenlos: bis 1.000 Anfragen pro Monat</li>
+          <li>Pro: 99 € pro Monat für 10.000 Anfragen</li>
+          <li>Enterprise: auf Anfrage, für große Volumen</li>
+          <li>On-Premise-Betrieb: nur auf Anfrage</li>
+          </ul>
+        </div>
+      </div>
+      <p class="mt-6 text-sm text-surface-500">Sightengine zählt Operationen, OpenModeration Anfragen: Vergleichen Sie mit Ihren eigenen Volumen. Ein Sightengine-Tarif deckt auch Bilder und Video ab, der Preis von OpenModeration enthält dagegen die Prüfkonsole, die Konnektoren und die Begleitung durch das Logora-Team.</p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">In 3 Schritten von Sightengine zu OpenModeration</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="flex h-8 w-8 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white">1</div>
+          <h3 class="mt-4 font-semibold text-surface-900">Sandbox parallel zu Sightengine starten</h3>
+          <p class="mt-2 text-sm text-surface-600">Verbinden Sie Ihre Website oder Ihre Social-Media-Seiten. OpenModeration analysiert Ihre echten Kommentare, ohne etwas auszublenden, während Sightengine weiterläuft.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="flex h-8 w-8 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white">2</div>
+          <h3 class="mt-4 font-semibold text-surface-900">Regeln mit unserem Team anpassen</h3>
+          <p class="mt-2 text-sm text-surface-600">Das Logora-Team passt die Moderation an Ihre Regeln und Anwendungsfälle an. Sie vergleichen die Entscheidungen und ihre schriftlichen Begründungen Kommentar für Kommentar.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="flex h-8 w-8 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white">3</div>
+          <h3 class="mt-4 font-semibold text-surface-900">Automatische Aktionen einschalten</h3>
+          <p class="mt-2 text-sm text-surface-600">Wenn die Ergebnisse passen, werden eindeutige Verstöße automatisch ausgeblendet und Zweifelsfälle übernimmt unser Team. Sie sehen alles in Echtzeit in der Konsole.</p>
+        </div>
+      </div>
+      <div class="mt-8">
+        <a href="/de/termin-vereinbaren" class="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-700">Termin vereinbaren</a>
+      </div>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Häufige Fragen" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        Sightengine ist eine Marke ihres Inhabers. Die Angaben dazu stammen von der eigenen Website (abgerufen am 30. Oktober 2026). Ein Fehler? Schreiben Sie uns an <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+      <p class="mx-auto mt-4 max-w-3xl text-center text-xs text-surface-400">
+        Quellen: <a href="https://sightengine.com/pricing" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">sightengine.com/pricing</a> · <a href="https://sightengine.com/about" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">sightengine.com/about</a> · <a href="https://sightengine.com/text-moderation-api" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">sightengine.com/text-moderation-api</a> · <a href="https://sightengine.com/faq/languages-for-text-moderation" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">sightengine.com/faq/languages-for-text-moderation</a> · <a href="https://sightengine.com/faq/automated-vs-hybrid-moderation" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">sightengine.com/faq/automated-vs-hybrid-moderation</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Weiterlesen</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/de/moderationssoftware" class="font-medium text-brand-600 hover:text-brand-500">Die Moderationssoftware OpenModeration &rarr;</a></li>
+        <li><a href="/de/anwendungsfaelle/medien" class="font-medium text-brand-600 hover:text-brand-500">Kommentarmoderation für Medien und Verlage &rarr;</a></li>
+        <li><a href="/de/blog/kommentarmoderation-leitfaden" class="font-medium text-brand-600 hover:text-brand-500">Der Leitfaden zur Kommentarmoderation &rarr;</a></li>
+        <li><a href="/de/blog/ki-content-moderation-leitfaden-entwickler" class="font-medium text-brand-600 hover:text-brand-500">KI-Content-Moderation: Leitfaden für Entwickler &rarr;</a></li>
+        <li><a href="/de/preise" class="font-medium text-brand-600 hover:text-brand-500">Die Preise von OpenModeration &rarr;</a></li>
+        <li><a href="/de/alternativen" class="font-medium text-brand-600 hover:text-brand-500">Alle Vergleiche &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Moderieren Sie Ihre Kommentare, nicht nur Ihre Bilder." subtitle="Vereinbaren Sie einen Termin: Wir sehen uns Ihre Regeln und Anwendungsfälle an und lassen die Sandbox neben Sightengine auf Ihren echten Kommentaren laufen." buttonText="Termin vereinbaren" buttonHref="/de/termin-vereinbaren" />
+</BaseLayout>

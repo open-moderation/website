@@ -1,0 +1,233 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/de/alternativen/tremau",
+  "name": "Tremau Alternative: OpenModeration im Vergleich",
+  "description": "Tremau (Nima) oder OpenModeration? Vergleich mit Quellen für Medien, Marken und Behörden: Angebot, Konnektoren, KI-Modelle, DSA, Preise und Hosting.",
+  "inLanguage": "de",
+  "about": {
+    "@id": "https://www.openmoderation.com/#software"
+  }
+};
+
+const rows = [
+  {
+    "feature": "Angebot",
+    "competitor": "Trust-&-Safety-Plattform Nima (Workflow, Regel-Engine, Warteschlangen, Berichte) sowie Beratung",
+    "openmod": "KI-Kommentarmoderation, angepasst an Ihre Regeln und Anwendungsfälle, gemeinsam mit Ihnen vom Logora-Team eingerichtet"
+  },
+  {
+    "feature": "Gedacht für",
+    "competitor": "Online-Plattformen und -Dienste: Marktplätze, Spiele, soziale Netzwerke und Creator-Plattformen",
+    "openmod": "Nachrichtenseiten, Marken und öffentliche Einrichtungen"
+  },
+  {
+    "feature": "Integrationen",
+    "competitor": "Ein einziger API-Endpunkt, beschrieben als Erweiterung Ihres Backends; Anbindung an die DSA-Transparenzdatenbank und NCMEC. Keine Konnektoren für Facebook, Instagram, YouTube oder WordPress erwähnt",
+    "openmod": "Websites (API), Facebook-Seiten, professionelle Instagram-Konten, YouTube-Kanäle, WordPress"
+  },
+  {
+    "feature": "Automatisierung und menschliche Prüfung",
+    "competitor": "Automatisierte und manuelle Bearbeitung, spezialisierte Moderationswarteschlangen, Verwarnungssystem, Meldungsverwaltung und Echtzeit-Dashboard",
+    "openmod": "Eindeutige Verstöße werden automatisch ausgeblendet, berechtigte Kritik bleibt sichtbar, Zweifelsfälle prüft unser Team, Sie sehen alles in einer einzigen Konsole; eine schriftliche Begründung für jede Entscheidung und ein vollständiges Aktivitätsprotokoll"
+  },
+  {
+    "feature": "DSA",
+    "competitor": "Nutzermeldungen, Beschwerden, anpassbare Begründungen für DSA und britischen Online Safety Act, vertrauenswürdige Hinweisgeber, Transparenzberichte, EU-Transparenzdatenbank",
+    "openmod": "Bausteine für Melde- und Abhilfeverfahren, Begründung, menschliche Prüfung angefochtener Entscheidungen und exportierbare Kennzahlen"
+  },
+  {
+    "feature": "KI-Modelle",
+    "competitor": "Zugang zu Erkennungswerkzeugen von Drittanbietern (die Website nennt u. a. Bodyguard, Utopia Analytics, Sightengine und Amazon Rekognition); ein eigenes Modell ist nicht angegeben",
+    "openmod": "Eigene Moderations-KI, bei heiklen Fällen von anderen KI-Modellen gegengeprüft; neue Modelle werden eingebunden, sobald sie erscheinen"
+  },
+  {
+    "feature": "Preise",
+    "competitor": "Nicht veröffentlicht",
+    "openmod": "Öffentlich: kostenlos bis 1.000 Anfragen/Monat, Pro für 99 €/Monat bei 10.000 Anfragen, Enterprise auf Anfrage"
+  },
+  {
+    "feature": "Hosting und Sicherheit",
+    "competitor": "Betrieb in Ihrer eigenen Cloud möglich (Bring Your Own Cloud); SOC 2, Audit-Logs",
+    "openmod": "Hosting in der EU, DSGVO; On-Premise-Betrieb auf Anfrage"
+  },
+  {
+    "feature": "Referenzen",
+    "competitor": "Gezeigte Logos u. a. Eventbrite, Ko-fi, Pinterest, Bluesky und AliExpress",
+    "openmod": "L'Équipe, Challenges, Sud Ouest, actu.fr, Estadão, Südkurier, Egora"
+  }
+];
+
+const faqItems = [
+  {
+    "question": "Was ist die beste Tremau-Alternative?",
+    "answer": "Für die Kommentare einer Nachrichtenseite, einer Marke oder einer öffentlichen Einrichtung ist OpenModeration eine direkte Alternative: eigene Moderations-KI, Konnektoren für Ihre Website (API), Facebook-Seiten, Instagram, YouTube und WordPress, eine schriftliche Begründung für jede Entscheidung, DSA-Bausteine und öffentliche Preise. Für eine Plattform, die mehrere Erkennungsanbieter in der eigenen Cloud orchestrieren will, ist Tremaus Nima gemacht."
+  },
+  {
+    "question": "Was kostet Tremau?",
+    "answer": "Tremau veröffentlicht den Preis von Nima nicht auf seiner Website; Sie müssen das Unternehmen kontaktieren. OpenModeration ist bis 1.000 Anfragen pro Monat kostenlos, Pro kostet 99 € pro Monat für 10.000 Anfragen, Enterprise gibt es auf Anfrage."
+  },
+  {
+    "question": "Tremau vs. OpenModeration: Was ist der wichtigste Unterschied?",
+    "answer": "Tremaus Nima ist eine Workflow-Plattform für Trust & Safety, die Erkennungswerkzeuge anderer Anbieter verbindet. OpenModeration ist ein Dienst für Kommentarmoderation mit eigener KI: Eindeutige Verstöße werden ausgeblendet, berechtigte Kritik bleibt sichtbar, Zweifelsfälle prüft unser Team, eingerichtet gemeinsam mit unserem Team."
+  },
+  {
+    "question": "Deckt OpenModeration den DSA ab wie Tremau?",
+    "answer": "OpenModeration bietet Bausteine für Melde- und Abhilfeverfahren, eine Begründung für jede Entscheidung, die menschliche Prüfung angefochtener Entscheidungen, ein vollständiges Aktivitätsprotokoll und exportierbare Kennzahlen. Die Daten liegen in der EU und werden DSGVO-konform verarbeitet."
+  },
+  {
+    "question": "Kann ich OpenModeration testen, ohne mein aktuelles Tool abzuschalten?",
+    "answer": "Ja. Im Sandbox-Modus analysiert OpenModeration Ihre echten Kommentare, ohne etwas auszublenden. Ihr bisheriges Tool läuft weiter, und Sie vergleichen die Entscheidungen Kommentar für Kommentar."
+  },
+  {
+    "question": "Kann OpenModeration auf unserer eigenen Infrastruktur laufen?",
+    "answer": "Ein On-Premise-Betrieb ist auf Anfrage möglich. Standardmäßig wird OpenModeration in der Europäischen Union gehostet."
+  }
+];
+---
+
+<BaseLayout title="Tremau Alternative: Vergleich mit OpenModeration" description="Tremau (Nima) oder OpenModeration? Vergleich mit Quellen für Medien, Marken und Behörden: Angebot, Konnektoren, KI-Modelle, DSA, Preise und Hosting." jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Startseite", href: "/de" }, { label: "Alternativen", href: "/de/alternativen" }, { label: "Tremau" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Vergleich
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Tremau Alternative: OpenModeration im Vergleich</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Die beste Tremau-Alternative für eine Nachrichtenseite, eine Marke oder eine öffentliche Einrichtung, die Kommentare moderiert, ist ein Tool, das seine eigene KI mitbringt und sich direkt mit Ihrer Website und Ihren Social-Media-Seiten verbindet: Genau das macht OpenModeration, mit öffentlichen Preisen. Tremaus Plattform Nima richtet sich an Online-Plattformen, die mehrere Erkennungswerkzeuge in einem Trust-&-Safety-Workflow bündeln wollen.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900">Für wen Tremau gedacht ist</h2>
+      <p class="mt-4 text-surface-600">Tremau wurde laut eigener Website 2021 gegründet und hat laut seinem Investor G+D Ventures seinen Sitz in Paris. Das Unternehmen verkauft Nima, laut Website „die KI-gestützte Trust-&-Safety-Plattform, die Nutzer mit effizienter automatisierter und menschlicher Moderation schützt“, sowie Beratung zu Trust & Safety, Tech-Policy und Risikomanagement.</p>
+      <p class="mt-4 text-surface-600">Nima bündelt Signale und Erkennungsquellen, mit Regel-Engine, spezialisierten Moderationswarteschlangen, Verwarnungssystem, Nutzermeldungen, Beschwerden, Meldungen vertrauenswürdiger Hinweisgeber, Transparenzberichten und einer Anbindung an die DSA-Transparenzdatenbank. Die Plattform bietet Zugang zu Erkennungswerkzeugen von Drittanbietern und lässt sich in der Cloud des Kunden betreiben. Gezeigte Logos sind u. a. Eventbrite, Ko-fi, Pinterest, Bluesky und AliExpress.</p>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Tremau und OpenModeration im direkten Vergleich</h2>
+      <p class="mt-4 text-surface-500">Angaben zu Tremau von der eigenen Website (tremau.com), abgerufen am 30. Oktober 2026.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Kriterium</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Tremau</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.competitor}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Wählen Sie OpenModeration, wenn…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>Sie Kommentare moderieren und die KI inklusive wollen, statt einen Workflow mit separaten Erkennungsanbietern zu verbinden;</li>
+          <li>Sie fertige Konnektoren für Ihre Website (API), Facebook-Seiten, Instagram, YouTube und WordPress wollen;</li>
+          <li>Sie ein Team wollen, das die Moderation mit Ihnen einrichtet, nach Ihren Regeln und Anwendungsfällen;</li>
+          <li>Sie öffentliche Preise wünschen, mit einem kostenlosen Einstieg;</li>
+          <li>Sie eine schriftliche Begründung für jede Entscheidung, ein vollständiges Aktivitätsprotokoll und DSA-Bausteine brauchen, ohne großes Trust-&-Safety-Team.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">Tremau passt besser zu Ihnen, wenn…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>Sie eine Plattform mit eigenem Trust-&-Safety-Team betreiben und mehrere Erkennungsanbieter in einem Workflow orchestrieren wollen;</li>
+          <li>Sie vertrauenswürdige Hinweisgeber, ein Verwarnungssystem und Transparenzberichte im Plattformmaßstab abwickeln müssen;</li>
+          <li>Sie das Tool in Ihrer eigenen Cloud betreiben oder Beratung zu DSA und Online Safety Act wünschen.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900">Die KI: mit dem Fortschritt der Modelle mitgehen</h2>
+      <p class="mt-4 text-surface-600">Tremaus Nima orchestriert Erkennungswerkzeuge anderer Anbieter, die Sie auswählen und anbinden. OpenModeration nutzt eine eigene Moderations-KI, deren Entscheidungen in heiklen Fällen von anderen KI-Modellen gegengeprüft werden. Die Engine ist modellunabhängig: Erscheint ein besseres oder günstigeres KI-Modell, bindet unser Team es schnell ein, ohne dass Sie etwas ändern müssen. So folgt Ihre Moderation dem Fortschritt des KI-Markts, statt auf einem hauseigenen Algorithmus stehen zu bleiben.</p>
+      <h2 class="mt-16 text-3xl font-bold tracking-tight text-surface-900">Preise: Tremau und OpenModeration</h2>
+      <p class="mt-4 text-surface-600">Tremau veröffentlicht keine Preise auf seiner Website. Die Preise von OpenModeration sind öffentlich: kostenlos bis 1.000 Anfragen pro Monat, Pro für 99 € pro Monat bei 10.000 Anfragen, Enterprise auf Anfrage, On-Premise-Betrieb ebenfalls auf Anfrage. <a href="/de/preise" class="font-medium text-brand-600 hover:text-brand-500">Die Preise von OpenModeration &rarr;</a></p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">In 3 Schritten von Tremau zu OpenModeration</h2>
+      <ol class="mt-8 grid gap-6 md:grid-cols-3">
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">1</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Quellen verbinden und Regeln teilen</h3>
+          <p class="mt-2 text-sm text-surface-600">Verbinden Sie Ihre Website über die API, Ihre Facebook-Seiten, professionellen Instagram-Konten, YouTube-Kanäle oder WordPress. Unser Team passt die Moderation gemeinsam mit Ihnen an Ihre Regeln und Anwendungsfälle an.</p>
+        </li>
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">2</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Im Sandbox-Modus mit echten Kommentaren testen</h3>
+          <p class="mt-2 text-sm text-surface-600">OpenModeration analysiert Ihre echten Kommentare, ohne etwas auszublenden. Tremau läuft weiter, während Sie die Entscheidungen samt schriftlicher Begründung vergleichen.</p>
+        </li>
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">3</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Automatische Moderation einschalten</h3>
+          <p class="mt-2 text-sm text-surface-600">Eindeutige Verstöße werden automatisch ausgeblendet, Zweifelsfälle prüft unser Team, Aktivitätsprotokoll und exportierbare Kennzahlen stehen für den DSA bereit.</p>
+        </li>
+      </ol>
+      <p class="mt-8 text-surface-600">Sie möchten es zuerst an Ihren eigenen Kommentaren sehen? <a href="/de/termin-vereinbaren" class="font-medium text-brand-600 hover:text-brand-500">Termin mit unserem Team vereinbaren &rarr;</a></p>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Häufige Fragen" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        Tremau ist eine Marke ihres Inhabers. Die Angaben dazu stammen von der eigenen Website (abgerufen am 30. Oktober 2026); Unbekanntes ist als nicht angegeben gekennzeichnet. Ein Fehler? Schreiben Sie uns an <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+      <p class="mx-auto mt-4 max-w-3xl text-center text-sm text-surface-400">
+        Quellen: <a href="https://tremau.com/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">tremau.com</a> · <a href="https://tremau.com/platform/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">tremau.com/platform</a> · <a href="https://tremau.com/about-us/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">tremau.com/about-us</a> · <a href="https://www.gi-de.com/en/ventures/tremau" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">www.gi-de.com/en/ventures/tremau</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Weiterlesen</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/de/termin-vereinbaren" class="font-medium text-brand-600 hover:text-brand-500">Termin mit dem OpenModeration-Team vereinbaren &rarr;</a></li>
+        <li><a href="/de/moderationssoftware" class="font-medium text-brand-600 hover:text-brand-500">Die Moderationssoftware OpenModeration &rarr;</a></li>
+        <li><a href="/de/blog/kommentarmoderation-leitfaden" class="font-medium text-brand-600 hover:text-brand-500">Kommentarmoderation: der vollständige Leitfaden &rarr;</a></li>
+        <li><a href="/de/blog/dsa-leitfaden-kmu" class="font-medium text-brand-600 hover:text-brand-500">DSA-Leitfaden für KMU &rarr;</a></li>
+        <li><a href="/de/alternativen" class="font-medium text-brand-600 hover:text-brand-500">Alle Vergleiche &rarr;</a></li>
+        <li><a href="/de/preise" class="font-medium text-brand-600 hover:text-brand-500">Die Preise von OpenModeration &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Kommentarmoderation mit KI inklusive." subtitle="Verbinden Sie Website und Social-Media-Seiten, testen Sie die Sandbox an echten Kommentaren und lesen Sie die Begründung jeder Entscheidung. Kostenlos starten." />
+</BaseLayout>

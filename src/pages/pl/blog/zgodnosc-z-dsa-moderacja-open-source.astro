@@ -1,0 +1,127 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+import { bookingUrl } from '../../../i18n/ui';
+
+const locale = getLocale(Astro.url.pathname);
+const BOOKING_URL = bookingUrl(locale);
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Zgodność z DSA w moderacji komentarzy – prościej, niż myślisz",
+  "description": "Jak spełnić wymogi aktu o usługach cyfrowych (DSA) w moderacji komentarzy: pisemne uzasadnienia, pełny ślad audytowy, raporty przejrzystości i hosting w UE.",
+  "inLanguage": "pl",
+  "datePublished": "2026-06-08",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/pl/blog/zgodnosc-z-dsa-moderacja-open-source" },
+  "dateModified": "2026-06-08"
+};
+---
+
+<BaseLayout title="Zgodność z DSA w moderacji komentarzy: prosty przewodnik" description="Jak spełnić wymogi aktu o usługach cyfrowych (DSA) w moderacji komentarzy: pisemne uzasadnienia, pełny ślad audytowy, raporty przejrzystości i hosting w UE." jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Strona główna", href: localizePath('/', locale) }, { label: "Blog", href: localizePath('/blog', locale) }, { label: "Zgodność z DSA w prosty sposób" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-06-08">8 czerwca 2026</time>
+        <span>&middot;</span>
+        <span>6 min czytania</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Zgodność z DSA w moderacji komentarzy – prościej, niż myślisz</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Akt o usługach cyfrowych (Digital Services Act, DSA) obowiązuje w pełni od 2024 roku, a platformy
+        wciąż się do niego dostosowują. Każda usługa, która przechowuje treści użytkowników z UE – niezależnie
+        od tego, gdzie ma siedzibę – musi reagować na zgłoszenia nielegalnych treści, uzasadniać swoje decyzje
+        moderacyjne i umożliwiać użytkownikom ich zaskarżenie. Kary mogą sięgnąć 6% globalnego rocznego obrotu.
+      </p>
+      <p>
+        Dla wielu platform najtrudniejsze jest udowodnienie regulatorom, że system moderacji
+        rzeczywiście działa. Potrzebne są do tego trzy elementy: zautomatyzowany proces
+        moderacji, kompletny ślad audytowy oraz możliwość generowania raportów przejrzystości.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Wymogi DSA w skrócie</h2>
+      <p>DSA nie narzuca konkretnej technologii. Wymaga określonych rezultatów:</p>
+      <ul>
+        <li><strong>Zgłaszanie i działanie (art. 16):</strong> użytkownicy muszą mieć możliwość zgłaszania treści, a platformy muszą na te zgłoszenia reagować.</li>
+        <li><strong>Raporty przejrzystości (art. 15):</strong> platformy muszą publikować raporty z działań w zakresie moderacji treści.</li>
+        <li><strong>Uzasadnienie (art. 17):</strong> każde usunięcie lub ograniczenie trzeba wyjaśnić użytkownikowi, łącznie z informacją, czy użyto środków zautomatyzowanych.</li>
+        <li><strong>System rozpatrywania skarg (art. 20):</strong> użytkownicy muszą mieć możliwość odwołania się od decyzji moderacyjnych.</li>
+        <li><strong>Ocena ryzyka (art. 34):</strong> bardzo duże platformy (ponad 45 mln użytkowników miesięcznie w UE) muszą oceniać ryzyka systemowe.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Dlaczego wyjaśnione decyzje są kluczowe dla zgodności</h2>
+      <p>
+        Osoby odpowiedzialne za zgodność z DSA powinny zadać sobie proste pytanie: jeśli narzędzie
+        do moderacji jest czarną skrzynką, jak pokazać regulatorowi, co ono robi?
+      </p>
+      <p>
+        Narzędzie, które zwraca tylko „usunięto” albo „pozostawiono”, każe ufać jego zapewnieniom, a takie
+        zaufanie może nie wystarczyć regulatorowi. Trzeba widzieć, dlaczego zapadła każda decyzja.
+      </p>
+      <p>
+        W OpenModeration każdej decyzji towarzyszy uzasadnienie napisane zwykłym językiem,
+        a sama decyzja trafia do pełnego śladu audytowego. Zespół ds. zgodności widzi dokładnie, która reguła
+        została zastosowana, jakie kryteria wzięto pod uwagę i dokąd trafiają wyniki.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Jak zbudować proces moderacji zgodny z DSA</h2>
+      <p>Tak wygląda konfiguracja zgodna z DSA w OpenModeration:</p>
+      <ol>
+        <li><strong>Pozyskiwanie treści:</strong> treści trafiają przez API, webhook lub konektory społecznościowe. Każdy element otrzymuje unikalny identyfikator i jest przechowywany w postaci zaszyfrowanej.</li>
+        <li><strong>Moderacja AI:</strong> treść analizuje nasza własna AI do moderacji, a trudne przypadki weryfikują inne modele AI. Wynik zawiera oceny dla każdej kategorii oraz decyzję: oznaczone lub nieoznaczone.</li>
+        <li><strong>Ocena reguł:</strong> reguły łączą zakazane słowa (natychmiastowa blokada), progi kategorii (decyzje automatyczne) oraz własne reguły zapisane zwykłym językiem.</li>
+        <li><strong>Rejestrowanie audytowe:</strong> każdy krok jest zapisywany: treść, oceny, dopasowana reguła, podjęte działanie, znacznik czasu.</li>
+        <li><strong>Eksport na potrzeby przejrzystości:</strong> GET /v1/analytics/usage dostarcza dane potrzebne do raportów przejrzystości DSA.</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Jak spełnić konkretne wymogi DSA</h2>
+      <p>
+        <strong>Ślad audytowy:</strong> OpenModeration rejestruje każdą moderację wraz z opóźnieniem, ocenami i decyzją.
+        Dane są przechowywane zgodnie ze skonfigurowaną polityką (domyślnie 7 dni dla tekstu wejściowego, 90 dni dla logów).
+        Wszystko można wyeksportować na potrzeby audytów regulacyjnych.
+      </p>
+      <p>
+        <strong>Raporty przejrzystości:</strong> API analityczne udostępnia dane o użyciu według okresu i kategorii.
+        Obejmuje łączną liczbę zapytań, odsetek oznaczonych treści i podjęte działania – czyli to, czego wymagają raporty przejrzystości DSA.
+      </p>
+      <p>
+        <strong>Suwerenność danych:</strong> dane są przechowywane w UE i można je wyeksportować w dowolnym momencie.
+        Ma to znaczenie dla zgodności z RODO i dla ocen ryzyka w ramach DSA. Wdrożenie on-premise jest
+        możliwe na życzenie: <a href={BOOKING_URL} class="text-brand-600 hover:text-brand-500">porozmawiajmy</a>.
+      </p>
+      <p>
+        <strong>Weryfikacja przez człowieka:</strong> przypadkami granicznymi, zgłoszeniami użytkowników i odwołaniami zajmuje się nasz zespół, a Ty widzisz każdą
+        decyzję w czasie rzeczywistym i możesz interweniować, co odpowiada wymogom DSA dotyczącym rozpatrywania skarg i odwołań.
+      </p>
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Czytaj dalej</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/dsa-compliance', locale)} class="font-medium text-brand-600 hover:text-brand-500">Zgodność z DSA: ślad audytowy i raporty przejrzystości &rarr;</a></li>
+        <li><a href={localizePath('/product/transparency', locale)} class="font-medium text-brand-600 hover:text-brand-500">Każdy ukryty komentarz z pisemnym uzasadnieniem &rarr;</a></li>
+        <li><a href={localizePath('/pricing', locale)} class="font-medium text-brand-600 hover:text-brand-500">Zacznij za darmo, zmień plan, gdy urośniesz &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

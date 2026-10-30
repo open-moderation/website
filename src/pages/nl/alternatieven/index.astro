@@ -1,0 +1,188 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+const L = (p: string) => localizePath(p, locale);
+
+const title = "Alternatieven voor contentmoderatie vergeleken (2026)";
+const description = "Vergelijk OpenModeration met OpenAI Moderation, Azure Content Safety, Mistral, Perspective API, Hive, Bodyguard en meer. Gecontroleerde AI, gehost in de EU.";
+
+const alternativesJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "@id": "https://www.openmoderation.com/nl/alternatieven",
+  "url": "https://www.openmoderation.com/nl/alternatieven",
+  "name": title,
+  "description": description,
+  "inLanguage": "nl"
+};
+
+const icon = "M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4";
+
+const comparisons = [
+  { title: "OpenAI Moderation", tagline: "Platform vs losse API", slug: "openai-moderation", iconPath: icon,
+    description: "OpenAI Moderation is één classifier. OpenModeration draait een eigen moderatie-AI, gecontroleerd door andere modellen, met automatische regels, menselijke beoordeling door ons team en een DSA-auditlog." },
+  { title: "Azure Content Safety", tagline: "Alleen API vs hele workflow", slug: "azure-content-safety", iconPath: "M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z",
+    description: "Azure Content Safety is alleen een API en bindt je aan Microsoft. OpenModeration draait een eigen moderatie-AI, gecontroleerd door andere modellen, met twijfelgevallen afgehandeld door ons team en hosting in de EU." },
+  { title: "Mistral Moderation", tagline: "Eén model vs gecontroleerde AI", slug: "mistral-moderation", iconPath: "M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z",
+    description: "Mistral Moderation is één model. OpenModeration draait een eigen moderatie-AI, bij gevoelige gevallen gecontroleerd door andere modellen, met automatische workflows en DSA-naleving." },
+  { title: "Perspective API", tagline: "Overstappen vóór eind 2026", slug: "perspective-api", iconPath: "M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15",
+    description: "Google stopt eind 2026 met de Perspective API. Breng je forum of community onder bij een platform waarvan de AI de markt bijhoudt, voordat het licht uitgaat." },
+  { title: "Hive Moderation", tagline: "Beeld eerst vs tekst eerst", slug: "hive-moderation", iconPath: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
+    description: "Hive is sterk in visuele moderatie. OpenModeration richt zich op reacties, met een eigen AI gecontroleerd door andere modellen, automatische regels, menselijke beoordeling door ons team en een DSA-auditlog." },
+  { title: "Checkstep", tagline: "Gesloten SaaS vs gecontroleerde AI", slug: "checkstep", iconPath: "M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M9 7l3 1m-3-1l-3 9a5.002 5.002 0 006.001 0M18 6l3 1m-3-1l-3 9a5.002 5.002 0 006.001 0M15 7l3 1m-3-1l-3 9a5.002 5.002 0 006.001 0",
+    description: "Checkstep is gesloten SaaS. OpenModeration draait een eigen moderatie-AI, gecontroleerd door andere modellen, met openbare prijzen en hosting in de EU." },
+  { title: "Bodyguard", tagline: "Openbare prijzen, gratis starten", slug: "bodyguard", iconPath: icon,
+    description: "Bodyguard is een Frans AI-moderatiebedrijf waarvan het instapabonnement begint bij € 1.000 per maand. OpenModeration publiceert zijn prijzen, host je gegevens in de EU en legt elke beslissing schriftelijk uit." },
+  { title: "Conversario", tagline: "Gevestigde naam bij Duitse uitgevers", slug: "conversario", iconPath: icon,
+    description: "De dialoogsuite van ferret go, gebruikt door SPIEGEL, RTL en NZZ. Geen openbare prijzen, uitleg bij beslissingen niet vermeld. Vergeleken op kanalen, prijzen, EU-hosting en de DSA." },
+  { title: "Utopia AI Moderator", tagline: "Model getraind op historie", slug: "utopia", iconPath: icon,
+    description: "Finse AI-moderator, getraind op de eerdere beslissingen van elke klant, gebruikt door Krone en 20 Minuten. Alleen API, geen openbare prijzen. Vergeleken op inrichting, koppelingen, prijzen en DSA." },
+  { title: "Viafoura", tagline: "Reactiesuite voor media", slug: "viafoura", iconPath: icon,
+    description: "Een complete suite voor reacties en engagement voor mediamerken, met AI- en menselijke moderatie. Geen openbare prijzen; sociale media niet vermeld. OpenModeration modereert het reactiesysteem dat je al hebt." },
+  { title: "NapoleonCat", tagline: "Social suite met automoderatie", slug: "napoleoncat", iconPath: icon,
+    description: "Een tool voor social media management. Reacties automatisch verbergen kan vanaf het Expert-abonnement van € 139 per maand. Geen schriftelijke redenen of DSA-logboek vermeld, en geen websitereacties." },
+  { title: "Lasso Moderation", tagline: "Dichtstbijzijnde EU-gehoste concurrent", slug: "lasso-moderation", iconPath: icon,
+    description: "Net als OpenModeration wordt Lasso in de EU gehost en geeft het een DSA-motivering. De verschillen: koppelingen met Facebook, Instagram, YouTube en WordPress, een gratis abonnement en hulp bij het inrichten." },
+  { title: "Coral", tagline: "Reactieplatform vs moderatielaag", slug: "coral", iconPath: icon,
+    description: "Coral van Vox Media is een opensource-reactiesysteem (Apache 2.0) dat redacties zelf hosten en beheren. OpenModeration is een moderatielaag voor je website en je Facebook-, Instagram- en YouTube-pagina's." },
+  { title: "OpenWeb", tagline: "Door advertenties gefinancierde community's", slug: "openweb", iconPath: icon,
+    description: "OpenWeb levert gehoste reacties en fora voor uitgevers, met AI-moderatie en een advertentiebedrijf. Prijzen, datahosting en AVG staan niet op de website." },
+  { title: "Besedo", tagline: "Uitbestede moderatie vs software", slug: "besedo", iconPath: icon,
+    description: "Besedo combineert moderatiesoftware met uitbestede menselijke moderatoren voor marktplaatsen, dating, gaming en media. Vergelijk openbare prijzen, koppelingen met sociale media en schriftelijke DSA-redenen." },
+  { title: "Interactora", tagline: "Uitbestede menselijke moderatie", slug: "interactora", iconPath: icon,
+    description: "Spaans bedrijf dat lezersreacties modereert met een menselijk team en automatische filters. Geen gepubliceerde prijzen, geen sociale netwerken of DSA-auditlog vermeld." },
+  { title: "Digitaller", tagline: "Beheerde dienst voor kranten", slug: "digitaller", iconPath: icon,
+    description: "Bureau van Grupo Raíz Digital: AI-filter plus een menselijk team voor de regionale dagbladen van Prensa Ibérica en El Español. Geen gepubliceerde prijzen en geen reden per beslissing vermeld." },
+  { title: "Comments News", tagline: "Reactiesysteem met AI", slug: "comments-news", iconPath: icon,
+    description: "Reactieplatform voor media in Argentinië en Bolivia, vanaf $ 49 per maand. OpenModeration modereert je bestaande reacties en sociale media zonder van systeem te wisselen." },
+  { title: "TrollWall AI", tagline: "Bescherming alleen op sociale media", slug: "trollwall", iconPath: icon,
+    description: "TrollWall AI verbergt toxische reacties op Facebook, Instagram, TikTok en YouTube, met een prijs per account. OpenModeration voegt websitereacties, openbare prijzen, EU-hosting en een reden bij elke beslissing toe." },
+  { title: "Swat.io", tagline: "Social suite, moderatie ingebouwd", slug: "swat-io", iconPath: icon,
+    description: "Swat.io is een Oostenrijkse social media suite die reacties met AI verbergt in de Inbox. OpenModeration is een moderatietool die ook websitereacties dekt en elke beslissing vastlegt voor de DSA." },
+  { title: "Fanpage Karma", tagline: "Suite met haatfilter", slug: "fanpage-karma", iconPath: icon,
+    description: "Fanpage Karma is een social media suite waarvan de Hate Speech Detector in elk abonnement zit. OpenModeration modereert volgens je eigen regels, op je sociale accounts en je website." },
+  { title: "Respondology", tagline: "Gratis abonnement vs $ 999 per maand", slug: "respondology", iconPath: icon,
+    description: "Respondology modereert merkreacties op sociale media vanaf $ 999 per maand, jaarlijks gefactureerd. OpenModeration begint gratis, dekt ook websitereacties en WordPress, en wordt in de EU gehost." },
+  { title: "Arwen", tagline: "Openbare prijzen, EU-hosting", slug: "arwen", iconPath: icon,
+    description: "Arwen modereert reacties op sociale media voor merken en sport, met prijzen op aanvraag. OpenModeration publiceert zijn prijzen, dekt websitereacties, host je gegevens in de EU en schrijft een reden bij elke beslissing." },
+  { title: "ActiveFence", tagline: "Vergelijking", slug: "activefence", iconPath: icon,
+    description: "ActiveFence (nu Alice) of OpenModeration? Een vergelijking met bronnen voor nieuwssites en merken: aanbod, koppelingen, AI-modellen, DSA, prijzen en EU-hosting." },
+  { title: "Agorapulse", tagline: "Vergelijking", slug: "agorapulse", iconPath: icon,
+    description: "Agorapulse of OpenModeration voor reactiemoderatie? Trefwoordregels vs AI, prijzen, AI-modellen, DSA-tools en hoe je ze samen gebruikt. Een vergelijking met bronnen." },
+  { title: "Cinder", tagline: "Vergelijking", slug: "cinder", iconPath: icon,
+    description: "Cinder of OpenModeration? Een vergelijking met bronnen van automatische contentfiltering voor reacties: aanbod, koppelingen, AI-modellen, DSA, prijzen en EU-hosting." },
+  { title: "Community Sift", tagline: "Vergelijking", slug: "community-sift", iconPath: icon,
+    description: "Op zoek naar een Community Sift alternatief? De status, het aanbod, de prijzen en de AI-modellen vergeleken met OpenModeration, de AI-reactiemoderator die in de EU wordt gehost." },
+  { title: "Ferret Go", tagline: "Vergelijking", slug: "ferret-go", iconPath: icon,
+    description: "Op zoek naar een Ferret Go alternatief? Een vergelijking met bronnen met OpenModeration: openbare prijzen, een reden bij elke beslissing, EU-hosting en koppelingen." },
+  { title: "Ferret Go en Conversario", tagline: "Uitleg", slug: "ferret-go-vs-conversario", iconPath: icon,
+    description: "Ferret Go of Conversario? Beide horen bij ferret go GmbH. Wat elk aanbod dekt, en hoe OpenModeration zich als alternatief voor allebei verhoudt." },
+  { title: "Moderation API", tagline: "Vergelijking", slug: "moderation-api", iconPath: icon,
+    description: "Moderation API (moderationapi.com) of OpenModeration? Een vergelijking met bronnen: inrichting, integraties, menselijke beoordeling, DSA, EU-hosting, AI-modellen en prijzen." },
+  { title: "Netino", tagline: "Vergelijking", slug: "netino", iconPath: icon,
+    description: "Netino of OpenModeration? Een uitbesteed moderatiebureau tegenover automatische moderatie die je realtime volgt: regels, openbare prijzen, AI-engine, DSA-tools en EU-hosting." },
+  { title: "Sightengine", tagline: "Vergelijking", slug: "sightengine", iconPath: icon,
+    description: "Sightengine of OpenModeration? Een vergelijking met bronnen: beelden vs reacties, teksttalen, menselijke beoordeling, DSA, EU-hosting, AI-modellen en openbare prijzen." },
+  { title: "Smart Moderation", tagline: "Vergelijking", slug: "smart-moderation", iconPath: icon,
+    description: "Op zoek naar een Smart Moderation alternatief? Vergelijk platforms, prijzen, AI-modellen, DSA-tools en EU-hosting met OpenModeration, de AI-reactiemoderator." },
+  { title: "Tremau", tagline: "Vergelijking", slug: "tremau", iconPath: icon,
+    description: "Tremau (Nima) of OpenModeration? Een vergelijking met bronnen voor nieuwssites, merken en overheidsinstellingen: aanbod, koppelingen, AI-modellen, DSA, prijzen en hosting." },
+  { title: "WebPurify", tagline: "Vergelijking", slug: "webpurify", iconPath: icon,
+    description: "WebPurify of OpenModeration? Een vergelijking met bronnen: scheldwoordenfilter vs AI-reactiemoderatie, menselijke beoordeling, DSA, EU-hosting, AI-modellen en openbare prijzen." },
+];
+
+const tableRows = [
+  { feature: "AI-modellen", them: "Eén model, bevroren tussen twee updates", openmod: "Eigen moderatie-AI, gecontroleerd door andere AI-modellen; nieuwe modellen worden toegevoegd zodra ze uitkomen" },
+  { feature: "Installatie", them: "Alleen SaaS in de cloud", openmod: "Beheerde cloud in de EU; on-premise mogelijk op aanvraag" },
+  { feature: "Automatische handhaving", them: "Alleen scores, de logica bouw je zelf", openmod: "Action Engine: woorden, drempels, je eigen regels in gewone taal" },
+  { feature: "Menselijke beoordeling", them: "Je bouwt zelf een wachtrij", openmod: "Twijfelgevallen afgehandeld door ons team; je ziet elke beslissing realtime" },
+  { feature: "DSA-auditlog", them: "Beperkt of afwezig", openmod: "Elke beslissing vastgelegd en exporteerbaar" },
+];
+---
+
+<BaseLayout title={title} description={description} jsonLd={alternativesJsonLd}>
+  <Breadcrumb items={[{ label: "Home", href: L('/') }, { label: "Alternatieven" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">Vergelijkingen</div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">OpenModeration vergeleken met de alternatieven</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        De meeste moderatietools geven je een API of een dashboard. OpenModeration geeft je allebei, met een eigen AI die door andere modellen wordt gecontroleerd, automatische regels, menselijke beoordeling door ons team en een auditlog dat voldoet aan de DSA.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {comparisons.map((comparison) => (
+          <a href={L(`/alternatives/${comparison.slug}`)} class="group rounded-xl border border-surface-200 bg-surface-50 p-8 transition hover:border-brand-300 hover:shadow-md">
+            <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-100 text-brand-600">
+              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={comparison.iconPath}/></svg>
+            </div>
+            <h2 class="text-xl font-semibold text-surface-900 group-hover:text-brand-600">{comparison.title}</h2>
+            <p class="mt-1 text-xs font-medium uppercase tracking-wide text-surface-400">{comparison.tagline}</p>
+            <p class="mt-3 text-sm text-surface-500">{comparison.description}</p>
+            <span class="mt-4 inline-flex items-center gap-1 text-sm font-medium text-brand-600 group-hover:text-brand-700">
+              Lees de vergelijking
+              <svg class="h-3.5 w-3.5 transition group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-4xl">
+        <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">Waarom teams overstappen naar OpenModeration</h2>
+        <p class="mt-3 text-lg text-surface-500">Elke vergelijking eindigt op dezelfde manier. Met een kale moderatie-API bouw je de dagelijkse moderatietools zelf.</p>
+        <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+          <table class="w-full text-left text-sm">
+            <thead>
+              <tr class="bg-white">
+                <th class="px-6 py-4 font-semibold text-surface-900">Criterium</th>
+                <th class="px-6 py-4 font-semibold text-surface-500">Typische moderatie-API</th>
+                <th class="px-6 py-4 font-semibold text-brand-700">OpenModeration</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-surface-200 bg-white">
+              {tableRows.map((row) => (
+                <tr>
+                  <td class="px-6 py-4 font-medium text-surface-900">{row.feature}</td>
+                  <td class="px-6 py-4 text-surface-600">{row.them}</td>
+                  <td class="px-6 py-4 font-medium text-accent-600">{row.openmod}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTASection
+    title="Stop met het zelf bouwen van moderatietools."
+    subtitle="Koppel je pagina's: onze AI en ons team doen de rest, en jij ziet elke beslissing realtime. Je kunt het vandaag nog proberen."
+    buttonText="Plan een gesprek"
+    buttonHref={L('/book-a-call')}
+  />
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold text-surface-900">Verder ontdekken</h2>
+      <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+        <a href={L('/moderation-software')} class="rounded-full border border-surface-200 bg-surface-50 px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Moderatiesoftware</a>
+        <a href={L('/features')} class="rounded-full border border-surface-200 bg-surface-50 px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Functies</a>
+        <a href={L('/how-it-works')} class="rounded-full border border-surface-200 bg-surface-50 px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Hoe het werkt</a>
+        <a href={L('/pricing')} class="rounded-full border border-surface-200 bg-surface-50 px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Prijzen</a>
+        <a href={L('/blog/comment-moderation-guide')} class="rounded-full border border-surface-200 bg-surface-50 px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Gids voor reactiemoderatie</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

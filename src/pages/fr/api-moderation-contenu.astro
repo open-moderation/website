@@ -12,8 +12,8 @@ const pageJsonLd = {
       "@type": "WebPage",
       "@id": "https://www.openmoderation.com/fr/api-moderation-contenu",
       "url": "https://www.openmoderation.com/fr/api-moderation-contenu",
-      "name": "API de modération de contenu : une intégration, 10 fournisseurs (2026)",
-      "description": "Une seule API de modération de contenu pour tous les fournisseurs : OpenAI, Mistral, Azure, Llama Guard et d'autres. Points d'accès de modération standardisés, préfiltrage, règles sur mesure et journal d'audit DSA.",
+      "name": "API de modération de contenu : une intégration, une IA qui progresse (2026)",
+      "description": "Une seule API de modération de contenu, portée par notre propre IA et arbitrée par d'autres modèles d'IA sur les cas délicats. Points d'accès standardisés, préfiltrage, règles sur mesure et journal d'audit DSA.",
       "inLanguage": "fr",
       "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
     },
@@ -23,7 +23,7 @@ const pageJsonLd = {
       "name": "OpenModeration API",
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "Tous (API REST)",
-      "description": "API de modération de contenu unifiée : un point d'accès, 10 fournisseurs, des règles de modération sur mesure, des points d'accès par lots et un journal d'audit.",
+      "description": "API de modération de contenu unifiée : un point d'accès, notre propre IA arbitrée par d'autres modèles, des règles de modération sur mesure, des points d'accès par lots et un journal d'audit.",
       "inLanguage": "fr",
       "url": "https://www.openmoderation.com/fr/api-moderation-contenu",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR", "availability": "https://schema.org/InStock" }
@@ -31,44 +31,43 @@ const pageJsonLd = {
   ]
 };
 
-const quickstart = `# Modérez du texte avec n'importe quel fournisseur : même requête, même réponse
+const quickstart = `# Modérez du texte : une requête, une réponse standardisée
 curl -X POST https://api.openmoderation.com/v1/moderation \\
   -H "Authorization: Bearer om_key_..." \\
   -H "Content-Type: application/json" \\
   -d '{
     "input": "Your text to moderate here",
-    "model": "openai/omni-moderation-latest",
     "categories": ["hate", "harassment", "sexual", "violence", "self-harm", "spam"],
     "threshold": 0.5
   }'
 
-# Réponse (standardisée quel que soit le fournisseur)
+# Réponse (format standardisé)
 {
   "flagged": false,
   "results": [{ "category": "hate", "score": 0.02, "flagged": false }],
-  "usage": { "provider": "openai", "latency_ms": 243 }
+  "usage": { "latency_ms": 243 }
 }`;
 
 const faqItems = [
   {
     question: "Qu'est-ce qu'une API de modération de contenu ?",
-    answer: "Une API de modération de contenu attribue des scores aux contenus des utilisateurs (haine, harcèlement, contenus sexuels, violence, spam, données personnelles…) pour que votre application puisse les approuver, les signaler ou les rejeter automatiquement. OpenModeration réunit 10 fournisseurs derrière un seul point d'accès, avec un format de réponse standardisé."
+    answer: "Une API de modération de contenu attribue des scores aux contenus des utilisateurs (haine, harcèlement, contenus sexuels, violence, spam, données personnelles…) pour que votre application puisse les approuver, les signaler ou les rejeter automatiquement. OpenModeration fait tourner sa propre IA de modération, arbitrée par d'autres modèles d'IA sur les cas délicats, derrière un seul point d'accès et avec un format de réponse standardisé."
   },
   {
     question: "Quelle API de modération choisir pour la conformité en entreprise ?",
-    answer: "Pour les plateformes réglementées, optez pour une configuration multi-fournisseurs : OpenAI pour la précision en anglais, Mistral ou Azure pour les langues européennes et la conformité, avec un journal d'audit complet. OpenModeration choisit le fournisseur à chaque requête et enregistre chaque décision pour vos rapports DSA."
+    answer: "Pour les plateformes réglementées, privilégiez une API qui ne vous enferme pas dans un algorithme figé et qui garde la trace de chaque décision. OpenModeration s'appuie sur sa propre IA, fait arbitrer les cas délicats par d'autres modèles d'IA, branche rapidement les nouveaux modèles plus performants sans changement de votre côté, et enregistre chaque décision pour vos rapports DSA."
   },
   {
     question: "Combien coûte une API de modération ?",
-    answer: "Le point d'accès de modération d'OpenAI est gratuit, Mistral fixe lui-même le prix de son modèle de modération, et Azure AI Content Safety facture par tranche de 1 000 enregistrements de texte au-delà d'un palier gratuit de 5 000 enregistrements par mois. OpenModeration est gratuit en auto-hébergement ; le cloud géré démarre à 99 €/mois pour 10 000 requêtes, et le préfiltrage supprime 10 à 30 % des appels facturables."
+    answer: "Le point d'accès de modération d'OpenAI est gratuit, Mistral fixe lui-même le prix de son modèle de modération, et Azure AI Content Safety facture par tranche de 1 000 enregistrements de texte au-delà d'un palier gratuit de 5 000 enregistrements par mois. OpenModeration est gratuit jusqu'à 1 000 requêtes par mois ; le cloud géré démarre ensuite à 99 €/mois pour 10 000 requêtes, et le préfiltrage écarte d'emblée 10 à 30 % des contenus évidents."
   },
   {
     question: "Puis-je migrer depuis OpenAI text-moderation-latest ?",
-    answer: "Oui. Remplacez openai.moderations.create par un seul appel POST /v1/moderation avec le modèle openai/omni-moderation-latest. Gardez votre clé OpenAI (BYOK), puis ajoutez des fournisseurs de secours sans réécrire votre code."
+    answer: "Oui. Remplacez openai.moderations.create par un seul appel POST /v1/moderation. Les scores reviennent dans un format standardisé, et vous gagnez règles sur mesure, revue humaine par notre équipe et journal d'audit sans réécrire votre code."
   },
   {
     question: "Puis-je définir des règles de modération sur mesure ?",
-    answer: "Oui, avec trois outils : les mots interdits (blocage immédiat), les seuils par catégorie (approbation automatique, revue ou rejet) et une charte de communauté en langage courant, appliquée par des LLM pour vos catégories sur mesure."
+    answer: "Oui, avec trois outils : les mots interdits (blocage immédiat), les seuils par catégorie (approbation automatique, revue ou rejet) et des règles en langage courant, appliquées par des LLM pour vos catégories sur mesure."
   },
   {
     question: "Où trouver la référence complète de l'API ?",
@@ -78,8 +77,8 @@ const faqItems = [
 ---
 
 <BaseLayout
-  title="API de modération de contenu : 1 intégration, 10 fournisseurs"
-  description="Une API de modération pour OpenAI, Mistral, Azure, Llama Guard et d'autres. Endpoints standardisés, préfiltrage, règles sur mesure, lots et audit DSA. Gratuit."
+  title="API de modération de contenu : une intégration, une IA à jour"
+  description="Une API de modération portée par notre IA, arbitrée par d'autres modèles. Endpoints standardisés, préfiltrage, règles sur mesure, lots et audit DSA."
   jsonLd={pageJsonLd}
 >
   <Breadcrumb items={[{ label: "Accueil", href: "/fr" }, { label: "API de modération de contenu" }]} />
@@ -90,11 +89,11 @@ const faqItems = [
         Pour les développeurs : API REST et console
       </div>
       <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">
-        Une seule API de modération de contenu<br />pour tous les fournisseurs
+        Une seule API de modération de contenu<br />qui progresse avec l'IA
       </h1>
       <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
-        Vous n'avez plus à réécrire vos intégrations. Un seul <strong>point d'accès de modération</strong> vous relie à OpenAI,
-        Mistral, Azure, Llama Guard et d'autres, avec préfiltrage, règles sur mesure,
+        Vous n'avez plus à réécrire vos intégrations. Un seul <strong>point d'accès de modération</strong> vous donne accès à notre propre IA,
+        arbitrée par d'autres modèles d'IA sur les cas délicats, avec préfiltrage, règles sur mesure,
         traitement par lots et un journal d'audit prêt pour le DSA.
       </p>
       <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -105,7 +104,7 @@ const faqItems = [
           Lire la documentation de l'API &rarr;
         </a>
       </div>
-      <p class="mt-4 text-sm text-surface-400">Auto-hébergement gratuit · Sans carte bancaire · Référence OpenAPI</p>
+      <p class="mt-4 text-sm text-surface-400">Offre gratuite · Sans carte bancaire · Référence OpenAPI</p>
     </div>
   </section>
 
@@ -113,17 +112,16 @@ const faqItems = [
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="grid items-center gap-12 lg:grid-cols-2">
         <div>
-          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">La même requête, quel que soit le fournisseur</h2>
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Une requête, une réponse standardisée</h2>
           <p class="mt-4 text-lg text-surface-500">
-            Passez de <code class="text-sm">openai/omni-moderation-latest</code> à
-            <code class="text-sm">mistral/mistral-moderation-2411</code> en changeant un seul champ.
-            Les scores reviennent dans un format standardisé, avec des seuils que vous maîtrisez.
+            Quand un modèle d'IA plus performant ou moins cher sort, on le branche de notre côté :
+            votre intégration ne change pas. Les scores reviennent dans un format standardisé, avec des seuils que vous maîtrisez.
           </p>
           <ul class="mt-6 space-y-3 text-sm text-surface-600">
             <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span><span><strong>Points d'accès de modération standardisés</strong> : texte unique ou lots (jusqu'à 10 000 éléments), avec le même schéma partout.</span></li>
-            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span><span><strong>Préfiltrage</strong> : bloquez le spam évident et les mots interdits avant tout appel facturable à un fournisseur.</span></li>
-            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span><span><strong>Double seuil</strong> : approbation automatique, zone grise envoyée en revue humaine, rejet automatique.</span></li>
-            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span><span><strong>BYOK et bascule</strong> : vos propres clés, et un routage automatique si un fournisseur ralentit.</span></li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span><span><strong>Préfiltrage</strong> : bloquez le spam évident et les mots interdits avant toute analyse par l'IA.</span></li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span><span><strong>Double seuil</strong> : approbation automatique, zone grise traitée par notre équipe, rejet automatique.</span></li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span><span><strong>Arbitrage des cas délicats</strong> : d'autres modèles d'IA vérifient la décision avant qu'elle soit appliquée.</span></li>
           </ul>
           <div class="mt-6 flex flex-wrap gap-3 text-sm">
             <a href="/fr/api-moderation-texte" class="font-medium text-brand-600 hover:text-brand-500">API de modération de texte &rarr;</a>
@@ -143,22 +141,22 @@ const faqItems = [
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="mx-auto mb-12 max-w-2xl text-center">
         <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Pourquoi les équipes choisissent une API unifiée</h2>
-        <p class="mt-4 text-lg text-surface-500">Un score brut renvoyé par un fournisseur ne constitue pas un système de modération.</p>
+        <p class="mt-4 text-lg text-surface-500">Un score brut renvoyé par une API ne constitue pas un système de modération.</p>
       </div>
       <div class="overflow-x-auto rounded-xl border border-surface-200">
         <table class="w-full text-left text-sm">
           <thead>
             <tr class="bg-surface-100">
               <th class="px-6 py-4 font-semibold text-surface-900">Capacité</th>
-              <th class="px-6 py-4 font-semibold text-surface-500">API d'un seul fournisseur</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">API d'un seul éditeur</th>
               <th class="px-6 py-4 font-semibold text-brand-600">API OpenModeration</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-surface-200 bg-white">
-            <tr><td class="px-6 py-4 font-medium text-surface-900">Fournisseurs</td><td class="px-6 py-4 text-surface-500">1 (dépendance)</td><td class="px-6 py-4">10 : OpenAI, Mistral, Azure, Llama Guard, Perspective, Hive…</td></tr>
+            <tr><td class="px-6 py-4 font-medium text-surface-900">Modèle d'IA</td><td class="px-6 py-4 text-surface-500">Un seul, figé entre deux mises à jour</td><td class="px-6 py-4">Notre IA, arbitrée par d'autres modèles ; les nouveaux modèles sont branchés rapidement</td></tr>
             <tr><td class="px-6 py-4 font-medium text-surface-900">Format de réponse</td><td class="px-6 py-4 text-surface-500">Propriétaire, propre à chaque éditeur</td><td class="px-6 py-4">Scores standardisés et verdict de signalement</td></tr>
-            <tr><td class="px-6 py-4 font-medium text-surface-900">Préfiltrage</td><td class="px-6 py-4 text-surface-500">Non</td><td class="px-6 py-4">Oui : 10 à 30 % d'économies sur les coûts fournisseurs</td></tr>
-            <tr><td class="px-6 py-4 font-medium text-surface-900">Règles sur mesure</td><td class="px-6 py-4 text-surface-500">À développer soi-même</td><td class="px-6 py-4">Mots interdits, seuils, charte appliquée par LLM</td></tr>
+            <tr><td class="px-6 py-4 font-medium text-surface-900">Préfiltrage</td><td class="px-6 py-4 text-surface-500">Non</td><td class="px-6 py-4">Oui : 10 à 30 % des contenus évidents écartés d'emblée</td></tr>
+            <tr><td class="px-6 py-4 font-medium text-surface-900">Règles sur mesure</td><td class="px-6 py-4 text-surface-500">À développer soi-même</td><td class="px-6 py-4">Mots interdits, seuils, règles en langage courant appliquées par LLM</td></tr>
             <tr><td class="px-6 py-4 font-medium text-surface-900">Revue et audit</td><td class="px-6 py-4 text-surface-500">À développer soi-même</td><td class="px-6 py-4">Console, rôles d'équipe, export DSA</td></tr>
             <tr><td class="px-6 py-4 font-medium text-surface-900">Documentation</td><td class="px-6 py-4 text-surface-500">Celle de l'éditeur</td><td class="px-6 py-4"><a class="text-brand-600 hover:text-brand-500" href="https://api.openmoderation.com/docs">Référence OpenAPI &rarr;</a></td></tr>
           </tbody>
@@ -176,11 +174,11 @@ const faqItems = [
       <div class="grid gap-6 md:grid-cols-3">
         <a href="/fr/alternatives/openai-moderation" class="rounded-xl border border-surface-200 bg-surface-50 p-6 transition hover:shadow-md">
           <h3 class="font-semibold text-surface-900">Migrer depuis OpenAI</h3>
-          <p class="mt-2 text-sm text-surface-500">Remplacez vos appels text-moderation / omni-moderation, gardez votre clé et ajoutez des fournisseurs de secours.</p>
+          <p class="mt-2 text-sm text-surface-500">Remplacez vos appels text-moderation / omni-moderation et ajoutez règles, revue humaine par notre équipe et journal d'audit.</p>
         </a>
         <a href="/fr/alternatives/mistral-moderation" class="rounded-xl border border-surface-200 bg-surface-50 p-6 transition hover:shadow-md">
-          <h3 class="font-semibold text-surface-900">Gardez Mistral, ajoutez 9 fournisseurs</h3>
-          <p class="mt-2 text-sm text-surface-500">Envoyez automatiquement les langues européennes vers Mistral et l'anglais vers OpenAI.</p>
+          <h3 class="font-semibold text-surface-900">Migrer depuis Mistral</h3>
+          <p class="mt-2 text-sm text-surface-500">Remplacez votre appel à l'API de modération de Mistral par un seul point d'accès standardisé.</p>
         </a>
         <a href="/fr/cas-usage/plateformes-sociales" class="rounded-xl border border-surface-200 bg-surface-50 p-6 transition hover:shadow-md">
           <h3 class="font-semibold text-surface-900">Plateforme de modération sans code</h3>
@@ -203,7 +201,7 @@ const faqItems = [
   </section>
 
   <CTASection
-    title="Une seule intégration pour tous les fournisseurs de modération."
+    title="Une seule intégration, une IA de modération toujours à jour."
     subtitle="Obtenez une clé d'API, copiez l'exemple curl et modérez votre premier texte en quelques minutes, avec un journal d'audit dès le premier jour."
     buttonText="Essayer l'API gratuitement"
     buttonHref="https://app.openmoderation.com/signup"

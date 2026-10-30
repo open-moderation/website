@@ -1,0 +1,255 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const title = "Como ocultar comentários no Facebook automaticamente";
+const description = "Como moderar e ocultar comentários de uma Página do Facebook: ocultar, excluir ou banir, os filtros nativos e os seus limites e como escolher uma ferramenta.";
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Como ocultar comentários no Facebook automaticamente: guia de moderação de comentários no Facebook",
+  "description": description,
+  "inLanguage": "pt",
+  "datePublished": "2026-10-30",
+  "dateModified": "2026-10-30",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/pt/blog/ocultar-comentarios-facebook-automaticamente" }
+};
+
+const comparison = [
+  { need: "Barrar um insulto conhecido ou uma palavra proibida", builtin: "Sim, se estiver na sua lista de palavras-chave e escrito do mesmo jeito", tool: "Sim, inclusive com erros de grafia e variações" },
+  { need: "Entender sarcasmo, linguagem cifrada e contexto", builtin: "Não, as palavras-chave comparam sequências de caracteres, não sentido", tool: "Sim, o comentário é lido no contexto" },
+  { need: "Moderar vários idiomas", builtin: "Só as palavras que você lembrou de adicionar, idioma por idioma", tool: "Sim, sem uma lista por idioma" },
+  { need: "Aplicar regras específicas da sua Página", builtin: "Limitado a palavras e ao filtro de palavrões", tool: "Sim, as suas regras e os seus casos de uso escritos em linguagem natural" },
+  { need: "Enviar os comentários duvidosos para uma pessoa", builtin: "Não, o comentário é ocultado ou não é", tool: "Sim, para uma fila de revisão em um único console" },
+  { need: "Motivo por escrito para cada decisão", builtin: "Não", tool: "Sim, para cada comentário ocultado ou rejeitado" },
+  { need: "Trilha de auditoria das decisões", builtin: "Não", tool: "Sim, cada decisão fica registrada" },
+  { need: "Várias Páginas e outras redes no mesmo lugar", builtin: "Não, Página por Página", tool: "Sim, Facebook, Instagram, YouTube e WordPress juntos" },
+];
+
+const faqItems = [
+  {
+    question: "O Facebook consegue ocultar comentários automaticamente?",
+    answer: "Sim, em parte. Nas configurações de moderação da sua Página, você pode adicionar palavras-chave bloqueadas e ativar o filtro de palavrões: os comentários que coincidem são ocultados automaticamente. Isso só funciona com palavras exatas, então deixa passar insultos com erros de grafia, sarcásticos, cifrados ou escritos em outro idioma.",
+  },
+  {
+    question: "Qual é a diferença entre ocultar e excluir um comentário no Facebook?",
+    answer: "Um comentário ocultado continua visível para o autor e os amigos dele, mas ninguém mais o vê, e o autor não é notificado. Um comentário excluído é removido para todos, inclusive para o autor, que pode perceber que ele sumiu. Ocultar costuma ser a melhor opção padrão, porque não provoca o autor a publicar de novo.",
+  },
+  {
+    question: "A pessoa fica sabendo quando eu oculto o comentário dela no Facebook?",
+    answer: "Não. O Facebook não envia notificação quando uma Página oculta um comentário. O autor e os amigos dele continuam vendo o comentário, então, do lado do autor, nada parece ter mudado.",
+  },
+  {
+    question: "Do que eu preciso para conectar uma ferramenta de moderação de comentários à minha Página do Facebook?",
+    answer: "Você precisa ser administrador da Página (ou ter controle total no Meta Business Suite) e aprovar as permissões que a ferramenta pede à Meta, como ler os comentários da Página e gerenciar o engajamento. Com o OpenModeration, não há código para escrever: você conecta a Página e a nossa equipe configura as suas regras com você.",
+  },
+  {
+    question: "Uma ferramenta consegue moderar comentários em anúncios do Facebook?",
+    answer: "Os comentários em anúncios ficam vinculados a posts da sua Página, então uma ferramenta conectada à Página pela API da Meta geralmente consegue recebê-los e moderá-los como os outros comentários. Confirme esse ponto com qualquer fornecedor antes de assinar, porque é nos anúncios que costumam aparecer os piores comentários.",
+  },
+  {
+    question: "A moderação automática de comentários está em conformidade com o DSA?",
+    answer: "Pode estar, se cada decisão for explicada e registrada. O Regulamento dos Serviços Digitais (DSA) exige que os serviços online apresentem uma exposição de motivos quando restringem um conteúdo e digam se foram usados meios automatizados. O OpenModeration escreve um motivo para cada decisão, mantém um log completo e é hospedado na UE.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} ogType="article" jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Início", href: localizePath("/", locale) }, { label: "Blog", href: localizePath("/blog", locale) }, { label: "Ocultar comentários no Facebook automaticamente" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-30">30 de outubro de 2026</time>
+        <span>&middot;</span>
+        <span>8 min de leitura</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Como ocultar comentários no Facebook automaticamente: guia prático de moderação de comentários</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Uma Página movimentada do Facebook pode receber centenas de comentários por dia, e um único post patrocinado pode
+        receber milhares. Alguns são insultos, golpes ou spam, e ficam ali, com o nome da sua marca, até que
+        alguém cuide deles. Este guia explica o que o Facebook permite fazer sozinho, onde essas
+        ferramentas param e como uma ferramenta de moderação automática de comentários no Facebook preenche essa lacuna.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">A resposta curta</h2>
+      <ul>
+        <li><strong>Por padrão, oculte em vez de excluir.</strong> Um comentário ocultado continua visível só para o autor e os amigos dele, então o autor raramente percebe.</li>
+        <li><strong>As ferramentas nativas do Facebook</strong> (palavras-chave bloqueadas, filtro de palavrões, ocultação manual) lidam com palavras óbvias, não com o sentido.</li>
+        <li><strong>Uma ferramenta de moderação automática</strong> lê cada comentário no contexto, aplica as suas regras e os seus casos de uso, envia os casos duvidosos para uma pessoa e registra um motivo para cada decisão.</li>
+        <li><strong>Para conectar uma,</strong> você precisa de acesso de administrador à Página e deve aprovar as permissões da Meta que ela pede. Não é preciso código.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Ocultar, excluir ou banir: qual é a diferença?</h2>
+      <p>O Facebook oferece a uma Página três formas principais de agir sobre um comentário. Elas não têm o mesmo efeito.</p>
+      <ul>
+        <li>
+          <strong>Ocultar.</strong> O comentário desaparece para todos, exceto para o autor e os amigos
+          dele. O autor não é notificado. Para ele, a conversa parece igual, o que evita a
+          clássica resposta "vocês me censuraram". Você pode reexibir o comentário a qualquer momento.
+        </li>
+        <li>
+          <strong>Excluir.</strong> O comentário é removido para todos, inclusive para o autor. Não é possível
+          restaurá-lo, e um autor que o procurar vai ver que ele sumiu. Reserve a exclusão para conteúdos que não podem
+          continuar online de forma alguma, como dados pessoais, conteúdo ilegal ou links de golpe.
+        </li>
+        <li>
+          <strong>Banir.</strong> A pessoa não pode mais comentar nem interagir com a sua Página. É a
+          resposta certa para reincidentes e contas de spam, mas é uma medida forte: use-a contra
+          pessoas, não contra um único comentário ruim.
+        </li>
+      </ul>
+      <p>
+        Para a maioria das marcas e veículos de mídia, ocultar é a ação padrão, excluir é a exceção e banir é
+        o último recurso.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Quais são as ferramentas nativas de moderação de comentários do Facebook?</h2>
+      <p>Toda Página tem configurações de moderação gratuitas. Os nomes e menus mudam de vez em quando, mas os recursos existem há anos.</p>
+      <ul>
+        <li>
+          <strong>Bloqueio de palavras-chave.</strong> Você adiciona uma lista de palavras, frases ou emojis. Os comentários que
+          os contêm são ocultados automaticamente, com o mesmo efeito de uma ocultação manual.
+        </li>
+        <li>
+          <strong>Filtro de palavrões.</strong> O Facebook oculta os comentários que contêm palavras que ele considera
+          ofensivas, com base na própria lista. Você escolhe o nível de rigor, mas não pode ver nem editar a lista.
+        </li>
+        <li>
+          <strong>Ocultação e exclusão manuais.</strong> Pelo post, pelo Meta Business Suite ou pelas
+          notificações, um administrador ou moderador da Página pode ocultar, excluir ou denunciar qualquer comentário e banir o autor.
+        </li>
+      </ul>
+      <p>
+        Essas ferramentas são um bom começo para uma Página pequena. Configure-as mesmo que adicione uma ferramenta de moderação depois:
+        elas não custam nada e pegam os casos mais óbvios.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Por que os filtros de palavras-chave não bastam</h2>
+      <p>As ferramentas nativas trabalham com sequências de caracteres. Os comentários que prejudicam uma marca raramente seguem essas regras.</p>
+      <ul>
+        <li><strong>Erros de grafia e truques.</strong> "Idi0ta", "i.d.i.o.t.a" ou uma letra a mais bastam para passar por uma lista.</li>
+        <li><strong>Sarcasmo e linguagem cifrada.</strong> "Ótimo atendimento, como sempre" embaixo de uma reclamação, ou um código que só os iniciados entendem, não contém nenhuma palavra proibida.</li>
+        <li><strong>Vários idiomas.</strong> O seu público pode comentar em português, inglês, espanhol ou árabe. Uma lista só cobre as palavras que você lembrou de adicionar, idioma por idioma.</li>
+        <li><strong>Falsos positivos.</strong> Uma palavra bloqueada pode aparecer em um comentário inocente, que acaba ocultado sem motivo.</li>
+        <li><strong>Nenhum motivo por escrito.</strong> O Facebook oculta o comentário, mas não diz qual regra foi aplicada nem por quê.</li>
+        <li><strong>Nenhuma trilha de auditoria.</strong> Não há histórico do que foi ocultado, quando e por quem, algo de que você precisa nas revisões internas e para o DSA.</li>
+        <li><strong>Nenhuma escala.</strong> Em um post viral ou em uma campanha paga, os comentários chegam mais rápido do que um social media consegue ler, muitas vezes à noite ou no fim de semana.</li>
+      </ul>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">O que você precisa</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Ferramentas nativas do Facebook</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Ferramenta de moderação automática</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {comparison.map((row) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{row.need}</td>
+              <td class="px-4 py-3 text-surface-600">{row.builtin}</td>
+              <td class="px-4 py-3 text-surface-600">{row.tool}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">O que uma ferramenta de moderação automática para Facebook acrescenta?</h2>
+      <p>
+        Uma ferramenta de moderação de comentários com IA se conecta à sua Página pela API da Meta. Cada novo comentário
+        é enviado a ela assim que é publicado, analisado e depois ocultado, rejeitado ou mantido online conforme as suas
+        regras. Na prática, ela acrescenta quatro coisas.
+      </p>
+      <ul>
+        <li><strong>Compreensão em vez de correspondência.</strong> O comentário é lido no contexto, então um insulto disfarçado é detectado e uma frase inocente que contém uma palavra "ruim" não é.</li>
+        <li><strong>As suas próprias regras.</strong> Um veículo de mídia, um varejista e um clube de futebol não traçam o limite no mesmo lugar. Você descreve as suas regras e os seus casos de uso em linguagem natural: links de concorrentes, debate político fora do tema, dados de clientes publicados em público.</li>
+        <li><strong>Uma pessoa no circuito.</strong> Os casos evidentes são tratados automaticamente. Os duvidosos são decididos por uma pessoa.</li>
+        <li><strong>Rastreabilidade.</strong> Cada decisão vem com um motivo por escrito e fica registrada, para que você possa responder a um autor, a um gestor ou a um regulador.</li>
+      </ul>
+      <p>
+        É assim que funciona a <a href={localizePath("/integrations/facebook", locale)} class="text-brand-600 hover:text-brand-500">integração do OpenModeration com o Facebook</a>.
+        Ela oculta ou rejeita comentários conforme as suas regras, deixa os casos duvidosos com a nossa equipe, mostra cada decisão em tempo real em um único
+        console e dá um motivo por escrito para cada decisão. As marcas a usam para proteger as suas Páginas e
+        as suas campanhas de anúncios: veja o <a href={localizePath("/use-cases/brands-retail", locale)} class="text-brand-600 hover:text-brand-500">caso de uso para marcas e varejo</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Como escolher uma ferramenta de moderação de comentários para o Facebook</h2>
+      <p>Antes de comparar as "melhores ferramentas de moderação de comentários no Facebook", confira cada uma com esta lista.</p>
+      <ol>
+        <li><strong>Ação em tempo real.</strong> Ela age quando o comentário é publicado ou verificando a Página a cada poucos minutos ou horas?</li>
+        <li><strong>Ocultar em vez de excluir.</strong> Dá para escolher a ação por regra, com a ocultação como padrão?</li>
+        <li><strong>Regras personalizadas.</strong> Dá para escrever regras que correspondam à sua Página, ou só ligar e desligar categorias genéricas?</li>
+        <li><strong>Contexto e idiomas.</strong> Ela lida com sarcasmo, erros de grafia e os idiomas que o seu público usa?</li>
+        <li><strong>Revisão humana.</strong> Existe uma fila para os comentários duvidosos, compartilhada pela sua equipe?</li>
+        <li><strong>Explicações.</strong> Cada decisão vem com um motivo que você consegue ler?</li>
+        <li><strong>Log de auditoria e DSA.</strong> Cada decisão é registrada e exportável? O fornecedor cuida das <a href={localizePath("/dsa-compliance", locale)} class="text-brand-600 hover:text-brand-500">exigências do DSA</a>, como as exposições de motivos?</li>
+        <li><strong>Localização dos dados.</strong> Onde os seus comentários são processados e armazenados? Para empresas europeias, a hospedagem na UE simplifica as questões de RGPD.</li>
+        <li><strong>Outras redes.</strong> Você vai precisar das mesmas regras no Instagram, no YouTube ou no seu site?</li>
+        <li><strong>Suporte.</strong> Alguém vai ajudar você a configurar as regras, ou você fica sozinho com um painel?</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Como conectar uma ferramenta de moderação a uma Página do Facebook?</h2>
+      <p>Toda ferramenta séria usa a API oficial da Meta. Os passos são os mesmos de uma ferramenta para outra.</p>
+      <ol>
+        <li><strong>Acesso de administrador à Página.</strong> Você precisa de controle total da Página, como administrador ou pelo Meta Business Suite. Um papel de moderador ou analista não basta para conceder o acesso.</li>
+        <li><strong>Entrar com o Facebook.</strong> Você autoriza o app da ferramenta na Meta e escolhe a quais Páginas ele pode acessar.</li>
+        <li><strong>Aprovar as permissões.</strong> A ferramenta pede para ler os posts e comentários da Página e para gerenciar o engajamento, o que lhe permite ocultar ou excluir comentários. Ela nunca precisa da sua senha.</li>
+        <li><strong>Webhooks.</strong> Depois da conexão, a Meta avisa a ferramenta de cada novo comentário assim que ele é publicado. Sem consultas periódicas, sem atraso.</li>
+        <li><strong>Regras e testes.</strong> Você define as suas regras, confere as decisões em comentários reais e depois deixa a ferramenta agir sozinha.</li>
+      </ol>
+      <p>
+        Com o OpenModeration, não há código para escrever. Você conecta a Página e a nossa equipe configura as suas
+        regras e os seus casos de uso com você. Os seus comentários são processados na UE. Para ver como ele julga os seus próprios
+        comentários, <a href={localizePath("/demo", locale)} class="text-brand-600 hover:text-brand-500">teste a demonstração ao vivo</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Você também modera o Instagram?</h2>
+      <p>
+        Se a sua marca está no Instagram, os mesmos problemas aparecem, com outras ferramentas nativas. Leia o nosso
+        guia de <a href={localizePath("/blog/instagram-comment-moderation", locale)} class="text-brand-600 hover:text-brand-500">moderação e moderação automática de comentários no Instagram</a>.
+      </p>
+    </div>
+
+    <div class="mt-12">
+      <FAQ title="Perguntas frequentes" items={faqItems} />
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Continue explorando</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath("/integrations/facebook", locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderação de comentários no Facebook com o OpenModeration &rarr;</a></li>
+        <li><a href={localizePath("/blog/instagram-comment-moderation", locale)} class="font-medium text-brand-600 hover:text-brand-500">Como moderar comentários no Instagram &rarr;</a></li>
+        <li><a href={localizePath("/use-cases/brands-retail", locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderação de comentários para marcas e varejo &rarr;</a></li>
+        <li><a href={localizePath("/dsa-compliance", locale)} class="font-medium text-brand-600 hover:text-brand-500">O que o DSA exige das decisões de moderação &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

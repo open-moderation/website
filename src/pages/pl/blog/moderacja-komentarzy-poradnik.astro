@@ -1,0 +1,415 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const pageTitle = "Moderacja komentarzy: kompletny poradnik (2026)";
+const pageDescription = "Jak moderować komentarze: porównanie metod, zasady, szare strefy, wymogi DSA, wybór oprogramowania do moderacji komentarzy i 10 dobrych praktyk.";
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Moderacja komentarzy: kompletny poradnik",
+  "description": pageDescription,
+  "inLanguage": "pl",
+  "datePublished": "2026-10-30",
+  "dateModified": "2026-10-30",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/pl/blog/moderacja-komentarzy-poradnik" }
+};
+
+const methods = [
+  { name: "Moderacja wstępna", how: "Każdy komentarz jest sprawdzany przed publikacją.", speed: "Wolno: publikacja czeka na moderatora", cost: "Wysoki", risk: "Niskie dla treści nielegalnych, wysokie dla dyskusji", scale: "Słaba" },
+  { name: "Moderacja następcza", how: "Komentarze pojawiają się od razu, a moderator przegląda je później.", speed: "Natychmiast", cost: "Wysoki", risk: "Średnie: szkodliwe treści są widoczne do czasu weryfikacji", scale: "Średnia" },
+  { name: "Moderacja reaktywna", how: "Działania tylko na podstawie zgłoszeń użytkowników.", speed: "Natychmiast", cost: "Niski", risk: "Wysokie: nic nie zostaje zauważone, dopóki ktoś tego nie zgłosi", scale: "Dobra, ale bierna" },
+  { name: "Filtry automatyczne", how: "Listy zakazanych słów, blokowanie linków, sztywne reguły.", speed: "Natychmiast", cost: "Niski", risk: "Wysokie: fałszywe alarmy przy krytyce, a ironia i zakamuflowane obelgi przechodzą", scale: "Dobra" },
+  { name: "Hybryda AI + człowiek", how: "AI stosuje Twoje zasady, wątpliwe przypadki trafiają do zespołu.", speed: "Sekundy", cost: "Umiarkowany", risk: "Niskie przy dobrze dobranych zasadach i progach", scale: "Bardzo dobra" },
+];
+
+const actions = [
+  { action: "Ukrycie", what: "Komentarz przestaje być widoczny publicznie. Na Facebooku autor i jego znajomi nadal go widzą.", when: "Obelgi, spam, agresywne wpisy nie na temat: najczęstszy przypadek, a decyzję można cofnąć." },
+  { action: "Usunięcie lub odrzucenie", what: "Komentarz znika na stałe (albo zostaje odrzucony przed publikacją).", when: "Treści ewidentnie nielegalne, oszustwa, cudze dane osobowe." },
+  { action: "Blokada lub ograniczenie", what: "Autor nie może już komentować – czasowo lub na stałe.", when: "Recydywiści, ukierunkowane nękanie, konta spamowe, skoordynowane najazdy." },
+];
+
+const faqItems = [
+  {
+    question: "Czym jest moderacja komentarzy?",
+    answer: "Moderacja komentarzy to zestaw zasad i działań, które decydują, jakie komentarze pozostają widoczne pod artykułami, filmami i postami: publikacja, ukrycie, usunięcie, przekazanie do weryfikacji lub ograniczenie autora, a następnie wyjaśnienie decyzji.",
+  },
+  {
+    question: "Jak skutecznie moderować komentarze?",
+    answer: "Spisz jasne zasady z przykładami, zautomatyzuj oczywiste przypadki, wątpliwe przekazuj człowiekowi, wyjaśniaj każdą decyzję autorowi, rejestruj wszystko i regularnie poprawiaj zasady na podstawie zauważonych błędów.",
+  },
+  {
+    question: "Ukryć czy usunąć komentarz?",
+    answer: "Ukrycie to rozsądna opcja domyślna: można je cofnąć, a wystarcza, by chronić dyskusję. Usuwanie zostaw dla treści ewidentnie nielegalnych lub niebezpiecznych. W obu przypadkach zapisz decyzję i jej powód.",
+  },
+  {
+    question: "Czy DSA dotyczy komentarzy na mojej stronie?",
+    answer: "Tak. Jeśli przechowujesz treści publikowane przez użytkowników, np. komentarze, działasz w rozumieniu DSA jako usługa hostingu. Konkretne obowiązki zależą od charakteru i wielkości usługi. To nie jest porada prawna.",
+  },
+  {
+    question: "Czy komentarze można moderować automatycznie?",
+    answer: "Tak. AI potrafi czytać każdy komentarz w kontekście, w kilka sekund zastosować Twoje zasady i ukryć to, co je narusza. Wątpliwe przypadki nadal powinien rozstrzygać człowiek, a autorzy powinni wiedzieć, kiedy użyto środków zautomatyzowanych.",
+  },
+  {
+    question: "Czy należy usuwać negatywne komentarze?",
+    answer: "Nie. Krytyka marki, redakcji czy produktu – nawet ostra – nie jest powodem do usunięcia komentarza. Kasowanie negatywnych opinii szkodzi zaufaniu bardziej niż sam komentarz. Usuwa się obelgi, nienawiść, groźby, spam i treści nielegalne.",
+  },
+  {
+    question: "Na co zwrócić uwagę przy wyborze oprogramowania do moderacji komentarzy?",
+    answer: "Na konektory do wszystkich platform, możliwość stosowania własnych zasad zamiast ogólnego szablonu, jedną kolejkę weryfikacji dla wątpliwych przypadków, pisemne uzasadnienie każdej decyzji, dziennik audytowy oraz hosting w UE, jeśli obowiązuje Cię RODO.",
+  },
+  {
+    question: "Ile kosztuje moderacja komentarzy?",
+    answer: "Własny zespół lub agencja to koszt liczony za czas albo za wolumen. Narzędzie automatyczne kosztuje ułamek tej kwoty. OpenModeration oferuje darmowy plan na start, plan Pro oraz indywidualne oferty dla dużych wolumenów.",
+  },
+];
+
+const linkClass = "text-brand-600 hover:text-brand-500";
+---
+
+<BaseLayout title={pageTitle} description={pageDescription} ogType="article" jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Strona główna", href: localizePath('/', locale) }, { label: "Blog", href: localizePath('/blog', locale) }, { label: "Poradnik moderacji komentarzy" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-30">30 października 2026</time>
+        <span>&middot;</span>
+        <span>12 min czytania</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Moderacja komentarzy: kompletny poradnik</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Komentarze pod artykułem, filmem na YouTube czy postem na Facebooku mogą zbliżać odbiorców –
+        albo ich odstraszać. Ten poradnik pokazuje, jak moderować komentarze w praktyce: jakie są metody,
+        jakie zasady warto spisać, jak podchodzić do szarych stref, czego oczekuje unijny akt o usługach
+        cyfrowych (DSA) i jak wybrać między własnym zespołem, agencją a oprogramowaniem do moderacji komentarzy.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Najważniejsze wnioski</h2>
+      <ul>
+        <li><strong>Moderować to decydować</strong>, które komentarze pozostają widoczne, na podstawie wcześniej ustalonych zasad – i umieć wyjaśnić każdą decyzję.</li>
+        <li><strong>Podejście, które się skaluje</strong>, łączy AI stosującą Twoje zasady w kilka sekund z zespołem ludzi rozstrzygającym wątpliwe przypadki.</li>
+        <li><strong>Zasady są ważniejsze niż narzędzie</strong>: co znika, co zostaje (krytyka, różnica zdań) i jak traktować ironię czy politykę.</li>
+        <li><strong>DSA</strong> wymaga od serwisów z komentarzami reagowania na zgłoszenia, uzasadniania decyzji i umożliwienia ich zaskarżenia.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Czym jest moderacja komentarzy i dlaczego ma znaczenie?</h2>
+      <p>
+        Moderacja komentarzy to zestaw zasad i działań, które decydują, co pozostaje widoczne w sekcjach
+        komentarzy: publikacja, ukrycie, usunięcie, przekazanie do weryfikacji, ograniczenie autora. Obejmuje
+        stronę i aplikację, ale też strony na Facebooku, konta na Instagramie i kanały YouTube, gdzie komentarze
+        pojawiają się pod Twoim szyldem.
+      </p>
+      <p>Ma znaczenie z czterech powodów.</p>
+      <ul>
+        <li><strong>Społeczność.</strong> Wystarczy kilku agresywnych komentujących, by uciszyć wszystkich pozostałych. Zadbana przestrzeń zachęca do udziału, powrotów i dyskusji.</li>
+        <li><strong>Wizerunek marki.</strong> Nienawistny komentarz pod Twoim postem wygląda jak coś, na co się godzisz. W przypadku marki komentarz z oszustwem pod postem sponsorowanym uderza bezpośrednio w klientów.</li>
+        <li><strong>Reklamodawcy.</strong> Wydawcy wiedzą, że reklamodawcy patrzą na otoczenie, w którym wyświetlają się ich reklamy. Wątek komentarzy, który wymknął się spod kontroli, działa na Twoją niekorzyść.</li>
+        <li><strong>Ryzyko prawne.</strong> Jeśli przechowujesz komentarze, masz obowiązki od chwili, gdy ktoś zgłosi Ci nielegalną treść. Bezczynność albo brak możliwości udowodnienia, co zrobiono, naraża Cię na konsekwencje.</li>
+      </ul>
+      <p>
+        Redakcje znajdą więcej na stronie o <a href={localizePath('/use-cases/news-publishers', locale)} class={linkClass}>moderacji komentarzy dla mediów</a>,
+        a marki – na stronie o <a href={localizePath('/use-cases/brands-retail', locale)} class={linkClass}>moderacji komentarzy dla marek i handlu</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Jakie są główne metody moderacji komentarzy?</h2>
+      <p>
+        Istnieje pięć głównych sposobów moderacji. Można je łączyć, ale każdy z nich inaczej równoważy
+        szybkość, koszt i ryzyko.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Moderacja wstępna (premoderacja)</h3>
+      <p>
+        Każdy komentarz czeka na akceptację moderatora przed publikacją. Nic szkodliwego się nie pojawia,
+        ale dyskusja zamiera: komentarz dodany o 22:00 może być widoczny dopiero następnego ranka.
+        Ma sens przy bardzo drażliwych tematach lub w przestrzeniach o małym ruchu.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Moderacja następcza (postmoderacja)</h3>
+      <p>
+        Komentarze pojawiają się od razu i są sprawdzane później. Dyskusja płynie, ale problematyczne treści
+        pozostają widoczne, dopóki nie dotrze do nich moderator, a wieczorne, weekendowe czy związane
+        z ważnymi wiadomościami szczyty ruchu szybko przytłaczają zespół.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Moderacja reaktywna (zgłoszenia użytkowników)</h3>
+      <p>
+        Interwencja następuje dopiero po zgłoszeniu komentarza przez użytkownika. To tanie rozwiązanie, ale
+        zrzuca na odbiorców wyszukiwanie problemów. Przycisk zgłaszania i tak jest niezbędny, bo wymaga go
+        DSA, ale nie może być jedyną linią obrony.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Moderacja automatyczna</h3>
+      <p>
+        Tradycyjne narzędzia opierają się na listach zakazanych słów i sztywnych regułach. Są szybkie, ale
+        blokują uzasadnioną krytykę i przepuszczają ironię, zakamuflowane obelgi i oszustwa. Nowoczesna AI
+        czyta natomiast komentarz w kontekście. Więcej na stronie o
+        <a href={localizePath('/automatic-comment-moderation', locale)} class={linkClass}>automatycznej moderacji komentarzy</a>.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Moderacja hybrydowa: AI i ludzie</h3>
+      <p>
+        AI stosuje Twoje zasady do każdego komentarza w kilka sekund. To, co jest wyraźnie zgodne z zasadami,
+        zostaje opublikowane, to, co wyraźnie je łamie, zostaje ukryte, a szarą strefę
+        weryfikuje człowiek. To jedyna metoda, która jednocześnie radzi sobie z wolumenem,
+        szybkością i potrzebą osądu.
+      </p>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Metoda</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Jak działa</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Szybkość</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Koszt</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Ryzyko</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Skalowalność</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {methods.map((m) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{m.name}</td>
+              <td class="px-4 py-3 text-surface-600">{m.how}</td>
+              <td class="px-4 py-3 text-surface-600">{m.speed}</td>
+              <td class="px-4 py-3 text-surface-600">{m.cost}</td>
+              <td class="px-4 py-3 text-surface-600">{m.risk}</td>
+              <td class="px-4 py-3 text-surface-600">{m.scale}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">Co powinny obejmować zasady moderacji komentarzy?</h2>
+      <p>
+        Zanim wybierzesz narzędzie, potrzebujesz zasad. Powinny być na tyle precyzyjne, by każdy moderator –
+        człowiek czy AI – podjął tę samą decyzję wobec tego samego komentarza. Nasz poradnik o
+        <a href={localizePath('/content-moderation-policy', locale)} class={linkClass}>tworzeniu polityki moderacji treści</a> opisuje
+        metodę szczegółowo; poniżej najważniejsze punkty.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Co usuwać</h3>
+      <ul>
+        <li>Obelgi i ataki osobiste – wymierzone w innych komentujących, Twoich dziennikarzy lub pracowników.</li>
+        <li>Nienawiść ze względu na pochodzenie etniczne, religię, płeć, orientację seksualną lub niepełnosprawność.</li>
+        <li>Groźby i nawoływanie do przemocy.</li>
+        <li>Nękanie, w tym powtarzające się wiadomości kierowane do tej samej osoby.</li>
+        <li>Spam, linki do oszustw, fałszywe konkursy i podszywanie się pod Twoją markę.</li>
+        <li>Cudze dane osobowe (adresy, numery telefonów) i treści ewidentnie nielegalne.</li>
+      </ul>
+      <h3 class="text-lg font-semibold text-surface-900">Co zostawiać</h3>
+      <p>
+        Zapisz to wprost: <strong>krytyka i różnica zdań nie są powodem do usunięcia</strong>. Czytelnik,
+        który podważa artykuł, klient niezadowolony z dostawy, ktoś, kto rozbiera Twoje argumenty na części –
+        wszyscy oni mają tu swoje miejsce. Moderacja, która wymazuje negatywne opinie, traci zaufanie odbiorców
+        szybciej niż przez jakiegokolwiek trolla.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Szare strefy</h3>
+      <ul>
+        <li><strong>Ironia i sarkazm.</strong> „Brawo, kolejne arcydzieło dziennikarstwa” to krytyka, a nie obelga. Bywa też odwrotnie: ironiczny komplement może kryć atak.</li>
+        <li><strong>Zakodowany język.</strong> Litery zastąpione cyframi, emoji, przezwiska czy odniesienia wskazujące na daną społeczność: listy słów ich nie wychwytują, kontekst tak.</li>
+        <li><strong>Polityka.</strong> Stanowcza opinia o partii czy polityce jest uprawniona. Atakowanie wyborców jednej strony jako ludzi – już niekoniecznie. Ustal granicę przed wyborami, a nie w ich trakcie.</li>
+        <li><strong>Wpisy nie na temat.</strong> Pod postem marki nie przeszkadzają, pod artykułem o tragedii rażą. Zasada może zależeć od przestrzeni.</li>
+      </ul>
+      <h3 class="text-lg font-semibold text-surface-900">Zawsze dodawaj przykłady</h3>
+      <p>Każda zasada działa lepiej z konkretnymi przypadkami po obu stronach granicy.</p>
+      <ul>
+        <li>„Ten artykuł jest stronniczy i słabo udokumentowany”: <strong>zostawić</strong>, to krytyka.</li>
+        <li>„Autor tego tekstu to idiota”: <strong>ukryć</strong>, to atak osobisty.</li>
+        <li>„Wasza obsługa klienta nigdy nie odpowiada, jestem rozczarowany”: <strong>zostawić</strong> i odpowiedzieć.</li>
+        <li>„Wygraj darmowego iPhone’a, kliknij tutaj” pod Twoim postem: <strong>ukryć</strong>, to oszustwo.</li>
+        <li>„Kolejny geniusz w rządzie”: <strong>zostawić</strong>, to polityczny sarkazm.</li>
+      </ul>
+      <p>
+        W narzędziu takim jak OpenModeration te zasady zapisuje się zwykłym językiem – tak, jak wyjaśniałoby
+        się je moderatorowi – bez list słów do utrzymywania. Przykłady służą potem do przetestowania moderacji
+        na prawdziwych komentarzach przed jej włączeniem.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Ukryć, usunąć czy zablokować: co zrobić z komentarzem?</h2>
+      <p>
+        Nie każda decyzja ma tę samą wagę. Dopasuj reakcję do powagi naruszenia i do tego, czy się powtarza.
+      </p>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Działanie</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Skutek</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Kiedy stosować</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {actions.map((a) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{a.action}</td>
+              <td class="px-4 py-3 text-surface-600">{a.what}</td>
+              <td class="px-4 py-3 text-surface-600">{a.when}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <p>
+        Ukrycie można cofnąć, co ma znaczenie, gdy decyzja zostanie zakwestionowana. Platformy nie oferują
+        tych samych działań: w OpenModeration odrzucona treść jest ukrywana na Facebooku i Instagramie,
+        a na YouTube odrzucana.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Wyjaśnianie decyzji autorom</h3>
+      <p>
+        Komentarz, który znika bez wyjaśnienia, podsyca poczucie cenzury. Jasne uzasadnienie natomiast uczy
+        zasady i rozbraja większość skarg. Dobre wyjaśnienie mówi:
+      </p>
+      <ul>
+        <li>co zrobiono (ukryto, usunięto, ograniczono konto);</li>
+        <li>która zasada ma zastosowanie, opisana prostymi słowami;</li>
+        <li>czy decyzja była zautomatyzowana, czy podjął ją moderator;</li>
+        <li>jak można ją zakwestionować.</li>
+      </ul>
+      <p>
+        To coś więcej niż dobre maniery: DSA nazywa to uzasadnieniem decyzji.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Czego wymaga prawo UE? DSA a moderacja komentarzy</h2>
+      <p>
+        Akt o usługach cyfrowych (DSA) obowiązuje w pełni od 2024 roku. Strona, która przechowuje komentarze
+        użytkowników, działa w rozumieniu DSA jako usługa hostingu. W praktyce sposób moderacji kształtują cztery artykuły.
+      </p>
+      <ul>
+        <li>
+          <strong>Art. 16 – zgłaszanie i działanie.</strong> Każdy musi mieć możliwość łatwego, elektronicznego
+          zgłoszenia treści, którą uważa za nielegalną. Zgłoszenie rozpatruje się starannie i obiektywnie,
+          a osobę zgłaszającą informuje o podjętej decyzji.
+          Więcej w artykule <a href={localizePath('/dsa-compliance/notice-and-action', locale)} class={linkClass}>zgłaszanie i działanie w DSA (art. 16)</a>.
+        </li>
+        <li>
+          <strong>Art. 17 – uzasadnienie.</strong> Ukrywając lub usuwając treść, informujesz jej autora, co
+          postanowiono, na podstawie jakich faktów, na jakiej podstawie (prawo lub regulamin), czy użyto środków
+          zautomatyzowanych i jakie środki odwoławcze są dostępne.
+          Zobacz <a href={localizePath('/dsa-compliance/statement-of-reasons', locale)} class={linkClass}>uzasadnienie decyzji – z przykładem</a>.
+        </li>
+        <li>
+          <strong>Art. 20 – wewnętrzny system skarg.</strong> Platformy internetowe muszą zapewnić wewnętrzny
+          system rozpatrywania skarg, aby komentujący mógł zakwestionować decyzję i uzyskać jej ponowne
+          rozpatrzenie, które nie opiera się wyłącznie na środkach zautomatyzowanych.
+        </li>
+        <li>
+          <strong>Art. 15 – przejrzystość.</strong> Usługi, których to dotyczy, publikują regularne raporty
+          z moderacji: liczba zgłoszeń, podjęte decyzje, wykorzystanie automatyzacji, otrzymane skargi.
+        </li>
+      </ul>
+      <p>
+        Nie wszystkie obowiązki dotyczą wszystkich w ten sam sposób: zależy to od charakteru i wielkości
+        usługi. Więcej na naszej <a href={localizePath('/dsa-compliance', locale)} class={linkClass}>stronie o zgodności z DSA</a> oraz
+        w <a href={localizePath('/blog/dsa-compliance-sme-guide', locale)} class={linkClass}>poradniku DSA dla MŚP</a>.
+      </p>
+      <p class="text-sm text-surface-400">
+        To podsumowanie nie stanowi porady prawnej. Aby dokładnie ustalić, co dotyczy Twojej usługi, skonsultuj się z prawnikiem.
+      </p>
+      <p>
+        Najważniejsze: przy każdej decyzji trzeba umieć pokazać, kiedy zapadła, kto lub co ją podjął, na
+        podstawie jakiej zasady i z jakiego powodu. Bez rejestru nie odpowiesz ani na skargę, ani na audyt.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Własny zespół, agencja czy oprogramowanie do moderacji komentarzy?</h2>
+      <h3 class="text-lg font-semibold text-surface-900">Własny zespół</h3>
+      <p>
+        Twoi moderatorzy znają linię redakcyjną i odbiorców. Ale zespół nie pokryje nocy, weekendów i szczytów
+        związanych z wydarzeniami bez rozrastania się, jakość różni się w zależności od osoby, a ciągły kontakt
+        z brutalnymi treściami odbija się na ludziach, którzy wykonują tę pracę.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Agencja moderacji</h3>
+      <p>
+        Agencja przejmie wolumen, ale rozlicza się za ilość lub czas pracy, z opóźnieniami w nocy i w weekendy.
+        Przeszkolenie zewnętrznych moderatorów z Twoich zasad wymaga czasu, a nie znają oni Twojej linii
+        redakcyjnej. Porównaj z naszą stroną o <a href={localizePath('/outsourced-moderation', locale)} class={linkClass}>alternatywie dla outsourcingu moderacji</a>.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Oprogramowanie do moderacji komentarzy</h3>
+      <p>
+        Oprogramowanie stosuje te same zasady do każdego komentarza, w dzień i w nocy, w kilka sekund, za ułamek
+        kosztu moderacji ręcznej. Zostają tylko przypadki wymagające człowieka, a niektóre usługi zajmują się nimi za Ciebie. Haczyk: ogólne
+        narzędzie dostarczone bez wsparcia stosuje szablon, który nie jest Twój.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Jak wybrać oprogramowanie do moderacji komentarzy</h3>
+      <ul>
+        <li><strong>Konektory:</strong> łączy się z Twoją stroną (API, WordPress) oraz stronami na Facebooku, Instagramie i YouTube, więc nie żonglujesz wieloma interfejsami.</li>
+        <li><strong>Twoje zasady i Twoje przypadki użycia:</strong> zapisujesz je zwykłym językiem, zamiast godzić się na ogólny szablon lub utrzymywać listy słów.</li>
+        <li><strong>Kontekst:</strong> każdy komentarz jest czytany z uwzględnieniem tematu artykułu lub posta, w swoim języku, by wychwycić ironię i zakamuflowane obelgi.</li>
+        <li><strong>Regulowane progi:</strong> decydujesz, co jest automatycznie ukrywane, publikowane lub przekazywane do weryfikacji – kategoria po kategorii.</li>
+        <li><strong>Jedna kolejka weryfikacji:</strong> wątpliwe przypadki ze wszystkich platform trafiają w jedno miejsce, wraz z zasadą, której dotyczą.</li>
+        <li><strong>Pisemne uzasadnienie każdej decyzji:</strong> takie, które można pokazać zarówno autorowi, jak i regulatorowi.</li>
+        <li><strong>Dziennik audytowy:</strong> każda decyzja, automatyczna czy ludzka, jest zapisywana i można ją wyeksportować do raportów przejrzystości.</li>
+        <li><strong>Wbudowane zgłoszenia:</strong> przycisk zgłaszania zasila tę samą kolejkę co moderacja automatyczna.</li>
+        <li><strong>Hosting i RODO:</strong> gdzie przechowywane są dane i jak długo.</li>
+        <li><strong>Wsparcie:</strong> ktoś pomaga przełożyć Twoje zasady na instrukcje i przetestować je na prawdziwych komentarzach przed uruchomieniem.</li>
+        <li><strong>Okres próbny:</strong> możesz wypróbować narzędzie na własnych komentarzach, zanim się zobowiążesz.</li>
+      </ul>
+      <p>
+        Wokół tej listy zbudowaliśmy <a href={localizePath('/moderation-software', locale)} class={linkClass}>oprogramowanie do moderacji OpenModeration</a>:
+        AI, która stosuje Twoje zasady i Twoje przypadki użycia, dwa progi na kategorię z szarą strefą
+        obsługiwaną przez nasz zespół, jedna <a href={localizePath('/dashboard', locale)} class={linkClass}>konsola moderacji</a>, pisemne
+        uzasadnienie każdej decyzji i dziennik audytowy. OpenModeration jest tworzone i hostowane w Unii Europejskiej,
+        a nasz zespół konfiguruje je razem z Tobą. Nie musisz nic robić, ale widzisz każdą decyzję w czasie rzeczywistym i możesz interweniować.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Dobre praktyki moderacji komentarzy: lista 10 punktów</h2>
+      <ol>
+        <li><strong>Opublikuj zasady</strong> prostymi słowami, tam, gdzie ludzie komentują.</li>
+        <li><strong>Wprost chroń krytykę i różnicę zdań</strong> w tych zasadach.</li>
+        <li><strong>Każdą zasadę poprzyj przykładami</strong> tego, co znika, i tego, co zostaje.</li>
+        <li><strong>Zautomatyzuj oczywiste przypadki</strong>, aby obelgi i oszustwa znikały w kilka sekund, nawet o 3 w nocy.</li>
+        <li><strong>W szarej strefie zostaw decyzję człowiekowi</strong>: ironia, polityka, drażliwe tematy.</li>
+        <li><strong>W razie wątpliwości ukrywaj zamiast usuwać</strong>, by móc zmienić zdanie.</li>
+        <li><strong>Wyjaśniaj każdą decyzję</strong> jej autorowi, wskazując zasadę i sposób odwołania.</li>
+        <li><strong>Reaguj na każde zgłoszenie</strong> i informuj zgłaszającego o wyniku.</li>
+        <li><strong>Rejestruj wszystko</strong>: decyzję, powód, czy była ludzka, czy automatyczna, datę.</li>
+        <li><strong>Regularnie przeglądaj zasady</strong> na podstawie błędów i odwołań, zwłaszcza gdy zmienia się tematyka lub odbiorcy.</li>
+      </ol>
+      <p>
+        Aby zobaczyć, jak wygląda uzasadniona decyzja, wklej komentarz do naszego
+        <a href={localizePath('/demo', locale)} class={linkClass}>demo moderacji</a>: decyzja i jej wyjaśnienie pojawią się
+        w kilka sekund, bez rejestracji.
+      </p>
+    </div>
+
+    <div class="mt-12">
+      <FAQ title="Moderacja komentarzy – FAQ" items={faqItems} />
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Czytaj dalej</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/content-moderation-policy', locale)} class="font-medium text-brand-600 hover:text-brand-500">Jak napisać politykę moderacji treści – z szablonem &rarr;</a></li>
+        <li><a href={localizePath('/automatic-comment-moderation', locale)} class="font-medium text-brand-600 hover:text-brand-500">Automatyczna moderacja komentarzy z AI &rarr;</a></li>
+        <li><a href={localizePath('/outsourced-moderation', locale)} class="font-medium text-brand-600 hover:text-brand-500">Outsourcing moderacji bez kosztów agencji &rarr;</a></li>
+        <li><a href={localizePath('/dsa-compliance', locale)} class="font-medium text-brand-600 hover:text-brand-500">Czego DSA wymaga od serwisów z komentarzami &rarr;</a></li>
+        <li><a href={localizePath('/use-cases/news-publishers', locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderacja komentarzy dla mediów &rarr;</a></li>
+        <li><a href={localizePath('/use-cases/brands-retail', locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderacja komentarzy dla marek &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

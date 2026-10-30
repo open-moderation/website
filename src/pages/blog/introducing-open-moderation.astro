@@ -1,13 +1,15 @@
 ---
+import { bookingUrl } from '../../i18n/ui';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CTASection from '../../components/CTASection.astro';
+import GuideComparisons from '../../components/GuideComparisons.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 
 const articleJsonLd = {
   "@context": "https://schema.org",
   "@type": "Article",
   "headline": "Introducing OpenModeration: The Unified Moderation Platform",
-  "description": "We're building open-source infrastructure for content moderation: one API in front of every provider, under your control.",
+  "description": "We're building a moderation platform: our own AI, cross-checked by other models, with a written reason and an audit trail for every decision.",
   "datePublished": "2026-06-01",
   "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
   "publisher": {
@@ -21,7 +23,7 @@ const articleJsonLd = {
 };
 ---
 
-<BaseLayout title="Introducing OpenModeration: The Unified Moderation Platform" description="We're building open-source infrastructure for content moderation: one API in front of every provider, under your control." jsonLd={articleJsonLd}>
+<BaseLayout title="Introducing OpenModeration: The Unified Moderation Platform" description="We're building a moderation platform: our own AI, cross-checked by other models, with a written reason and an audit trail for every decision." jsonLd={articleJsonLd}>
 <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Blog", href: "/blog" }, { label: "Introducing OpenModeration" }]} />
   <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
     <div class="mb-8">
@@ -35,15 +37,15 @@ const articleJsonLd = {
 
     <div class="prose prose-surface max-w-none text-surface-600">
       <p class="text-lg leading-relaxed">
-        Today we're announcing OpenModeration, an open-source platform that brings
-        content moderation providers together behind a single API. Think of it as OpenRouter for content moderation.
+        Today we're announcing OpenModeration, a content moderation platform built on its own
+        moderation AI, with delicate cases cross-checked by other AI models.
       </p>
 
       <h2 class="text-xl font-bold text-surface-900">The problem we're solving</h2>
       <p>
-        Content moderation is fragmented. Every provider has its own API format, category schema,
-        and pricing model. Integrating two providers means building and maintaining two completely
-        separate code paths. Switching providers means rewriting your moderation pipeline.
+        Many moderation tools rely on a single in-house algorithm, frozen between two updates.
+        Meanwhile, AI models get better and cheaper every year, and platforms stuck on yesterday's
+        model miss out on that progress.
       </p>
       <p>
         Meanwhile, the volume of user-generated content is growing 30-40% annually. The DSA
@@ -59,22 +61,22 @@ const articleJsonLd = {
         OpenModeration is a full moderation platform. Beyond the API, it includes:
       </p>
       <ul>
-        <li><strong>Unified API.</strong> POST /v1/moderation works identically across OpenAI, Azure, HuggingFace, Mistral, and LLM-based providers.</li>
-        <li><strong>Smart routing.</strong> Route requests by language, content type, cost, or availability.</li>
-        <li><strong>Action Engine.</strong> Define rules with three tools: forbidden words, category thresholds, and a community charter you write in plain language.</li>
-        <li><strong>Native connectors.</strong> Facebook, Instagram, YouTube, WordPress integration with BYOC (Bring Your Own Credentials).</li>
+        <li><strong>Our own moderation AI.</strong> POST /v1/moderation returns standardized scores per category, and other AI models cross-check delicate cases.</li>
+        <li><strong>Model-agnostic engine.</strong> When a better or cheaper AI model comes out, we plug it in quickly. Nothing changes on your side.</li>
+        <li><strong>Action Engine.</strong> Define rules with three tools: forbidden words, category thresholds, and your own rules written in plain language.</li>
+        <li><strong>Native connectors.</strong> Facebook, Instagram, YouTube and WordPress, connected with your own platform accounts.</li>
         <li><strong>Admin dashboard.</strong> A React Admin interface for managing keys, viewing logs, and analyzing usage.</li>
         <li><strong>DSA-compliant audit trail.</strong> Every moderation is logged in full and can be exported for compliance.</li>
       </ul>
 
-      <h2 class="text-xl font-bold text-surface-900">Why open source</h2>
+      <h2 class="text-xl font-bold text-surface-900">Why transparency</h2>
       <p>
-        Moderation depends on trust. A closed-source moderation platform is a black box:
+        Moderation depends on trust. A moderation tool that only returns "removed" or "kept" is a black box:
         you can't verify what it does, how it makes decisions, or where your data goes.
       </p>
       <p>
-        We're releasing OpenModeration under AGPL v3. Anyone can audit every line of code.
-        You can self-host with Docker and keep all data on your infrastructure.
+        With OpenModeration, every decision is explained in writing and recorded in a full audit trail.
+        Data is hosted in the EU, and you can export it whenever you need.
       </p>
 
       <h2 class="text-xl font-bold text-surface-900">What's next</h2>
@@ -85,7 +87,7 @@ const articleJsonLd = {
       </p>
       <p>
         If you're building a platform that needs moderation, we'd love your feedback.
-        Check out the code on GitHub, deploy with Docker, and let us know what you think.
+        <a href={bookingUrl('en')} class="text-brand-600 hover:text-brand-500">Book a call</a> and let us know what you think.
       </p>
     </div>
   </article>
@@ -100,6 +102,8 @@ const articleJsonLd = {
       </ul>
     </div>
   </section>
+
+  <GuideComparisons />
 
   <CTASection />
 </BaseLayout>

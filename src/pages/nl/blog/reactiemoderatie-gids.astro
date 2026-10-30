@@ -1,0 +1,414 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const pageTitle = "Reacties modereren: de complete gids (2026)";
+const pageDescription = "Zo modereer je reacties: de methodes vergeleken, wat je regels moeten dekken, grijze zones, de DSA, moderatiesoftware kiezen en 10 best practices.";
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Reacties modereren: de complete gids voor reactiemoderatie",
+  "description": pageDescription,
+  "inLanguage": "nl",
+  "datePublished": "2026-10-30",
+  "dateModified": "2026-10-30",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/nl/blog/reactiemoderatie-gids" }
+};
+
+const methods = [
+  { name: "Premoderatie", how: "Elke reactie wordt beoordeeld voordat ze online komt.", speed: "Traag: publicatie wacht op een moderator", cost: "Hoog", risk: "Laag voor illegale content, hoog voor het gesprek", scale: "Slecht" },
+  { name: "Postmoderatie", how: "Reacties gaan online, daarna beoordeelt een moderator ze.", speed: "Direct", cost: "Hoog", risk: "Gemiddeld: schadelijke content blijft staan tot de beoordeling", scale: "Gemiddeld" },
+  { name: "Reactieve moderatie", how: "Je grijpt alleen in op meldingen van gebruikers.", speed: "Direct", cost: "Laag", risk: "Hoog: niets wordt gezien tot iemand het meldt", scale: "Goed, maar passief" },
+  { name: "Automatische filters", how: "Lijsten met verboden woorden, links blokkeren, vaste regels.", speed: "Direct", cost: "Laag", risk: "Hoog: valse positieven bij kritiek, ironie en verhulde beledigingen glippen erdoor", scale: "Goed" },
+  { name: "Hybride: AI + mens", how: "AI past je regels toe, twijfelgevallen gaan naar een team.", speed: "Seconden", cost: "Gemiddeld", risk: "Laag als regels en drempels goed zijn afgesteld", scale: "Zeer goed" },
+];
+
+const actions = [
+  { action: "Verbergen", what: "De reactie is niet meer zichtbaar voor het publiek. Op Facebook zien de auteur en diens vrienden haar nog wel.", when: "Beledigingen, spam, agressieve berichten buiten het onderwerp: het dagelijkse geval, en omkeerbaar." },
+  { action: "Verwijderen of weigeren", what: "De reactie wordt definitief weggehaald (of geweigerd voordat ze online komt).", when: "Duidelijk illegale content, oplichting, persoonsgegevens van iemand anders." },
+  { action: "Verbannen of beperken", what: "De auteur kan niet meer reageren, voor een bepaalde periode of voorgoed.", when: "Notoire overtreders, gerichte intimidatie, spamaccounts, gecoördineerde raids." },
+];
+
+const faqItems = [
+  {
+    question: "Wat is reactiemoderatie?",
+    answer: "Reactiemoderatie is het geheel van regels en acties dat bepaalt welke reacties zichtbaar blijven onder je artikelen, video's en posts: publiceren, verbergen, verwijderen, ter beoordeling sturen of een auteur beperken, en de beslissing daarna uitleggen.",
+  },
+  {
+    question: "Hoe modereer je reacties effectief?",
+    answer: "Schrijf duidelijke regels met voorbeelden, automatiseer de duidelijke gevallen, stuur twijfelgevallen naar een mens, leg elke beslissing uit aan de auteur, houd alles bij en evalueer je regels regelmatig op basis van de fouten die je ziet.",
+  },
+  {
+    question: "Moet ik een reactie verbergen of verwijderen?",
+    answer: "Verbergen is de verstandige standaard: het is omkeerbaar en genoeg om het gesprek te beschermen. Bewaar verwijderen voor duidelijk illegale of gevaarlijke content. Leg in beide gevallen de beslissing en de reden vast.",
+  },
+  {
+    question: "Geldt de DSA voor reacties op mijn website?",
+    answer: "Ja. Zodra je content host die je gebruikers plaatsen, zoals reacties, treed je onder de DSA op als hostingdienst. De precieze verplichtingen hangen af van de aard en de omvang van je dienst. Dit is geen juridisch advies.",
+  },
+  {
+    question: "Kunnen reacties automatisch worden gemodereerd?",
+    answer: "Ja. AI kan elke reactie in context lezen, je regels binnen enkele seconden toepassen en verbergen wat ze overtreedt. Over twijfelgevallen hoort nog steeds een mens te beslissen, en auteurs horen te weten wanneer er geautomatiseerde middelen zijn gebruikt.",
+  },
+  {
+    question: "Moeten negatieve reacties worden verwijderd?",
+    answer: "Nee. Kritiek op je merk, je redactie of een product, ook harde kritiek, is geen reden om een reactie weg te halen. Negatieve feedback verwijderen schaadt het vertrouwen meer dan de reactie ooit zou doen. Wat wordt weggehaald, is misbruik, haat, bedreigingen, spam en illegale content.",
+  },
+  {
+    question: "Waar let ik op bij software voor reactiemoderatie?",
+    answer: "Connectoren voor al je platforms, de mogelijkheid om je eigen regels toe te passen in plaats van een generiek raster, duidelijkheid over wie de twijfelgevallen behandelt, een schriftelijke reden bij elke beslissing, een auditlog en hosting in de EU als de AVG op je van toepassing is.",
+  },
+  {
+    question: "Wat kost reactiemoderatie?",
+    answer: "Een eigen team of een bureau betaal je per uur of per volume. Een automatische tool kost een fractie daarvan. OpenModeration heeft een gratis abonnement om te beginnen, een Pro-abonnement en voorstellen op maat voor grote volumes.",
+  },
+];
+
+const linkClass = "text-brand-600 hover:text-brand-500";
+---
+
+<BaseLayout title={pageTitle} description={pageDescription} ogType="article" jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: "Blog", href: localizePath('/blog', locale) }, { label: "Gids reactiemoderatie" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-30">30 oktober 2026</time>
+        <span>&middot;</span>
+        <span>12 min lezen</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Reacties modereren: de complete gids voor reactiemoderatie</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Reacties onder een artikel, een YouTube-video of een Facebook-post kunnen je publiek samenbrengen,
+        of wegjagen. Deze gids laat zien hoe je reacties in de praktijk modereert: de beschikbare methodes,
+        de regels die je het best opschrijft, de grijze zones, wat de Europese Digital Services Act verwacht en hoe
+        je kiest tussen een eigen team, een bureau en software voor reactiemoderatie.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">De belangrijkste punten</h2>
+      <ul>
+        <li><strong>Modereren is beslissen</strong> welke reacties zichtbaar blijven, op basis van vooraf vastgelegde regels, en elke beslissing kunnen uitleggen.</li>
+        <li><strong>De aanpak die schaalt,</strong> combineert AI die je regels binnen enkele seconden toepast met een menselijk team voor de twijfelgevallen.</li>
+        <li><strong>Je regels tellen zwaarder dan je tool</strong>: wat weg moet, wat blijft (kritiek, meningsverschillen) en hoe je met ironie of politiek omgaat.</li>
+        <li><strong>De DSA</strong> verplicht sites die reacties hosten om op meldingen te reageren, beslissingen te motiveren en gebruikers de kans te geven ze aan te vechten.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Wat is reactiemoderatie en waarom is het belangrijk?</h2>
+      <p>
+        Reactiemoderatie is het geheel van regels en acties dat bepaalt wat zichtbaar blijft in je
+        reactiesecties: publiceren, verbergen, verwijderen, ter beoordeling sturen, een auteur beperken. Het gaat om je website en app,
+        maar ook om je Facebook-pagina's, Instagram-accounts en YouTube-kanalen, waar reacties onder
+        jouw naam verschijnen.
+      </p>
+      <p>Het is belangrijk om vier redenen.</p>
+      <ul>
+        <li><strong>Community.</strong> Een handvol agressieve reageerders is genoeg om alle anderen het zwijgen op te leggen. Een goed onderhouden plek maakt dat mensen willen meedoen, terugkomen en discussiëren.</li>
+        <li><strong>Merkimago.</strong> Een haatdragende reactie onder je post leest als iets wat je gedoogt. Voor een merk raakt een oplichtersreactie onder een gesponsorde post je klanten direct.</li>
+        <li><strong>Adverteerders.</strong> Uitgevers weten dat adverteerders kijken naar de omgeving waarin hun advertenties verschijnen. Een reactiethread die uit de hand loopt, werkt tegen je.</li>
+        <li><strong>Juridisch risico.</strong> Host je reacties, dan heb je verplichtingen zodra illegale content bij je wordt gemeld. Niets doen, of niet kunnen aantonen wat je hebt gedaan, maakt je kwetsbaar.</li>
+      </ul>
+      <p>
+        Redacties kunnen onze pagina over <a href={localizePath('/use-cases/news-publishers', locale)} class={linkClass}>reactiemoderatie voor nieuwsuitgevers</a> lezen;
+        merken die over <a href={localizePath('/use-cases/brands-retail', locale)} class={linkClass}>reactiemoderatie voor merken en retail</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Wat zijn de belangrijkste methodes voor reactiemoderatie?</h2>
+      <p>
+        Er zijn grofweg vijf manieren om te modereren. Je kunt ze combineren, maar elke methode legt een andere
+        balans tussen snelheid, kosten en risico.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Premoderatie</h3>
+      <p>
+        Elke reactie wacht op goedkeuring van een moderator voordat ze wordt gepubliceerd. Er verschijnt niets schadelijks,
+        maar het gesprek stokt: een reactie die om 22.00 uur wordt geplaatst, verschijnt misschien pas de volgende ochtend.
+        Het is zinvol bij zeer gevoelige onderwerpen of plekken met weinig volume.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Postmoderatie</h3>
+      <p>
+        Reacties gaan direct online en worden achteraf beoordeeld. De discussie loopt, maar problematische content
+        blijft zichtbaar tot een moderator eraan toekomt, en pieken 's avonds, in het weekend of bij breaking news
+        overspoelen het team snel.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Reactieve moderatie (meldingen van gebruikers)</h3>
+      <p>
+        Je grijpt alleen in als een gebruiker een reactie meldt. Het is goedkoop, maar je laat je publiek
+        de problemen voor je vinden. Een meldknop blijft onmisbaar, want de DSA verplicht er een, maar hij
+        kan niet je enige verdedigingslinie zijn.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Automatische moderatie</h3>
+      <p>
+        Traditionele tools leunen op lijsten met verboden woorden en vaste regels. Ze zijn snel, maar ze blokkeren
+        terechte kritiek en laten ironie, verhulde beledigingen en oplichting door. Moderne AI leest de
+        reactie juist in context. Zie onze pagina over
+        <a href={localizePath('/automatic-comment-moderation', locale)} class={linkClass}>automatische reactiemoderatie</a>.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Hybride moderatie: AI plus mensen</h3>
+      <p>
+        AI past je regels binnen enkele seconden toe op elke reactie. Wat duidelijk voldoet, wordt gepubliceerd, wat
+        duidelijk de regels overtreedt, wordt verborgen, en de grijze zone gaat naar een mens: je eigen team, of
+        bij OpenModeration ons team. Het is de enige methode die volume, snelheid en oordeelsvermogen tegelijk aankan.
+      </p>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Methode</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Hoe het werkt</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Snelheid</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Kosten</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Risico</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Schaal</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {methods.map((m) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{m.name}</td>
+              <td class="px-4 py-3 text-surface-600">{m.how}</td>
+              <td class="px-4 py-3 text-surface-600">{m.speed}</td>
+              <td class="px-4 py-3 text-surface-600">{m.cost}</td>
+              <td class="px-4 py-3 text-surface-600">{m.risk}</td>
+              <td class="px-4 py-3 text-surface-600">{m.scale}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">Wat moeten je regels voor reactiemoderatie dekken?</h2>
+      <p>
+        Vóór elke tool heb je regels nodig. Die moeten zo precies zijn dat elke moderator, mens of AI,
+        bij dezelfde reactie tot dezelfde beslissing komt. Onze gids over
+        <a href={localizePath('/content-moderation-policy', locale)} class={linkClass}>een moderatiebeleid opstellen</a> gaat
+        in op de methode; dit is de kern.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Wat je weghaalt</h3>
+      <ul>
+        <li>Beledigingen en persoonlijke aanvallen, gericht aan andere reageerders, je journalisten of je medewerkers.</li>
+        <li>Haat gericht op etniciteit, religie, gender, seksuele geaardheid of handicap.</li>
+        <li>Bedreigingen en oproepen tot geweld.</li>
+        <li>Intimidatie, inclusief herhaalde berichten aan dezelfde persoon.</li>
+        <li>Spam, oplichterslinks, nepwinacties en mensen die zich voordoen als je merk.</li>
+        <li>Persoonsgegevens van anderen (adressen, telefoonnummers) en duidelijk illegale content.</li>
+      </ul>
+      <h3 class="text-lg font-semibold text-surface-900">Wat je laat staan</h3>
+      <p>
+        Schrijf het uit: <strong>kritiek en meningsverschillen zijn geen reden om iets weg te halen</strong>. Een lezer
+        die een artikel aanvecht, een klant die ontevreden is over een levering, iemand die je argument uit elkaar haalt: ze
+        horen er allemaal bij. Moderatie die negatieve feedback wegveegt, verliest het vertrouwen van haar publiek sneller dan welke
+        troll ook.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Grijze zones</h3>
+      <ul>
+        <li><strong>Ironie en sarcasme.</strong> "Geweldig, weer een meesterwerk van journalistiek" is kritiek, geen misbruik. Het omgekeerde komt ook voor: een ironisch compliment kan een aanval bevatten.</li>
+        <li><strong>Codetaal.</strong> Letters vervangen door cijfers, emoji's, bijnamen of verwijzingen naar een gemeenschap: woordenlijsten missen ze, context niet.</li>
+        <li><strong>Politiek.</strong> Een uitgesproken mening over een partij of een beleid is legitiem. De kiezers van een kant als personen aanvallen misschien niet. Bepaal waar de grens ligt vóór de verkiezingen, niet tijdens.</li>
+        <li><strong>Buiten het onderwerp.</strong> Prima onder een merkpost, ongepast onder een artikel over een tragedie. De regel kan van de plek afhangen.</li>
+      </ul>
+      <h3 class="text-lg font-semibold text-surface-900">Voeg altijd voorbeelden toe</h3>
+      <p>Elke regel werkt beter met concrete gevallen aan beide kanten van de grens.</p>
+      <ul>
+        <li>"Dit artikel is eenzijdig en slecht onderbouwd": <strong>laten staan</strong>, het is kritiek.</li>
+        <li>"De schrijver van dit stuk is een idioot": <strong>verbergen</strong>, het is een persoonlijke aanval.</li>
+        <li>"Jullie klantenservice antwoordt nooit, ik ben teleurgesteld": <strong>laten staan</strong>, en antwoorden.</li>
+        <li>"Win een gratis iPhone, klik hier" onder je post: <strong>verbergen</strong>, het is oplichting.</li>
+        <li>"Weer een genie in de regering": <strong>laten staan</strong>, het is politiek sarcasme.</li>
+      </ul>
+      <p>
+        Met een tool als OpenModeration schrijf je deze regels in gewone taal, zoals je ze aan een moderator zou
+        uitleggen, zonder woordenlijsten te onderhouden. De voorbeelden worden daarna gebruikt om de
+        moderatie op je echte reacties te testen voordat ze wordt aangezet.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Verbergen, verwijderen of verbannen: wat doe je met een reactie?</h2>
+      <p>
+        Niet elke beslissing weegt even zwaar. Stem je reactie af op de ernst en op herhaald gedrag.
+      </p>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Actie</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Effect</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Wanneer je het gebruikt</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {actions.map((a) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{a.action}</td>
+              <td class="px-4 py-3 text-surface-600">{a.what}</td>
+              <td class="px-4 py-3 text-surface-600">{a.when}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <p>
+        Verbergen kun je terugdraaien, en dat telt als een beslissing wordt aangevochten. Platforms bieden niet allemaal
+        dezelfde acties: in OpenModeration wordt geweigerde content op Facebook en Instagram verborgen en
+        op YouTube geweigerd.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Beslissingen uitleggen aan auteurs</h3>
+      <p>
+        Een reactie die zonder uitleg verdwijnt, voedt het gevoel van censuur. Een duidelijke reden daarentegen
+        leert de regel en haalt de angel uit de meeste klachten. Een goede uitleg vermeldt:
+      </p>
+      <ul>
+        <li>wat er is gedaan (verborgen, verwijderd, account beperkt);</li>
+        <li>welke regel van toepassing is, eenvoudig verwoord;</li>
+        <li>of de beslissing automatisch was of door een moderator is genomen;</li>
+        <li>hoe je haar kunt aanvechten.</li>
+      </ul>
+      <p>
+        Dit is meer dan beleefdheid: de DSA noemt het een motivering.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Wat eist het Europese recht? De DSA en reactiemoderatie</h2>
+      <p>
+        De Europese Digital Services Act (DSA) is sinds 2024 volledig van toepassing. Een website die de reacties
+        van zijn gebruikers host, treedt onder de DSA op als hostingdienst. In de praktijk bepalen vier artikelen hoe je modereert.
+      </p>
+      <ul>
+        <li>
+          <strong>Artikel 16, melding en actie.</strong> Iedereen moet content die hij illegaal acht eenvoudig en elektronisch
+          kunnen melden. Je behandelt de melding zorgvuldig en objectief, en laat de melder
+          weten wat je hebt besloten.
+          Meer in <a href={localizePath('/dsa-compliance/notice-and-action', locale)} class={linkClass}>melding en actie onder de DSA (artikel 16)</a>.
+        </li>
+        <li>
+          <strong>Artikel 17, motivering.</strong> Als je content verbergt of verwijdert, vertel je de
+          auteur wat er is besloten, op basis van welke feiten, op welke grondslag (de wet of je voorwaarden), of er geautomatiseerde
+          middelen zijn gebruikt en welke rechtsmiddelen er zijn.
+          Zie <a href={localizePath('/dsa-compliance/statement-of-reasons', locale)} class={linkClass}>de motivering, met een voorbeeld</a>.
+        </li>
+        <li>
+          <strong>Artikel 20, interne klachtenafhandeling.</strong> Onlineplatforms moeten een intern
+          klachtenafhandelingssysteem bieden, zodat een reageerder een beslissing kan aanvechten en laten herzien op een manier
+          die niet uitsluitend op geautomatiseerde middelen berust.
+        </li>
+        <li>
+          <strong>Artikel 15, transparantie.</strong> De betrokken diensten publiceren regelmatig rapporten over hun
+          moderatie: aantal meldingen, genomen beslissingen, gebruik van automatisering, ontvangen klachten.
+        </li>
+      </ul>
+      <p>
+        Niet elke verplichting geldt voor iedereen op dezelfde manier: dat hangt af van de aard en de omvang van je
+        dienst. Onze <a href={localizePath('/dsa-compliance', locale)} class={linkClass}>pagina over DSA-compliance</a> en de
+        <a href={localizePath('/blog/dsa-compliance-sme-guide', locale)} class={linkClass}>DSA-gids voor het mkb</a> gaan verder.
+      </p>
+      <p class="text-sm text-surface-400">
+        Deze samenvatting is geen juridisch advies. Wil je precies weten wat voor je dienst geldt, praat dan met een advocaat.
+      </p>
+      <p>
+        Het kernpunt: bij elke beslissing moet je kunnen laten zien wanneer ze is genomen, door wie of door wat,
+        onder welke regel en om welke reden. Zonder log kun je geen klacht of audit beantwoorden.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Eigen team, bureau of software voor reactiemoderatie?</h2>
+      <h3 class="text-lg font-semibold text-surface-900">Een eigen team</h3>
+      <p>
+        Je moderators kennen je redactionele lijn en je publiek. Maar een team kan nachten, weekenden
+        en nieuwspieken niet dekken zonder te groeien, de kwaliteit verschilt van persoon tot persoon, en herhaalde blootstelling
+        aan gewelddadige content eist zijn tol van de mensen die het werk doen.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Een moderatiebureau</h3>
+      <p>
+        Een bureau vangt het volume op, maar factureert per volume of per bestede tijd, met vertraging 's nachts en in het
+        weekend. Externe moderators op je regels trainen kost tijd, en ze kennen je redactionele
+        lijn niet. Vergelijk met onze pagina over <a href={localizePath('/outsourced-moderation', locale)} class={linkClass}>een alternatief voor uitbestede moderatie</a>.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Software voor reactiemoderatie</h3>
+      <p>
+        Software past dezelfde regels toe op elke reactie, dag en nacht, binnen enkele seconden, voor een fractie van
+        de kosten van handmatige moderatie. Alleen de gevallen die een mens nodig hebben, gaan nog naar een moderator. De keerzijde: een generieke
+        tool, geleverd zonder begeleiding, past een raster toe dat niet het jouwe is.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Zo kies je software voor reactiemoderatie</h3>
+      <ul>
+        <li><strong>Connectoren:</strong> de software koppelt met je site (API, WordPress) en je Facebook-, Instagram- en YouTube-pagina's, zodat je niet met interfaces jongleert.</li>
+        <li><strong>Je regels en je use cases:</strong> je schrijft ze in gewone taal in plaats van met een generiek raster te leven of woordenlijsten te onderhouden.</li>
+        <li><strong>Context:</strong> elke reactie wordt gelezen samen met het onderwerp van het artikel of de post, in haar eigen taal, om ironie en verhulde beledigingen op te vangen.</li>
+        <li><strong>Instelbare drempels:</strong> je bepaalt per categorie wat automatisch wordt verborgen, gepubliceerd of ter beoordeling gestuurd.</li>
+        <li><strong>Wie behandelt de twijfelgevallen:</strong> je eigen team of dat van de leverancier, en kun je elke beslissing in realtime zien en zelf ingrijpen?</li>
+        <li><strong>Een schriftelijke reden bij elke beslissing:</strong> een die je zowel aan de auteur als aan een toezichthouder kunt laten zien.</li>
+        <li><strong>Auditlog:</strong> elke beslissing, automatisch of menselijk, wordt vastgelegd en kan worden geëxporteerd voor transparantierapportage.</li>
+        <li><strong>Ingebouwde meldingen:</strong> je meldknop voedt dezelfde wachtrij als de automatische moderatie.</li>
+        <li><strong>Hosting en AVG:</strong> waar de gegevens worden opgeslagen, en hoe lang.</li>
+        <li><strong>Begeleiding:</strong> iemand helpt je je regels om te zetten in instructies en ze op je echte reacties te testen voordat je live gaat.</li>
+        <li><strong>Proefperiode:</strong> je kunt de software op je eigen reacties uitproberen voordat je je vastlegt.</li>
+      </ul>
+      <p>
+        Rond die checklist hebben we <a href={localizePath('/moderation-software', locale)} class={linkClass}>de moderatiesoftware van OpenModeration</a>
+        gebouwd: AI die je regels en je use cases toepast, twee drempels per categorie met een grijze zone
+        die ons team behandelt, één <a href={localizePath('/dashboard', locale)} class={linkClass}>moderatieconsole</a>, een schriftelijke
+        reden bij elke beslissing en een auditlog. OpenModeration wordt in de Europese Unie ontwikkeld en gehost,
+        en jij ziet elke beslissing in realtime en kunt ingrijpen wanneer je wilt.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Best practices voor reactiemoderatie: een checklist in 10 punten</h2>
+      <ol>
+        <li><strong>Publiceer je regels</strong> in eenvoudige woorden, daar waar mensen reageren.</li>
+        <li><strong>Bescherm kritiek en meningsverschillen</strong> expliciet in die regels.</li>
+        <li><strong>Onderbouw elke regel met voorbeelden</strong> van wat weg moet en wat blijft.</li>
+        <li><strong>Automatiseer de duidelijke gevallen,</strong> zodat misbruik en oplichting binnen enkele seconden verdwijnen, ook om 3 uur 's nachts.</li>
+        <li><strong>Houd een mens op de grijze zone</strong>: ironie, politiek, gevoelige onderwerpen.</li>
+        <li><strong>Verberg liever dan te verwijderen</strong> bij twijfel, zodat je van gedachten kunt veranderen.</li>
+        <li><strong>Leg elke beslissing uit</strong> aan de auteur, met de betreffende regel en een manier om bezwaar te maken.</li>
+        <li><strong>Reageer op elke melding</strong> en laat de melder weten wat er is gebeurd.</li>
+        <li><strong>Log alles</strong>: beslissing, reden, mens of automatisch, datum.</li>
+        <li><strong>Evalueer je regels regelmatig</strong> op basis van fouten en bezwaren, zeker als je nieuwscyclus of je publiek verandert.</li>
+      </ol>
+      <p>
+        Wil je zien hoe een gemotiveerde beslissing eruitziet, plak dan een reactie in onze
+        <a href={localizePath('/demo', locale)} class={linkClass}>moderatiedemo</a>: de beslissing en de uitleg verschijnen binnen
+        enkele seconden, zonder registratie.
+      </p>
+    </div>
+
+    <div class="mt-12">
+      <FAQ title="Veelgestelde vragen over reactiemoderatie" items={faqItems} />
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Lees verder</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/content-moderation-policy', locale)} class="font-medium text-brand-600 hover:text-brand-500">Zo stel je een moderatiebeleid op, met een sjabloon &rarr;</a></li>
+        <li><a href={localizePath('/automatic-comment-moderation', locale)} class="font-medium text-brand-600 hover:text-brand-500">Automatische reactiemoderatie met AI &rarr;</a></li>
+        <li><a href={localizePath('/outsourced-moderation', locale)} class="font-medium text-brand-600 hover:text-brand-500">Je moderatie uitbesteden zonder bureaukosten &rarr;</a></li>
+        <li><a href={localizePath('/dsa-compliance', locale)} class="font-medium text-brand-600 hover:text-brand-500">Wat de DSA eist van sites die reacties hosten &rarr;</a></li>
+        <li><a href={localizePath('/use-cases/news-publishers', locale)} class="font-medium text-brand-600 hover:text-brand-500">Reactiemoderatie voor nieuwsuitgevers &rarr;</a></li>
+        <li><a href={localizePath('/use-cases/brands-retail', locale)} class="font-medium text-brand-600 hover:text-brand-500">Reactiemoderatie voor merken &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

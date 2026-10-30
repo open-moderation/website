@@ -11,7 +11,7 @@ const pageJsonLd = {
   "@id": "https://www.openmoderation.com/how-it-works",
   "url": "https://www.openmoderation.com/how-it-works",
   "name": "How AI Content Moderation Works: The Full Pipeline",
-  "description": "Understand the complete moderation pipeline: ingestion, multi-provider AI moderation, automated rules and actions, and manual review.",
+  "description": "Understand the complete moderation pipeline: ingestion, AI moderation cross-checked by other models, automated rules and actions, and manual review.",
   "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
 };
 
@@ -25,7 +25,6 @@ const facebookWebhookExample = `// Facebook sends comment via webhook
 }`;
 
 const moderationResponseExample = `{
-  "model": "openai/omni-moderation-latest",
   "results": [{
     "category": "hate",
     "score": 0.02,
@@ -33,8 +32,7 @@ const moderationResponseExample = `{
   }],
   "flagged": false,
   "usage": {
-    "latency_ms": 243,
-    "provider": "openai"
+    "latency_ms": 243
   }
 }`;
 
@@ -62,7 +60,6 @@ const auditTrailExample = `// Complete audit trail for every content item
   "platform": "facebook",
   "status": "actioned",
   "moderation": {
-    "provider": "openai",
     "flagged": true,
     "results": [...]
   },
@@ -74,7 +71,7 @@ const auditTrailExample = `// Complete audit trail for every content item
 }`;
 ---
 
-<BaseLayout title="How AI Content Moderation Works: The Full Pipeline" description="Understand the complete moderation pipeline: ingestion, multi-provider AI moderation, automated rules and actions, and manual review." jsonLd={pageJsonLd}>
+<BaseLayout title="How AI Content Moderation Works: The Full Pipeline" description="Understand the complete moderation pipeline: ingestion, AI moderation cross-checked by other models, automated rules and actions, and manual review." jsonLd={pageJsonLd}>
 <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "How It Works" }]} />
   <section class="bg-gradient-to-b from-brand-50 to-white py-20">
     <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
@@ -113,12 +110,10 @@ const auditTrailExample = `// Complete audit trail for every content item
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
               </div>
               <h3 class="text-lg font-semibold text-surface-900">2. AI Moderation</h3>
-              <p class="mt-2 text-sm text-surface-500">Smart routing sends content to the best provider and returns a standardized result.</p>
+              <p class="mt-2 text-sm text-surface-500">Our own moderation AI analyses the content, other AIs cross-check delicate cases, and you get a standardized result.</p>
               <div class="mt-4 flex flex-wrap justify-center gap-2">
-                <span class="rounded-full bg-brand-100 px-2.5 py-0.5 text-xs text-brand-700">OpenAI</span>
-                <span class="rounded-full bg-brand-100 px-2.5 py-0.5 text-xs text-brand-700">Azure</span>
-                <span class="rounded-full bg-brand-100 px-2.5 py-0.5 text-xs text-brand-700">HuggingFace</span>
-                <span class="rounded-full bg-brand-100 px-2.5 py-0.5 text-xs text-brand-700">LLMs</span>
+                <span class="rounded-full bg-brand-100 px-2.5 py-0.5 text-xs text-brand-700">OpenModeration AI</span>
+                <span class="rounded-full bg-brand-100 px-2.5 py-0.5 text-xs text-brand-700">Arbitration by other AIs</span>
               </div>
             </div>
             <div class="hidden lg:flex lg:items-center lg:justify-center">
@@ -145,7 +140,7 @@ const auditTrailExample = `// Complete audit trail for every content item
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
               </div>
               <h3 class="text-lg font-semibold text-surface-900">4. Manual Review</h3>
-              <p class="mt-2 text-sm text-surface-500">Edge cases go to human moderators, who approve or reject them.</p>
+              <p class="mt-2 text-sm text-surface-500">Doubtful cases are handled by our team. You see every decision and can step in.</p>
               <div class="mt-4 flex flex-wrap justify-center gap-2">
                 <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Review queue</span>
                 <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Approve</span>
@@ -184,14 +179,14 @@ const auditTrailExample = `// Complete audit trail for every content item
             <span class="mb-2 inline-flex items-center rounded-full bg-brand-100 px-3 py-0.5 text-sm font-medium text-brand-700">Step 2</span>
             <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">AI moderates the content</h2>
             <p class="mt-4 text-surface-500">
-              Content is routed to the best available provider based on language, content type,
-              category requirements, and cost. Each provider returns standardized results with
-               scores from 0.0 to 1.0 across 10 content categories.
+              Our own moderation AI, set up on your rules and your use cases, analyses each item.
+              On delicate cases, other AI models arbitrate the decision before it is applied. Results are
+               standardized, with scores from 0.0 to 1.0 across 10 content categories.
             </p>
             <ul class="mt-6 space-y-2 text-sm text-surface-600">
-              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Smart routing:</strong> Picks the best provider if not specified</li>
-              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>BYOK:</strong> Use your own provider API keys (or use platform keys)</li>
-              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Standardized output:</strong> Same format regardless of provider behind the scenes</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Cross-checked:</strong> Other AI models arbitrate delicate cases</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Model-agnostic:</strong> Better or cheaper models are plugged in as they come out</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Standardized output:</strong> Same format, whatever the model behind the scenes</li>
             </ul>
           </div>
           <div class="rounded-xl border border-surface-200 bg-surface-50 p-8 lg:order-1">
@@ -203,9 +198,9 @@ const auditTrailExample = `// Complete audit trail for every content item
         <div class="grid items-center gap-8 lg:grid-cols-2">
           <div>
             <span class="mb-2 inline-flex items-center rounded-full bg-brand-100 px-3 py-0.5 text-sm font-medium text-brand-700">Step 3</span>
-            <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">Rules enforce your policy</h2>
+            <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">Moderation adapted to your rules</h2>
             <p class="mt-4 text-surface-500">
-              Define your moderation rules with three simple tools: <strong>forbidden words</strong> for instant blocking, <strong>category thresholds</strong> for automated decisions, and your <strong>community charter</strong> written in plain language for context-aware AI moderation.
+              Define your moderation rules with three simple tools: <strong>forbidden words</strong> for instant blocking, <strong>category thresholds</strong> for automated decisions, and <strong>your own rules</strong> written in plain language for context-aware AI moderation.
             </p>
             <div class="mt-6 space-y-3">
               <div class="rounded-lg border border-surface-200 bg-white p-4">
@@ -215,7 +210,7 @@ const auditTrailExample = `// Complete audit trail for every content item
                 <p class="text-sm text-surface-700"><strong>Category thresholds</strong> trigger automatic actions when scores exceed your limits</p>
               </div>
               <div class="rounded-lg border border-surface-200 bg-white p-4">
-                <p class="text-sm text-surface-700">Your <strong>community charter</strong> guides context-aware AI decisions and sets the tone for your platform</p>
+                <p class="text-sm text-surface-700"><strong>Your rules in plain language</strong> guide context-aware AI decisions and sets the tone for your platform</p>
               </div>
             </div>
           </div>
@@ -223,7 +218,7 @@ const auditTrailExample = `// Complete audit trail for every content item
             <BrowserFrame
               src="/images/rules.png"
               video="om-rules"
-              alt="OpenModeration rules settings showing forbidden words, category thresholds and community charter in plain language"
+              alt="OpenModeration rules settings showing forbidden words, category thresholds and rules in plain language"
               caption="Set your thresholds once and they apply everywhere."
               eager={false}
             />
@@ -239,10 +234,10 @@ const auditTrailExample = `// Complete audit trail for every content item
         <div class="grid items-center gap-8 lg:grid-cols-2">
           <div class="lg:order-2">
             <span class="mb-2 inline-flex items-center rounded-full bg-brand-100 px-3 py-0.5 text-sm font-medium text-brand-700">Step 4</span>
-            <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">Review edge cases manually</h2>
+            <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">Doubtful cases, handled by our team</h2>
             <p class="mt-4 text-surface-500">
-              Your Trust & Safety team gets its own workspace. Moderators review flagged content,
-              handle user reports and override AI decisions, and every step stays auditable.
+              Our team reviews doubtful content and handles user reports. You see every decision
+              in real time in your workspace and can override it at any moment, and every step stays auditable.
             </p>
             <ul class="mt-6 space-y-2 text-sm text-surface-600">
               <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Approve or reject in one click.</strong> Every override is logged with who decided and why.</li>
@@ -279,7 +274,7 @@ const auditTrailExample = `// Complete audit trail for every content item
             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
           </div>
           <h3 class="font-semibold text-surface-900">Hold for review</h3>
-          <p class="mt-1 text-sm text-surface-500">Borderline content is held back and waits in your review queue. Nothing is published and nothing is lost.</p>
+          <p class="mt-1 text-sm text-surface-500">Borderline content is held back until our team reviews it. Nothing is published and nothing is lost.</p>
         </div>
         <div class="rounded-xl border border-surface-200 bg-white p-6">
           <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-green-100 text-green-600">

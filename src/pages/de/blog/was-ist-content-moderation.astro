@@ -1,0 +1,315 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import FAQ from '../../../components/FAQ.astro';
+
+const title = "Was ist Content Moderation? Definition und Arten";
+const description = "Was Content Moderation bedeutet: welche Inhalte moderiert werden, die 6 Arten, der Beruf Content-Moderator, KI-Moderation, der DSA und die Wahl des Ansatzes.";
+const linkClass = "text-brand-600 hover:text-brand-500";
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Was ist Content Moderation? Definition, Arten, KI und die Rolle des Content-Moderators",
+  "description": description,
+  "inLanguage": "de",
+  "datePublished": "2026-10-30",
+  "dateModified": "2026-10-30",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/de/blog/was-ist-content-moderation" }
+};
+
+const types = [
+  { type: "Vorab-Moderation", how: "Jeder Inhalt wird vor der Veröffentlichung geprüft.", pros: "Nichts Schädliches geht online.", cons: "Langsam, teuer, bremst Live-Diskussionen aus." },
+  { type: "Nachträgliche Moderation", how: "Inhalte gehen sofort online und werden danach geprüft.", pros: "Schnell und flüssig für die Nutzer.", cons: "Schädliches bleibt sichtbar, bis jemand prüft." },
+  { type: "Reaktive Moderation", how: "Nur gemeldete Inhalte werden geprüft.", pros: "Günstig, nutzt die Augen der Community.", cons: "Hängt davon ab, dass jemand meldet." },
+  { type: "Verteilte Moderation", how: "Die Community bewertet, meldet oder blendet Inhalte selbst aus.", pros: "Wächst mit der Community mit.", cons: "Mehrheitsdruck, koordinierte Angriffe, schwankende Qualität." },
+  { type: "Automatisierte Moderation", how: "Filter oder KI-Modelle entscheiden über jeden Inhalt.", pros: "Sofort, rund um die Uhr, große Mengen.", cons: "Fehler beim Kontext, braucht Aufsicht." },
+  { type: "Hybride Moderation", how: "Automatisierung erledigt klare Fälle, Menschen die unklaren.", pros: "Tempo und Urteilsvermögen.", cons: "Braucht klare Regeln und ein gutes Prüfwerkzeug." },
+];
+
+const glossary = [
+  { term: "Nutzergenerierte Inhalte (UGC)", def: "Alles, was Nutzer veröffentlichen und nicht der Dienst selbst: Kommentare, Bewertungen, Beiträge, Fotos, Videos, Nachrichten." },
+  { term: "Community-Richtlinien", def: "Die öffentlichen Regeln, die festlegen, was auf einem Dienst erlaubt ist. Auch Netiquette oder Moderationsrichtlinien genannt." },
+  { term: "Falsch-Positiv", def: "Ein zulässiger Inhalt, der zu Unrecht ausgeblendet oder gelöscht wird." },
+  { term: "Falsch-Negativ", def: "Ein schädlicher Inhalt, der zu Unrecht online bleibt." },
+  { term: "Human in the Loop", def: "Ein Ablauf, bei dem Menschen die Entscheidungen prüfen, bei denen die Automatisierung unsicher ist." },
+  { term: "Prüfwarteschlange", def: "Die Liste der gemeldeten oder unklaren Inhalte, die auf eine menschliche Entscheidung warten." },
+  { term: "Melde- und Abhilfeverfahren", def: "Der DSA-Mechanismus, über den jeder rechtswidrige Inhalte bei einem Hostingdienst melden kann, der die Meldung bearbeiten muss." },
+  { term: "Begründung", def: "Die Erklärung, die ein Dienst nach dem DSA einem Nutzer geben muss, dessen Inhalt er beschränkt." },
+  { term: "Audit-Trail", def: "Das Protokoll jeder Entscheidung: was, wann, durch wen oder welches System und warum." },
+  { term: "Trust & Safety", def: "Der übergeordnete Bereich, der für die Sicherheit der Nutzer zuständig ist. Content Moderation ist ein Teil davon." },
+];
+
+const faqItems = [
+  {
+    question: "Was ist Content Moderation einfach erklärt?",
+    answer: "Content Moderation bedeutet, Inhalte zu prüfen, die Nutzer auf einer Website, in einer App oder auf einer Social-Media-Seite veröffentlichen, und zu entscheiden, ob sie online bleiben dürfen, gemessen am Gesetz und an den Regeln des Dienstes. Was gegen die Regeln verstößt, wird ausgeblendet, gelöscht oder eingeschränkt.",
+  },
+  {
+    question: "Welche Arten von Content Moderation gibt es?",
+    answer: "Meist unterscheidet man sechs: Vorab-Moderation (vor der Veröffentlichung), nachträgliche Moderation (danach), reaktive Moderation (nur gemeldete Inhalte), verteilte Moderation (durch die Community), automatisierte Moderation (Filter und KI) und hybride Moderation, die Automatisierung mit menschlicher Prüfung verbindet.",
+  },
+  {
+    question: "Was macht ein Content-Moderator?",
+    answer: "Ein Content-Moderator prüft Nutzerinhalte anhand eines Regelwerks und entscheidet, ob sie freigegeben, ausgeblendet, gelöscht oder weitergeleitet werden. Er bearbeitet Meldungen, Grenzfälle und Beschwerden und hilft, die Regeln weiterzuentwickeln. Der Beruf verlangt Urteilsvermögen, kulturelles Wissen und Belastbarkeit, weil manche Inhalte verstörend sind.",
+  },
+  {
+    question: "Kann KI menschliche Moderatoren ersetzen?",
+    answer: "Nicht vollständig. KI bewältigt Menge und Tempo sehr gut und kann Regeln im Kontext anwenden, irrt sich aber noch bei Ironie, lokalen Anspielungen und neuen Formen von Missbrauch. Üblich ist ein hybrider Ansatz: Die KI entscheidet klare Fälle und gibt unklare an Menschen weiter.",
+  },
+  {
+    question: "Ist Content Moderation Zensur?",
+    answer: "Moderation setzt öffentliche Regeln um, denen Nutzer bei der Anmeldung zustimmen, und in der EU verpflichtet das Gesetz Dienste, gegen rechtswidrige Inhalte vorzugehen. Gut gemacht ist sie transparent: Nutzer kennen die Regeln, erhalten eine Begründung, wenn ihr Inhalt eingeschränkt wird, und können widersprechen.",
+  },
+  {
+    question: "Gilt der DSA für meine Website?",
+    answer: "Wenn Sie Inhalte von Nutzern speichern, etwa Kommentare oder Bewertungen, gilt der DSA sehr wahrscheinlich für Sie als Hostingdienst. Die genauen Pflichten hängen von Art und Größe Ihres Dienstes ab. Dies ist eine allgemeine Information, keine Rechtsberatung.",
+  },
+  {
+    question: "Was ist der Unterschied zwischen Content Moderation und Kommentarmoderation?",
+    answer: "Content Moderation umfasst alle Arten von Nutzerinhalten: Beiträge, Bewertungen, Anzeigen, Nachrichten, Bilder und Videos. Kommentarmoderation ist ein Teil davon und konzentriert sich auf Kommentare unter Artikeln, Posts und Videos.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} ogType="article" jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Startseite", href: "/de" }, { label: "Blog", href: "/de/blog" }, { label: "Was ist Content Moderation?" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-30">30. Oktober 2026</time>
+        <span>&middot;</span>
+        <span>9 Min. Lesezeit</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Was ist Content Moderation? Definition, Arten, KI und die Rolle des Content-Moderators</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Jeder Dienst, auf dem Menschen etwas veröffentlichen können, einen Kommentar, eine Bewertung, ein
+        Foto, eine Anzeige, muss entscheiden, was online bleibt. Diese Entscheidung, tausendfach am Tag
+        getroffen, ist Content Moderation. Dieser Leitfaden definiert den Begriff, stellt die wichtigsten
+        Arten vor, erklärt, was Content-Moderatoren und KI tatsächlich tun, und fasst zusammen, was das
+        EU-Recht verlangt.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Das Wichtigste in Kürze</h2>
+      <ul>
+        <li><strong>Content Moderation</strong> heißt, Nutzerinhalte anhand des Gesetzes und Ihrer eigenen Regeln zu prüfen und zu entscheiden, ob sie bleiben, ausgeblendet oder gelöscht werden.</li>
+        <li><strong>Sechs Arten</strong> gibt es: Vorab-, nachträgliche, reaktive, verteilte, automatisierte und hybride Moderation. Die meisten Dienste kombinieren mehrere.</li>
+        <li><strong>KI</strong> übernimmt Menge und Tempo, <strong>Menschen</strong> Grenzfälle, Beschwerden und die Regeln selbst.</li>
+        <li><strong>In der EU verlangt der DSA</strong> von Hostingdiensten, Meldungen zu bearbeiten, Entscheidungen zu begründen und sie nachvollziehbar zu dokumentieren.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Was ist Content Moderation? Eine Definition</h2>
+      <p>
+        Content Moderation ist der Prozess, bei dem nutzergenerierte Inhalte geprüft werden und entschieden
+        wird, ob sie mit dem Gesetz und den Regeln des Dienstes vereinbar sind, auf dem sie erscheinen. Ist
+        das nicht der Fall, wird der Inhalt ausgeblendet, gelöscht, eingeschränkt oder gekennzeichnet, und
+        der Verfasser wird unter Umständen verwarnt oder gesperrt.
+      </p>
+      <p>Drei Elemente sind immer dabei:</p>
+      <ul>
+        <li><strong>Regeln.</strong> Das Gesetz (Volksverhetzung, Bedrohung, Beleidigung, Betrug) und die eigenen Regeln des Dienstes, die weiter gehen: kein Spam, keine Beschimpfungen, keine Off-Topic-Beiträge, keine Links zur Konkurrenz.</li>
+        <li><strong>Eine Entscheidung.</strong> Freigeben, ausblenden, löschen, einschränken, an einen Menschen weitergeben oder den Verfasser sanktionieren.</li>
+        <li><strong>Ein Prozess.</strong> Wer entscheidet, wann (vor oder nach der Veröffentlichung), mit welchen Werkzeugen, und wie die Entscheidung dokumentiert und erklärt wird.</li>
+      </ul>
+      <p>
+        Moderation entfernt nicht nur das Schlimmste. Sie prägt auch den Ton eines Raums: Eine Regionalzeitung,
+        ein Kinderspiel und ein Bundesligaverein ziehen die Grenze nicht an derselben Stelle, und das ist
+        legitim, solange die Regeln öffentlich sind und einheitlich angewendet werden.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Welche Inhalte werden moderiert?</h2>
+      <p>Alles, was ein Nutzer auf Ihrem Dienst veröffentlichen kann. Die häufigsten Formate sind:</p>
+      <ul>
+        <li><strong>Kommentare</strong> unter Artikeln, Social-Media-Posts, Videos und Anzeigen. Für Medien und Marken ist das das Format mit dem größten Volumen; unser <a href="/de/blog/kommentarmoderation-leitfaden" class={linkClass}>Leitfaden zur Kommentarmoderation</a> behandelt es ausführlich.</li>
+        <li><strong>Beiträge und Threads</strong> in Foren, Communitys und auf sozialen Plattformen.</li>
+        <li><strong>Bewertungen</strong> in Onlineshops und auf Buchungsportalen, wo gefälschte Bewertungen und Rufschädigung die größten Risiken sind.</li>
+        <li><strong>Anzeigen und Angebote</strong> auf Marktplätzen und Kleinanzeigenportalen: Fälschungen, verbotene Produkte, Betrug.</li>
+        <li><strong>Nachrichten</strong> in Chats und Direktnachrichten: Belästigung, Cybergrooming, Phishing-Links.</li>
+        <li><strong>Bilder</strong> wie Profilbilder und Uploads: Nacktheit, Gewalt, verfassungswidrige oder hasserfüllte Symbole.</li>
+        <li><strong>Videos und Livestreams</strong>, am schwersten zu prüfen wegen ihrer Länge und der Echtzeit.</li>
+        <li><strong>Profile und Nutzernamen</strong>, oft der erste Ort, an dem Beleidigungen oder Identitätsmissbrauch auftauchen.</li>
+      </ul>
+      <p>
+        Text macht für die meisten Organisationen nach wie vor den Großteil der Arbeit aus, und hier zählt
+        der Kontext am meisten: Dasselbe Wort kann eine Beleidigung, ein Zitat oder ein Scherz unter Freunden sein.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Welche Arten von Content Moderation gibt es?</h2>
+      <p>
+        Die Arten unterscheiden sich in zwei Fragen: <em>wann</em> ein Inhalt geprüft wird (vor oder nach der
+        Veröffentlichung) und <em>wer</em> ihn prüft (ein Team, die Community oder eine Maschine).
+      </p>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Art</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">So funktioniert es</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Stärke</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Schwäche</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {types.map((row) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{row.type}</td>
+              <td class="px-4 py-3 text-surface-600">{row.how}</td>
+              <td class="px-4 py-3 text-surface-600">{row.pros}</td>
+              <td class="px-4 py-3 text-surface-600">{row.cons}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <p>Zu jeder Art ein paar Worte:</p>
+      <ul>
+        <li><strong>Vorab-Moderation</strong> passt zu sensiblen Räumen, etwa Angeboten für Kinder oder Produktbewertungen zum Marktstart. Für Live-Debatten taugt sie nicht: Ein Kommentar, der drei Stunden später freigeschaltet wird, liest niemand mehr.</li>
+        <li><strong>Nachträgliche Moderation</strong> ist auf den meisten Websites der Standard. Ihre Schwachstelle ist die Lücke zwischen Veröffentlichung und Prüfung, vor allem nachts und am Wochenende.</li>
+        <li><strong>Reaktive Moderation</strong> beruht auf dem Melde-Button. Er ist unverzichtbar, und in der EU ist ein Meldeverfahren Pflicht, doch allein lässt er schädliche Inhalte online, bis sich jemand beschwert.</li>
+        <li><strong>Verteilte Moderation</strong> lässt die Community Inhalte bewerten oder nach genügend Meldungen ausblenden, wie in vielen Foren und bei Wikipedia. Sie funktioniert mit einer engagierten Community und einem Team, das eingreifen kann.</li>
+        <li><strong>Automatisierte Moderation</strong> reicht von einfachen Wortlisten bis zu KI-Modellen, die Inhalte im Kontext lesen. Nur so lässt sich bei großen Mengen sofort handeln.</li>
+        <li><strong>Hybride Moderation</strong> verbindet beides: Die Automatisierung entscheidet klare Fälle in Echtzeit, unklare gehen an einen Menschen. Sobald nennenswertes Volumen anfällt, ist das heute die verbreitetste Lösung.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Was macht ein Content-Moderator?</h2>
+      <p>
+        Ein Content-Moderator prüft Nutzerinhalte und entscheidet, ob sie den Regeln entsprechen. Hinter der
+        Berufsbezeichnung stehen sehr unterschiedliche Realitäten: vom Social-Media-Manager, der die Kanäle
+        einer Marke nebenbei moderiert, bis zu Vollzeitteams im Schichtbetrieb bei großen Plattformen oder
+        spezialisierten Dienstleistern.
+      </p>
+      <p>Im Arbeitsalltag eines Content-Moderators geht es darum,</p>
+      <ul>
+        <li>eine Warteschlange abzuarbeiten: gemeldete Inhalte, von der Automatisierung markierte Inhalte oder bei Vorab-Moderation alles;</li>
+        <li>jeden Inhalt freizugeben, auszublenden, zu löschen oder weiterzuleiten und Wiederholungstäter zu sanktionieren;</li>
+        <li>Grenzfälle zu entscheiden: Satire, Kritik an Politikern, eine hitzige, aber legitime Diskussion;</li>
+        <li>Meldungen von Nutzern und Beschwerden gegen Entscheidungen zu bearbeiten;</li>
+        <li>Trends an das Team weiterzugeben, das die Regeln schreibt: ein neues Codewort, eine Betrugswelle, ein koordinierter Angriff.</li>
+      </ul>
+      <h3 class="text-lg font-semibold text-surface-900">Die Herausforderungen des Berufs</h3>
+      <ul>
+        <li><strong>Belastende Inhalte.</strong> Manche Moderatoren sehen täglich Gewalt oder Hass. Psychologische Unterstützung, Rotation und standardmäßig verpixelte Bilder sind kein Extra.</li>
+        <li><strong>Menge und Zeitdruck.</strong> Spitzen kommen mit Eilmeldungen, viralen Posts oder bezahlten Kampagnen, selten zu Bürozeiten.</li>
+        <li><strong>Einheitlichkeit.</strong> Zwei Menschen können denselben Kommentar unterschiedlich beurteilen. Klare Regeln mit Beispielen verringern den Abstand.</li>
+        <li><strong>Kontext und Sprachen.</strong> Ironie, Slang und regionale Anspielungen sind ohne Kenntnis der Kultur schwer einzuschätzen.</li>
+        <li><strong>Rechenschaft.</strong> Jede Entscheidung kann vom Verfasser, von Vorgesetzten oder einer Behörde hinterfragt werden. Sie muss sich erklären lassen.</li>
+      </ul>
+      <p>
+        Viele Organisationen haben kein eigenes Team und greifen auf einen Dienstleister oder eine Software
+        zurück. Unsere Seite zum <a href="/de/moderation-auslagern" class={linkClass}>Auslagern der Moderation</a> vergleicht die Optionen.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Wie funktioniert KI-Content-Moderation?</h2>
+      <p>
+        KI-Moderation nutzt Sprachmodelle (und für Bilder Bildmodelle), um jeden Inhalt zu lesen und zu
+        entscheiden, ob er gegen eine Regel verstößt. Vereinfacht läuft das so ab:
+      </p>
+      <ol>
+        <li><strong>Der Inhalt kommt an,</strong> sobald er veröffentlicht wird, über eine API oder eine Anbindung an die Plattform.</li>
+        <li><strong>Das Modell liest ihn im Kontext:</strong> den Text, manchmal den Artikel oder Post, auf den er antwortet, und die Regeln des Dienstes.</li>
+        <li><strong>Es liefert eine Entscheidung</strong> (freigeben, ausblenden, ablehnen, an einen Menschen geben) mit einem Konfidenzwert und bei guten Systemen mit einer schriftlichen Begründung.</li>
+        <li><strong>Die Aktion wird ausgeführt,</strong> automatisch bei klaren Fällen; unklare landen in einer Prüfwarteschlange.</li>
+        <li><strong>Alles wird protokolliert,</strong> damit Entscheidungen überprüft, erklärt und korrigiert werden können.</li>
+      </ol>
+      <p>
+        Ältere Systeme arbeiteten mit Wortlisten und einfachen Scores („dieser Text ist zu 87 % toxisch“).
+        Aktuelle Modelle können Regeln in natürlicher Sprache anwenden, etwa „keine Links zur Konkurrenz“
+        oder „keine personenbezogenen Daten öffentlich posten“. Das kann keine Wortliste.
+      </p>
+      <h3 class="text-lg font-semibold text-surface-900">Stärken und Grenzen der KI</h3>
+      <ul>
+        <li><strong>Stärken:</strong> sofort, rund um die Uhr, von Inhalt zu Inhalt einheitlich, erkennt absichtliche Falschschreibungen und mehrere Sprachen und erspart Menschen, das Schlimmste als Erste zu sehen.</li>
+        <li><strong>Grenzen:</strong> Sie kann Ironie und sehr lokale Anspielungen übersehen, sich von neuen Tricks täuschen lassen und Verzerrungen aus ihren Trainingsdaten übernehmen. Ihre Community kennt sie erst, wenn Sie ihr Ihre Regeln geben.</li>
+      </ul>
+      <p>
+        Deshalb bleibt die menschliche Prüfung nötig. Die KI sollte entscheiden, wo sie sicher ist, den Rest
+        an Menschen weitergeben, und ihre Entscheidungen müssen prüfbar sein. Unsere Seiten zur
+        <a href="/de/automatische-moderation" class={linkClass}>automatischen Moderation</a> und zur
+        <a href="/de/moderationssoftware" class={linkClass}>Moderationssoftware</a> zeigen, wie OpenModeration
+        das umsetzt: Ihre Regeln und Ihre Anwendungsfälle, unklare Fälle, die unser Team für Sie
+        übernimmt, eine einzige Konsole, in der Sie alles in Echtzeit sehen und jederzeit eingreifen können, und eine
+        schriftliche Begründung für jede Entscheidung.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Was sagt das EU-Recht? Der DSA in wenigen Zeilen</h2>
+      <p>
+        Der Digital Services Act (DSA, Gesetz über digitale Dienste) gilt seit Februar 2024 für alle
+        Online-Vermittlungsdienste in der EU. In Deutschland hat er das NetzDG weitgehend abgelöst. Wenn Sie
+        Inhalte von Nutzern speichern, sind Sie im Sinne des DSA ein Hostingdienst. Grob gesagt erwartet er, dass Sie
+      </p>
+      <ul>
+        <li>klare Regeln dazu veröffentlichen, was erlaubt ist und wie moderiert wird, einschließlich des Einsatzes automatisierter Werkzeuge;</li>
+        <li>jedem erlauben, rechtswidrige Inhalte zu melden, und diese Meldungen bearbeiten;</li>
+        <li>Nutzern, deren Inhalte Sie einschränken, eine Begründung geben und dabei angeben, ob automatisierte Mittel eingesetzt wurden;</li>
+        <li>als Online-Plattform einen Weg anbieten, Entscheidungen anzufechten, und diese dokumentieren.</li>
+      </ul>
+      <p>
+        Die genauen Pflichten hängen von Art und Größe Ihres Dienstes ab. Dies ist eine allgemeine
+        Information, keine Rechtsberatung. Mehr dazu auf unserer Seite zur <a href="/de/dsa-konformitaet" class={linkClass}>DSA-Konformität</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Wie wählt man den richtigen Moderationsansatz?</h2>
+      <p>Fünf Fragen klären es meistens:</p>
+      <ol>
+        <li><strong>Wie viele Inhalte, und wann?</strong> Ein paar Dutzend Kommentare am Tag lassen sich von Hand bearbeiten. Tausende oder nächtliche Spitzen verlangen nach Automatisierung.</li>
+        <li><strong>Wie teuer ist ein Fehler?</strong> Ein Angebot für Kinder tendiert zur Vorab-Moderation; ein Medienhaus kann es sich nicht leisten, die Debatte zu verzögern.</li>
+        <li><strong>Wie lauten Ihre Regeln?</strong> Schreiben Sie sie auf, bevor Sie ein Werkzeug wählen. Unsere Seite zu <a href="/de/moderationsrichtlinien" class={linkClass}>Moderationsrichtlinien</a> hilft dabei.</li>
+        <li><strong>Wer entscheidet Grenzfälle?</strong> Ein internes Team, ein Dienstleister oder beides. Jemand muss die letzte Entscheidung verantworten. Bei OpenModeration übernimmt unser Team diese Fälle, und Sie behalten die Kontrolle.</li>
+        <li><strong>Was müssen Sie belegen können?</strong> Begründungen, Protokolle und Exporte zählen für den DSA ebenso wie für interne Auswertungen.</li>
+      </ol>
+      <p>
+        Für die meisten Medien, Marken und Behörden läuft es auf einen hybriden Ansatz hinaus: Automatisierung
+        für jeden Inhalt in Echtzeit, menschliche Prüfung für unklare Fälle und ein regelmäßiger Blick auf die
+        Regeln. Sind soziale Netzwerke Ihr wichtigster Kanal, lesen Sie unseren
+        <a href="/de/blog/social-media-moderation-leitfaden" class={linkClass}>Leitfaden zur Social-Media-Moderation</a>.
+        Wie ein KI-Modell Ihre eigenen Inhalte beurteilt, sehen Sie in der <a href="/de/moderation-testen" class={linkClass}>Live-Demo</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Glossar der Content Moderation</h2>
+      <dl>
+        {glossary.map((item) => (
+          <>
+            <dt class="font-semibold text-surface-900">{item.term}</dt>
+            <dd class="mb-3">{item.def}</dd>
+          </>
+        ))}
+      </dl>
+    </div>
+
+    <div class="mt-12">
+      <FAQ title="Häufige Fragen" items={faqItems} />
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Weiterlesen</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/de/blog/kommentarmoderation-leitfaden" class="font-medium text-brand-600 hover:text-brand-500">Der vollständige Leitfaden zur Kommentarmoderation &rarr;</a></li>
+        <li><a href="/de/automatische-moderation" class="font-medium text-brand-600 hover:text-brand-500">So funktioniert automatische Moderation &rarr;</a></li>
+        <li><a href="/de/moderationssoftware" class="font-medium text-brand-600 hover:text-brand-500">Die richtige Moderationssoftware wählen &rarr;</a></li>
+        <li><a href="/de/dsa-konformitaet" class="font-medium text-brand-600 hover:text-brand-500">Was der DSA für Moderationsentscheidungen verlangt &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

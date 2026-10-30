@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
 import CTASection from '../../components/CTASection.astro';
+import RelatedComparisons from '../../components/RelatedComparisons.astro';
 import CodeBlock from '../../components/CodeBlock.astro';
 
 const migrationCode = `# Before: Hive Moderation (direct)
@@ -10,61 +12,62 @@ const response = await fetch('https://api.thehive.ai/api/v2/task/sync', {
   body: JSON.stringify({ url: '...', text: { text: content } })
 });
 
-# After: OpenModeration with Hive
+# After: OpenModeration
 const result = await fetch('https://api.openmoderation.com/v1/moderation', {
   method: 'POST',
   headers: { 'Authorization': 'Bearer om_key_...' },
-  body: JSON.stringify({ input: text, model: 'hive/moderation' })
+  body: JSON.stringify({ input: text })
 });
-// Add OpenAI, Azure, or Mistral as fallback — same API call`;
+// Plus: pre-filter, double threshold, auto-actions, audit trail, cross-checked AI`;
 
 const comparisonJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
   "name": "Hive Moderation Alternative | OpenModeration",
-  "description": "Hive Moderation offers strong visual and text moderation, but it ties you to one provider. OpenModeration combines Hive with OpenAI, Azure, Mistral and others through one API, with automated workflows and DSA compliance built in.",
+  "description": "Hive Moderation offers strong visual and text moderation, but it ties you to its proprietary models. OpenModeration runs its own moderation AI, cross-checked by other AI models, with automated workflows and DSA compliance built in.",
 };
 
 const comparisonPoints = [
-  { feature: "Providers", hive: "Hive only (proprietary models)", openmod: "10 providers: Hive, OpenAI, Azure, Mistral, HuggingFace, LLMs (GPT-4o, Claude), Cohere, and more" },
-  { feature: "Content types", hive: "Text, image, video (strong visual moderation)", openmod: "Text moderation with 10 categories. Multi-provider routing by language and category." },
+  { feature: "AI engine", hive: "Hive only (proprietary models)", openmod: "Our own moderation AI, cross-checked by other AI models on delicate cases" },
+  { feature: "Content types", hive: "Text, image, video (strong visual moderation)", openmod: "Text moderation with 10 categories, plus your own categories in plain language." },
   { feature: "Pre-filtering", hive: "Not available", openmod: "Built-in word filter blocks obvious spam and forbidden words before any API call" },
-  { feature: "Decision engine", hive: "Raw classification scores", openmod: "Dual threshold with grey zone routing to human review" },
+  { feature: "Decision engine", hive: "Raw classification scores", openmod: "Dual threshold, with the grey zone reviewed by our team" },
   { feature: "Auto-actions", hive: "Must build your own integration", openmod: "Built-in Action Engine triggers hide, delete, flag, or notify when thresholds are exceeded." },
-  { feature: "Dashboard", hive: "Basic API dashboard", openmod: "Full moderation console: review queue, team roles, analytics, provider health" },
-  { feature: "API format", hive: "Proprietary Hive format", openmod: "Standardized across all 10 providers. Switch providers with config change." },
-  { feature: "Vendor lock-in", hive: "Locked to Hive's proprietary models", openmod: "Zero. BYOK supported for all providers. Self-hostable." },
-  { feature: "Self-hosted", hive: "Cloud API only", openmod: "Docker self-hosted (free, AGPL v3) or EU-managed cloud" },
+  { feature: "Dashboard", hive: "Basic API dashboard", openmod: "Full console: every decision in real time, team roles, analytics" },
+  { feature: "API format", hive: "Proprietary Hive format", openmod: "Standardized format. When we plug in a better model, nothing changes in your code." },
+  { feature: "Vendor lock-in", hive: "Locked to Hive's proprietary models", openmod: "Low. Model-agnostic engine: better models plugged in as they come out." },
+  { feature: "Hosting", hive: "Cloud API only", openmod: "EU-managed cloud; on-premise deployment possible on request" },
   { feature: "Audit trail", hive: "API request logs", openmod: "Full DSA audit trail: every AI and human decision logged, exportable reports" },
-  { feature: "Pricing", hive: "Usage-based, price on request", openmod: "Free self-hosted. Managed cloud from €99/mo (10K req included)." },
+  { feature: "Pricing", hive: "Usage-based, price on request", openmod: "Free up to 1,000 requests/mo. Managed cloud from €99/mo (10K req included)." },
 ];
 
 const reasons = [
   {
     title: "Hive is best known for visual moderation, while the volume of text keeps growing",
-    description: "Hive is known for image and video moderation. LLMs and chatbots now produce text at a scale no team can read by hand, so text needs the same care as images. OpenModeration routes text to the NLP provider that fits it and can bring in Hive for visual use cases."
+    description: "Hive is known for image and video moderation. LLMs and chatbots now produce text at a scale no team can read by hand, so text needs the same care as images. OpenModeration focuses on text, with its own moderation AI cross-checked by other AI models on delicate cases."
   },
   {
-    title: "One provider means one point of failure",
-    description: "If Hive's API has an outage, a latency spike or a pricing change, your whole moderation pipeline feels it. OpenModeration falls back automatically across 10 providers. If Hive is slow, your requests go to OpenAI, Azure or Mistral without anyone stepping in."
+    title: "One frozen model means no second opinion",
+    description: "With a single proprietary model, every decision relies on one classifier, frozen between two updates. OpenModeration has delicate cases arbitrated by other AI models, and plugs in better or cheaper models as they come out, with nothing to change on your side."
   },
   {
     title: "Proprietary models offer little transparency",
-    description: "Hive's models are black boxes. You can't audit them, fine-tune them or inspect their training data. OpenModeration lets you run open-source models (HuggingFace Llama Guard) next to proprietary ones, and the platform itself is open source under AGPL v3."
+    description: "Hive's models are black boxes. You can't audit them, fine-tune them or inspect their training data. OpenModeration explains every decision in writing, so you can see why each comment was kept or hidden."
   },
   {
     title: "DSA compliance needs more than API scores",
-    description: "The EU Digital Services Act requires documented moderation decisions, human review and transparency reports. API-level logs don't cover that. OpenModeration gives you audit trails, review workflows and exportable reports."
+    description: "The EU Digital Services Act requires documented moderation decisions, human review and transparency reports. API-level logs don't cover that. OpenModeration gives you audit trails, human review by our team and exportable reports."
   },
 ];
 ---
 
 <BaseLayout 
-  title="Hive Moderation Alternative: One API, 10 Providers"
-  description="Hive is strong on visual moderation. OpenModeration combines Hive with 9 other text providers, plus automated rules, human review and DSA audit trails."
+  title="Hive Moderation Alternative for Comments & Social Pages"
+  description="Hive is strong on visual moderation. OpenModeration runs its own AI for comments, cross-checked by other models, with rules, human review and DSA audit trails."
   canonical="https://www.openmoderation.com/alternatives/hive-moderation"
   jsonLd={comparisonJsonLd}
 >
+  <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Alternatives", href: "/alternatives" }, { label: "Hive Moderation Alternative" }]} />
   <section class="bg-gradient-to-b from-brand-50 to-white py-20">
     <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
       <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-4 py-1.5 text-sm font-medium text-amber-700">
@@ -76,8 +79,8 @@ const reasons = [
       </h1>
       <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
         Hive Moderation is very good at image and video classification. Text is another matter: it now
-        comes from LLMs and chatbots as well as forums and comment sections. OpenModeration gives you 10 text moderation
-        providers through one API, with automated rules, human review and DSA compliance built in.
+        comes from LLMs and chatbots as well as forums and comment sections. OpenModeration gives you its own moderation AI,
+        cross-checked by other AI models, with automated rules, human review by our team and DSA compliance built in.
       </p>
       <div class="mt-8 flex items-center justify-center gap-4">
         <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm">Try OpenModeration free</a>
@@ -111,26 +114,26 @@ const reasons = [
         <div>
           <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700">
             <span class="flex h-1.5 w-1.5 animate-pulse-dot rounded-full bg-brand-500" />
-            One API, any provider
+            One API, an AI that keeps improving
           </div>
           <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">One API format instead of several</h2>
           <p class="mt-4 text-lg text-surface-500">
             Running Hive for visual moderation and a separate API for text leaves you with two integrations to maintain.
-            OpenModeration puts them behind one standardized API format. Use Hive, OpenAI, Azure,
-            Mistral, HuggingFace or any combination.
+            For text, OpenModeration gives you one standardized API format, backed by its own
+            moderation AI.
           </p>
           <div class="mt-6 space-y-3">
             <div class="flex items-start gap-3">
               <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <p class="text-sm text-surface-600">Requests fall back to OpenAI or Mistral automatically when Hive is down.</p>
+              <p class="text-sm text-surface-600">Delicate cases are cross-checked by other AI models before a decision is applied.</p>
             </div>
             <div class="flex items-start gap-3">
               <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <p class="text-sm text-surface-600">You can see which provider is fastest, most accurate and cheapest for each language.</p>
+              <p class="text-sm text-surface-600">When a better or cheaper model comes out, we plug it in. Nothing changes on your side.</p>
             </div>
             <div class="flex items-start gap-3">
               <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <p class="text-sm text-surface-600">You can run open-source models such as Llama Guard alongside Hive and inspect how they work.</p>
+              <p class="text-sm text-surface-600">Every decision comes with a written reason, and you see it in real time.</p>
             </div>
           </div>
         </div>
@@ -146,7 +149,7 @@ const reasons = [
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="mx-auto mb-12 max-w-2xl text-center">
         <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Hive Moderation vs OpenModeration</h2>
-        <p class="mt-4 text-lg text-surface-500">Hive is a strong moderation provider. OpenModeration is the platform that runs Hive and 9 others side by side.</p>
+        <p class="mt-4 text-lg text-surface-500">Hive is a strong moderation vendor. OpenModeration is a complete platform for comment moderation.</p>
       </div>
       <div class="overflow-x-auto rounded-xl border border-surface-200">
         <table class="w-full text-left text-sm">
@@ -174,7 +177,7 @@ const reasons = [
   <!-- Other alternatives -->
   <section class="border-t border-surface-100 bg-surface-50 py-16">
     <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-      <h2 class="text-2xl font-bold text-surface-900">Compare other providers</h2>
+      <h2 class="text-2xl font-bold text-surface-900">Compare other alternatives</h2>
       <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
         <a href="/alternatives/openai-moderation" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">OpenAI Moderation</a>
         <a href="/alternatives/azure-content-safety" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Azure Content Safety</a>
@@ -185,9 +188,11 @@ const reasons = [
     </div>
   </section>
 
+  <RelatedComparisons />
+
   <CTASection 
-    title="Unify Hive and 9 other providers in one API call."
-    subtitle="Combine Hive's visual moderation with OpenAI, Azure and Mistral for text, all through one standardized API. OpenModeration is open source, can be self-hosted and is ready for the DSA."
+    title="Comment moderation with an AI that keeps improving."
+    subtitle="Our own cross-checked AI and human review by our team, through one standardized API. OpenModeration is hosted in the EU, explains every decision and is ready for the DSA."
     buttonText="Try OpenModeration free"
     buttonHref="https://app.openmoderation.com/signup"
   />

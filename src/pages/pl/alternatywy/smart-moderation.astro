@@ -1,0 +1,213 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const title = "Alternatywa dla Smart Moderation: porównanie OpenModeration";
+const description = "Szukasz alternatywy dla Smart Moderation? Porównaj platformy, ceny, modele AI, narzędzia do DSA i hosting w UE z OpenModeration – z podanymi źródłami.";
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/pl/alternatywy/smart-moderation",
+  "name": title,
+  "description": description,
+  "inLanguage": "pl",
+  "about": {
+    "@id": "https://www.openmoderation.com/#software"
+  }
+};
+
+const rows = [
+  { feature: "Oferta", competitor: "Moderacja komentarzy w mediach społecznościowych: wykrywa i ukrywa w czasie rzeczywistym komentarze nielegalne lub niestosowne, spam i trolli", openmod: "Moderacja komentarzy z pomocą AI dla mediów, marek i instytucji publicznych, konfigurowana razem z Tobą przez zespół Logora" },
+  { feature: "Platformy", competitor: "Strony i reklamy na Facebooku, wtyczka komentarzy Facebooka, profile i reklamy na Instagramie, kanały YouTube, blogi HubSpot, integracje przez API", openmod: "Strony internetowe (API), strony na Facebooku, konta profesjonalne na Instagramie, kanały YouTube, WordPress" },
+  { feature: "Konfiguracja", competitor: "Samoobsługa; według strony system „uczy się, co jest niestosowne” dla każdego użytkownika", openmod: "Dopasowana przez nasz zespół do Twoich zasad i przypadków użycia: oczywiste naruszenia ukryte, uzasadniona krytyka widoczna" },
+  { feature: "Modele AI", competitor: "Nie podano: strona mówi o przetwarzaniu języka naturalnego i uczeniu maszynowym", openmod: "Własna AI do moderacji, weryfikowana przez inne modele AI; nowe modele podłączane na bieżąco, gdy się pojawiają" },
+  { feature: "Weryfikacja przez człowieka", competitor: "Jeden panel i aplikacja na iOS", openmod: "Wątpliwe przypadki kierowane do weryfikacji przez człowieka w jednej konsoli" },
+  { feature: "Uzasadnienie każdej decyzji", competitor: "Nie podano na stronie", openmod: "Pisemne uzasadnienie każdej decyzji i pełny dziennik aktywności" },
+  { feature: "DSA", competitor: "Nie podano na stronie", openmod: "Zgłoszenia i działania, uzasadnienie decyzji, weryfikacja zakwestionowanych decyzji przez człowieka, eksportowalne dane" },
+  { feature: "Hosting", competitor: "Nie podano jasno na stronie", openmod: "Hosting w UE, zgodność z RODO" },
+  { feature: "Cena", competitor: "Basic 79 $/mies. przy płatności rocznej (99 $ przy miesięcznej), 1 profil; Pro 199 $ (249 $ przy miesięcznej), do 3 profili; Enterprise – wycena indywidualna. Komentarze bez limitu", openmod: "Za darmo do 1000 zapytań miesięcznie; Pro za 99 € miesięcznie (10 000 zapytań); Enterprise – wycena indywidualna" },
+  { feature: "Test", competitor: "Bezpłatny okres próbny (długość nie podana)", openmod: "Tryb sandbox na Twoich prawdziwych komentarzach, bez ukrywania czegokolwiek" },
+];
+
+const faqItems = [
+  {
+    question: "Jaka jest najlepsza alternatywa dla Smart Moderation?",
+    answer: "OpenModeration sprawdzi się, jeśli moderujesz nie tylko Facebooka, Instagrama i YouTube, ale też własną stronę, jeśli wątpliwe przypadki mają trafiać do weryfikacji przez człowieka i jeśli potrzebujesz pisemnego uzasadnienia każdej decyzji, narzędzi do DSA i hostingu w UE. Jeśli chcesz tylko automatycznie ukrywać komentarze na kilku profilach za stałą cenę, Smart Moderation może wystarczyć.",
+  },
+  {
+    question: "Ile kosztuje Smart Moderation?",
+    answer: "Według cennika Basic kosztuje 79 $ miesięcznie przy płatności rocznej (99 $ przy miesięcznej) za 1 profil, Pro 199 $ miesięcznie przy płatności rocznej (249 $ przy miesięcznej) za maksymalnie 3 profile, a Enterprise jest wyceniany indywidualnie; liczba komentarzy jest nieograniczona. OpenModeration jest bezpłatne do 1000 zapytań miesięcznie, potem kosztuje 99 € miesięcznie za 10 000 zapytań.",
+  },
+  {
+    question: "Smart Moderation czy OpenModeration: czym się różnią?",
+    answer: "Smart Moderation to samoobsługowe narzędzie, które ukrywa niechciane komentarze na profilach społecznościowych. OpenModeration konfiguruje razem z Tobą zespół Logora; obejmuje też strony internetowe i WordPressa, przekazuje wątpliwe przypadki do weryfikacji naszemu zespołowi w jednej konsoli i zapisuje pisemne uzasadnienie oraz ślad każdej decyzji.",
+  },
+  {
+    question: "Czy można przetestować OpenModeration, nie wyłączając Smart Moderation?",
+    answer: "Tak. W trybie sandbox OpenModeration analizuje Twoje prawdziwe komentarze, niczego nie ukrywając, więc porównujesz oba narzędzia na tych samych komentarzach, zanim zmienisz jakiekolwiek ustawienie.",
+  },
+  {
+    question: "Czy OpenModeration moderuje też komentarze na mojej stronie?",
+    answer: "Tak. Strony internetowe łączy się przez API, a WordPress ma własny konektor, więc artykuły i profile społecznościowe podlegają tym samym zasadom. Z OpenModeration korzystają m.in. Estadão, L'Équipe i Sud Ouest.",
+  },
+  {
+    question: "Kto konfiguruje OpenModeration?",
+    answer: "Zespół Logora, działający w Paryżu od 2019 roku. Dopasowujemy moderację do Twoich zasad i przypadków użycia, uruchamiamy z Tobą sandbox i dopracowujemy ustawienia w pierwszych tygodniach.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Strona główna", href: localizePath('/', locale) }, { label: "Alternatywy", href: localizePath('/alternatives', locale) }, { label: "Smart Moderation" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Porównanie
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Alternatywa dla Smart Moderation: porównanie z OpenModeration</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Najlepsza alternatywa dla Smart Moderation zależy od tego, co moderujesz: jeśli poza Facebookiem, Instagramem i YouTube potrzebujesz też własnej strony, pisemnego uzasadnienia każdej decyzji i narzędzi do DSA, OpenModeration powstało właśnie w tym celu. Jeśli chcesz tylko automatycznie ukrywać komentarze na kilku profilach społecznościowych za stałą cenę, Smart Moderation wystarczy; poniżej różnice, ze źródłami.
+      </p>
+      <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a href={localizePath('/book-a-call', locale)} class="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-500">Umów rozmowę</a>
+        <a href={localizePath('/pricing', locale)} class="inline-flex items-center gap-2 rounded-lg border border-surface-200 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">Zobacz cennik</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold tracking-tight text-surface-900 sm:text-3xl">Dla kogo jest Smart Moderation?</h2>
+      <p class="mt-4 text-surface-600">Według swojej strony Smart Moderation wykrywa i ukrywa w czasie rzeczywistym komentarze nielegalne lub niestosowne, spam i trolli na Facebooku, Instagramie i YouTube, a korzystają z niego „tysiące marek i profili publicznych”. Rejestracja odbywa się przez konto na Facebooku, po czym podłączasz profile, a usługa stale monitoruje komentarze.</p>
+      <p class="mt-4 text-surface-600">To narzędzie samoobsługowe z ceną za profil i nieograniczoną liczbą komentarzy. Strona nie wymienia klientów ani nie wskazuje jasno, gdzie przechowywane są dane.</p>
+    </div>
+  </section>
+
+  <section class="bg-white pb-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Wybierz OpenModeration, jeśli…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>komentarze na Twojej stronie mają być moderowane tak samo jak profile społecznościowe;</li>
+          <li>chcesz zespołu, który razem z Tobą dopasuje moderację do Twoich zasad i przypadków użycia;</li>
+          <li>wątpliwe przypadki mają trafiać do weryfikacji przez człowieka w jednej konsoli;</li>
+          <li>potrzebujesz pisemnego uzasadnienia każdej decyzji, dziennika aktywności i narzędzi do DSA;</li>
+          <li>Twoje dane muszą być przechowywane w Unii Europejskiej.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">Smart Moderation może lepiej pasować, jeśli…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>moderujesz tylko kilka profili na Facebooku, Instagramie lub YouTube i wolisz samoobsługę;</li>
+          <li>wolisz stałą cenę za profil z nieograniczoną liczbą komentarzy;</li>
+          <li>musisz objąć komentarze pod reklamami na Facebooku, wtyczkę komentarzy Facebooka lub blogi HubSpot;</li>
+          <li>chcesz śledzić moderację w aplikacji na iOS.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Smart Moderation i OpenModeration punkt po punkcie</h2>
+      <p class="mt-4 text-surface-500">Informacje o Smart Moderation pochodzą z jego strony smartmoderation.com (dostęp: 30 października 2026). Gdy strona czegoś nie podaje, zaznaczamy to.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Kryterium</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Smart Moderation</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.competitor}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">AI, która nadąża za postępem modeli</h2>
+      <p class="mt-4 text-surface-600">OpenModeration działa na własnej AI do moderacji, a w trudnych przypadkach jej decyzję weryfikują inne modele AI. Silnik nie jest przywiązany do jednego modelu: gdy pojawia się lepszy lub tańszy, nasz zespół szybko go podłącza, bez żadnych zmian po Twojej stronie.</p>
+      <p class="mt-4 text-surface-600">Strona Smart Moderation mówi o przetwarzaniu języka naturalnego i uczeniu maszynowym, nie podając, jakich modeli używa. Z OpenModeration Twoja moderacja podąża za postępem modeli AI, zamiast tkwić przy jednym algorytmie.</p>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Cennik Smart Moderation i OpenModeration</h2>
+      <p class="mt-4 text-surface-600">Smart Moderation publikuje ceny: Basic za 79 $ miesięcznie przy płatności rocznej (99 $ przy miesięcznej) za 1 profil i 1 użytkownika, Pro za 199 $ miesięcznie przy płatności rocznej (249 $ przy miesięcznej) za maksymalnie 3 profile oraz plan Enterprise wyceniany indywidualnie od 4 profili. Wszystkie plany obejmują nieograniczoną liczbę komentarzy.</p>
+      <p class="mt-4 text-surface-600">OpenModeration jest bezpłatne do 1000 zapytań miesięcznie, a w planie Pro kosztuje 99 € miesięcznie za 10 000 zapytań; Enterprise – wycena indywidualna. Uczciwie mówiąc: przy jednej bardzo aktywnej stronie, na której chcesz tylko automatycznie ukrywać komentarze, stała cena za profil może wyjść taniej. Jeśli moderujesz kilka stron i własny serwis, z weryfikacją przez człowieka i śladem na potrzeby DSA, porównaj łączny koszt przy swoich rzeczywistych wolumenach.</p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Przejście ze Smart Moderation na OpenModeration w 3 krokach</h2>
+      <ol class="mt-8 grid gap-6 md:grid-cols-3">
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">1</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Podłączenie w trybie sandbox</h3>
+          <p class="mt-2 text-sm text-surface-600">Podłącz strony na Facebooku, konta na Instagramie, kanały YouTube oraz swoją stronę przez API lub WordPressa. Nic nie jest ukrywane: Smart Moderation działa dalej.</p>
+        </li>
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">2</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Porównanie i dopracowanie</h3>
+          <p class="mt-2 text-sm text-surface-600">Przez kilka tygodni porównuj decyzje obu narzędzi na tych samych komentarzach. Nasz zespół dopasowuje moderację do Twoich zasad i przypadków użycia.</p>
+        </li>
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">3</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Przełączenie</h3>
+          <p class="mt-2 text-sm text-surface-600">Włącz automatyczne ukrywanie w OpenModeration i wyłącz je w Smart Moderation, aby oba narzędzia nigdy nie działały na tym samym komentarzu.</p>
+        </li>
+      </ol>
+      <p class="mt-8 text-surface-600">Chcesz najpierw zobaczyć to na własnych komentarzach? <a href={localizePath('/book-a-call', locale)} class="font-medium text-brand-600 hover:text-brand-500">Umów rozmowę z zespołem Logora</a>, a skonfigurujemy z Tobą sandbox.</p>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Najczęściej zadawane pytania" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        Smart Moderation jest znakiem towarowym swojego właściciela. Źródła: <a href="https://smartmoderation.com" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">smartmoderation.com</a>, <a href="https://smartmoderation.com/pricing" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">smartmoderation.com/pricing</a>, <a href="https://smartmoderation.com/about" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">smartmoderation.com/about</a>, <a href="https://smartmoderation.com/privacy" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">smartmoderation.com/privacy</a> (dostęp: 30 października 2026). Widzisz błąd? Napisz do nas: <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Dowiedz się więcej</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/social-media-moderation', locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderacja mediów społecznościowych z OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/blog/hide-facebook-comments-automatically', locale)} class="font-medium text-brand-600 hover:text-brand-500">Jak automatycznie ukrywać komentarze na Facebooku &rarr;</a></li>
+        <li><a href={localizePath('/moderation-software', locale)} class="font-medium text-brand-600 hover:text-brand-500">Oprogramowanie do moderacji OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/pricing', locale)} class="font-medium text-brand-600 hover:text-brand-500">Cennik OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/alternatives', locale)} class="font-medium text-brand-600 hover:text-brand-500">Wszystkie porównania &rarr;</a></li>
+        <li><a href={localizePath('/book-a-call', locale)} class="font-medium text-brand-600 hover:text-brand-500">Umów rozmowę z naszym zespołem &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Porównaj OpenModeration ze Smart Moderation na własnych komentarzach." subtitle="Tryb sandbox na prawdziwych komentarzach, bez ukrywania czegokolwiek, z pisemnym uzasadnieniem każdej decyzji. Za darmo do 1000 zapytań miesięcznie." buttonText="Umów rozmowę" buttonHref={localizePath('/book-a-call', locale)} />
+</BaseLayout>

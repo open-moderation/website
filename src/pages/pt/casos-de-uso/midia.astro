@@ -1,0 +1,168 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import BrowserFrame from '../../../components/BrowserFrame.astro';
+import ClientLogos from '../../../components/ClientLogos.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const useCaseJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Moderação de comentários para veículos de mídia e sites de notícias",
+  "description": "Moderação de comentários com IA para sites de notícias e redações: moderação adaptada às suas regras editoriais em cada matéria, um motivo por escrito para cada comentário removido, casos duvidosos tratados pela nossa equipe e uma trilha de auditoria DSA.",
+  "inLanguage": "pt",
+  "url": "https://www.openmoderation.com/pt/casos-de-uso/midia",
+  "about": { "@id": "https://www.openmoderation.com/#software" }
+};
+
+const faqItems = [
+  {
+    question: "Sites de notícias precisam cumprir o DSA nas suas seções de comentários?",
+    answer: "As seções de comentários hospedam conteúdo publicado pelos leitores, então um site de notícias que as mantém atua como serviço de hospedagem segundo o Regulamento dos Serviços Digitais (DSA). O artigo 17 exige uma exposição de motivos clara sempre que um comentário é removido ou restringido, indicando inclusive se foram usados meios automatizados. O OpenModeration redige essa exposição para cada decisão e a guarda na trilha de auditoria.",
+  },
+  {
+    question: "A moderação pode seguir as nossas próprias regras editoriais?",
+    answer: "Sim. Adaptamos a moderação às suas regras editoriais e aos seus casos de uso, escritos em linguagem natural, e o OpenModeration os aplica a cada comentário. A editoria de esportes e a de política podem ter regras diferentes, e você pode endurecer ou afrouxar uma regra a qualquer momento, sem código.",
+  },
+  {
+    question: "O que acontece com os comentários limítrofes?",
+    answer: "Cada categoria tem dois limites. As violações evidentes são ocultadas automaticamente, os comentários claramente aceitáveis são publicados, e tudo o que fica no meio é tratado pela nossa equipe. Os seus jornalistas veem cada decisão e podem intervir com um clique.",
+  },
+  {
+    question: "Os jornalistas podem continuar moderando a partir da página da matéria?",
+    answer: "Sim. As decisões tomadas pela sua redação ficam registradas no mesmo histórico de atividade que as decisões automáticas, então você mantém um registro único e completo de quem decidiu o quê e por quê.",
+  },
+  {
+    question: "Onde os dados ficam hospedados?",
+    answer: "O OpenModeration é desenvolvido e hospedado na União Europeia e está em conformidade com o RGPD. A implantação on-premise é possível mediante solicitação.",
+  },
+];
+---
+
+<BaseLayout title="Moderação de comentários para sites de notícias e mídia" description="Modere os comentários dos leitores com uma IA adaptada às suas regras editoriais. Um motivo por escrito, casos duvidosos tratados por nós e auditoria DSA." jsonLd={useCaseJsonLd}>
+  <Breadcrumb items={[{ label: "Início", href: localizePath("/", locale) }, { label: "Casos de uso", href: localizePath("/use-cases", locale) }, { label: "Mídia" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Caso de uso
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Moderação de comentários para veículos de notícias</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Os comentários dos leitores dão vida a uma matéria, até que ofensas e spam tomam conta da conversa. O OpenModeration aplica as suas regras editoriais a cada comentário, explica cada remoção por escrito e deixa a sua redação decidir os casos difíceis.
+      </p>
+      <div class="mt-10">
+        <ClientLogos />
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mb-16 grid gap-8 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="text-lg font-semibold text-surface-900">O desafio</h3>
+          <p class="mt-2 text-sm text-surface-600">Um site de notícias movimentado recebe comentários 24 horas por dia, com picos a cada notícia urgente. Os jornalistas não conseguem ler tudo, e os filtros de palavras-chave deixam passar sarcasmo, ofensas disfarçadas e ataques fora do tema, enquanto bloqueiam críticas legítimas.</p>
+        </div>
+        <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+          <h3 class="text-lg font-semibold text-brand-700">A abordagem OpenModeration</h3>
+          <p class="mt-2 text-sm text-surface-700">Uma IA que entende o contexto lê cada comentário à luz das suas regras. As violações evidentes são ocultadas na hora, os comentários aceitáveis entram no ar, e os limítrofes são tratados pela nossa equipe, com a regra em questão e um motivo por escrito.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="text-lg font-semibold text-surface-900">O resultado</h3>
+          <p class="mt-2 text-sm text-surface-600">A sua redação não tem moderação a fazer: os comentários que precisam de julgamento humano são tratados pela nossa equipe. Cada decisão, automática ou editorial, fica registrada com o seu motivo, pronta para um recurso de leitor ou para um regulador.</p>
+        </div>
+      </div>
+
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Feito para o jeito como as redações trabalham</h2>
+          <p class="mt-4 text-lg text-surface-500">
+            Moderar uma seção de comentários é uma decisão editorial. O OpenModeration cuida de tudo, e a sua equipe vê cada decisão e pode retomar o controle a qualquer momento.
+          </p>
+          <div class="mt-8 space-y-3">
+            <div class="rounded-lg border border-surface-200 bg-surface-50 p-4">
+              <p class="text-sm font-medium text-surface-900">As suas regras, em linguagem natural</p>
+              <p class="mt-1 text-xs text-surface-500">Escreva as regras que os seus leitores já conhecem. Nenhuma lista de palavras-chave para manter, nenhum código para mudar quando o limite muda.</p>
+            </div>
+            <div class="rounded-lg border border-surface-200 bg-surface-50 p-4">
+              <p class="text-sm font-medium text-surface-900">Uma zona cinzenta para o julgamento humano</p>
+              <p class="mt-1 text-xs text-surface-500">Dois limites por categoria separam o que é ocultado automaticamente do que a nossa equipe revisa. Você decide o tamanho da zona cinzenta.</p>
+            </div>
+            <div class="rounded-lg border border-surface-200 bg-surface-50 p-4">
+              <p class="text-sm font-medium text-surface-900">Um único histórico para as decisões da IA e da redação</p>
+              <p class="mt-1 text-xs text-surface-500">As remoções feitas pelos jornalistas aparecem ao lado das automáticas no log de atividade, com o moderador que as tomou e o motivo.</p>
+            </div>
+            <div class="rounded-lg border border-surface-200 bg-surface-50 p-4">
+              <p class="text-sm font-medium text-surface-900">Comentários das matérias e redes sociais juntos</p>
+              <p class="mt-1 text-xs text-surface-500">Modere o seu site pela API ou pelo conector WordPress, e os comentários dos seus posts no Facebook, Instagram e YouTube no mesmo console.</p>
+            </div>
+          </div>
+        </div>
+        <BrowserFrame
+          src="/images/dashboard.png"
+          video="om-triage"
+          alt="Fila de moderação do OpenModeration com comentários de leitores, o status de cada um e a ação aplicada"
+          caption="O console: cada comentário com o seu status, a regra envolvida e o motivo por escrito."
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Por que os veículos de mídia escolhem o OpenModeration</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">Uma exposição de motivos para cada remoção</h3>
+          <p class="mt-2 text-sm text-surface-500">O DSA exige que os serviços de hospedagem expliquem cada remoção. O OpenModeration redige essa explicação automaticamente, para que os leitores saibam qual regra violaram.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">Desenvolvido e hospedado na UE</h3>
+          <p class="mt-2 text-sm text-surface-500">Os dados dos leitores ficam na Europa e a plataforma está em conformidade com o RGPD. A implantação on-premise é possível mediante solicitação, se o seu jurídico exigir.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">Nada de caixa-preta</h3>
+          <p class="mt-2 text-sm text-surface-500">Cada decisão vem com um motivo por escrito e uma trilha de auditoria completa. Quando sai um modelo de IA melhor, nós o conectamos: nada muda na sua integração.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Perguntas frequentes" items={faqItems} />
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8 text-2xl font-bold text-surface-900 sm:text-3xl">Conteúdos relacionados</h2>
+      <div class="grid gap-6 md:grid-cols-3">
+        <a href={localizePath("/dsa-compliance", locale)} class="group rounded-xl border border-surface-200 bg-white p-6 transition hover:shadow-md">
+          <div class="mb-2 text-xs font-medium text-brand-600">Regulamentação</div>
+          <h3 class="text-lg font-semibold text-surface-900 group-hover:text-brand-600">Conformidade com o DSA</h3>
+          <p class="mt-2 text-sm text-surface-500">O que o Regulamento dos Serviços Digitais exige dos sites que hospedam comentários, e como cumprir.</p>
+        </a>
+        <a href={localizePath("/product/transparency", locale)} class="group rounded-xl border border-surface-200 bg-white p-6 transition hover:shadow-md">
+          <div class="mb-2 text-xs font-medium text-brand-600">Plataforma</div>
+          <h3 class="text-lg font-semibold text-surface-900 group-hover:text-brand-600">Cada decisão explicada</h3>
+          <p class="mt-2 text-sm text-surface-500">Como o OpenModeration escreve um motivo para cada decisão de moderação.</p>
+        </a>
+        <a href={localizePath("/integrations/wordpress", locale)} class="group rounded-xl border border-surface-200 bg-white p-6 transition hover:shadow-md">
+          <div class="mb-2 text-xs font-medium text-brand-600">Integração</div>
+          <h3 class="text-lg font-semibold text-surface-900 group-hover:text-brand-600">Moderação de comentários no WordPress</h3>
+          <p class="mt-2 text-sm text-surface-500">Modere os comentários de um site de notícias em WordPress sem escrever código.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <CTASection title="Devolva a seção de comentários aos seus leitores." subtitle="Conte para nós as suas regras, conecte o seu site e deixe a sua redação se concentrar nos comentários que precisam de uma decisão humana." />
+</BaseLayout>

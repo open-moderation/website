@@ -3,14 +3,16 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import CharterSupport from '../../../components/CharterSupport.astro';
 import Breadcrumb from '../../../components/Breadcrumb.astro';
 import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
 import FAQ from '../../../components/FAQ.astro';
+import { bookingUrl } from '../../../i18n/ui';
 
 const pageJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
   "@id": "https://www.openmoderation.com/fr/alternatives/napoleoncat",
   "name": "Alternative à NapoleonCat : le comparatif avec OpenModeration",
-  "description": "NapoleonCat ou OpenModeration ? Comparatif sourcé d'une suite de gestion des réseaux sociaux et d'un outil dédié à la modération : réseaux, prix, explication écrite, journal DSA et open source.",
+  "description": "NapoleonCat ou OpenModeration ? Comparatif sourcé d'une suite de gestion des réseaux sociaux et d'un outil dédié à la modération : réseaux, prix, explication écrite et journal DSA.",
   "inLanguage": "fr",
   "about": { "@id": "https://www.openmoderation.com/#software" }
 };
@@ -19,13 +21,12 @@ const rows = [
   { feature: "Offre", napoleoncat: "Une suite de gestion des réseaux sociaux pour marques et agences : boîte de réception, modération automatique, publication, statistiques et rapports", openmod: "Un outil de modération, et seulement cela : connecteurs réseaux sociaux et WordPress, API REST et webhooks pour tout le reste" },
   { feature: "Réseaux couverts", napoleoncat: "Facebook, Messenger, Instagram, LinkedIn, TikTok, YouTube, Google Business Profile, avis App Store et Google Play ; X pour la publication", openmod: "Facebook, Instagram, YouTube et WordPress en natif ; le reste via l'API" },
   { feature: "Commentaires de votre site", napoleoncat: "Non indiqué sur son site", openmod: "Oui : connecteur WordPress, ou l'API pour tout système de commentaires" },
-  { feature: "Prix", napoleoncat: "Standard 89 €, Pro 109 €, Expert 139 € par mois (paiement mensuel, 5 profils, 2 utilisateurs). Enterprise à partir de 465 €. Essai gratuit de 14 jours", openmod: "Publics : gratuit jusqu'à 1 000 requêtes par mois, Pro à 99 € par mois pour 10 000, auto-hébergement gratuit" },
+  { feature: "Prix", napoleoncat: "Standard 89 €, Pro 109 €, Expert 139 € par mois (paiement mensuel, 5 profils, 2 utilisateurs). Enterprise à partir de 465 €. Essai gratuit de 14 jours", openmod: "Publics : gratuit jusqu'à 1 000 requêtes par mois, Pro à 99 € par mois pour 10 000" },
   { feature: "Masquage automatique des commentaires", napoleoncat: "Inclus à partir de l'offre Expert (« Automatic comment hiding and deletion »)", openmod: "Inclus dans toutes les offres, y compris la gratuite" },
-  { feature: "Définition des règles", napoleoncat: "Règles de modération automatisées, plus un assistant IA de détection du spam et de la haine", openmod: "Votre charte en langage courant, un seuil par catégorie et une zone grise envoyée en revue humaine" },
+  { feature: "Définition des règles", napoleoncat: "Règles de modération automatisées, plus un assistant IA de détection du spam et de la haine", openmod: "Vos règles en langage courant, un seuil par catégorie et une zone grise traitée par notre équipe" },
   { feature: "Explication écrite de chaque décision", napoleoncat: "Non indiqué sur son site", openmod: "Oui, dans la langue de votre choix, renvoyée par l'API" },
   { feature: "DSA", napoleoncat: "Non indiqué sur son site", openmod: "Journal d'activité qui indique si chaque décision est automatique ou prise par quel modérateur" },
   { feature: "Données et conformité", napoleoncat: "Badge « 100% EU GDPR compliant » ; lieu d'hébergement non précisé", openmod: "Conçu et hébergé dans l'Union européenne, RGPD" },
-  { feature: "Code source et auto-hébergement", napoleoncat: "Propriétaire ; auto-hébergement non indiqué", openmod: "Open source sous licence AGPL v3, auto-hébergement avec Docker" },
   { feature: "Publication, boîte de réception, statistiques", napoleoncat: "Oui, c'est le cœur de la suite", openmod: "Non, OpenModeration ne fait que modérer" },
 ];
 
@@ -36,7 +37,7 @@ const faqItems = [
   },
   {
     question: "Combien coûte NapoleonCat par rapport à OpenModeration ?",
-    answer: "NapoleonCat affiche Standard à 89 €, Pro à 109 € et Expert à 139 € par mois en paiement mensuel, pour 5 profils et 2 utilisateurs. Le masquage automatique des commentaires arrive avec Expert. Enterprise démarre à 465 €. OpenModeration est gratuit jusqu'à 1 000 requêtes par mois, puis coûte 99 € par mois pour 10 000 requêtes, et l'auto-hébergement est gratuit.",
+    answer: "NapoleonCat affiche Standard à 89 €, Pro à 109 € et Expert à 139 € par mois en paiement mensuel, pour 5 profils et 2 utilisateurs. Le masquage automatique des commentaires arrive avec Expert. Enterprise démarre à 465 €. OpenModeration est gratuit jusqu'à 1 000 requêtes par mois, puis coûte 99 € par mois pour 10 000 requêtes.",
   },
   {
     question: "Peut-on tester OpenModeration sans couper NapoleonCat ?",
@@ -48,7 +49,7 @@ const faqItems = [
   },
   {
     question: "OpenModeration modère-t-il aussi les commentaires sous les articles d'un média ?",
-    answer: "Oui. Le connecteur WordPress et l'API REST modèrent les commentaires des lecteurs sur votre site avec la même charte que vos pages sociales. Des rédactions comme L'Équipe, Challenges, Sud Ouest et actu.fr utilisent OpenModeration.",
+    answer: "Oui. Le connecteur WordPress et l'API REST modèrent les commentaires des lecteurs sur votre site avec les mêmes règles que vos pages sociales. Des rédactions comme L'Équipe, Challenges, Sud Ouest et actu.fr utilisent OpenModeration.",
   },
 ];
 ---
@@ -73,10 +74,10 @@ const faqItems = [
         <h2 class="text-lg font-semibold text-brand-700">Choisissez OpenModeration si…</h2>
         <ul class="mt-4 space-y-2 text-sm text-surface-700">
           <li>la modération est votre vrai problème, et vous avez déjà un outil pour publier ;</li>
-          <li>vous voulez que votre charte soit appliquée telle qu'elle est écrite, avec une zone grise pour vos modérateurs ;</li>
+          <li>vous voulez que vos règles soient appliquées telles qu'elles sont écrites, avec une zone grise traitée par notre équipe, sans travail de votre côté ;</li>
           <li>vous avez besoin d'une explication écrite et d'un journal DSA pour chaque commentaire masqué ;</li>
           <li>les commentaires de votre site doivent suivre les mêmes règles que votre page Facebook ;</li>
-          <li>vous voulez un code open source et des données hébergées dans l'UE.</li>
+          <li>vous voulez des données hébergées dans l'UE.</li>
         </ul>
       </div>
       <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
@@ -127,16 +128,16 @@ const faqItems = [
           <p class="mt-2 text-sm text-surface-600">OpenModeration écrit pourquoi il a masqué chaque commentaire, dans la langue de votre choix. Le journal d'activité indique si la décision est automatique ou quel modérateur l'a prise. Quand un lecteur conteste ou qu'un régulateur demande, vous avez la réponse.</p>
         </div>
         <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-          <h3 class="font-semibold text-surface-900">Votre charte, appliquée avec le contexte</h3>
-          <p class="mt-2 text-sm text-surface-600">Vous écrivez vos règles en langage courant et réglez un seuil par catégorie. L'IA lit chaque commentaire avec le titre de la publication et le fil de discussion. Les cas limites vont dans une zone grise qu'un modérateur tranche.</p>
+          <h3 class="font-semibold text-surface-900">Vos règles, appliquées avec le contexte</h3>
+          <p class="mt-2 text-sm text-surface-600">Vous écrivez vos règles en langage courant et réglez un seuil par catégorie. L'IA lit chaque commentaire avec le titre de la publication et le fil de discussion. Les cas limites sont tranchés par notre équipe, et vous voyez tout en temps réel.</p>
         </div>
         <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-          <h3 class="font-semibold text-surface-900">Votre site et vos pages, une seule charte</h3>
+          <h3 class="font-semibold text-surface-900">Votre site et vos pages, les mêmes règles</h3>
           <p class="mt-2 text-sm text-surface-600">Facebook, Instagram, YouTube et WordPress se connectent en natif. Tout autre système de commentaires passe par l'API REST et les webhooks. Une rédaction modère ses articles et ses publications sociales avec les mêmes règles.</p>
         </div>
         <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-          <h3 class="font-semibold text-surface-900">Code ouvert, hébergement européen</h3>
-          <p class="mt-2 text-sm text-surface-600">OpenModeration est open source sous licence AGPL v3 et hébergé dans l'Union européenne. Vous pouvez lire le code, et l'héberger vous-même avec Docker sans rien payer.</p>
+          <h3 class="font-semibold text-surface-900">Hébergement européen</h3>
+          <p class="mt-2 text-sm text-surface-600">OpenModeration est hébergé dans l'Union européenne. Un déploiement sur site est possible sur demande : <a href={bookingUrl('fr')} class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">parlons-en</a>.</p>
         </div>
       </div>
     </div>
@@ -166,5 +167,7 @@ const faqItems = [
     </div>
   </section>
 
-  <CTASection title="Modérez vos commentaires avec un outil fait pour cela." subtitle="Connectez vos pages et votre site, écrivez votre charte et lisez la raison de chaque commentaire masqué. Gratuit jusqu'à 1 000 requêtes par mois." />
+  <RelatedComparisons />
+
+  <CTASection title="Modérez vos commentaires avec un outil fait pour cela." subtitle="Connectez vos pages et votre site, écrivez vos règles et lisez la raison de chaque commentaire masqué. Gratuit jusqu'à 1 000 requêtes par mois." />
 </BaseLayout>

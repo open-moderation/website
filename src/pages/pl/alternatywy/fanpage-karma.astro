@@ -1,0 +1,243 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const title = "Alternatywa dla Fanpage Karma: porównanie i ceny";
+const description = "Fanpage Karma czy OpenModeration? Porównanie ze źródłami: filtr hejtu w pakiecie social media czy dedykowana moderacja strony i profili, z jawnymi cenami.";
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/pl/alternatywy/fanpage-karma",
+  "name": title,
+  "description": description,
+  "inLanguage": "pl",
+  "about": {
+    "@id": "https://www.openmoderation.com/#software"
+  }
+};
+
+const rows = [
+  {
+    "feature": "Rodzaj produktu",
+    "them": "Pakiet do mediów społecznościowych (Analytics, Engage, Publish) z modułem Hate Speech Detector w Engage",
+    "openmod": "Narzędzie przeznaczone wyłącznie do moderacji komentarzy"
+  },
+  {
+    "feature": "Kanały",
+    "them": "Pakiet obsługuje Facebooka, Instagram, Threads, Bluesky, TikToka, X, YouTube, LinkedIna i Pinterest; kanały objęte detektorem nie są wyszczególnione",
+    "openmod": "Strony internetowe (API), WordPress, strony na Facebooku, konta profesjonalne na Instagramie i kanały YouTube"
+  },
+  {
+    "feature": "Komentarze na Twojej stronie",
+    "them": "Nie podano na stronie",
+    "openmod": "Tak, przez WordPress lub API"
+  },
+  {
+    "feature": "Wykryty komentarz",
+    "them": "Trafia do folderu; można go ukryć, przekazać dalej lub oznaczyć",
+    "openmod": "Oczywiste naruszenia ukrywane automatycznie; wątpliwe przypadki trafiają do weryfikacji przez człowieka"
+  },
+  {
+    "feature": "Ustawienia",
+    "them": "Poziom czułości ustawiany przez każdy zespół",
+    "openmod": "Twoje zasady i przypadki użycia, skonfigurowane z zespołem Logora"
+  },
+  {
+    "feature": "Cena",
+    "them": "Free za 0 €, Professional za 29 € miesięcznie przy płatności rocznej, Enterprise na zapytanie; detektor w każdej subskrypcji",
+    "openmod": "Jawne ceny: za darmo do 1000 zapytań miesięcznie, Pro za 99 € miesięcznie (10 000 zapytań), Enterprise – wycena indywidualna"
+  },
+  {
+    "feature": "Pisemne uzasadnienie każdej decyzji",
+    "them": "Nie podano na stronie",
+    "openmod": "Tak, pisemne uzasadnienie każdej decyzji"
+  },
+  {
+    "feature": "DSA",
+    "them": "Nie podano na stronie",
+    "openmod": "Zgłoszenia i działania, uzasadnienie decyzji, weryfikacja zakwestionowanych decyzji przez człowieka, eksportowalne dane i pełny dziennik aktywności"
+  },
+  {
+    "feature": "Hosting danych",
+    "them": "Nie podano na stronie",
+    "openmod": "Hosting w UE, zgodność z RODO"
+  },
+  {
+    "feature": "Modele AI",
+    "them": "Funkcja „oparta na AI”; model nie jest podany",
+    "openmod": "Własna AI do moderacji, weryfikowana przez inne modele AI; nowe modele podłączane na bieżąco, gdy się pojawiają"
+  }
+];
+
+const faqItems = [
+  {
+    "question": "Jaka jest najlepsza alternatywa dla Fanpage Karma?",
+    "answer": "Do moderacji komentarzy najlepszą alternatywą dla Fanpage Karma jest narzędzie dedykowane: OpenModeration stosuje Twoje zasady w mediach społecznościowych i na Twojej stronie, przekazuje wątpliwe przypadki do weryfikacji naszemu zespołowi i pisemnie uzasadnia każdą decyzję. Jeśli potrzebujesz przede wszystkim analityki i publikacji z podstawowym filtrem hejtu, Fanpage Karma ma to już w pakiecie."
+  },
+  {
+    "question": "Ile kosztuje Fanpage Karma?",
+    "answer": "Według strony z planami Fanpage Karma oferuje plan Free za 0 €, Professional za 29 € miesięcznie przy płatności rocznej i Enterprise na zapytanie, a detektor jest zawarty w każdej subskrypcji. OpenModeration jest bezpłatne do 1000 zapytań miesięcznie, plan Pro kosztuje 99 € miesięcznie za 10 000 zapytań, a Enterprise ma wycenę indywidualną. Oba narzędzia można łączyć: Fanpage Karma do analityki, OpenModeration do moderacji."
+  },
+  {
+    "question": "Fanpage Karma czy OpenModeration: co wybrać?",
+    "answer": "Wybierz Fanpage Karma, jeśli analityka i publikacja są Twoją główną potrzebą, a moderacja schodzi na dalszy plan. Wybierz OpenModeration, jeśli chcesz moderować według własnych zasad, nie tylko pod kątem mowy nienawiści, zależy Ci na jawnych cenach i pisemnym uzasadnieniu każdej decyzji oraz na zespole, który konfiguruje moderację razem z Tobą według Twoich zasad i przypadków użycia."
+  },
+  {
+    "question": "Czy można przetestować OpenModeration, nie rezygnując z Fanpage Karma?",
+    "answer": "Tak. W trybie sandbox OpenModeration analizuje Twoje prawdziwe komentarze, niczego nie ukrywając. Fanpage Karma działa dalej, a obie serie decyzji porównujesz komentarz po komentarzu, zanim cokolwiek zmienisz."
+  },
+  {
+    "question": "Jakich modeli AI używa OpenModeration?",
+    "answer": "OpenModeration działa na własnej AI do moderacji, a w trudnych przypadkach jej decyzję weryfikują inne modele AI. Gdy pojawia się lepszy lub tańszy model, zespół szybko go podłącza, bez żadnych zmian po Twojej stronie: Twoja moderacja korzysta z postępu modeli AI."
+  },
+  {
+    "question": "Co daje narzędzie do moderacji w porównaniu z filtrem hejtu?",
+    "answer": "Filtr hejtu wychwytuje oczywiste przypadki. Narzędzie do moderacji dodatkowo stosuje Twoje zasady, czyta każdy komentarz w kontekście posta i wątku, wątpliwe przekazuje naszemu zespołowi i zapisuje każdą decyzję z uzasadnieniem. Dla mediów, marek i instytucji objętych DSA taki dziennik ma znaczenie."
+  }
+];
+---
+
+<BaseLayout title={title} description={description} jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Strona główna", href: localizePath('/', locale) }, { label: "Alternatywy", href: localizePath('/alternatives', locale) }, { label: "Fanpage Karma" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Porównanie
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Alternatywa dla Fanpage Karma: porównanie z OpenModeration</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Do moderacji komentarzy najlepszą alternatywą dla Fanpage Karma jest narzędzie dedykowane: OpenModeration stosuje Twoje zasady w mediach społecznościowych i na Twojej stronie, przekazuje wątpliwe przypadki do weryfikacji naszemu zespołowi i pisemnie uzasadnia każdą decyzję. Jeśli potrzebujesz przede wszystkim analityki i publikacji z podstawowym filtrem hejtu, Fanpage Karma ma to już w pakiecie.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold tracking-tight text-surface-900">Dla kogo jest Fanpage Karma?</h2>
+      <p class="mt-4 text-surface-600">Fanpage Karma to pakiet do mediów społecznościowych służący do analityki, publikacji i zarządzania społecznością. Według jego strony moduł Hate Speech Detector, wbudowany w Engage, automatycznie wykrywa problematyczne treści, zbiera je w folderze i pozwala je ukryć, przekazać dalej lub oznaczyć; jest zawarty w każdej subskrypcji.</p>
+      <p class="mt-4 text-surface-600">OpenModeration moderuje z pomocą AI komentarze mediów, marek i instytucji publicznych: na ich stronach, stronach na Facebooku, kontach na Instagramie i kanałach YouTube. Automatycznie ukrywa oczywiste naruszenia, zostawia widoczną uzasadnioną krytykę, a wątpliwe przypadki przekazuje naszemu zespołowi w jednej konsoli. Zespół Logora, działający w Paryżu od 2019 roku, konfiguruje ją razem z Tobą według Twoich zasad i przypadków użycia.</p>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Fanpage Karma i OpenModeration punkt po punkcie</h2>
+      <p class="mt-4 text-surface-500">Informacje o Fanpage Karma pochodzą z jego strony fanpagekarma.com (dostęp: 30 października 2026).</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Kryterium</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Fanpage Karma</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.them}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Wybierz OpenModeration, jeśli…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>chcesz moderować według własnych zasad, nie tylko pod kątem mowy nienawiści;</li>
+          <li>Twoi czytelnicy komentują także na Twojej stronie;</li>
+          <li>potrzebujesz pisemnego uzasadnienia każdego ukrytego komentarza i dziennika na potrzeby DSA;</li>
+          <li>Twoje dane muszą pozostać w Unii Europejskiej.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">Fanpage Karma może lepiej pasować, jeśli…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>analityka i publikacja są Twoją główną potrzebą, a moderacja schodzi na dalszy plan;</li>
+          <li>pracujesz na TikToku, X, LinkedInie, Threads, Bluesky lub Pintereście;</li>
+          <li>przy Twoim wolumenie wystarczy filtr hejtu zawarty w subskrypcji.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h2 class="text-xl font-bold text-surface-900">AI, która nadąża za postępem modeli</h2>
+          <p class="mt-3 text-sm text-surface-600">OpenModeration działa na własnej AI do moderacji, a w trudnych przypadkach jej decyzję weryfikują inne modele AI. Gdy pojawia się lepszy lub tańszy model, zespół szybko go podłącza, bez żadnych zmian po Twojej stronie. Moderacja podąża za postępem rynku AI, zamiast tkwić przy jednym algorytmie. Fanpage Karma przedstawia swój detektor jako funkcję opartą na AI, nie podając modelu.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h2 class="text-xl font-bold text-surface-900">Cennik: Fanpage Karma a OpenModeration</h2>
+          <p class="mt-3 text-sm text-surface-600">Według strony z planami Fanpage Karma oferuje plan Free za 0 €, Professional za 29 € miesięcznie przy płatności rocznej i Enterprise na zapytanie, a detektor jest zawarty w każdej subskrypcji. OpenModeration jest bezpłatne do 1000 zapytań miesięcznie, plan Pro kosztuje 99 € miesięcznie za 10 000 zapytań, a Enterprise ma wycenę indywidualną. Oba narzędzia można łączyć: Fanpage Karma do analityki, OpenModeration do moderacji. Wdrożenie on-premise jest możliwe na życzenie. <a href={localizePath('/book-a-call', locale)} class="font-medium text-brand-600 hover:text-brand-500">Umów rozmowę</a>, aby policzyć koszt w Twoim przypadku.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Przejście z Fanpage Karma na OpenModeration w 3 krokach</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">1. Test w trybie sandbox</h3>
+          <p class="mt-2 text-sm text-surface-600">Podłącz stronę, WordPressa lub strony na Facebooku, Instagramie i YouTube. OpenModeration analizuje prawdziwe komentarze, niczego nie ukrywając, a Fanpage Karma działa dalej.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">2. Dopracowanie z zespołem Logora</h3>
+          <p class="mt-2 text-sm text-surface-600">Porównujemy decyzje z decyzjami obecnego narzędzia i dopasowujemy moderację do Twoich zasad i przypadków użycia, z pisemnym uzasadnieniem każdej decyzji na widoku.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">3. Włączanie kanał po kanale</h3>
+          <p class="mt-2 text-sm text-surface-600">Włącz moderację w jednym kanale, potem w kolejnych. Wątpliwymi przypadkami zajmuje się nasz zespół, a każda decyzja zostaje w dzienniku aktywności.</p>
+        </div>
+      </div>
+      <p class="mt-8 text-center text-surface-600">Chcesz zobaczyć to na własnych komentarzach? <a href={localizePath('/book-a-call', locale)} class="font-medium text-brand-600 hover:text-brand-500">Umów rozmowę z zespołem</a>.</p>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Najczęściej zadawane pytania" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        Fanpage Karma jest znakiem towarowym swojego właściciela. Źródła: <a href="https://app.fanpagekarma.com/de/plans" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">app.fanpagekarma.com/de/plans</a>, <a href="https://www.fanpagekarma.com/insights/de/mehr-schutz-vor-hass-im-netz/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">www.fanpagekarma.com/insights/de/mehr-schutz-vor-hass-im-netz/</a> (dostęp: 30 października 2026). Widzisz błąd? Napisz do nas: <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Dowiedz się więcej</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/social-media-moderation', locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderacja mediów społecznościowych z OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/integrations/instagram', locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderacja komentarzy na Instagramie &rarr;</a></li>
+        <li><a href={localizePath('/blog/handle-negative-comments-trolls', locale)} class="font-medium text-brand-600 hover:text-brand-500">Jak radzić sobie z negatywnymi komentarzami i trollami &rarr;</a></li>
+        <li><a href={localizePath('/moderation-software', locale)} class="font-medium text-brand-600 hover:text-brand-500">Oprogramowanie do moderacji OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/pricing', locale)} class="font-medium text-brand-600 hover:text-brand-500">Cennik OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/alternatives', locale)} class="font-medium text-brand-600 hover:text-brand-500">Wszystkie porównania &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Porównaj obecną moderację z OpenModeration." subtitle="Przetestuj OpenModeration w trybie sandbox na własnych komentarzach, niczego nie ukrywając. Za darmo do 1000 zapytań miesięcznie." buttonText="Umów rozmowę" buttonHref={localizePath('/book-a-call', locale)} />
+</BaseLayout>
