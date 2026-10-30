@@ -1,0 +1,28 @@
+---
+export interface Props {
+  items: Array<{ title: string; text: string }>;
+}
+
+const { items } = Astro.props;
+
+// Une couleur et une icône par carte : charte, équipe, automatique, prix.
+const styles = [
+  { card: 'from-violet-50 to-white border-violet-100', tile: 'bg-violet-500', emoji: '✍️' },
+  { card: 'from-rose-50 to-white border-rose-100', tile: 'bg-rose-500', emoji: '🤝' },
+  { card: 'from-sun-50 to-white border-sun-100', tile: 'bg-sun-400', emoji: '⚡' },
+  { card: 'from-mint-50 to-white border-mint-100', tile: 'bg-mint-500', emoji: '💸' },
+];
+---
+
+<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+  {items.map((item, i) => {
+    const s = styles[i % styles.length];
+    return (
+      <div class={`lift rounded-2xl border bg-gradient-to-b p-6 ${s.card}`}>
+        <div class={`mb-5 flex h-12 w-12 items-center justify-center rounded-2xl text-2xl shadow-md ${s.tile}`} style={`transform: rotate(${i % 2 ? 4 : -4}deg)`} aria-hidden="true">{s.emoji}</div>
+        <h3 class="text-lg font-bold text-surface-900">{item.title}</h3>
+        <p class="mt-2 text-sm leading-relaxed text-surface-600">{item.text}</p>
+      </div>
+    );
+  })}
+</div>
