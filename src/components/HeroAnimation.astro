@@ -1,0 +1,189 @@
+---
+import { getLocale } from '../i18n/routes';
+
+type Verdict = 'ok' | 'hidden' | 'review';
+type Item = { platform: 'site' | 'facebook' | 'instagram' | 'youtube'; author: string; text: string; verdict: Verdict; reason: string };
+
+const locale = getLocale(Astro.url.pathname);
+
+const copy: Record<string, { live: string; charter: string; analysing: string; verdicts: Record<Verdict, string>; badges: [string, string, string]; items: Item[] }> = {
+  en: {
+    live: 'Live moderation', charter: 'Your charter', analysing: 'Reading against your charter…',
+    verdicts: { ok: 'Published', hidden: 'Hidden', review: 'To review' },
+    badges: ['DSA-compliant', 'Every decision explained', 'Runs 24/7'],
+    items: [
+      { platform: 'site', author: 'Claire M.', text: 'Thanks for this article, finally someone who explains it clearly.', verdict: 'ok', reason: 'Within your charter' },
+      { platform: 'facebook', author: 'Kevin D.', text: "You're all idiots, last warning.", verdict: 'hidden', reason: 'Rule 2: insults towards other readers' },
+      { platform: 'instagram', author: 'promo_win', text: 'WIN an iPhone today ➜ free-gift.xyz', verdict: 'hidden', reason: 'Rule 5: scam and suspicious link' },
+      { platform: 'youtube', author: 'Samir B.', text: "I disagree with the author, and here's why…", verdict: 'ok', reason: 'Legitimate criticism, kept' },
+      { platform: 'site', author: 'Anonymous', text: 'Another article paid for by you-know-who…', verdict: 'review', reason: 'Innuendo: sent to your team' },
+      { platform: 'facebook', author: 'Julie R.', text: 'Your price is a disgrace, I will never order again.', verdict: 'ok', reason: 'Unhappy customer, left visible' },
+    ],
+  },
+  fr: {
+    live: 'Modération en direct', charter: 'Votre charte', analysing: 'Lecture avec votre charte…',
+    verdicts: { ok: 'Publié', hidden: 'Masqué', review: 'À revoir' },
+    badges: ['Conforme au DSA', 'Chaque décision expliquée', 'Actif 24 h/24'],
+    items: [
+      { platform: 'site', author: 'Claire M.', text: "Merci pour cet article, enfin quelqu'un qui explique clairement.", verdict: 'ok', reason: 'Conforme à votre charte' },
+      { platform: 'facebook', author: 'Kevin D.', text: 'Vous êtes tous des abrutis, dernier avertissement.', verdict: 'hidden', reason: 'Règle 2 : insulte envers les autres lecteurs' },
+      { platform: 'instagram', author: 'promo_win', text: 'GAGNEZ un iPhone ➜ cadeau-gratuit.xyz', verdict: 'hidden', reason: 'Règle 5 : arnaque et lien suspect' },
+      { platform: 'youtube', author: 'Samir B.', text: "Je ne suis pas d'accord avec l'auteur, et voici pourquoi…", verdict: 'ok', reason: 'Critique légitime, conservée' },
+      { platform: 'site', author: 'Anonyme', text: 'Encore un article payé par qui vous savez…', verdict: 'review', reason: 'Sous-entendu : envoyé à votre équipe' },
+      { platform: 'facebook', author: 'Julie R.', text: 'Votre prix est une honte, je ne commanderai plus jamais.', verdict: 'ok', reason: 'Client mécontent, laissé visible' },
+    ],
+  },
+  es: {
+    live: 'Moderación en directo', charter: 'Tu política', analysing: 'Leyendo con tu política…',
+    verdicts: { ok: 'Publicado', hidden: 'Oculto', review: 'A revisar' },
+    badges: ['Conforme a la DSA', 'Cada decisión explicada', 'Activo 24/7'],
+    items: [
+      { platform: 'site', author: 'Clara M.', text: 'Gracias por este artículo, por fin alguien lo explica con claridad.', verdict: 'ok', reason: 'Conforme a tu política' },
+      { platform: 'facebook', author: 'Kevin D.', text: 'Sois todos unos idiotas, último aviso.', verdict: 'hidden', reason: 'Regla 2: insulto a otros lectores' },
+      { platform: 'instagram', author: 'promo_win', text: 'GANA un iPhone hoy ➜ regalo-gratis.xyz', verdict: 'hidden', reason: 'Regla 5: estafa y enlace sospechoso' },
+      { platform: 'youtube', author: 'Samir B.', text: 'No estoy de acuerdo con el autor, y explico por qué…', verdict: 'ok', reason: 'Crítica legítima, conservada' },
+      { platform: 'site', author: 'Anónimo', text: 'Otro artículo pagado por ya sabéis quién…', verdict: 'review', reason: 'Insinuación: enviado a tu equipo' },
+      { platform: 'facebook', author: 'Julia R.', text: 'Vuestro precio es una vergüenza, no vuelvo a comprar.', verdict: 'ok', reason: 'Cliente descontento, visible' },
+    ],
+  },
+  de: {
+    live: 'Live-Moderation', charter: 'Ihre Richtlinien', analysing: 'Prüfung nach Ihren Richtlinien…',
+    verdicts: { ok: 'Veröffentlicht', hidden: 'Ausgeblendet', review: 'Zur Prüfung' },
+    badges: ['DSA-konform', 'Jede Entscheidung begründet', 'Rund um die Uhr aktiv'],
+    items: [
+      { platform: 'site', author: 'Klara M.', text: 'Danke für den Artikel, endlich erklärt es mal jemand verständlich.', verdict: 'ok', reason: 'Entspricht Ihren Richtlinien' },
+      { platform: 'facebook', author: 'Kevin D.', text: 'Ihr seid alle Idioten, letzte Warnung.', verdict: 'hidden', reason: 'Regel 2: Beleidigung anderer Leser' },
+      { platform: 'instagram', author: 'promo_win', text: 'GEWINNE heute ein iPhone ➜ gratis-geschenk.xyz', verdict: 'hidden', reason: 'Regel 5: Betrug und verdächtiger Link' },
+      { platform: 'youtube', author: 'Samir B.', text: 'Ich sehe das anders als der Autor, und zwar aus folgendem Grund…', verdict: 'ok', reason: 'Berechtigte Kritik, bleibt sichtbar' },
+      { platform: 'site', author: 'Anonym', text: 'Wieder ein Artikel, bezahlt von Sie-wissen-schon-wem…', verdict: 'review', reason: 'Andeutung: an Ihr Team weitergeleitet' },
+      { platform: 'facebook', author: 'Julia R.', text: 'Euer Preis ist eine Frechheit, ich bestelle nie wieder.', verdict: 'ok', reason: 'Unzufriedener Kunde, bleibt sichtbar' },
+    ],
+  },
+  it: {
+    live: 'Moderazione in diretta', charter: 'La tua policy', analysing: 'Lettura con la tua policy…',
+    verdicts: { ok: 'Pubblicato', hidden: 'Nascosto', review: 'Da rivedere' },
+    badges: ['Conforme al DSA', 'Ogni decisione spiegata', 'Attivo 24/7'],
+    items: [
+      { platform: 'site', author: 'Chiara M.', text: 'Grazie per questo articolo, finalmente qualcuno lo spiega con chiarezza.', verdict: 'ok', reason: 'Conforme alla tua policy' },
+      { platform: 'facebook', author: 'Kevin D.', text: 'Siete tutti degli idioti, ultimo avvertimento.', verdict: 'hidden', reason: 'Regola 2: insulto agli altri lettori' },
+      { platform: 'instagram', author: 'promo_win', text: 'VINCI un iPhone oggi ➜ regalo-gratis.xyz', verdict: 'hidden', reason: 'Regola 5: truffa e link sospetto' },
+      { platform: 'youtube', author: 'Samir B.', text: "Non sono d'accordo con l'autore, ecco perché…", verdict: 'ok', reason: 'Critica legittima, mantenuta' },
+      { platform: 'site', author: 'Anonimo', text: 'Ennesimo articolo pagato da sapete chi…', verdict: 'review', reason: 'Allusione: inviato al tuo team' },
+      { platform: 'facebook', author: 'Giulia R.', text: 'Il vostro prezzo è una vergogna, non ordinerò mai più.', verdict: 'ok', reason: 'Cliente scontento, lasciato visibile' },
+    ],
+  },
+};
+
+const c = copy[locale] ?? copy.en;
+
+const platforms = {
+  site: { label: 'Site', bg: 'linear-gradient(135deg,#8b5cf6,#6366f1)', path: 'M21 12a9 9 0 11-18 0 9 9 0 0118 0zM3.6 9h16.8M3.6 15h16.8M12 3a15 15 0 010 18M12 3a15 15 0 000 18' },
+  facebook: { label: 'Facebook', bg: '#1877f2', path: 'M14 8h2V5h-2a4 4 0 00-4 4v2H8v3h2v7h3v-7h2.5l.5-3h-3V9a1 1 0 011-1z' },
+  instagram: { label: 'Instagram', bg: 'linear-gradient(45deg,#f59e0b,#ec4899 55%,#8b5cf6)', path: 'M7 3h10a4 4 0 014 4v10a4 4 0 01-4 4H7a4 4 0 01-4-4V7a4 4 0 014-4zm5 5a4 4 0 100 8 4 4 0 000-8zm5.5-1.5h.01' },
+  youtube: { label: 'YouTube', bg: '#ff0033', path: 'M10 9l5 3-5 3V9z' },
+};
+const avatarColors = ['#fde68a', '#fbcfe8', '#c7d2fe', '#a7f3d0', '#fed7aa', '#ddd6fe'];
+const verdictStyle: Record<Verdict, string> = {
+  ok: 'bg-mint-100 text-mint-600',
+  hidden: 'bg-rose-100 text-rose-600',
+  review: 'bg-sun-100 text-sun-600',
+};
+const verdictIcon: Record<Verdict, string> = { ok: 'M5 13l4 4L19 7', hidden: 'M6 18L18 6M6 6l12 12', review: 'M12 8v4m0 4h.01' };
+---
+
+<div class="relative mx-auto w-full max-w-xl lg:max-w-none" data-hero-anim>
+  <!-- taches de couleur derrière la carte -->
+  <div class="joy-blob pointer-events-none absolute -left-10 -top-10 h-56 w-56 rounded-full bg-violet-300/50 blur-3xl" aria-hidden="true"></div>
+  <div class="joy-blob pointer-events-none absolute -bottom-12 -right-6 h-64 w-64 rounded-full bg-rose-300/40 blur-3xl" style="animation-delay:-6s" aria-hidden="true"></div>
+  <div class="joy-blob pointer-events-none absolute right-1/3 top-1/3 h-40 w-40 rounded-full bg-sun-300/40 blur-3xl" style="animation-delay:-11s" aria-hidden="true"></div>
+
+  <div class="relative overflow-hidden rounded-2xl border border-white/70 bg-white/90 shadow-[0_30px_60px_-20px_rgba(76,29,149,0.35)] backdrop-blur">
+    <div class="flex items-center justify-between border-b border-surface-100 bg-gradient-to-r from-brand-50 via-violet-50 to-rose-50 px-5 pb-3 pt-5">
+      <div class="flex items-center gap-2 text-sm font-semibold text-surface-900">
+        <span class="relative flex h-2.5 w-2.5"><span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-mint-400 opacity-75"></span><span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-mint-500"></span></span>
+        {c.live}
+      </div>
+      <span class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-violet-600 shadow-sm">✍️ {c.charter}</span>
+    </div>
+
+    <ul class="relative flex h-[23rem] flex-col gap-3 overflow-hidden p-4 sm:h-[24rem]" data-list aria-live="off">
+      {c.items.map((item, i) => {
+        const p = platforms[item.platform];
+        return (
+          <li class={`hero-row rounded-xl border border-surface-100 bg-white p-3 shadow-sm ${i > 3 ? 'hidden' : ''}`} data-row data-verdict={item.verdict}>
+            <div class="flex items-start gap-3">
+              <div class="relative shrink-0">
+                <div class="flex h-9 w-9 items-center justify-center rounded-full text-xs font-bold text-surface-800" style={`background:${avatarColors[i % avatarColors.length]}`}>{item.author.slice(0, 1)}</div>
+                <span class="absolute -bottom-1 -right-1 flex h-4.5 w-4.5 items-center justify-center rounded-full ring-2 ring-white" style={`background:${p.bg}`} title={p.label}>
+                  <svg class="h-2.5 w-2.5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d={p.path} /></svg>
+                </span>
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center justify-between gap-2">
+                  <p class="truncate text-xs font-semibold text-surface-800">{item.author} <span class="font-normal text-surface-400">· {p.label}</span></p>
+                  <span class={`hero-verdict inline-flex shrink-0 items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-bold ${verdictStyle[item.verdict]}`}>
+                    <svg class="h-3 w-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d={verdictIcon[item.verdict]} /></svg>
+                    {c.verdicts[item.verdict]}
+                  </span>
+                </div>
+                <p class={`mt-1 text-sm leading-snug ${item.verdict === 'hidden' ? 'hero-text-hidden' : ''} text-surface-700`}>{item.text}</p>
+                <p class="hero-reason mt-1.5 text-xs font-medium text-surface-500"><span class="hero-analysing text-violet-500">{c.analysing}</span><span class="hero-reason-text">→ {item.reason}</span></p>
+              </div>
+            </div>
+          </li>
+        );
+      })}
+    </ul>
+    <div class="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white to-transparent" aria-hidden="true"></div>
+  </div>
+
+  <!-- pastilles flottantes -->
+  <div class="joy-float absolute -top-4 left-8 z-10 hidden rounded-full bg-mint-500 px-3.5 py-1.5 text-xs font-bold text-white shadow-lg sm:block" style="--r:-4deg">✓ {c.badges[0]}</div>
+  <div class="joy-float absolute -bottom-5 right-6 z-10 hidden rounded-full bg-violet-500 px-3.5 py-1.5 text-xs font-bold text-white shadow-lg sm:block" style="--r:3deg; animation-delay:-2s">✍️ {c.badges[1]}</div>
+  <div class="joy-float absolute -bottom-5 left-8 z-10 hidden rounded-full bg-sun-400 px-3.5 py-1.5 text-xs font-bold text-surface-900 shadow-lg sm:block" style="--r:-2deg; animation-delay:-4s">⚡ {c.badges[2]}</div>
+</div>
+
+<style>
+  .hero-row { animation: joy-in .5s cubic-bezier(.2,.7,.2,1) both; }
+  .hero-text-hidden { transition: opacity .4s ease; }
+  [data-row].is-hidden-verdict .hero-text-hidden { opacity: .45; text-decoration: line-through; text-decoration-color: rgba(225, 29, 72, .5); }
+  .hero-analysing { display: none; }
+  [data-row].is-pending .hero-analysing { display: inline; }
+  [data-row].is-pending .hero-reason-text { display: none; }
+  [data-row].is-pending .hero-verdict { opacity: 0; transform: scale(.6); }
+  [data-row]:not(.is-pending) .hero-verdict { animation: joy-pop .45s cubic-bezier(.2,.7,.2,1) both; }
+  [data-row][data-verdict="hidden"]:not(.is-pending) { border-color: var(--color-rose-100); background: linear-gradient(90deg, rgba(255,241,242,.7), #fff 60%); }
+  [data-row][data-verdict="review"]:not(.is-pending) { border-color: var(--color-sun-100); background: linear-gradient(90deg, rgba(255,251,235,.8), #fff 60%); }
+  [data-row][data-verdict="ok"]:not(.is-pending) { border-color: var(--color-mint-100); }
+  @media (prefers-reduced-motion: reduce) { .hero-row, [data-row] .hero-verdict { animation: none !important; } }
+</style>
+
+<script>
+  // Fait défiler les commentaires : le plus récent arrive en haut, est « lu », puis reçoit sa décision.
+  document.querySelectorAll<HTMLElement>('[data-hero-anim]').forEach((root) => {
+    const list = root.querySelector<HTMLElement>('[data-list]');
+    if (!list) return;
+    const rows = Array.from(list.querySelectorAll<HTMLElement>('[data-row]'));
+    const decide = (row: HTMLElement) => {
+      row.classList.remove('is-pending');
+      if (row.dataset.verdict === 'hidden') row.classList.add('is-hidden-verdict');
+    };
+    rows.forEach((r) => { if (!r.classList.contains('hidden')) decide(r); });
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    let next = 4 % rows.length;
+    setInterval(() => {
+      const row = rows[next];
+      row.classList.remove('hidden', 'is-hidden-verdict');
+      row.classList.add('is-pending');
+      row.style.animation = 'none';
+      void row.offsetWidth;
+      row.style.animation = '';
+      list.prepend(row);
+      const visible = Array.from(list.querySelectorAll<HTMLElement>('[data-row]:not(.hidden)'));
+      visible.slice(4).forEach((r) => r.classList.add('hidden'));
+      setTimeout(() => decide(row), 1100);
+      next = (next + 1) % rows.length;
+    }, 2600);
+  });
+</script>

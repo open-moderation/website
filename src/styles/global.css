@@ -46,13 +46,37 @@
   --color-turquoise: #60a5fa;
   --color-coral: #f4a261;
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  --font-display: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Bricolage Grotesque', 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-serif: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
-  --radius-md: 4px;
-  --radius-lg: 4px;
-  --radius-xl: 10px;
-  --radius-2xl: 12px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 18px;
+  --radius-2xl: 24px;
+  --color-sun-50: #fffbeb;
+  --color-sun-100: #fef3c7;
+  --color-sun-300: #fcd34d;
+  --color-sun-400: #fbbf24;
+  --color-sun-500: #f59e0b;
+  --color-sun-600: #d97706;
+  --color-rose-50: #fff1f2;
+  --color-rose-100: #ffe4e6;
+  --color-rose-300: #fda4af;
+  --color-rose-400: #fb7185;
+  --color-rose-500: #f43f5e;
+  --color-rose-600: #e11d48;
+  --color-violet-50: #f5f3ff;
+  --color-violet-100: #ede9fe;
+  --color-violet-300: #c4b5fd;
+  --color-violet-400: #a78bfa;
+  --color-violet-500: #8b5cf6;
+  --color-violet-600: #7c3aed;
+  --color-violet-900: #3b0764;
+  --color-mint-50: #ecfdf5;
+  --color-mint-100: #d1fae5;
+  --color-mint-400: #34d399;
+  --color-mint-500: #10b981;
+  --color-mint-600: #059669;
   --shadow-sm: 0 2px 6px rgba(15, 23, 42, 0.08);
   --shadow-md: 0 10px 30px rgba(15, 23, 42, 0.1);
   --shadow-lg: 0 16px 24px rgba(15, 23, 42, 0.14);
@@ -98,7 +122,12 @@ html { scroll-behavior: smooth; scroll-padding-top: 80px; }
 @layer base {
   body { @apply bg-white text-surface-600 antialiased; font-family: var(--font-sans); }
   h1, h2, h3, h4 { font-family: var(--font-display); color: var(--color-surface-900); letter-spacing: -0.01em; }
-  h1 em, h2 em { font-style: normal; color: var(--color-brand-600); }
+  h1, h2 { letter-spacing: -0.02em; }
+  h1 em, h2 em {
+    font-style: normal;
+    background: linear-gradient(100deg, var(--color-brand-600) 0%, var(--color-violet-500) 45%, var(--color-rose-500) 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
 }
 @layer base {
   ::selection { @apply bg-brand-200 text-brand-900; }
@@ -123,4 +152,68 @@ html { scroll-behavior: smooth; scroll-padding-top: 80px; }
   .prose a { color: var(--color-brand-600); text-decoration: underline; text-underline-offset: 2px; }
   .prose :not(pre) > code { font-family: var(--font-mono); font-size: 0.875em; background: var(--color-surface-100); border-radius: 0.25rem; padding: 0.1rem 0.3rem; color: var(--color-surface-800); }
   .prose pre { margin-top: 1.25rem; margin-bottom: 1.25rem; }
+}
+
+/* ---------- Joie : couleurs, mouvements, reliefs ---------- */
+
+/* Boutons principaux : dégradé bleu → violet, léger rebond au survol */
+a.bg-brand-900, button.bg-brand-900 {
+  background-image: linear-gradient(120deg, var(--color-brand-600) 0%, var(--color-violet-600) 100%);
+  box-shadow: 0 8px 20px -8px rgba(124, 58, 237, 0.55);
+  transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+}
+a.bg-brand-900:hover, button.bg-brand-900:hover {
+  transform: translateY(-2px);
+  filter: saturate(1.15);
+  box-shadow: 0 14px 28px -10px rgba(124, 58, 237, 0.65);
+}
+
+/* Hauts de page : taches de couleur douces */
+section.from-brand-50 {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(40rem 22rem at 8% 0%, rgba(96, 165, 250, .28), transparent 70%),
+    radial-gradient(34rem 20rem at 92% 10%, rgba(167, 139, 250, .26), transparent 70%),
+    radial-gradient(30rem 18rem at 70% 100%, rgba(251, 113, 133, .16), transparent 70%),
+    radial-gradient(26rem 16rem at 20% 100%, rgba(251, 191, 36, .16), transparent 70%),
+    #fff;
+}
+
+/* Bandeaux sombres : nuit bleue et violette au lieu du gris ardoise */
+section.bg-ink-900 {
+  background:
+    radial-gradient(40rem 24rem at 0% 0%, rgba(59, 130, 246, .45), transparent 65%),
+    radial-gradient(36rem 22rem at 100% 100%, rgba(236, 72, 153, .35), transparent 65%),
+    linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%);
+}
+section.bg-ink-900 .bg-ink-800 { background: rgba(255, 255, 255, .08); }
+section.bg-ink-900 .border-ink-700 { border-color: rgba(255, 255, 255, .16); }
+
+/* Pastilles d'icônes : une couleur différente par carte */
+.grid > :nth-child(4n+2) .bg-brand-100.text-brand-600 { background: var(--color-rose-100); color: var(--color-rose-600); }
+.grid > :nth-child(4n+3) .bg-brand-100.text-brand-600 { background: var(--color-sun-100); color: var(--color-sun-600); }
+.grid > :nth-child(4n+4) .bg-brand-100.text-brand-600 { background: var(--color-mint-100); color: var(--color-mint-600); }
+.grid > :nth-child(4n+1) .bg-brand-100.text-brand-600 { background: var(--color-violet-100); color: var(--color-violet-600); }
+
+/* Cartes cliquables : elles se soulèvent */
+a.rounded-xl, .lift { transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+a.rounded-xl:hover, .lift:hover { transform: translateY(-4px); box-shadow: 0 18px 36px -16px rgba(30, 27, 75, .25); }
+
+/* Apparition au défilement (classe posée par le script de BaseLayout) */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s cubic-bezier(.2,.7,.2,1); }
+.reveal.is-visible { opacity: 1; transform: none; }
+
+/* Animation du haut de page */
+@keyframes joy-float { 0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); } 50% { transform: translateY(-10px) rotate(var(--r, 0deg)); } }
+@keyframes joy-in { from { opacity: 0; transform: translateY(16px) scale(.97); } to { opacity: 1; transform: none; } }
+@keyframes joy-pop { 0% { opacity: 0; transform: scale(.6); } 70% { transform: scale(1.08); } 100% { opacity: 1; transform: scale(1); } }
+@keyframes joy-blob { 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(30px, -20px) scale(1.08); } 66% { transform: translate(-20px, 20px) scale(.95); } }
+.joy-float { animation: joy-float 6s ease-in-out infinite; }
+.joy-blob { animation: joy-blob 18s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .joy-float, .joy-blob { animation: none; }
+  a.bg-brand-900:hover, a.rounded-xl:hover, .lift:hover { transform: none; }
 }

@@ -5,14 +5,21 @@ export interface Props {
 }
 
 const { items, light = false } = Astro.props;
+
+const gradients = [
+  'from-brand-600 to-violet-500',
+  'from-violet-600 to-rose-500',
+  'from-rose-500 to-sun-500',
+  'from-mint-600 to-brand-500',
+];
 ---
 
 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-  <dl class={`grid gap-px overflow-hidden rounded-xl ${light ? 'divide-white/10 bg-white/10' : 'divide-surface-200 bg-surface-200'} grid-cols-2 sm:grid-cols-4`}>
-    {items.map((item) => (
-      <div class={`px-6 py-8 text-center ${light ? 'bg-ink-900' : 'bg-white'}`}>
-        <dt class={`text-sm font-medium ${light ? 'text-surface-400' : 'text-surface-500'}`}>{item.label}</dt>
-        <dd class={`mt-2 text-3xl font-bold tracking-tight ${light ? 'text-coral' : 'text-surface-900'} sm:text-4xl`}>
+  <dl class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+    {items.map((item, i) => (
+      <div class={`lift flex flex-col-reverse rounded-2xl px-6 py-7 text-center ${light ? 'bg-white/10 ring-1 ring-white/15' : 'bg-white shadow-[0_12px_30px_-18px_rgba(76,29,149,0.35)] ring-1 ring-surface-100'}`}>
+        <dt class={`mt-2 text-sm font-medium ${light ? 'text-surface-300' : 'text-surface-500'}`}>{item.label}</dt>
+        <dd class={`bg-gradient-to-r bg-clip-text font-display text-4xl font-extrabold tracking-tight text-transparent sm:text-5xl ${gradients[i % gradients.length]}`}>
           {item.prefix}{item.value}
         </dd>
       </div>
