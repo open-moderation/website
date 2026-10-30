@@ -1,0 +1,168 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CharterSupport from '../../components/CharterSupport.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import CTASection from '../../components/CTASection.astro';
+import BrowserFrame from '../../components/BrowserFrame.astro';
+import ModerationVerdict from '../../components/ModerationVerdict.astro';
+import ClientLogos from '../../components/ClientLogos.astro';
+import FAQ from '../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+const L = (p: string) => localizePath(p, locale);
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": `https://www.openmoderation.com${L('/social-media-moderation')}`,
+  "name": "Moderação de redes sociais com IA: Facebook, Instagram, YouTube",
+  "description": "Uma ferramenta de moderação de redes sociais que oculta automaticamente comentários de ódio, spam e golpes no Facebook, Instagram e YouTube, de acordo com as suas regras, com um motivo por escrito para cada decisão.",
+  "inLanguage": "pt",
+  "about": { "@id": "https://www.openmoderation.com/#software" }
+};
+
+const platforms = [
+  { name: "Facebook", href: L('/integrations/facebook'), text: "Os comentários nas publicações das suas Páginas são analisados assim que chegam. Os que violam as suas regras são ocultados automaticamente." },
+  { name: "Instagram", href: L('/integrations/instagram'), text: "Os comentários nas suas publicações do Instagram são analisados da mesma forma e ocultados quando violam as suas regras." },
+  { name: "YouTube", href: L('/integrations/youtube'), text: "Cada comentário nos seus vídeos é publicado, retido para revisão ou rejeitado, diretamente pela API do YouTube." },
+  { name: "WordPress", href: L('/integrations/wordpress'), text: "Os comentários do seu site são aprovados, retidos para moderação ou marcados como spam, sem nenhum plugin para desenvolver." },
+];
+
+const steps = [
+  { title: "Conecte as suas contas", text: "Facebook, Instagram, YouTube ou WordPress se conectam em poucos cliques, sem precisar de desenvolvedor." },
+  { title: "Escreva as suas regras", text: "A sua política de moderação em linguagem natural, palavras proibidas e um limite para cada categoria. Uma predefinição equilibrada permite começar na hora." },
+  { title: "A IA aplica as suas regras", text: "O que viola claramente as suas regras é ocultado, os comentários aceitáveis continuam no ar e os casos limítrofes são tratados pela nossa equipe. Você vê cada decisão em tempo real." },
+  { title: "Cada decisão é explicada", text: "Um motivo por escrito acompanha cada decisão, automática ou humana, e fica guardado na trilha de auditoria." },
+];
+
+const faqItems = [
+  {
+    question: "Quais redes sociais o OpenModeration consegue moderar?",
+    answer: "Facebook, Instagram e YouTube, além de sites WordPress, por meio de conectores nativos. Para outras fontes, você pode enviar o conteúdo pela API REST ou por webhooks. TikTok, X e LinkedIn não têm conector nativo hoje.",
+  },
+  {
+    question: "Preciso programar para moderar as minhas redes sociais com o OpenModeration?",
+    answer: "Não. Você conecta as suas contas, escreve as suas regras em linguagem natural e resolve os casos limítrofes com um clique no console. A API só é útil se você quiser conectar uma plataforma própria.",
+  },
+  {
+    question: "Os comentários são excluídos ou ocultados?",
+    answer: "No Facebook e no Instagram, os comentários que violam as suas regras são ocultados. No YouTube, são rejeitados ou retidos para revisão. No WordPress, ficam retidos para moderação ou são marcados como spam. Em todos os casos, a decisão e o motivo ficam na trilha de auditoria.",
+  },
+  {
+    question: "Quanto custa uma ferramenta de moderação de redes sociais como o OpenModeration?",
+    answer: "O plano gratuito cobre até 1.000 requisições por mês, cerca de 30 comentários por dia. O plano Pro custa 99 € por mês para 10.000 requisições. A implantação on-premise é possível sob consulta: fale conosco.",
+  },
+  {
+    question: "Onde os dados ficam hospedados?",
+    answer: "O OpenModeration é desenvolvido e hospedado na União Europeia e está em conformidade com o RGPD. Uma implantação on-premise é possível sob consulta: fale conosco.",
+  },
+];
+---
+
+<BaseLayout title="Moderação de redes sociais com IA, sem código" description="Oculte automaticamente comentários de ódio, spam e golpes no Facebook, Instagram e YouTube, seguindo as suas regras. Cada decisão é explicada. Comece grátis." jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Início", href: L('/') }, { label: "Moderação de redes sociais" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Facebook • Instagram • YouTube • WordPress
+      </div>
+      <h1 class="mx-auto max-w-4xl text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Moderação de redes sociais automática e explicada</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Insultos, spam e golpes se acumulam nas suas publicações a qualquer hora do dia. O OpenModeration os oculta automaticamente de acordo com as suas regras, em todas as suas contas ao mesmo tempo, e registra por escrito por que cada comentário foi removido.
+      </p>
+      <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">Experimente grátis</a>
+        <a href={L('/how-it-works')} class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">Veja como funciona</a>
+      </div>
+      <p class="mt-4 text-sm text-surface-400">Sem cartão de crédito</p>
+      <div class="mt-10">
+        <ClientLogos />
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-3xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">O que o OpenModeration faz em cada rede</h2>
+        <p class="mt-4 text-lg text-surface-500">Um único console e as mesmas regras para todas as suas contas. A ação executada depende do que cada plataforma permite.</p>
+      </div>
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        {platforms.map((p) => (
+          <a href={p.href} class="block rounded-xl border border-surface-200 bg-white p-6 transition hover:-translate-y-0.5 hover:shadow-md">
+            <h3 class="text-lg font-semibold text-surface-900">{p.name}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-surface-500">{p.text}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Quatro etapas, nenhuma linha de código</h2>
+          <ol class="mt-8 space-y-4">
+            {steps.map((s, i) => (
+              <li class="flex items-start gap-4 rounded-lg border border-surface-200 bg-white p-4">
+                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-100 text-sm font-semibold text-brand-700">{i + 1}</span>
+                <div>
+                  <p class="text-sm font-medium text-surface-900">{s.title}</p>
+                  <p class="mt-1 text-sm text-surface-500">{s.text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+        <BrowserFrame caption="Um comentário ocultado, a regra violada e o motivo por escrito, visíveis em tempo real para você e a sua equipe.">
+          <ModerationVerdict slot="content" />
+        </BrowserFrame>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Por que uma ferramenta dedicada supera os filtros nativos</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Contexto, não apenas palavras-chave</h3>
+          <p class="mt-2 text-sm text-surface-500">Uma lista de palavras bloqueadas deixa passar sarcasmo, insultos disfarçados e golpes bem elaborados. Os modelos de IA leem a frase inteira e a avaliam à luz da sua política de moderação.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Um console para todas as suas contas</h3>
+          <p class="mt-2 text-sm text-surface-500">Chega de pular de uma rede para outra: todas as decisões do Facebook, do Instagram, do YouTube e do seu site aparecem no mesmo console, e a nossa equipe trata os casos limítrofes.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Decisões que você consegue justificar</h3>
+          <p class="mt-2 text-sm text-surface-500">Cada comentário removido guarda a regra e o motivo por escrito. Se um seguidor contestar, você sabe o que responder, e a trilha de auditoria está pronta para o DSA.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Moderação de redes sociais: perguntas frequentes" items={faqItems} />
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Para saber mais</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={L('/content-moderation-policy')} class="font-medium text-brand-600 hover:text-brand-500">Política de moderação de conteúdo: guia e modelo &rarr;</a></li>
+        <li><a href={L('/use-cases/news-publishers')} class="font-medium text-brand-600 hover:text-brand-500">Moderação de comentários para veículos de mídia &rarr;</a></li>
+        <li><a href={L('/alternatives/bodyguard')} class="font-medium text-brand-600 hover:text-brand-500">OpenModeration vs Bodyguard: o comparativo &rarr;</a></li>
+        <li><a href={L('/dsa-compliance/statement-of-reasons')} class="font-medium text-brand-600 hover:text-brand-500">A exposição de motivos exigida pelo DSA &rarr;</a></li>
+        <li><a href={L('/pricing')} class="font-medium text-brand-600 hover:text-brand-500">Preços &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <CTASection title="Proteja as suas redes sociais em 5 minutos." subtitle="Conecte as suas contas e escreva as suas regras em linguagem natural: cada comentário ocultado vem com um motivo por escrito." />
+</BaseLayout>

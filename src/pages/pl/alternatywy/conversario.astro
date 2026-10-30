@@ -1,0 +1,241 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const title = "Alternatywa dla Conversario: porównanie z OpenModeration";
+const description = "Conversario czy OpenModeration? Porównanie ze źródłami dla mediów: kanały, jawne ceny, hosting w UE i pisemne uzasadnienie każdej decyzji moderacyjnej.";
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/pl/alternatywy/conversario",
+  "name": title,
+  "description": description,
+  "inLanguage": "pl",
+  "about": {
+    "@id": "https://www.openmoderation.com/#software"
+  }
+};
+
+const rows = [
+  {
+    "feature": "Oferta",
+    "them": "Zarządzanie dialogiem w modułach: ochrona, wykrywanie kluczowych użytkowników, interakcja i relacje",
+    "openmod": "Moderacja komentarzy z pomocą AI, konfigurowana z zespołem Logora według Twoich zasad i przypadków użycia"
+  },
+  {
+    "feature": "Kanały",
+    "them": "Media społecznościowe (według strony m.in. TikTok, LinkedIn i Threads), aplikacje, czaty, strony internetowe i kanały wewnętrzne",
+    "openmod": "Strony internetowe (API), WordPress, strony na Facebooku, konta profesjonalne na Instagramie i kanały YouTube"
+  },
+  {
+    "feature": "Cena",
+    "them": "Nie podano. 30-dniowy bezpłatny okres próbny bez automatycznego przedłużenia",
+    "openmod": "Jawne ceny: za darmo do 1000 zapytań miesięcznie, Pro za 99 € miesięcznie (10 000 zapytań), Enterprise – wycena indywidualna"
+  },
+  {
+    "feature": "Test bez ryzyka",
+    "them": "Tryb „dry-run”, który pokazuje, co zrobiłaby AI, bez podejmowania działań",
+    "openmod": "Tryb sandbox na prawdziwych komentarzach, bez ukrywania czegokolwiek"
+  },
+  {
+    "feature": "Pisemne uzasadnienie każdej decyzji",
+    "them": "Nie podano na stronie",
+    "openmod": "Tak, pisemne uzasadnienie każdej decyzji"
+  },
+  {
+    "feature": "DSA",
+    "them": "Osobne strony poświęcone moderacji i raportowaniu zgodnemu z DSA",
+    "openmod": "Zgłoszenia i działania, uzasadnienie decyzji, weryfikacja zakwestionowanych decyzji przez człowieka, eksportowalne dane i pełny dziennik aktywności"
+  },
+  {
+    "feature": "Hosting danych",
+    "them": "Nie podano; informacja o plikach cookie wskazuje, że część dostawców przetwarza dane w USA",
+    "openmod": "Hosting w UE, zgodność z RODO"
+  },
+  {
+    "feature": "Modele AI",
+    "them": "„AI Conversario”; model nie jest opisany",
+    "openmod": "Własna AI do moderacji, weryfikowana przez inne modele AI; nowe modele podłączane na bieżąco, gdy się pojawiają"
+  },
+  {
+    "feature": "Klienci",
+    "them": "FAZ, RTL, Tagesschau, ORF, Axel Springer, SPIEGEL, n-tv, NZZ",
+    "openmod": "L'Équipe, Challenges, Sud Ouest, actu.fr, Estadão, Südkurier, Egora"
+  }
+];
+
+const faqItems = [
+  {
+    "question": "Jaka jest najlepsza alternatywa dla Conversario?",
+    "answer": "To zależy od Twoich kanałów i wymagań. Jeśli zależy Ci na jawnych cenach, hostingu w UE i pisemnym uzasadnieniu każdego ukrytego komentarza, OpenModeration spełnia te kryteria. Jeśli musisz moderować TikToka, LinkedIna lub Threads albo chcesz mieć analitykę i asystentów dialogu w jednym narzędziu, Conversario to oferuje, a OpenModeration nie."
+  },
+  {
+    "question": "Ile kosztuje Conversario?",
+    "answer": "Conversario nie publikuje cen; oferuje 30-dniowy bezpłatny okres próbny, który według regulaminu kończy się bez opłat i bez automatycznego przedłużenia. OpenModeration publikuje swoje ceny: za darmo do 1000 zapytań miesięcznie, Pro za 99 € miesięcznie za 10 000 zapytań i Enterprise z wyceną indywidualną dla dużych wolumenów."
+  },
+  {
+    "question": "Conversario czy OpenModeration: co wybrać?",
+    "answer": "Wybierz Conversario, jeśli musisz moderować TikToka, LinkedIna lub Threads. Wybierz OpenModeration, jeśli chcesz poznać cenę przed rozmową z handlowcem, zależy Ci na pisemnym uzasadnieniu każdej decyzji i na zespole, który konfiguruje moderację razem z Tobą według Twoich zasad i przypadków użycia."
+  },
+  {
+    "question": "Czy można przetestować OpenModeration, nie rezygnując z Conversario?",
+    "answer": "Tak. W trybie sandbox OpenModeration analizuje Twoje prawdziwe komentarze, niczego nie ukrywając. Conversario działa dalej, a obie serie decyzji porównujesz komentarz po komentarzu, zanim cokolwiek zmienisz."
+  },
+  {
+    "question": "Jakich modeli AI używa OpenModeration?",
+    "answer": "OpenModeration działa na własnej AI do moderacji, a w trudnych przypadkach jej decyzję weryfikują inne modele AI. Gdy pojawia się lepszy lub tańszy model, zespół szybko go podłącza, bez żadnych zmian po Twojej stronie: Twoja moderacja korzysta z postępu modeli AI."
+  },
+  {
+    "question": "Czy OpenModeration pomaga spełnić obowiązki z DSA?",
+    "answer": "Tak. OpenModeration zapisuje uzasadnienie każdej decyzji, rejestruje, czy była automatyczna, czy podjął ją konkretny moderator, i dostarcza elementy wymagane przez DSA: zgłoszenia i działania, uzasadnienie decyzji, weryfikację zakwestionowanych decyzji przez człowieka i eksportowalne dane."
+  }
+];
+---
+
+<BaseLayout title={title} description={description} jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Strona główna", href: localizePath('/', locale) }, { label: "Alternatywy", href: localizePath('/alternatives', locale) }, { label: "Conversario" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Porównanie
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Alternatywa dla Conversario: porównanie z OpenModeration</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Najlepsza alternatywa dla Conversario zależy od Twoich kanałów i wymagań: jeśli zależy Ci na jawnych cenach, hostingu w UE i pisemnym uzasadnieniu każdego ukrytego komentarza, OpenModeration spełnia te kryteria. Jeśli musisz moderować TikToka, LinkedIna lub Threads albo chcesz mieć analitykę i asystentów dialogu w jednym narzędziu, Conversario to oferuje, a OpenModeration nie.
+      </p>
+      <p class="mx-auto mt-6 max-w-2xl rounded-xl border border-surface-200 bg-white px-5 py-4 text-sm text-surface-600">
+        Warto wiedzieć: Conversario to produkt firmy ferret go GmbH (Ferret Go). <a href={localizePath('/alternatives/ferret-go-vs-conversario', locale)} class="text-brand-600 hover:text-brand-500">Ferret Go i Conversario: na czym polega różnica</a> · <a href={localizePath('/alternatives/ferret-go', locale)} class="text-brand-600 hover:text-brand-500">Alternatywa dla Ferret Go</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold tracking-tight text-surface-900">Dla kogo jest Conversario?</h2>
+      <p class="mt-4 text-surface-600">Conversario, produkt firmy ferret go GmbH spod Berlina, to narzędzie do zarządzania dialogiem, popularne wśród niemieckojęzycznych wydawców i nadawców. Według strony składa się z modułów (Protect, Detect, Interact, Connect), łączy się z mediami społecznościowymi, aplikacjami, czatami i stronami internetowymi, a wśród klientów wymienia SPIEGEL, RTL, FAZ, NZZ, ORF i n-tv.</p>
+      <p class="mt-4 text-surface-600">OpenModeration moderuje z pomocą AI komentarze mediów, marek i instytucji publicznych: na ich stronach, stronach na Facebooku, kontach na Instagramie i kanałach YouTube. Automatycznie ukrywa oczywiste naruszenia, zostawia widoczną uzasadnioną krytykę, a wątpliwe przypadki przekazuje naszemu zespołowi w jednej konsoli. Zespół Logora, działający w Paryżu od 2019 roku, konfiguruje ją razem z Tobą według Twoich zasad i przypadków użycia.</p>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Conversario i OpenModeration punkt po punkcie</h2>
+      <p class="mt-4 text-surface-500">Informacje o Conversario pochodzą z jego strony conversar.io (dostęp: 30 października 2026).</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Kryterium</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Conversario</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.them}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Wybierz OpenModeration, jeśli…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>chcesz poznać cenę przed rozmową z handlowcem;</li>
+          <li>Twoja redakcja potrzebuje pisemnego uzasadnienia każdego ukrytego komentarza;</li>
+          <li>chcesz mieć pełny dziennik każdej decyzji moderacyjnej;</li>
+          <li>Twoje dane muszą pozostać w Unii Europejskiej.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">Conversario może lepiej pasować, jeśli…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>musisz moderować TikToka, LinkedIna lub Threads;</li>
+          <li>chcesz mieć analitykę, asystenta dialogu i moderację w jednym narzędziu;</li>
+          <li>ważna jest dla Ciebie długa lista referencji wśród niemieckojęzycznych mediów.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h2 class="text-xl font-bold text-surface-900">AI, która nadąża za postępem modeli</h2>
+          <p class="mt-3 text-sm text-surface-600">OpenModeration działa na własnej AI do moderacji, a w trudnych przypadkach jej decyzję weryfikują inne modele AI. Gdy pojawia się lepszy lub tańszy model, zespół szybko go podłącza, bez żadnych zmian po Twojej stronie. Moderacja podąża za postępem rynku AI, zamiast tkwić przy jednym algorytmie. Conversario pisze na swojej stronie o „AI Conversario”, nie opisując modelu.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h2 class="text-xl font-bold text-surface-900">Cennik: Conversario a OpenModeration</h2>
+          <p class="mt-3 text-sm text-surface-600">Conversario nie publikuje cen; oferuje 30-dniowy bezpłatny okres próbny, który według regulaminu kończy się bez opłat i bez automatycznego przedłużenia. OpenModeration publikuje swoje ceny: za darmo do 1000 zapytań miesięcznie, Pro za 99 € miesięcznie za 10 000 zapytań i Enterprise z wyceną indywidualną dla dużych wolumenów. Wdrożenie on-premise jest możliwe na życzenie. <a href={localizePath('/book-a-call', locale)} class="font-medium text-brand-600 hover:text-brand-500">Umów rozmowę</a>, aby policzyć koszt w Twoim przypadku.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Przejście z Conversario na OpenModeration w 3 krokach</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">1. Test w trybie sandbox</h3>
+          <p class="mt-2 text-sm text-surface-600">Podłącz stronę, WordPressa lub strony na Facebooku, Instagramie i YouTube. OpenModeration analizuje prawdziwe komentarze, niczego nie ukrywając, a Conversario działa dalej.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">2. Dopracowanie z zespołem Logora</h3>
+          <p class="mt-2 text-sm text-surface-600">Porównujemy decyzje z decyzjami obecnego narzędzia i dopasowujemy moderację do Twoich zasad i przypadków użycia, z pisemnym uzasadnieniem każdej decyzji na widoku.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">3. Włączanie kanał po kanale</h3>
+          <p class="mt-2 text-sm text-surface-600">Włącz moderację w jednym kanale, potem w kolejnych. Wątpliwymi przypadkami zajmuje się nasz zespół, a każda decyzja zostaje w dzienniku aktywności.</p>
+        </div>
+      </div>
+      <p class="mt-8 text-center text-surface-600">Chcesz zobaczyć to na własnych komentarzach? <a href={localizePath('/book-a-call', locale)} class="font-medium text-brand-600 hover:text-brand-500">Umów rozmowę z zespołem</a>.</p>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Najczęściej zadawane pytania" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        Conversario jest znakiem towarowym swojego właściciela. Źródła: <a href="https://www.conversar.io/en" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">www.conversar.io/en</a>, <a href="https://www.conversar.io/en/about" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">www.conversar.io/en/about</a>, <a href="https://www.conversar.io/en/terms" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">www.conversar.io/en/terms</a> (dostęp: 30 października 2026). Widzisz błąd? Napisz do nas: <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Dowiedz się więcej</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/use-cases/news-publishers', locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderacja komentarzy dla mediów &rarr;</a></li>
+        <li><a href={localizePath('/dsa-compliance/statement-of-reasons', locale)} class="font-medium text-brand-600 hover:text-brand-500">Uzasadnienie decyzji wymagane przez DSA &rarr;</a></li>
+        <li><a href={localizePath('/blog/comment-moderation-guide', locale)} class="font-medium text-brand-600 hover:text-brand-500">Poradnik moderacji komentarzy &rarr;</a></li>
+        <li><a href={localizePath('/moderation-software', locale)} class="font-medium text-brand-600 hover:text-brand-500">Oprogramowanie do moderacji OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/pricing', locale)} class="font-medium text-brand-600 hover:text-brand-500">Cennik OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/alternatives', locale)} class="font-medium text-brand-600 hover:text-brand-500">Wszystkie porównania &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Porównaj obecną moderację z OpenModeration." subtitle="Przetestuj OpenModeration w trybie sandbox na własnych komentarzach, niczego nie ukrywając. Za darmo do 1000 zapytań miesięcznie." buttonText="Umów rozmowę" buttonHref={localizePath('/book-a-call', locale)} />
+</BaseLayout>

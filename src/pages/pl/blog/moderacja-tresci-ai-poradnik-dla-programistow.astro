@@ -1,0 +1,132 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
+import CodeBlock from '../../../components/CodeBlock.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Moderacja treści w aplikacjach AI: poradnik dla programistów",
+  "description": "Jak wdrożyć filtrowanie wejścia i wyjścia w aplikacjach opartych na modelach LLM.",
+  "inLanguage": "pl",
+  "datePublished": "2026-06-05",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/pl/blog/moderacja-tresci-ai-poradnik-dla-programistow" },
+  "dateModified": "2026-06-05"
+};
+
+const pattern1 = `User Input -> Input Moderation -> { if flagged -> reject } -> LLM
+LLM Output -> Output Moderation -> { if flagged -> fallback response } -> User`;
+
+const pattern2 = `User Input -> Input Moderation + LLM (in parallel)
+-> Wait for moderation result
+-> If flagged -> discard LLM response & show error
+-> If not flagged -> show LLM response after output moderation`;
+---
+
+<BaseLayout title="Moderacja treści w aplikacjach AI: poradnik dla deweloperów" description="Jak wdrożyć filtrowanie wejścia i wyjścia w aplikacjach opartych na LLM. Dobre praktyki ochrony przed prompt injection i bezpieczeństwa generowanych treści." jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Strona główna", href: localizePath('/', locale) }, { label: "Blog", href: localizePath('/blog', locale) }, { label: "Moderacja treści w aplikacjach AI" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-06-05">5 czerwca 2026</time>
+        <span>&middot;</span>
+        <span>10 min czytania</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Moderacja treści w aplikacjach AI: poradnik dla programistów</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Każda aplikacja oparta na modelu LLM potrzebuje moderacji treści. Jednym powodem jest zgodność z przepisami.
+        Pozostałe to bezpieczeństwo, zaufanie użytkowników i ochrona modelu przed złośliwymi danymi wejściowymi.
+      </p>
+      <p>
+        W tym poradniku omawiamy dwie strony moderacji treści w AI: filtrowanie tego, co użytkownicy
+        wysyłają do modelu, oraz filtrowanie tego, co model odsyła użytkownikom.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Dwa filtry, których potrzebuje każda aplikacja AI</h2>
+
+      <h3 class="text-lg font-semibold text-surface-900">1. Filtrowanie wejścia</h3>
+      <p>
+        Zanim dane od użytkownika trafią do modelu, sprawdź je pod kątem:
+      </p>
+      <ul>
+        <li><strong>Szkodliwych treści:</strong> mowa nienawiści, nękanie, groźby, treści o charakterze seksualnym</li>
+        <li><strong>Prompt injection:</strong> próby nadpisania promptu systemowego lub „jailbreaku” modelu</li>
+        <li><strong>Nielegalnych próśb:</strong> instrukcje dotyczące działań niezgodnych z prawem, produkcji narkotyków itp.</li>
+        <li><strong>Wycieku danych osobowych:</strong> użytkownicy, którzy przypadkiem udostępniają dane osobowe</li>
+      </ul>
+
+      <h3 class="text-lg font-semibold text-surface-900">2. Filtrowanie wyjścia</h3>
+      <p>
+        Zanim odpowiedź modelu trafi do użytkowników, sprawdź ją pod kątem:
+      </p>
+      <ul>
+        <li><strong>Szkodliwych treści wygenerowanych przez model:</strong> mowa nienawiści, przemoc itp.</li>
+        <li><strong>Generowania danych osobowych:</strong> model, który przypadkiem tworzy prawdziwe lub zmyślone dane osobowe</li>
+        <li><strong>Niebezpiecznych halucynacji:</strong> porady medyczne, prawne, rekomendacje finansowe</li>
+        <li><strong>Naruszeń zasad:</strong> treści sprzecznych z regulaminem aplikacji</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Wzorce implementacji</h2>
+
+<p><strong>Wzorzec 1: filtrowanie sekwencyjne (zalecane dla większości aplikacji)</strong></p>
+<CodeBlock code={pattern1} lang="text" />
+
+<p><strong>Wzorzec 2: filtrowanie równoległe (gdy liczy się niskie opóźnienie)</strong></p>
+<CodeBlock code={pattern2} lang="text" />
+
+      <h2 class="text-xl font-bold text-surface-900">Ochrona wielowarstwowa z wieloma dostawcami</h2>
+      <p>
+        Poleganie na jednym dostawcy moderacji tworzy pojedynczy punkt awarii i martwe pola.
+        Kilka warstw dostawców sprawdza się lepiej:
+      </p>
+      <ul>
+        <li><strong>OpenAI Moderation</strong> do ogólnego wykrywania szkodliwych treści</li>
+        <li><strong>Llama Guard</strong> (we własnej infrastrukturze) do filtrowania wrażliwych danych wejściowych bez kosztów i bez wycieku danych</li>
+        <li><strong>LLM jako klasyfikator</strong> z GPT-4o lub Claude do egzekwowania własnych zasad z głębokim zrozumieniem kontekstu</li>
+      </ul>
+      <p>
+        W OpenModeration takie wielowarstwowe podejście to jedno wywołanie API: nasza własna AI do moderacji
+        analizuje treść, a inne modele AI weryfikują trudne przypadki przed ostateczną decyzją.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Dobre praktyki</h2>
+      <ol>
+        <li><strong>Zawsze moderuj zarówno wejście, jak i wyjście.</strong> Każdy z filtrów wychwytuje inny rodzaj ryzyka.</li>
+        <li><strong>Wykorzystuj kontekst, by zwiększyć trafność.</strong> Przekazuj historię rozmowy i informacje o autorze, aby decyzja moderacyjna była lepiej uzasadniona.</li>
+        <li><strong>Ustaw odpowiednie progi.</strong> Niższe progi dla kategorii wysokiego ryzyka (małoletni, samookaleczenia), wyższe dla kategorii niskiego ryzyka (spam).</li>
+        <li><strong>Rejestruj wszystko na potrzeby audytu.</strong> Trzeba umieć udowodnić, że moderacja działa, zwłaszcza w branżach regulowanych.</li>
+        <li><strong>Testuj na złośliwych danych.</strong> Regularnie przepuszczaj znane prompty jailbreakowe przez swój proces moderacji.</li>
+      </ol>
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Czytaj dalej</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/use-cases/ai-applications', locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderacja dla aplikacji AI &rarr;</a></li>
+        <li><a href={localizePath('/how-it-works', locale)} class="font-medium text-brand-600 hover:text-brand-500">Jak działa proces moderacji &rarr;</a></li>
+        <li><a href={localizePath('/features', locale)} class="font-medium text-brand-600 hover:text-brand-500">Wszystkie funkcje OpenModeration &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

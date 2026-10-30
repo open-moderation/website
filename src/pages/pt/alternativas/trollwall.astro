@@ -1,0 +1,236 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+const L = (p: string) => localizePath(p, locale);
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/pt/alternativas/trollwall",
+  "name": "Alternativa ao TrollWall AI: comparativo com o OpenModeration",
+  "description": "TrollWall AI ou OpenModeration? Comparativo com fontes: redes cobertas, comentários do seu site, preços públicos, hospedagem na UE e registro para o DSA.",
+  "inLanguage": "pt",
+  "about": {
+    "@id": "https://www.openmoderation.com/#software"
+  }
+};
+
+const rows = [
+  {
+    "feature": "O que oferece",
+    "them": "Gestão de comunidade e moderação com IA para equipes de redes sociais, além de um servidor MCP",
+    "openmod": "Moderação de comentários com IA para mídia, marcas e instituições, nas redes e no seu site"
+  },
+  {
+    "feature": "Canais",
+    "them": "Facebook, Instagram, TikTok e YouTube",
+    "openmod": "Sites (API), WordPress, páginas do Facebook, contas profissionais do Instagram e canais do YouTube"
+  },
+  {
+    "feature": "Comentários do seu site",
+    "them": "Não especificado no seu site",
+    "openmod": "Sim, via WordPress ou API"
+  },
+  {
+    "feature": "Preço",
+    "them": "Sem valores publicados: preço mensal por conta social, Starter a partir de 1.000 comentários por mês, testes grátis",
+    "openmod": "Público: grátis até 1.000 requisições/mês, Pro a 99 €/mês para 10 mil, Enterprise sob consulta"
+  },
+  {
+    "feature": "Idiomas",
+    "them": "Um idioma no Starter, vários no Pro",
+    "openmod": "Explicações no idioma que você escolher"
+  },
+  {
+    "feature": "Explicação por escrito de cada decisão",
+    "them": "Não especificado no seu site",
+    "openmod": "Sim, uma explicação por escrito para cada decisão"
+  },
+  {
+    "feature": "DSA",
+    "them": "Não especificado no seu site",
+    "openmod": "Notificação e ação, declaração de motivos, revisão humana de decisões contestadas, números exportáveis e registro de atividade completo"
+  },
+  {
+    "feature": "Hospedagem dos dados",
+    "them": "Não especificado; exibe um selo \"GDPR Compliant\"",
+    "openmod": "Hospedado na UE, em conformidade com o RGPD"
+  },
+  {
+    "feature": "Modelos de IA",
+    "them": "Não especificado no seu site",
+    "openmod": "IA de moderação própria, verificada por outros modelos de IA; novos modelos integrados assim que são lançados"
+  }
+];
+
+const faqItems = [
+  {
+    "question": "Qual é a melhor alternativa ao TrollWall AI?",
+    "answer": "A melhor alternativa ao TrollWall AI depende de onde os seus leitores comentam: se eles comentam no seu site além do Facebook, Instagram e YouTube, o OpenModeration modera tudo em um só lugar, com preços públicos e uma explicação por escrito para cada decisão. Se o TikTok é um canal importante para você, o TrollWall AI o cobre e o OpenModeration não."
+  },
+  {
+    "question": "Quanto custa o TrollWall AI?",
+    "answer": "O TrollWall AI não publica valores: a sua página de preços descreve um preço mensal por conta social, um plano Starter a partir de 1.000 comentários por mês, testes grátis e descontos no pagamento anual. O OpenModeration é grátis até 1.000 requisições por mês e custa 99 € por mês para 10 mil no plano Pro, com Enterprise sob consulta."
+  },
+  {
+    "question": "TrollWall AI ou OpenModeration: qual escolher?",
+    "answer": "Escolha o TrollWall AI se o TikTok é um dos seus canais principais. Escolha o OpenModeration se os seus leitores comentam no seu site além das suas contas sociais, se você quer preços públicos e uma explicação por escrito para cada decisão, com uma equipe que configura a moderação com você segundo as suas regras e os seus casos de uso."
+  },
+  {
+    "question": "Posso testar o OpenModeration sem sair do TrollWall AI?",
+    "answer": "Sim. No modo sandbox, o OpenModeration analisa os seus comentários reais sem ocultar nada. O TrollWall AI continua funcionando e você compara as duas séries de decisões, comentário por comentário, antes de mudar qualquer coisa."
+  },
+  {
+    "question": "Quais modelos de IA o OpenModeration usa?",
+    "answer": "O OpenModeration funciona com a sua própria IA de moderação e, nos casos delicados, outros modelos de IA verificam a decisão. Quando sai um modelo melhor ou mais econômico, a equipe o integra rapidamente, sem que você precise mudar nada: a sua moderação aproveita o progresso dos modelos de IA."
+  },
+  {
+    "question": "O OpenModeration também modera os comentários dos nossos artigos?",
+    "answer": "Sim. Os veículos de mídia conectam o WordPress diretamente ou enviam os comentários de qualquer outro sistema via API. A IA lê cada comentário junto com o título do artigo e a conversa, então uma citação ou uma resposta é avaliada no seu contexto."
+  }
+];
+---
+
+<BaseLayout title="Alternativa ao TrollWall AI: comparativo OpenModeration" description="TrollWall AI ou OpenModeration? Comparativo com fontes: redes cobertas, comentários do seu site, preços públicos, hospedagem na UE e registro para o DSA." jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Início", href: L('/') }, { label: "Alternativas", href: L('/alternatives') }, { label: "TrollWall AI" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Comparativo
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Alternativa ao TrollWall AI: comparativo com o OpenModeration</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        A melhor alternativa ao TrollWall AI depende de onde os seus leitores comentam: se eles comentam no seu site além do Facebook, Instagram e YouTube, o OpenModeration modera tudo em um só lugar, com preços públicos e uma explicação por escrito para cada decisão. Se o TikTok é um canal importante para você, o TrollWall AI o cobre e o OpenModeration não.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold tracking-tight text-surface-900">Para quem é o TrollWall AI?</h2>
+      <p class="mt-4 text-surface-600">O TrollWall AI oculta comentários tóxicos nas contas sociais de marcas, clubes e veículos de mídia. Segundo o seu site, o seu agente de IA modera Facebook, Instagram, TikTok e YouTube, com detecção de ódio e spam, bloqueio de usuários e acompanhamento de anúncios; o plano Pro acrescenta vários idiomas, análise de sentimento e respostas sugeridas.</p>
+      <p class="mt-4 text-surface-600">O OpenModeration modera com IA os comentários de veículos de mídia, marcas e instituições públicas, no site e nas páginas do Facebook, contas do Instagram e canais do YouTube. Ele oculta automaticamente as violações claras, mantém visível a crítica legítima e deixa os casos duvidosos com a nossa equipe, com cada decisão visível em tempo real em um único console. A equipe da Logora, em Paris desde 2019, configura a moderação com você segundo as suas regras e os seus casos de uso.</p>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">TrollWall AI vs OpenModeration, ponto por ponto</h2>
+      <p class="mt-4 text-surface-500">Informações sobre o TrollWall AI retiradas do seu site, trollwall.ai, consultado em 30 de outubro de 2026.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Critério</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">TrollWall AI</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.them}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Escolha o OpenModeration se…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>os seus leitores comentam no seu site além das suas contas sociais;</li>
+          <li>você quer saber o preço antes de falar com um vendedor;</li>
+          <li>precisa explicar cada comentário ocultado e manter um registro para o DSA;</li>
+          <li>os seus dados precisam ficar na União Europeia.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">O TrollWall AI pode ser melhor para você se…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>o TikTok é um dos seus canais principais;</li>
+          <li>você modera apenas redes sociais e prefere um preço por conta;</li>
+          <li>quer respostas sugeridas por IA na mesma ferramenta.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h2 class="text-xl font-bold text-surface-900">Uma IA que acompanha o progresso dos modelos</h2>
+          <p class="mt-3 text-sm text-surface-600">O OpenModeration funciona com a sua própria IA de moderação e, nos casos delicados, outros modelos de IA verificam a decisão. Quando sai um modelo melhor ou mais econômico, a equipe o integra rapidamente, sem que você precise mudar nada. A sua moderação acompanha o progresso do mercado de IA em vez de ficar presa a um único algoritmo. O TrollWall AI não indica no seu site quais modelos de IA utiliza.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h2 class="text-xl font-bold text-surface-900">Preços: TrollWall AI vs OpenModeration</h2>
+          <p class="mt-3 text-sm text-surface-600">O TrollWall AI não publica valores: a sua página de preços descreve um preço mensal por conta social, um plano Starter a partir de 1.000 comentários por mês, testes grátis e descontos no pagamento anual. O OpenModeration é grátis até 1.000 requisições por mês e custa 99 € por mês para 10 mil no plano Pro, com Enterprise sob consulta. A implantação on-premise é possível sob consulta. <a href={L('/book-a-call')} class="font-medium text-brand-600 hover:text-brand-500">Agende uma reunião</a> para avaliar o seu caso.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Migrar do TrollWall AI para o OpenModeration em 3 etapas</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">1. Teste no modo sandbox</h3>
+          <p class="mt-2 text-sm text-surface-600">Conecte o seu site, o WordPress ou as suas páginas do Facebook, Instagram e YouTube. O OpenModeration analisa comentários reais sem ocultar nada, enquanto o TrollWall AI continua funcionando.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">2. Ajuste com a equipe da Logora</h3>
+          <p class="mt-2 text-sm text-surface-600">Comparamos as decisões com as da sua ferramenta atual e adaptamos a moderação às suas regras e aos seus casos de uso, com a explicação por escrito de cada decisão à vista.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">3. Ative canal por canal</h3>
+          <p class="mt-2 text-sm text-surface-600">Você ativa a moderação em um canal e depois nos outros. Os casos duvidosos são tratados pela nossa equipe, e você vê cada decisão em tempo real no registro de atividade, podendo intervir quando quiser.</p>
+        </div>
+      </div>
+      <p class="mt-8 text-center text-surface-600">Quer ver com os seus próprios comentários? <a href={L('/book-a-call')} class="font-medium text-brand-600 hover:text-brand-500">Agende uma reunião com a nossa equipe</a>.</p>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Perguntas frequentes" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        TrollWall AI é uma marca da sua empresa titular. Fontes: <a href="https://trollwall.ai/pricing" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">trollwall.ai/pricing</a> (consultado em 30 de outubro de 2026). Viu algum erro? Escreva para <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Para saber mais</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={L('/use-cases/news-publishers')} class="font-medium text-brand-600 hover:text-brand-500">Moderação de comentários para veículos de mídia &rarr;</a></li>
+        <li><a href={L('/integrations/wordpress')} class="font-medium text-brand-600 hover:text-brand-500">Moderar os comentários do WordPress &rarr;</a></li>
+        <li><a href={L('/blog/handle-negative-comments-trolls')} class="font-medium text-brand-600 hover:text-brand-500">Como lidar com comentários negativos e trolls &rarr;</a></li>
+        <li><a href={L('/moderation-software')} class="font-medium text-brand-600 hover:text-brand-500">O software de moderação OpenModeration &rarr;</a></li>
+        <li><a href={L('/pricing')} class="font-medium text-brand-600 hover:text-brand-500">Os preços do OpenModeration &rarr;</a></li>
+        <li><a href={L('/alternatives')} class="font-medium text-brand-600 hover:text-brand-500">Todos os comparativos &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Compare a sua moderação atual com o OpenModeration." subtitle="Teste o OpenModeration no modo sandbox com os seus próprios comentários, sem ocultar nada. Grátis até 1.000 requisições por mês." buttonText="Agende uma reunião" buttonHref={L('/book-a-call')} />
+</BaseLayout>

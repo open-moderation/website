@@ -1,0 +1,36 @@
+---
+// Relie un guide aux comparatifs concurrents qui correspondent à son sujet.
+import { getAlternates, getLocale, localizePath } from '../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+const en = getAlternates(Astro.url.pathname).en ?? '';
+const map: Record<string, string[]> = {
+  '/blog/hide-facebook-comments-automatically': ['bodyguard', 'smart-moderation', 'agorapulse', 'napoleoncat', 'respondology', 'trollwall'],
+  '/blog/instagram-comment-moderation': ['bodyguard', 'smart-moderation', 'agorapulse', 'napoleoncat', 'arwen', 'lasso-moderation'],
+  '/blog/youtube-comment-moderation': ['bodyguard', 'smart-moderation', 'trollwall', 'lasso-moderation', 'respondology', 'agorapulse'],
+  '/blog/tiktok-comment-moderation': ['bodyguard', 'arwen', 'respondology', 'agorapulse', 'smart-moderation', 'swat-io'],
+  '/blog/social-media-moderation-guide': ['bodyguard', 'agorapulse', 'napoleoncat', 'smart-moderation', 'swat-io', 'fanpage-karma'],
+  '/blog/comment-moderation-guide': ['bodyguard', 'utopia', 'ferret-go-vs-conversario', 'netino', 'viafoura', 'openweb'],
+  '/blog/what-is-content-moderation': ['checkstep', 'activefence', 'tremau', 'cinder', 'besedo', 'utopia'],
+  '/blog/handle-negative-comments-trolls': ['bodyguard', 'trollwall', 'smart-moderation', 'netino', 'ferret-go', 'arwen'],
+  '/blog/openai-moderation-api-guide': ['openai-moderation', 'perspective-api', 'moderation-api', 'sightengine', 'webpurify', 'hive-moderation'],
+  '/blog/dsa-compliance-sme-guide': ['tremau', 'checkstep', 'utopia', 'cinder', 'activefence', 'bodyguard'],
+};
+const slugs = map[en] ?? [];
+const names: Record<string, string> = { bodyguard: 'Bodyguard', 'smart-moderation': 'Smart Moderation', agorapulse: 'Agorapulse', napoleoncat: 'NapoleonCat', respondology: 'Respondology', trollwall: 'TrollWall', arwen: 'Arwen', 'lasso-moderation': 'Lasso Moderation', 'swat-io': 'Swat.io', 'fanpage-karma': 'Fanpage Karma', utopia: 'Utopia', 'ferret-go-vs-conversario': 'Conversario & Ferret Go', 'ferret-go': 'Ferret Go', netino: 'Netino', viafoura: 'Viafoura', openweb: 'OpenWeb', checkstep: 'Checkstep', activefence: 'ActiveFence', tremau: 'Tremau', cinder: 'Cinder', besedo: 'Besedo', 'openai-moderation': 'OpenAI Moderation', 'perspective-api': 'Perspective API', 'moderation-api': 'Moderation API', sightengine: 'Sightengine', webpurify: 'WebPurify', 'hive-moderation': 'Hive' };
+const title = ({ en: 'Compare the tools', fr: 'Comparer les outils', es: 'Comparar las herramientas', de: 'Tools vergleichen', it: 'Confronta gli strumenti', pt: 'Compare as ferramentas', pl: 'Porównaj narzędzia', nl: 'Vergelijk de tools' } as Record<string, string>)[locale] ?? 'Compare the tools';
+const vs = ({ en: 'vs OpenModeration', fr: 'ou OpenModeration ?', es: 'o OpenModeration', de: 'oder OpenModeration?', it: 'o OpenModeration?', pt: 'ou OpenModeration?', pl: 'czy OpenModeration?', nl: 'of OpenModeration?' } as Record<string, string>)[locale] ?? 'vs OpenModeration';
+---
+
+{slugs.length > 0 && (
+  <section class="mx-auto max-w-3xl px-4 pb-14 sm:px-6 lg:px-8">
+    <div class="rounded-2xl border border-violet-100 bg-violet-50/60 p-6">
+      <h2 class="text-lg font-bold text-surface-900">⚖️ {title}</h2>
+      <ul class="mt-4 grid gap-2 sm:grid-cols-2">
+        {slugs.map((s) => (
+          <li><a href={localizePath(`/alternatives/${s}`, locale)} class="flex items-center justify-between rounded-xl bg-white px-4 py-3 text-sm font-medium text-surface-800 shadow-sm ring-1 ring-surface-100 hover:ring-violet-300">{names[s]} {vs}<span class="text-violet-600" aria-hidden="true">&rarr;</span></a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+)}

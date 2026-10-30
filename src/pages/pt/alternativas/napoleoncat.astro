@@ -1,0 +1,215 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+const L = (p: string) => localizePath(p, locale);
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/pt/alternativas/napoleoncat",
+  "url": "https://www.openmoderation.com/pt/alternativas/napoleoncat",
+  "name": "Alternativa ao NapoleonCat: comparativo com o OpenModeration",
+  "description": "NapoleonCat ou OpenModeration? Comparativo com fontes entre uma suíte de gestão de redes sociais e uma ferramenta dedicada à moderação: redes, preços, motivo por escrito, registro DSA e hospedagem na UE.",
+  "inLanguage": "pt",
+  "about": { "@id": "https://www.openmoderation.com/#software" }
+};
+
+const rows = [
+  { feature: "O que oferece", napoleoncat: "Uma suíte de gestão de redes sociais para marcas e agências: caixa de entrada, moderação automática, publicação, análises e relatórios", openmod: "Só moderação: conectores de redes sociais e WordPress, além de API REST e webhooks para todo o resto" },
+  { feature: "Redes cobertas", napoleoncat: "Facebook, Messenger, Instagram, LinkedIn, TikTok, YouTube, Perfil da Empresa no Google, avaliações da App Store e do Google Play; X para publicar", openmod: "Facebook, Instagram, YouTube e WordPress de forma nativa; o resto via API" },
+  { feature: "Comentários do seu próprio site", napoleoncat: "Não especificado no seu site", openmod: "Sim: conector WordPress, ou a API para qualquer sistema de comentários" },
+  { feature: "Preço", napoleoncat: "Standard 89 €, Pro 109 €, Expert 139 € por mês (pagamento mensal, 5 perfis, 2 usuários). Enterprise a partir de 465 €. Teste grátis de 14 dias", openmod: "Público: grátis até 1.000 requisições/mês, Pro a 99 €/mês para 10 mil requisições" },
+  { feature: "Ocultar comentários automaticamente", napoleoncat: "Incluído a partir do plano Expert (\"Automatic comment hiding and deletion\")", openmod: "Incluído em todos os planos, inclusive no gratuito" },
+  { feature: "Como as regras são definidas", napoleoncat: "Regras de moderação automatizadas, além de um assistente de IA para detectar spam e ódio", openmod: "As suas regras em linguagem natural, um limite por categoria e os casos duvidosos tratados pela nossa equipe" },
+  { feature: "Modelos de IA", napoleoncat: "Não especificado (menciona um assistente de IA para spam e ódio)", openmod: "IA de moderação própria, verificada por outros modelos de IA; novos modelos integrados assim que são lançados" },
+  { feature: "Explicação por escrito de cada decisão", napoleoncat: "Não especificado no seu site", openmod: "Sim, no idioma que você escolher, devolvida pela API" },
+  { feature: "DSA", napoleoncat: "Não especificado no seu site", openmod: "Registro de atividade que mostra se cada decisão foi automática ou humana, e por quê" },
+  { feature: "Dados e conformidade", napoleoncat: "Selo \"100% EU GDPR compliant\"; local de hospedagem não especificado", openmod: "Desenvolvido e hospedado na União Europeia, em conformidade com o RGPD" },
+  { feature: "Publicação, caixa de entrada, análises", napoleoncat: "Sim, é o núcleo da suíte", openmod: "Não, o OpenModeration só modera" },
+];
+
+const faqItems = [
+  {
+    question: "Qual é a melhor alternativa ao NapoleonCat para moderar comentários?",
+    answer: "Se o que você precisa é moderar, o OpenModeration foi feito para isso: regras em linguagem natural, uma explicação por escrito para cada comentário ocultado e um registro para a DSA, nas redes sociais e no seu próprio site. Se você busca sobretudo uma caixa de entrada compartilhada, um calendário de publicação e análises no TikTok, no LinkedIn e nas lojas de apps, o NapoleonCat cobre isso e o OpenModeration não.",
+  },
+  {
+    question: "Quanto custa o NapoleonCat em comparação com o OpenModeration?",
+    answer: "O NapoleonCat divulga Standard a 89 €, Pro a 109 € e Expert a 139 € por mês com pagamento mensal, para 5 perfis e 2 usuários. A ocultação automática de comentários vem com o Expert. O Enterprise começa em 465 €. O OpenModeration é grátis até 1.000 requisições por mês e depois custa 99 € por mês para 10 mil requisições.",
+  },
+  {
+    question: "NapoleonCat ou OpenModeration: qual escolher?",
+    answer: "Escolha o NapoleonCat se você quer publicação, caixa de entrada, análises e moderação em uma única assinatura, inclusive no TikTok e no LinkedIn. Escolha o OpenModeration se a moderação é o seu problema real e você quer uma explicação por escrito para cada decisão, os comentários do seu site com as mesmas regras e uma equipe que configura a moderação com você.",
+  },
+  {
+    question: "Posso testar o OpenModeration sem desligar o NapoleonCat?",
+    answer: "Sim. No modo sandbox, o OpenModeration analisa os seus comentários reais e escreve as suas decisões e explicações sem ocultar nada. Assim você compara as duas ferramentas nos mesmos comentários antes de mudar qualquer configuração no NapoleonCat.",
+  },
+  {
+    question: "Posso manter o NapoleonCat para publicar e usar o OpenModeration para moderar?",
+    answer: "Sim. Nada impede que você continue com o NapoleonCat para publicar, responder e gerar relatórios, deixando a moderação com o OpenModeration. Desative a ocultação automática em uma das duas ferramentas para que elas nunca ajam sobre o mesmo comentário.",
+  },
+  {
+    question: "O OpenModeration também modera os comentários do site de um veículo de mídia?",
+    answer: "Sim. O conector WordPress e a API REST moderam os comentários dos leitores no seu site com as mesmas regras das suas redes sociais. Veículos como Estadão, L'Équipe e Sud Ouest usam o OpenModeration.",
+  },
+];
+---
+
+<BaseLayout title="Alternativa ao NapoleonCat: comparativo OpenModeration" description="NapoleonCat ou OpenModeration? Comparativo com fontes: preços reais, redes, comentários do site, motivo por escrito e registro DSA de cada decisão." jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Início", href: L('/') }, { label: "Alternativas", href: L('/alternatives') }, { label: "NapoleonCat" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Comparativo
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Alternativa ao NapoleonCat: o OpenModeration comparado</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        O NapoleonCat é uma suíte de gestão de redes sociais. Ocultar comentários automaticamente é uma função entre outras, disponível a partir do plano Expert. O OpenModeration faz uma coisa só: modera comentários, explica cada decisão por escrito e mantém um registro para a DSA. Veja as diferenças, com fontes.
+      </p>
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+        <a href={L('/book-a-call')} class="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-700">Agende uma reunião</a>
+        <a href="#comparison" class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700">Ver o comparativo</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Escolha o OpenModeration se…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>o seu problema real é a moderação e você já tem uma ferramenta para publicar;</li>
+          <li>você quer que as suas regras de moderação sejam aplicadas como estão escritas, com os casos duvidosos tratados pela nossa equipe, sem trabalho para a sua;</li>
+          <li>você precisa de uma explicação por escrito e de um registro DSA para cada comentário ocultado;</li>
+          <li>os comentários dos leitores no seu site devem seguir as mesmas regras da sua página do Facebook;</li>
+          <li>você quer um registro de auditoria completo e dados hospedados na UE.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">O NapoleonCat pode ser mais adequado se…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>você gerencia TikTok, LinkedIn, Perfil da Empresa no Google ou avaliações em lojas de apps;</li>
+          <li>você quer publicação, caixa de entrada compartilhada, análises e moderação em uma única assinatura;</li>
+          <li>a sua equipe passa a maior parte do tempo respondendo a clientes, não removendo insultos;</li>
+          <li>você precisa moderar comentários em anúncios do TikTok.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="comparison" class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">NapoleonCat vs OpenModeration, ponto por ponto</h2>
+      <p class="mt-4 text-surface-500">Informações sobre o NapoleonCat retiradas do seu site, napoleoncat.com, consultado em 20 de outubro de 2026.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Critério</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">NapoleonCat</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.napoleoncat}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">O que muda de verdade no dia a dia</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Cada comentário ocultado tem o seu motivo</h3>
+          <p class="mt-2 text-sm text-surface-600">O OpenModeration escreve por que ocultou cada comentário, no idioma que você escolher. O registro de atividade mostra se a decisão foi automática ou humana, e você vê tudo em tempo real. Quando um leitor reclama ou um regulador pergunta, você tem a resposta.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">As suas regras, aplicadas com contexto</h3>
+          <p class="mt-2 text-sm text-surface-600">Você escreve as suas regras em linguagem natural e define um limite por categoria. A IA lê cada comentário junto com o título da publicação e o fio da conversa. Os casos duvidosos são tratados pela nossa equipe, e você pode intervir quando quiser.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">O seu site e as suas redes, com as mesmas regras</h3>
+          <p class="mt-2 text-sm text-surface-600">Facebook, Instagram, YouTube e WordPress se conectam de forma nativa. Qualquer outro sistema de comentários entra pela API REST e pelos webhooks. Uma redação modera os seus artigos e as suas publicações nas redes com a mesma política.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Hospedagem na UE, dados exportáveis</h3>
+          <p class="mt-2 text-sm text-surface-600">O OpenModeration é desenvolvido e hospedado na União Europeia. Você pode exportar os seus dados e o seu registro de auditoria quando quiser. Se precisar de uma implantação on-premise, ela é possível sob consulta: <a href={L('/book-a-call')} class="font-medium text-brand-600 hover:text-brand-500">vamos conversar</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold tracking-tight text-surface-900 sm:text-3xl">Um motor de IA que acompanha o progresso dos modelos</h2>
+      <p class="mt-4 text-surface-600">O OpenModeration funciona com a sua própria IA de moderação e, nos casos delicados, outros modelos de IA verificam as suas decisões. O motor não depende de um único modelo: quando sai um modelo de IA melhor ou mais econômico, a nossa equipe o integra rapidamente, sem que você precise mudar nada. A sua moderação acompanha o progresso do mercado de IA em vez de ficar presa a um único algoritmo. O NapoleonCat menciona um assistente de IA, mas não especifica no seu site quais modelos utiliza.</p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Migrar do NapoleonCat para o OpenModeration em 3 etapas</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">1. Teste no modo sandbox</h3>
+          <p class="mt-2 text-sm text-surface-600">Conecte o seu site, o WordPress ou as suas páginas do Facebook, Instagram e YouTube. O OpenModeration analisa comentários reais sem ocultar nada, enquanto o NapoleonCat continua funcionando.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">2. Ajuste com a equipe da Logora</h3>
+          <p class="mt-2 text-sm text-surface-600">Comparamos as decisões nos mesmos comentários e adaptamos a moderação às suas regras e aos seus casos de uso, com a explicação por escrito de cada decisão à vista.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">3. Ative e divida os papéis</h3>
+          <p class="mt-2 text-sm text-surface-600">Desative a ocultação automática no NapoleonCat e ative-a no OpenModeration. Você pode manter o NapoleonCat para publicar e responder.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Perguntas frequentes" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        NapoleonCat é uma marca da sua empresa titular. Fontes: <a href="https://napoleoncat.com/pricing/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">napoleoncat.com/pricing</a> (consultado em 20 de outubro de 2026). Os preços do NapoleonCat são exibidos sem impostos. Viu algum erro? Escreva para <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Para saber mais</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={L('/social-media-moderation')} class="font-medium text-brand-600 hover:text-brand-500">Moderação de redes sociais com o OpenModeration &rarr;</a></li>
+        <li><a href={L('/integrations/wordpress')} class="font-medium text-brand-600 hover:text-brand-500">Moderar os comentários do WordPress &rarr;</a></li>
+        <li><a href={L('/dsa-compliance/statement-of-reasons')} class="font-medium text-brand-600 hover:text-brand-500">A declaração de motivos exigida pela DSA &rarr;</a></li>
+        <li><a href={L('/blog/social-media-moderation-guide')} class="font-medium text-brand-600 hover:text-brand-500">Guia de moderação de redes sociais &rarr;</a></li>
+        <li><a href={L('/moderation-software')} class="font-medium text-brand-600 hover:text-brand-500">O software de moderação OpenModeration &rarr;</a></li>
+        <li><a href={L('/pricing')} class="font-medium text-brand-600 hover:text-brand-500">Os preços do OpenModeration &rarr;</a></li>
+        <li><a href={L('/alternatives')} class="font-medium text-brand-600 hover:text-brand-500">Todos os comparativos &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Modere os seus comentários com uma ferramenta feita só para isso." subtitle="Conecte as suas páginas e o seu site, defina as suas regras e leia o motivo de cada comentário ocultado. Grátis até 1.000 requisições por mês." buttonText="Agende uma reunião" buttonHref={L('/book-a-call')} />
+</BaseLayout>

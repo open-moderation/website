@@ -1,0 +1,48 @@
+---
+// « Comparatifs proches » : relie chaque page concurrente aux concurrents de la même famille.
+import { getLocale, localizePath } from '../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+const current = Astro.url.pathname.replace(/\/$/, '').split('/').pop() ?? '';
+
+const names: Record<string, string> = {
+  activefence: 'ActiveFence', agorapulse: 'Agorapulse', arwen: 'Arwen', 'azure-content-safety': 'Azure Content Safety', besedo: 'Besedo', bodyguard: 'Bodyguard',
+  checkstep: 'Checkstep', cinder: 'Cinder', 'comments-news': 'Comments News', 'community-sift': 'Community Sift', conversario: 'Conversario', coral: 'Coral',
+  digitaller: 'Digitaller', 'fanpage-karma': 'Fanpage Karma', 'ferret-go': 'Ferret Go', 'ferret-go-vs-conversario': 'Ferret Go & Conversario', 'hive-moderation': 'Hive',
+  interactora: 'Interactora', 'lasso-moderation': 'Lasso Moderation', 'mistral-moderation': 'Mistral Moderation', 'moderation-api': 'Moderation API', napoleoncat: 'NapoleonCat',
+  netino: 'Netino', 'openai-moderation': 'OpenAI Moderation', openweb: 'OpenWeb', 'perspective-api': 'Perspective API', respondology: 'Respondology', sightengine: 'Sightengine',
+  'smart-moderation': 'Smart Moderation', 'swat-io': 'Swat.io', tremau: 'Tremau', trollwall: 'TrollWall', utopia: 'Utopia', viafoura: 'Viafoura', webpurify: 'WebPurify',
+};
+const groups = [
+  ['bodyguard', 'smart-moderation', 'agorapulse', 'napoleoncat', 'respondology', 'trollwall', 'arwen', 'lasso-moderation', 'fanpage-karma', 'swat-io'],
+  ['conversario', 'ferret-go', 'ferret-go-vs-conversario', 'utopia', 'netino', 'viafoura', 'openweb', 'coral', 'comments-news', 'digitaller', 'interactora'],
+  ['openai-moderation', 'perspective-api', 'azure-content-safety', 'mistral-moderation', 'hive-moderation', 'sightengine', 'webpurify', 'moderation-api'],
+  ['checkstep', 'activefence', 'cinder', 'tremau', 'community-sift', 'besedo', 'utopia'],
+];
+const group = groups.find((g) => g.includes(current)) ?? groups[0];
+const picks = [...group.filter((s) => s !== current), ...groups.flat().filter((s) => !group.includes(s))].filter((s, i, a) => s !== current && a.indexOf(s) === i).slice(0, 6);
+
+const t = {
+  en: ['Related comparisons', 'alternative', 'All comparisons'], fr: ['Comparatifs proches', 'alternative', 'Tous les comparatifs'],
+  es: ['Comparativas relacionadas', 'alternativa', 'Todas las comparativas'], de: ['Ähnliche Vergleiche', 'Alternative', 'Alle Vergleiche'],
+  it: ['Confronti correlati', 'alternativa', 'Tutti i confronti'], pt: ['Comparativos relacionados', 'alternativa', 'Todos os comparativos'],
+  pl: ['Podobne porównania', 'alternatywa', 'Wszystkie porównania'], nl: ['Vergelijkbare vergelijkingen', 'alternatief', 'Alle vergelijkingen'],
+}[locale] ?? ['Related comparisons', 'alternative', 'All comparisons'];
+---
+
+<section class="bg-surface-50 py-14">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <h2 class="text-2xl font-bold tracking-tight text-surface-900">{t[0]}</h2>
+    <ul class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {picks.map((slug) => (
+        <li>
+          <a href={localizePath(`/alternatives/${slug}`, locale)} class="lift flex items-center justify-between rounded-xl border border-surface-100 bg-white px-5 py-4 shadow-sm">
+            <span class="font-semibold text-surface-900">{names[slug]} <span class="font-normal text-surface-500">· {t[1]}</span></span>
+            <span class="text-violet-600" aria-hidden="true">&rarr;</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <p class="mt-5"><a href={localizePath('/alternatives', locale)} class="text-sm font-semibold text-brand-700">{t[2]} &rarr;</a></p>
+  </div>
+</section>

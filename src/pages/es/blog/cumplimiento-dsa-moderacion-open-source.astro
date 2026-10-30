@@ -1,6 +1,8 @@
 ---
+import { bookingUrl } from '../../../i18n/ui';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
 import Breadcrumb from '../../../components/Breadcrumb.astro';
 
 const articleJsonLd = {
@@ -78,30 +80,31 @@ const articleJsonLd = {
       <p>Así es una configuración conforme a la DSA con OpenModeration:</p>
       <ol>
         <li><strong>Ingesta del contenido:</strong> recibe el contenido por API, webhook o conectores sociales. Cada elemento recibe un identificador único y se almacena cifrado.</li>
-        <li><strong>Moderación con IA:</strong> el contenido se envía al proveedor más adecuado. Los resultados incluyen puntuaciones por categoría y una decisión de marcado o no marcado.</li>
-        <li><strong>Evaluación de reglas:</strong> tus reglas combinan palabras prohibidas para el bloqueo inmediato, umbrales por categoría para las decisiones automáticas y la carta de la comunidad que has redactado.</li>
-        <li><strong>Registro de auditoría:</strong> cada paso queda registrado: contenido, proveedor, puntuaciones, regla aplicada, acción tomada y marca de tiempo.</li>
+        <li><strong>Moderación con IA:</strong> la IA de moderación de OpenModeration analiza el contenido y, en los casos delicados, otros modelos de IA arbitran la decisión. Los resultados incluyen puntuaciones por categoría y una decisión de marcado o no marcado.</li>
+        <li><strong>Evaluación de reglas:</strong> tus reglas combinan palabras prohibidas para el bloqueo inmediato, umbrales por categoría para las decisiones automáticas y las reglas que has redactado según tus casos de uso.</li>
+        <li><strong>Registro de auditoría:</strong> cada paso queda registrado: contenido, puntuaciones, explicación escrita, regla aplicada, acción tomada y marca de tiempo.</li>
         <li><strong>Exportación para la transparencia:</strong> GET /v1/analytics/usage proporciona los datos necesarios para los informes de transparencia de la DSA.</li>
       </ol>
 
       <h2 class="text-xl font-bold text-surface-900">Cómo cumplir requisitos concretos de la DSA</h2>
       <p>
-        <strong>Registro de auditoría:</strong> OpenModeration registra cada moderación con el proveedor, la latencia, las puntuaciones y la decisión.
+        <strong>Registro de auditoría:</strong> OpenModeration registra cada moderación con la latencia, las puntuaciones, la decisión y su explicación por escrito.
         Los datos se conservan según la política que configures (por defecto, 7 días para el texto de entrada y 90 días para los registros).
         Todo se puede exportar para las auditorías regulatorias.
       </p>
       <p>
-        <strong>Informes de transparencia:</strong> la API de analítica ofrece datos de uso por periodo, proveedor y categoría.
-        El total de peticiones, las tasas de marcado y el rendimiento de los proveedores son los datos que piden los informes de transparencia de la DSA.
+        <strong>Informes de transparencia:</strong> la API de analítica ofrece datos de uso por periodo y categoría.
+        El total de peticiones, las tasas de marcado y las acciones aplicadas son los datos que piden los informes de transparencia de la DSA.
       </p>
       <p>
         <strong>Datos en la UE:</strong> OpenModeration está alojado en la Unión Europea y puedes exportar tus datos
         cuando quieras. Es un punto clave para el RGPD y para las evaluaciones de riesgos de la DSA. Si necesitas
-        un despliegue on-premise, es posible bajo petición: <a href="https://calendly.com/jesuslogora/1h">hablemos</a>.
+        un despliegue on-premise, es posible bajo petición: <a href={bookingUrl('es')}>hablemos</a>.
       </p>
       <p>
-        <strong>Revisión humana:</strong> la cola de revisión manual permite a los moderadores humanos ocuparse de los casos límite,
-        lo que cubre los requisitos de la DSA sobre la gestión de reclamaciones y recursos.
+        <strong>Revisión humana:</strong> los casos límite, las denuncias y los recursos los gestiona nuestro equipo, no el tuyo,
+        lo que cubre los requisitos de la DSA sobre la gestión de reclamaciones y recursos. Tú ves cada decisión en tiempo real
+        y puedes intervenir cuando quieras.
       </p>
     </div>
   </article>
@@ -116,6 +119,8 @@ const articleJsonLd = {
       </ul>
     </div>
   </section>
+
+  <GuideComparisons />
 
   <CTASection />
 </BaseLayout>

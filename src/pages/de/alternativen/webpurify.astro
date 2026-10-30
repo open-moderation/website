@@ -1,0 +1,270 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/de/alternativen/webpurify",
+  "name": "WebPurify Alternative: Vergleich mit OpenModeration",
+  "description": "WebPurify oder OpenModeration? Vergleich mit Quellen: Schimpfwortfilter oder KI-Moderation, menschliche Prüfung, DSA, EU-Hosting, KI-Modelle und Preise.",
+  "inLanguage": "de",
+  "about": {
+    "@id": "https://www.openmoderation.com/#software"
+  }
+};
+
+const rows = [
+  {
+    "feature": "Angebot",
+    "competitor": "Schimpfwortfilter-API, Moderation von Bildern und Videos per KI und durch eigene menschliche Moderatoren",
+    "openmod": "KI-Kommentarmoderation für Medien, Marken und öffentliche Einrichtungen, gemeinsam mit Ihnen vom Logora-Team eingerichtet"
+  },
+  {
+    "feature": "Moderierte Inhalte",
+    "competitor": "Text (Schimpfwortfilter in 15 Sprachen), Bilder und Videos",
+    "openmod": "Kommentare auf Ihren Websites und Social-Media-Seiten"
+  },
+  {
+    "feature": "Integrationen",
+    "competitor": "API; Plugin-Lizenz für CMS wie WordPress oder Drupal. Social-Media-Konnektoren auf den geprüften Seiten nicht angegeben",
+    "openmod": "API für Websites, Facebook-Seiten, professionelle Instagram-Konten, YouTube-Kanäle, WordPress"
+  },
+  {
+    "feature": "KI-Modelle",
+    "competitor": "KI kombiniert mit menschlichen Moderatoren; die verwendeten Modelle sind auf der Website nicht angegeben",
+    "openmod": "Eigene Moderations-KI, von weiteren KI-Modellen gegengeprüft; neue Modelle werden eingebunden, sobald sie erscheinen"
+  },
+  {
+    "feature": "Menschliche Prüfung",
+    "competitor": "Durch Moderatoren von WebPurify („Live“-Moderation), abgerechnet pro Bild oder pro Videominute",
+    "openmod": "Eindeutige Verstöße automatisch ausgeblendet, Zweifelsfälle übernimmt unser Team; Sie sehen alles in einer einzigen Konsole"
+  },
+  {
+    "feature": "Begründung der Entscheidungen",
+    "competitor": "Auf der Website nicht angegeben",
+    "openmod": "Eine schriftliche Begründung für jede Entscheidung und ein vollständiges Aktivitätsprotokoll"
+  },
+  {
+    "feature": "DSA",
+    "competitor": "Auf der Website nicht angegeben",
+    "openmod": "Melde- und Abhilfeverfahren, Begründung, menschliche Überprüfung angefochtener Entscheidungen, exportierbare Kennzahlen"
+  },
+  {
+    "feature": "Hosting und Daten",
+    "competitor": "Auf der Website nicht angegeben; Unternehmen mit Sitz in Irvine, Kalifornien",
+    "openmod": "Gehostet in der Europäischen Union, DSGVO; On-Premise-Betrieb auf Anfrage"
+  },
+  {
+    "feature": "Öffentliche Preise",
+    "competitor": "Filter: 5 $/Monat (Plugin), 15 $/Monat (Standard), 50 $/Monat (bis 6 Domains); Live-Bildmoderation: 2 Cent pro Bild",
+    "openmod": "Kostenlos bis 1.000 Anfragen/Monat, Pro 99 €/Monat für 10.000 Anfragen, Enterprise auf Anfrage"
+  },
+  {
+    "feature": "Referenzen",
+    "competitor": "Auf den geprüften Seiten nicht angegeben",
+    "openmod": "L'Équipe, Challenges, Sud Ouest, actu.fr, Estadão, Südkurier, Egora"
+  }
+];
+
+const faqItems = [
+  {
+    "question": "Was ist die beste WebPurify Alternative?",
+    "answer": "Für die Moderation von Kommentaren auf Nachrichtenseiten, Markenseiten und öffentlichen Kanälen ist OpenModeration gemacht: eine KI, die den Kontext liest, Social-Media- und WordPress-Konnektoren, eine Konsole, in der Sie jede Entscheidung in Echtzeit sehen, ein Team, das die Zweifelsfälle übernimmt, eine schriftliche Begründung jeder Entscheidung und Hosting in der EU. Wenn Sie menschliche Moderatoren des Anbieters für Bilder und Videos möchten, ist WebPurify dafür gebaut."
+  },
+  {
+    "question": "Was kostet WebPurify?",
+    "answer": "Laut Website und Bedingungen kostet der Schimpfwortfilter 5 $ pro Monat (Plugin-Lizenz), 15 $ pro Monat (Standard) oder 50 $ pro Monat für bis zu 6 Domains, die Live-Bildmoderation 2 Cent pro Bild, mit 14 Tagen kostenlosem Test. OpenModeration ist bis 1.000 Anfragen pro Monat kostenlos, danach 99 € pro Monat für 10.000 Anfragen."
+  },
+  {
+    "question": "WebPurify vs OpenModeration: Was ist der Unterschied?",
+    "answer": "WebPurify verkauft einen Schimpfwortfilter und Moderationsarbeit durch eigene menschliche Teams. OpenModeration ist KI-Kommentarmoderation, angepasst an Ihre Regeln und Anwendungsfälle: Sie handelt bei Ihren Kommentaren, lässt berechtigte Kritik sichtbar, lässt Zweifelsfälle von unserem Team prüfen und begründet jede Entscheidung schriftlich."
+  },
+  {
+    "question": "Kann ich OpenModeration testen, ohne WebPurify abzuschalten?",
+    "answer": "Ja. Im Sandbox-Modus analysiert OpenModeration Ihre echten Kommentare, ohne etwas auszublenden. WebPurify läuft weiter, und Sie vergleichen beide Entscheidungsreihen an denselben Kommentaren, jede Entscheidung von OpenModeration mit ihrer schriftlichen Begründung."
+  },
+  {
+    "question": "Welche KI nutzt OpenModeration?",
+    "answer": "OpenModeration arbeitet mit einer eigenen Moderations-KI, deren Entscheidungen in heiklen Fällen von weiteren KI-Modellen gegengeprüft werden. Erscheint ein besseres oder günstigeres Modell, bindet unser Team es ein, ohne dass Sie etwas ändern müssen: Sie profitieren vom Fortschritt der KI-Modelle."
+  },
+  {
+    "question": "Setzt WebPurify menschliche Moderatoren ein?",
+    "answer": "Ja. Laut Website wird die „Live“-Moderation von eigenen Moderatoren erledigt, zum Beispiel für 2 Cent pro Bild. Bei OpenModeration übernimmt unser Team die Zweifelsfälle, und Sie sehen in der Konsole jede Entscheidung samt Begründung."
+  }
+];
+---
+
+<BaseLayout title="WebPurify Alternative: Vergleich mit OpenModeration" description="WebPurify oder OpenModeration? Vergleich mit Quellen: Schimpfwortfilter oder KI-Moderation, menschliche Prüfung, DSA, EU-Hosting, KI-Modelle und Preise." jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Startseite", href: "/de" }, { label: "Alternativen", href: "/de/alternativen" }, { label: "WebPurify" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Vergleich
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">WebPurify Alternative: OpenModeration im Vergleich</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Wenn Sie eine Kommentarmoderation suchen, die den Kontext versteht, statt nur Schimpfwörter zu filtern, ist OpenModeration eine starke WebPurify Alternative: Die KI blendet eindeutige Verstöße aus, lässt berechtigte Kritik sichtbar und lässt Zweifelsfälle von unserem Team prüfen. Wenn Sie einen Dienstleister suchen, der menschliche Moderatoren für Bilder und Videos stellt, ist WebPurify dafür gebaut.
+      </p>
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+        <a href="/de/termin-vereinbaren" class="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-700">Termin vereinbaren</a>
+        <a href="#comparison" class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700">Zum Vergleich</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold tracking-tight text-surface-900 sm:text-3xl">Für wen WebPurify gedacht ist</h2>
+      <p class="mt-4 text-surface-600">WebPurify wurde 2007 in Irvine, Kalifornien, gegründet und gehört laut Übernahmemitteilung seit 2025 zu IntouchCX. Das Unternehmen verkauft eine Schimpfwortfilter-API sowie die Moderation von Bildern und Videos per KI und durch eigene menschliche Moderatoren. Das Angebot richtet sich an Unternehmen mit nutzergenerierten Inhalten, von Websites und Apps bis zu Markenkampagnen. Jeder Dienst wird einzeln berechnet: der Filter per Lizenz, die menschliche Prüfung pro Bild oder pro Videominute.</p>
+    </div>
+  </section>
+
+  <section class="bg-white pb-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Wählen Sie OpenModeration, wenn…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>Sie Kommentare auf einer Nachrichtenseite, auf Markenseiten oder öffentlichen Kanälen moderieren;</li>
+          <li>Sie eine KI möchten, die den Kontext eines Kommentars liest, über den Schimpfwortfilter hinaus;</li>
+          <li>Sie Facebook, Instagram, YouTube und WordPress anbinden möchten und die Zweifelsfälle nicht selbst übernehmen wollen;</li>
+          <li>Sie eine schriftliche Begründung für jede Entscheidung, DSA-Bausteine und Hosting in der EU brauchen;</li>
+          <li>Sie ein Team möchten, das die Moderation an Ihre Regeln und Anwendungsfälle anpasst.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">WebPurify passt besser zu Ihnen, wenn…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>der Dienstleister menschliche Moderatoren für Bilder und Videos stellen soll;</li>
+          <li>Ihnen ein günstiger Schimpfwortfilter für eine einzelne Domain reicht;</li>
+          <li>von Nutzern hochgeladene Bilder und Videos Ihr größtes Risiko sind.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="comparison" class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">WebPurify und OpenModeration im direkten Vergleich</h2>
+      <p class="mt-4 text-surface-500">Angaben zu WebPurify aus der eigenen Website, webpurify.com, abgerufen am 30. Oktober 2026. Preise ohne Steuern.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Kriterium</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">WebPurify</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.competitor}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Eine KI, die mit dem Fortschritt der Modelle mitgeht</h2>
+      <p class="mt-4 text-surface-600">WebPurify kombiniert KI-Moderation mit eigenen menschlichen Moderatoren; auf den geprüften Seiten steht nicht, auf welchen KI-Modellen das beruht.</p>
+      <p class="mt-4 text-surface-600">OpenModeration arbeitet mit einer eigenen Moderations-KI, deren Entscheidungen in heiklen Fällen von weiteren KI-Modellen gegengeprüft werden. Die Technik ist an kein Modell gebunden: Erscheint ein besseres oder günstigeres Modell, bindet unser Team es schnell ein, ohne dass Sie etwas ändern müssen. So folgt Ihre Moderation dem Fortschritt des KI-Markts, statt auf einem einzigen hauseigenen Algorithmus stehen zu bleiben.</p>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">WebPurify Preise und OpenModeration Preise</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">WebPurify</h3>
+          <ul class="mt-4 list-disc space-y-2 pl-5 text-sm text-surface-600">
+          <li>Schimpfwortfilter, Plugin-Lizenz: 5 $ pro Monat für eine Domain</li>
+          <li>Schimpfwortfilter, Standardlizenz: 15 $ pro Monat für eine Domain</li>
+          <li>Schimpfwortfilter, Enterprise-Lizenz: 50 $ pro Monat für bis zu 6 Domains</li>
+          <li>Live-Bildmoderation (durch Menschen): 2 Cent pro Bild, ohne Mindestmenge bei Standardkriterien</li>
+          <li>14 Tage kostenlos testen</li>
+          </ul>
+        </div>
+        <div class="rounded-xl border border-brand-200 bg-brand-50 p-6">
+          <h3 class="font-semibold text-brand-700">OpenModeration</h3>
+          <ul class="mt-4 list-disc space-y-2 pl-5 text-sm text-surface-700">
+          <li>Kostenlos: bis 1.000 Anfragen pro Monat</li>
+          <li>Pro: 99 € pro Monat für 10.000 Anfragen</li>
+          <li>Enterprise: auf Anfrage, für große Volumen</li>
+          <li>On-Premise-Betrieb: nur auf Anfrage</li>
+          </ul>
+        </div>
+      </div>
+      <p class="mt-6 text-sm text-surface-500">WebPurify berechnet jeden Dienst einzeln, die menschliche Prüfung durch seine Teams wird pro Einheit bezahlt. OpenModeration rechnet nach Anfragen ab: KI, die Prüfung der Zweifelsfälle durch unser Team, die Konsole, die Konnektoren und das Aktivitätsprotokoll sind enthalten.</p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">In 3 Schritten von WebPurify zu OpenModeration</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="flex h-8 w-8 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white">1</div>
+          <h3 class="mt-4 font-semibold text-surface-900">Sandbox parallel zu WebPurify starten</h3>
+          <p class="mt-2 text-sm text-surface-600">Verbinden Sie Ihre Website oder Ihre Social-Media-Seiten. OpenModeration analysiert Ihre echten Kommentare, ohne etwas auszublenden, während WebPurify weiterläuft.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="flex h-8 w-8 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white">2</div>
+          <h3 class="mt-4 font-semibold text-surface-900">Regeln mit unserem Team anpassen</h3>
+          <p class="mt-2 text-sm text-surface-600">Das Logora-Team passt die Moderation an Ihre Regeln und Anwendungsfälle an. Sie vergleichen die Entscheidungen und ihre schriftlichen Begründungen Kommentar für Kommentar.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="flex h-8 w-8 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white">3</div>
+          <h3 class="mt-4 font-semibold text-surface-900">Automatische Aktionen einschalten</h3>
+          <p class="mt-2 text-sm text-surface-600">Wenn die Ergebnisse passen, werden eindeutige Verstöße automatisch ausgeblendet und Zweifelsfälle übernimmt unser Team. Sie sehen alles in Echtzeit in der Konsole.</p>
+        </div>
+      </div>
+      <div class="mt-8">
+        <a href="/de/termin-vereinbaren" class="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-700">Termin vereinbaren</a>
+      </div>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Häufige Fragen" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        WebPurify ist eine Marke ihres Inhabers. Die Angaben dazu stammen von der eigenen Website (abgerufen am 30. Oktober 2026). Ein Fehler? Schreiben Sie uns an <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+      <p class="mx-auto mt-4 max-w-3xl text-center text-xs text-surface-400">
+        Quellen: <a href="https://www.webpurify.com/pricing/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">www.webpurify.com/pricing/</a> · <a href="https://www.webpurify.com/terms/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">www.webpurify.com/terms/</a> · <a href="https://www.webpurify.com/profanity-filter/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">www.webpurify.com/profanity-filter/</a> · <a href="https://www.webpurify.com/image-moderation/live/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">www.webpurify.com/image-moderation/live/</a> · <a href="https://www.newswire.ca/news-releases/intouchcx-expands-trust-amp-safety-solutions-with-strategic-acquisition-of-webpurify-843206076.html" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">www.newswire.ca/news-releases/intouchcx-expands-trust-amp-safety-solutions-with-strategic-acquisition-of-webpurify-843206076.html</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Weiterlesen</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/de/moderationssoftware" class="font-medium text-brand-600 hover:text-brand-500">Die Moderationssoftware OpenModeration &rarr;</a></li>
+        <li><a href="/de/anwendungsfaelle/medien" class="font-medium text-brand-600 hover:text-brand-500">Kommentarmoderation für Medien und Verlage &rarr;</a></li>
+        <li><a href="/de/blog/kommentarmoderation-leitfaden" class="font-medium text-brand-600 hover:text-brand-500">Der Leitfaden zur Kommentarmoderation &rarr;</a></li>
+        <li><a href="/de/blog/ki-content-moderation-leitfaden-entwickler" class="font-medium text-brand-600 hover:text-brand-500">KI-Content-Moderation: Leitfaden für Entwickler &rarr;</a></li>
+        <li><a href="/de/preise" class="font-medium text-brand-600 hover:text-brand-500">Die Preise von OpenModeration &rarr;</a></li>
+        <li><a href="/de/alternativen" class="font-medium text-brand-600 hover:text-brand-500">Alle Vergleiche &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Mehr als ein Schimpfwortfilter." subtitle="Vereinbaren Sie einen Termin: Wir sehen uns Ihre Regeln und Anwendungsfälle an und lassen die Sandbox neben WebPurify auf Ihren echten Kommentaren laufen." buttonText="Termin vereinbaren" buttonHref="/de/termin-vereinbaren" />
+</BaseLayout>

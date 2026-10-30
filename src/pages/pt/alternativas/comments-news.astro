@@ -1,0 +1,178 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+import { bookingUrl } from '../../../i18n/ui';
+
+const locale = getLocale(Astro.url.pathname);
+const L = (p: string) => localizePath(p, locale);
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/pt/alternativas/comments-news",
+  "name": "Alternativa ao Comments News: comparativo com o OpenModeration",
+  "description": "Comments News ou OpenModeration? Um sistema de comentários com moderação integrada ou um software que modera seus comentários atuais e suas redes sociais.",
+  "inLanguage": "pt",
+  "about": { "@id": "https://www.openmoderation.com/#software" }
+};
+
+const rows = [
+  { feature: "Tipo de produto", commentsnews: "Uma plataforma de comentários e debates para veículos de mídia, com moderação por IA integrada", openmod: "Um software de moderação que trabalha sobre o seu sistema de comentários atual e as suas redes sociais; não inclui um widget de comentários" },
+  { feature: "Instalação", commentsnews: "Um script no site, com o login do próprio veículo", openmod: "Conectores nativos para Facebook, Instagram, YouTube e WordPress; API REST e webhooks para o resto" },
+  { feature: "Redes sociais", commentsnews: "Não mencionadas", openmod: "Facebook, Instagram e YouTube" },
+  { feature: "Preço", commentsnews: "Plano Cabecera a 49 USD/mês (preço de tabela 99 USD), Redacción a 149 USD (tabela 299 USD), Grupo a 299 USD (tabela 599 USD)", openmod: "Grátis até 1.000 requisições/mês, Pro a 99 €/mês para 10 mil requisições, ofertas sob medida para grandes volumes" },
+  { feature: "Moderação com IA", commentsnews: "Básica no plano Cabecera; «moderação PRO com IA» nos planos Redacción e Grupo", openmod: "Suas regras em linguagem natural, um limite por categoria e casos duvidosos tratados pela nossa equipe" },
+  { feature: "Modelos de IA", commentsnews: "Não especificado no site", openmod: "IA de moderação própria, verificada por outros modelos de IA; novos modelos integrados assim que são lançados" },
+  { feature: "Contexto", commentsnews: "O plano Redacción «entende o contexto editorial»; o plano básico não", openmod: "A IA lê cada comentário com a manchete e o fio da conversa" },
+  { feature: "Explicação de cada decisão", commentsnews: "Não mencionada", openmod: "Uma explicação por escrito para cada decisão, no idioma que você escolher, devolvida pela API" },
+  { feature: "Registro para o DSA", commentsnews: "Não mencionado", openmod: "Registro de atividade: cada decisão indica se foi automática ou qual moderador a tomou" },
+  { feature: "Hospedagem", commentsnews: "Não especificada", openmod: "Projetado e hospedado na UE; on-premise possível sob consulta" },
+  { feature: "Referências", commentsnews: "El Destape, El Día, El Tribuno, Tiempo de San Juan, El Deber, El Chubut, La Nueva e outros veículos da Argentina e da Bolívia", openmod: "L'Équipe, Challenges, Sud Ouest, actu.fr, Estadão, Südkurier, Egora" },
+];
+
+const faqItems = [
+  {
+    question: "Qual é a melhor alternativa ao Comments News?",
+    answer: "Depende do que falta para você. Se você precisa de um sistema de comentários completo, com debates e estatísticas, o Comments News oferece isso e o OpenModeration não. Se você já tem seus comentários (no WordPress, numa plataforma própria ou nas redes sociais) e quer moderá-los com as suas regras e uma explicação por escrito de cada decisão, o OpenModeration foi feito para isso.",
+  },
+  {
+    question: "Quanto custa o Comments News?",
+    answer: "Segundo o seu site, o plano Cabecera custa 49 USD por mês, o plano Redacción 149 USD e o plano Grupo 299 USD, apresentados como 50 % de desconto sobre o preço de tabela. O OpenModeration é grátis até 1.000 requisições por mês e custa 99 €/mês no plano Pro, para 10 mil requisições.",
+  },
+  {
+    question: "Comments News ou OpenModeration: qual é a diferença?",
+    answer: "O Comments News é um sistema de comentários com moderação incluída: você troca o seu widget pelo dele. O OpenModeration é uma camada de moderação: ele modera os comentários que você já tem, no site e nas redes sociais, e explica cada decisão por escrito.",
+  },
+  {
+    question: "Posso testar o OpenModeration sem sair do Comments News?",
+    answer: "O OpenModeration não substitui um sistema de comentários. Você pode testá-lo em modo sandbox nas suas páginas do Facebook, Instagram ou YouTube, ou num site WordPress: ele analisa os comentários reais e mostra o que teria decidido, sem ocultar nem apagar nada.",
+  },
+  {
+    question: "O OpenModeration serve para veículos da América Latina?",
+    answer: "Sim. O OpenModeration funciona como serviço online a partir de qualquer país, entende comentários em português e em espanhol e redige as explicações no idioma que você escolher. O Estadão, no Brasil, é um dos nossos clientes. Os preços são faturados em euros.",
+  },
+];
+---
+
+<BaseLayout title="Alternativa ao Comments News: comparativo (2026)" description="Comments News ou OpenModeration? Um sistema de comentários ou um software que modera seus comentários e suas redes sociais, com uma explicação por escrito." jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Início", href: L('/') }, { label: "Alternativas", href: L('/alternatives') }, { label: "Comments News" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Comparativo
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Alternativa ao Comments News: modere os comentários que você já tem</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        O Comments News é um sistema de comentários para veículos de mídia, usado na Argentina e na Bolívia, com moderação por IA incluída. O OpenModeration não substitui o seu sistema de comentários: ele modera os que você já tem, no seu site e nas suas redes sociais, e explica cada decisão por escrito. Veja as diferenças, com as fontes.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Escolha o OpenModeration se…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>você quer manter o seu sistema de comentários atual;</li>
+          <li>você também modera os comentários do Facebook, do Instagram ou do YouTube;</li>
+          <li>você quer uma explicação por escrito para cada comentário ocultado;</li>
+          <li>você publica na Europa e precisa cumprir o DSA;</li>
+          <li>você quer um registro de auditoria completo e poder exportar seus dados.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">O Comments News pode ser melhor para você se…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>você procura um sistema de comentários completo, com debates e moderação incluída;</li>
+          <li>você quer enviar eventos de comentários ao GA4 ou ao Marfeel;</li>
+          <li>o seu veículo está na América Latina e você prefere um fornecedor com referências na região;</li>
+          <li>você prefere pagar em dólares uma tarifa fixa por domínio.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Comments News e OpenModeration, ponto a ponto</h2>
+      <p class="mt-4 text-surface-500">Informações sobre o Comments News extraídas do seu site, comments.news, consultado em 20 de outubro de 2026.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Critério</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Comments News</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.commentsnews}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">O que muda de verdade no dia a dia</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Seus comentários ficam onde estão</h3>
+          <p class="mt-2 text-sm text-surface-600">Você não troca de widget nem de base de usuários. O OpenModeration se conecta ao WordPress, à sua plataforma via API e às suas páginas do Facebook, Instagram e YouTube, e modera tudo com as mesmas regras.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">O contexto, em todos os planos</h3>
+          <p class="mt-2 text-sm text-surface-600">A IA lê cada comentário junto com a manchete e o fio da conversa. Assim ela distingue a ironia de um insulto e uma crítica dura de um ataque pessoal.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Você sabe por que cada comentário foi ocultado</h3>
+          <p class="mt-2 text-sm text-surface-600">Cada decisão vem com uma explicação por escrito, e o registro de atividade indica se foi a IA ou qual moderador a tomou. Você pode responder a um leitor que reclama, e na Europa o DSA exige explicar cada remoção.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Uma IA que acompanha o progresso dos modelos</h3>
+          <p class="mt-2 text-sm text-surface-600">O OpenModeration usa a sua própria IA de moderação, e as decisões nos casos delicados são verificadas por outros modelos de IA. Quando sai um modelo melhor ou mais barato, a nossa equipe o integra rapidamente, sem nada a mudar do seu lado. Se você precisar de uma implantação on-premise, é possível sob consulta: <a href={bookingUrl(locale)} target="_blank" rel="noopener" class="font-medium text-brand-600 hover:text-brand-500">vamos conversar</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Perguntas frequentes" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        Comments News é uma marca da sua empresa titular. As informações sobre ela vêm de <a href="https://comments.news/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">comments.news</a> (consultado em 20 de outubro de 2026). Viu algum erro? Escreva para <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Para saber mais</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={L('/book-a-call')} class="font-medium text-brand-600 hover:text-brand-500">Agende uma reunião com a nossa equipe &rarr;</a></li>
+        <li><a href={L('/use-cases/news-publishers')} class="font-medium text-brand-600 hover:text-brand-500">A moderação de comentários para veículos de mídia &rarr;</a></li>
+        <li><a href={L('/integrations/wordpress')} class="font-medium text-brand-600 hover:text-brand-500">Moderar os comentários do WordPress &rarr;</a></li>
+        <li><a href={L('/pricing')} class="font-medium text-brand-600 hover:text-brand-500">Os preços do OpenModeration &rarr;</a></li>
+        <li><a href={L('/alternatives')} class="font-medium text-brand-600 hover:text-brand-500">Todos os comparativos &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Modere seus comentários sem trocar de sistema." subtitle="Conecte o WordPress ou as suas páginas nas redes sociais, escreva as suas regras e leia a explicação de cada decisão. Grátis até 1.000 requisições por mês." />
+</BaseLayout>

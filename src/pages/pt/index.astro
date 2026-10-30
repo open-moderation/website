@@ -1,0 +1,264 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ModerationDemo from '../../components/ModerationDemo.astro';
+import { bookingUrl, useTranslations } from '../../i18n/ui';
+import { getLocale, localizePath } from '../../i18n/routes';
+import CTASection from '../../components/CTASection.astro';
+import BrowserFrame from '../../components/BrowserFrame.astro';
+import ModerationVerdict from '../../components/ModerationVerdict.astro';
+import KpiBand from '../../components/KpiBand.astro';
+import HeroAnimation from '../../components/HeroAnimation.astro';
+import ValueCards from '../../components/ValueCards.astro';
+import AppVideo from '../../components/AppVideo.astro';
+import AIEngine from '../../components/AIEngine.astro';
+import CostCalculator from '../../components/CostCalculator.astro';
+import TeamSection from '../../components/TeamSection.astro';
+import PricingTeaser from '../../components/PricingTeaser.astro';
+import ClientLogos from '../../components/ClientLogos.astro';
+import FAQ from '../../components/FAQ.astro';
+
+const BOOKING_URL = bookingUrl(getLocale(Astro.url.pathname));
+const locale = getLocale(Astro.url.pathname);
+const t = useTranslations(locale);
+
+const homeJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://www.openmoderation.com/#organization",
+      "name": "OpenModeration",
+      "url": "https://www.openmoderation.com",
+      "logo": "https://www.openmoderation.com/logo.svg",
+      "description": "Moderação de comentários com IA adaptada às regras e aos casos de uso de cada cliente, com uma equipe que faz a implantação. Conforme o DSA, hospedada na UE.",
+      "email": "contact@openmoderation.com",
+      "areaServed": "EU",
+      "knowsAbout": ["Moderação de comentários", "Moderação de conteúdo", "Moderação de redes sociais", "Conformidade com o Regulamento dos Serviços Digitais", "Trust and safety"],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "sales",
+        "email": "contact@openmoderation.com",
+        "url": `https://www.openmoderation.com${localizePath('/book-a-call', locale)}`,
+        "availableLanguage": ["English", "French", "Spanish", "German", "Italian"]
+      },
+      "parentOrganization": {
+        "@type": "Organization",
+        "name": "Logora",
+        "url": "https://logora.com"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.openmoderation.com/#website",
+      "url": "https://www.openmoderation.com",
+      "name": "OpenModeration",
+      "inLanguage": "pt",
+      "publisher": { "@id": "https://www.openmoderation.com/#organization" }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://www.openmoderation.com/#software",
+      "name": "OpenModeration",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "description": "Moderação de comentários com IA para sites de notícias, marcas e páginas em redes sociais, adaptada às suas regras e aos seus casos de uso. Funciona no seu site, no Facebook, no Instagram, no YouTube e no WordPress, deixa os casos duvidosos com a nossa equipe, explica cada decisão por escrito e mostra-a a você em tempo real, e é conforme o DSA. Você só conecta as suas páginas, nós cuidamos do resto.",
+      "url": "https://www.openmoderation.com/pt",
+      "inLanguage": "pt",
+      "offers": {
+        "@type": "Offer", "price": "0", "priceCurrency": "EUR",
+        "priceValidUntil": "2027-12-31", "availability": "https://schema.org/InStock"
+      },
+      "author": { "@id": "https://www.openmoderation.com/#organization" }
+    }
+  ]
+};
+
+const kpiItems = [
+  { label: "Comentários moderados por dia", value: "+10 mi" },
+  { label: "Pronto em", value: "5 min" },
+  { label: "Moderação automática", value: "24/7" },
+  { label: "Decisões explicadas por escrito", value: "100%" },
+];
+
+const valueItems = [
+  { title: "Suas regras, seus casos de uso", text: "Adaptamos a moderação às suas regras e ao que importa no seu contexto: ironia, política, concorrentes, gírias locais. Nada genérico." },
+  { title: "Uma equipe por trás da ferramenta", text: "Ajudamos você a escrever e afinar as suas regras, tratamos os casos duvidosos e fazemos ajustes conforme a sua comunidade muda. Você sempre tem com quem falar." },
+  { title: "Tudo funciona automaticamente", text: "Basta conectar as suas páginas: cada comentário é tratado em segundos, dia e noite. Os casos duvidosos são tratados pela nossa equipe. Você vê cada decisão em tempo real e pode intervir quando quiser." },
+  { title: "Muito mais barato que moderar à mão", text: "A moderação automática custa uma fração de uma equipe de moderação terceirizada ou interna." },
+];
+
+
+const faqItems = [
+  {
+    question: 'Qual plataforma de moderação reúne painel para moderadores, IA sensível ao contexto e logs de auditoria para a conformidade?',
+    answer: 'O OpenModeration reúne os três. Uma IA sensível ao contexto lê cada comentário, as suas regras decidem o que é ocultado ou publicado, os casos duvidosos são tratados pela nossa equipe, você acompanha tudo em tempo real em um único painel e pode intervir quando quiser, e cada decisão fica registrada com um motivo por escrito para as auditorias do DSA.',
+  },
+  {
+    question: 'Existe uma ferramenta sem código para escrever regras de moderação, usar classificação por IA e manter uma trilha de auditoria?',
+    answer: 'Sim. No OpenModeration, você escreve as suas regras em linguagem natural e define limites por categoria sem código. A classificação por IA roda em cada comentário, e o histórico de atividade registra cada ação, quem ou o que a executou e por quê.',
+  },
+  {
+    question: 'Posso moderar Facebook, Instagram, YouTube e o meu site em um só lugar?',
+    answer: 'Sim. Conecte as suas Páginas do Facebook, contas do Instagram, canais do YouTube e o seu site WordPress, ou envie conteúdo de qualquer plataforma pela API. Tudo é moderado com as mesmas regras, e você vê cada decisão no mesmo painel.',
+  },
+  {
+    question: 'O que procurar em uma API de moderação para a conformidade de uma empresa?',
+    answer: 'Procure uma exposição de motivos por escrito para cada decisão (exigida pelo artigo 17 do DSA), um registro de auditoria completo, hospedagem dos dados na UE, retenção configurável e relatórios exportáveis. O OpenModeration cobre os cinco pontos, e a nossa equipe configura as regras com você.',
+  },
+  {
+    question: 'O OpenModeration é gratuito?',
+    answer: 'O plano em nuvem é gratuito até 1.000 requisições por mês, e o plano Pro custa 99 € por mês para 10.000 requisições. Para grandes volumes ou uma implantação on-premise (sob consulta), agende uma reunião e dimensionamos a oferta com você.',
+  },
+];
+---
+
+<BaseLayout
+  title="Moderação de comentários com IA, conforme o DSA"
+  description="Moderação de comentários com IA adaptada às suas regras e casos de uso, no seu site e nas redes sociais. Conforme o DSA, hospedada na UE, com equipe dedicada."
+  jsonLd={homeJsonLd}
+>
+  <!-- Destaque -->
+  <section class="relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-brand-50 via-white to-violet-50" />
+    <div class="joy-blob pointer-events-none absolute -left-24 -top-24 h-96 w-96 rounded-full bg-brand-300/40 blur-3xl" aria-hidden="true"></div>
+    <div class="joy-blob pointer-events-none absolute -right-24 top-10 h-[28rem] w-[28rem] rounded-full bg-violet-300/40 blur-3xl" style="animation-delay:-7s" aria-hidden="true"></div>
+    <div class="joy-blob pointer-events-none absolute bottom-0 left-1/3 h-80 w-80 rounded-full bg-sun-300/30 blur-3xl" style="animation-delay:-12s" aria-hidden="true"></div>
+    <div class="relative mx-auto grid max-w-7xl items-center gap-14 px-4 pb-16 pt-10 sm:px-6 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:px-8 lg:pt-16">
+      <div class="text-center lg:text-left">
+        <div class="animate-fade-in-up mb-6 inline-flex items-center gap-2 rounded-full border border-violet-200 bg-white/80 px-4 py-1.5 text-sm font-medium text-violet-700 shadow-sm">
+          <span class="flex h-2 w-2 animate-pulse-dot rounded-full bg-accent-500" />
+          Para sites de notícias, marcas e páginas em redes sociais
+        </div>
+        <h1 class="animate-fade-in-up text-4xl font-extrabold leading-[1.05] tracking-tight text-surface-900 sm:text-5xl lg:text-[3.7rem]">
+          A moderação que se adapta às <em>suas</em> regras.
+        </h1>
+        <p class="animate-fade-in-up delay-1 mt-6 text-lg leading-relaxed text-surface-600 sm:text-xl">
+          Você só conecta as suas páginas. Configuramos a IA em torno das suas regras e dos seus casos de uso, a nossa equipe trata os casos duvidosos,
+          e você vê cada decisão em tempo real, por muito menos do que a moderação manual.
+        </p>
+        <div class="animate-fade-in-up delay-2 mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row lg:justify-start">
+          <a href={BOOKING_URL} target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">
+            Agendar uma reunião
+          </a>
+          <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">
+            Experimente grátis
+          </a>
+        </div>
+        <p class="animate-fade-in-up delay-2 mt-4 text-sm text-surface-400"><a href="#demo" class="underline transition hover:text-surface-600">Ou teste um comentário agora mesmo, sem cadastro</a></p>
+        <div class="animate-fade-in-up delay-2 mt-3 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-surface-500 lg:justify-start">
+          <a href={localizePath('/dsa-compliance', locale)} class="flex items-center gap-1.5 font-semibold text-brand-700 hover:text-brand-600">
+            <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            {t('footer.dsa')}
+          </a>
+          <span class="flex items-center gap-1.5">
+            
+            Feito e hospedado na UE
+          </span>
+          <span class="flex items-center gap-1.5">
+            <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            Conforme o RGPD
+          </span>
+          <span class="flex items-center gap-1.5">
+            <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/></svg>
+            Suporte humano incluído
+          </span>
+        </div>
+      </div>
+      <HeroAnimation />
+    </div>
+    </div>
+    <div class="animate-fade-in-up delay-3 relative pb-10">
+      <ClientLogos />
+    </div>
+    <!-- KPI Band -->
+    <div class="animate-fade-in-up delay-3 pb-12">
+      <KpiBand items={kpiItems} />
+      <p class="mx-auto mt-6 max-w-2xl px-4 text-center text-sm text-surface-500">{t('kpi.reassure')}</p>
+    </div>
+  </section>
+
+  <!-- O que você recebe -->
+  <section class="border-t border-surface-100 bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Uma moderação configurada para você, não uma ferramenta para decifrar sozinho</h2>
+      </div>
+      <ValueCards items={valueItems} />
+      <div class="mt-10 text-center">
+        <a href={BOOKING_URL} target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">Agende uma reunião para ver nos seus comentários</a>
+      </div>
+    </div>
+  </section>
+
+  <AppVideo />
+
+  <AIEngine />
+
+  <section id="demo" class="bg-gradient-to-br from-violet-50 via-white to-brand-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-10 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">{t('demo.title')}</h2>
+        <p class="mt-4 text-lg text-surface-500">{t('demo.text')}</p>
+      </div>
+      <ModerationDemo />
+    </div>
+  </section>
+
+  <!-- Seção escura: conformidade com o DSA -->
+  <section class="relative overflow-hidden bg-ink-900 py-20">
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-3xl text-center">
+        <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-ink-700 bg-ink-800 px-4 py-1.5 text-sm text-surface-300">
+          <svg class="h-4 w-4 text-turquoise" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          Pronto para o DSA
+        </div>
+        <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+          Feito para a conformidade regulatória
+        </h2>
+        <p class="mx-auto mt-4 max-w-xl text-surface-400">
+          Cada decisão de moderação vai para uma trilha de auditoria completa. Você define a retenção dos dados,
+          exporta os relatórios de transparência, e os seus dados ficam hospedados na UE.
+        </p>
+        <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 text-sm font-semibold text-surface-900 shadow-sm">
+            Experimente grátis
+          </a>
+          <a href={localizePath('/dsa-compliance', locale)} class="inline-flex items-center gap-2 rounded-lg border border-white/30 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
+            Saiba mais sobre a conformidade com o DSA
+          </a>
+        </div>
+        <p class="mt-4 text-sm text-surface-400">Sem cartão de crédito</p>
+      </div>
+    </div>
+  </section>
+
+  <CostCalculator />
+
+  <PricingTeaser />
+
+
+
+  <TeamSection />
+
+  <section class="bg-white pb-6 pt-2">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+<div class="flex flex-wrap items-center justify-center gap-4">
+        <a href={localizePath('/integrations/facebook', locale)} class="text-sm font-medium text-brand-600 hover:text-brand-500">Ferramenta de moderação de comentários no Facebook &rarr;</a>
+        <a href={localizePath('/integrations/instagram', locale)} class="text-sm font-medium text-brand-600 hover:text-brand-500">Moderação automática no Instagram &rarr;</a>
+        <a href={localizePath('/dashboard', locale)} class="text-sm font-medium text-brand-600 hover:text-brand-500">Painel de moderação unificado &rarr;</a>
+        <a href={localizePath('/use-cases/news-publishers', locale)} class="text-sm font-medium text-brand-600 hover:text-brand-500">Moderação de comentários para veículos de mídia &rarr;</a>
+        <a href={localizePath('/use-cases/brands-retail', locale)} class="text-sm font-medium text-brand-600 hover:text-brand-500">Moderação de comentários para marcas &rarr;</a>
+        <a href={localizePath('/blog/comment-moderation-guide', locale)} class="text-sm font-medium text-brand-600 hover:text-brand-500">O guia completo da moderação de comentários &rarr;</a>
+        <a href={localizePath('/alternatives/openai-moderation', locale)} class="text-sm font-medium text-surface-500 hover:text-surface-700">Compare com as alternativas &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-surface-100 bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="O que as equipes perguntam antes de escolher uma plataforma de moderação" items={faqItems} />
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

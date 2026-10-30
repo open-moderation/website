@@ -1,0 +1,190 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import FAQ from '../../../components/FAQ.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+import { bookingUrl } from '../../../i18n/ui';
+
+const locale = getLocale(Astro.url.pathname);
+const BOOKING_URL = bookingUrl(locale);
+
+const title = "NapoleonCat alternatief: vergelijking met OpenModeration";
+const description = "NapoleonCat of OpenModeration? Vergelijking met bronnen: echte prijzen, netwerken, reacties op je website, geschreven uitleg en DSA-logboek per beslissing.";
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/nl/alternatieven/napoleoncat",
+  "name": title,
+  "description": description,
+  "inLanguage": "nl",
+  "about": { "@id": "https://www.openmoderation.com/#software" }
+};
+
+const rows = [
+  { feature: "Aanbod", napoleoncat: "Een socialemediasuite voor merken en bureaus: inbox, automatische moderatie, publiceren, analyse en rapportages", openmod: "Alleen moderatie: connectoren voor sociale media en WordPress, plus REST-API en webhooks voor de rest" },
+  { feature: "Ondersteunde netwerken", napoleoncat: "Facebook, Messenger, Instagram, LinkedIn, TikTok, YouTube, Google Business Profile, reviews in App Store en Google Play; X om te publiceren", openmod: "Facebook, Instagram, YouTube en WordPress standaard; de rest via de API" },
+  { feature: "Reacties op je eigen website", napoleoncat: "Niet vermeld op de website", openmod: "Ja: WordPress-connector, of de API voor elk reactiesysteem" },
+  { feature: "Prijs", napoleoncat: "Standard € 89, Pro € 109, Expert € 139 per maand (maandelijks betalen, 5 profielen, 2 gebruikers). Enterprise vanaf € 465. Gratis proefperiode van 14 dagen", openmod: "Publiek: gratis tot 1.000 verzoeken per maand, Pro € 99 per maand voor 10.000" },
+  { feature: "Reacties automatisch verbergen", napoleoncat: "Inbegrepen vanaf het Expert-abonnement („Automatic comment hiding and deletion”)", openmod: "Inbegrepen in alle abonnementen, ook het gratis abonnement" },
+  { feature: "Hoe regels worden ingesteld", napoleoncat: "Geautomatiseerde moderatieregels, plus een AI-assistent om spam en haat te herkennen", openmod: "Je moderatieregels in gewone taal, een drempel per categorie; twijfelgevallen worden door ons team afgehandeld" },
+  { feature: "AI-modellen", napoleoncat: "Niet vermeld op de website (een AI-assistent tegen spam en haat)", openmod: "Eigen moderatie-AI, gecontroleerd door andere AI-modellen; nieuwe modellen worden aangesloten zodra ze uitkomen" },
+  { feature: "Geschreven uitleg bij elke beslissing", napoleoncat: "Niet vermeld op de website", openmod: "Ja, in de taal van je keuze, teruggegeven door de API" },
+  { feature: "DSA (Digital Services Act)", napoleoncat: "Niet vermeld op de website", openmod: "Activiteitenlogboek dat aangeeft of elke beslissing automatisch was of door een mens is genomen" },
+  { feature: "Data en compliance", napoleoncat: "Label „100% EU GDPR compliant”; hostinglocatie niet vermeld", openmod: "Ontwikkeld en gehost in de Europese Unie, AVG" },
+  { feature: "Publiceren, inbox, analyse", napoleoncat: "Ja, dat is de kern van de suite", openmod: "Nee, OpenModeration modereert alleen" },
+];
+
+const faqItems = [
+  {
+    question: "Wat is het beste alternatief voor NapoleonCat om reacties te modereren?",
+    answer: "Als je vooral moet modereren, is OpenModeration daarvoor gemaakt: regels in gewone taal, een geschreven uitleg bij elke verborgen reactie en een logboek voor de DSA, op sociale media en op je website. Zoek je vooral een gedeelde inbox, een publicatieplanning en analyses voor TikTok, LinkedIn en app-reviews, dan biedt NapoleonCat dat en OpenModeration niet.",
+  },
+  {
+    question: "Wat kost NapoleonCat in vergelijking met OpenModeration?",
+    answer: "NapoleonCat noemt Standard voor € 89, Pro voor € 109 en Expert voor € 139 per maand bij maandelijkse betaling, voor 5 profielen en 2 gebruikers. Automatisch reacties verbergen komt bij Expert. Enterprise begint bij € 465. OpenModeration is gratis tot 1.000 verzoeken per maand en kost daarna € 99 per maand voor 10.000 verzoeken.",
+  },
+  {
+    question: "Kan ik OpenModeration testen zonder NapoleonCat uit te zetten?",
+    answer: "Ja. In sandboxmodus analyseert OpenModeration je echte reacties en schrijft het zijn beslissingen en uitleg uit, zonder iets te verbergen. Zo vergelijk je beide tools op dezelfde reacties voordat je ook maar één instelling in NapoleonCat verandert.",
+  },
+  {
+    question: "Kan ik NapoleonCat houden om te publiceren en OpenModeration gebruiken om te modereren?",
+    answer: "Ja. Niets houdt je tegen om NapoleonCat te blijven gebruiken voor publiceren, reageren en rapporteren, en de moderatie aan OpenModeration over te laten. Zet automatisch verbergen in een van de twee tools uit, zodat ze nooit op dezelfde reactie ingrijpen.",
+  },
+  {
+    question: "Werkt OpenModeration voor lezersreacties op de website van een mediabedrijf?",
+    answer: "Ja. De WordPress-connector en de REST-API modereren de lezersreacties op je website met dezelfde regels als je sociale media. Redacties als Estadão, L'Équipe en Sud Ouest gebruiken OpenModeration.",
+  },
+  {
+    question: "Welke AI gebruikt OpenModeration?",
+    answer: "OpenModeration werkt met een eigen moderatie-AI, en bij gevoelige gevallen controleren andere AI-modellen de beslissingen. Komt er een beter of goedkoper model uit, dan sluit ons team het snel aan, zonder dat jij iets hoeft te veranderen: je moderatie profiteert van de vooruitgang van AI-modellen.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: "Alternatieven", href: localizePath('/alternatives', locale) }, { label: "NapoleonCat" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Vergelijking
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Alternatief voor NapoleonCat: OpenModeration vergeleken</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        NapoleonCat is een suite voor socialemediabeheer. Reacties automatisch verbergen is daarin één functie van vele, beschikbaar vanaf het Expert-abonnement. OpenModeration doet één ding: het modereert reacties, legt elke beslissing schriftelijk uit en houdt een logboek bij voor de DSA. Dit zijn de verschillen, met bronnen.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Kies OpenModeration als…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>moderatie je echte probleem is en je al een tool hebt om te publiceren;</li>
+          <li>je wilt dat je moderatieregels worden toegepast zoals ze zijn geschreven, terwijl ons team de twijfelgevallen afhandelt;</li>
+          <li>je een geschreven uitleg en een DSA-logboek nodig hebt voor elke verborgen reactie;</li>
+          <li>lezersreacties op je website dezelfde regels moeten volgen als je Facebook-pagina;</li>
+          <li>je een volledig auditlogboek en data die in de EU worden gehost wilt.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">NapoleonCat past misschien beter als…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>je TikTok, LinkedIn, Google Business Profile of reviews in app stores beheert;</li>
+          <li>je publiceren, een gedeelde inbox, analyse en moderatie in één abonnement wilt;</li>
+          <li>je team de meeste tijd besteedt aan klanten antwoorden, niet aan beledigingen verwijderen;</li>
+          <li>je reacties op TikTok-advertenties moet modereren.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">NapoleonCat en OpenModeration, punt voor punt</h2>
+      <p class="mt-4 text-surface-500">Informatie over NapoleonCat afkomstig van de website napoleoncat.com, geraadpleegd op 20 oktober 2026.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Criterium</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">NapoleonCat</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.napoleoncat}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Wat er in de dagelijkse praktijk echt verandert</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Elke verborgen reactie heeft een reden</h3>
+          <p class="mt-2 text-sm text-surface-600">OpenModeration schrijft op waarom het elke reactie heeft verborgen, in de taal van je keuze. Het activiteitenlogboek laat zien of de beslissing automatisch was of door een mens is genomen. Protesteert een lezer of stelt een toezichthouder vragen, dan heb je het antwoord klaar.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Je regels, toegepast met context</h3>
+          <p class="mt-2 text-sm text-surface-600">Je schrijft je regels in gewone taal en stelt een drempel per categorie in. De AI leest elke reactie samen met de titel van het bericht en de draad van het gesprek. Twijfelgevallen worden door ons team afgehandeld; jij ziet elke beslissing in realtime en kunt ingrijpen wanneer je wilt.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Je website en je sociale media, met dezelfde regels</h3>
+          <p class="mt-2 text-sm text-surface-600">Facebook, Instagram, YouTube en WordPress koppel je standaard. Elk ander reactiesysteem sluit je aan via de REST-API en webhooks. Een redactie modereert haar artikelen en haar berichten op sociale media met hetzelfde beleid.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Een AI die de vooruitgang van de modellen volgt</h3>
+          <p class="mt-2 text-sm text-surface-600">OpenModeration werkt met een eigen moderatie-AI, en bij gevoelige gevallen controleren andere AI-modellen de beslissingen. Komt er een beter of goedkoper model uit, dan sluit het team het snel aan, zonder dat jij iets hoeft te veranderen. Je moderatie gaat mee met de vooruitgang van de AI-markt.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6 md:col-span-2">
+          <h3 class="font-semibold text-surface-900">Hosting in de EU, exporteerbare data</h3>
+          <p class="mt-2 text-sm text-surface-600">OpenModeration is ontwikkeld en wordt gehost in de Europese Unie. Je kunt je data en je auditlogboek op elk moment exporteren. Heb je een on-premise installatie nodig, dan kan dat op aanvraag: <a href={BOOKING_URL} target="_blank" rel="noopener" class="font-medium text-brand-600 hover:text-brand-500">laten we praten</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Veelgestelde vragen" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        NapoleonCat is een merk van de eigenaar ervan. De informatie komt van <a href="https://napoleoncat.com/pricing/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">napoleoncat.com</a> (geraadpleegd op 20 oktober 2026). De prijzen van NapoleonCat zijn exclusief btw. Zie je een fout? Schrijf ons op <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Meer weten</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/social-media-moderation', locale)} class="font-medium text-brand-600 hover:text-brand-500">Socialemediamoderatie met OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/integrations/wordpress', locale)} class="font-medium text-brand-600 hover:text-brand-500">Reacties in WordPress modereren &rarr;</a></li>
+        <li><a href={localizePath('/dsa-compliance/statement-of-reasons', locale)} class="font-medium text-brand-600 hover:text-brand-500">De motivering die de DSA vereist &rarr;</a></li>
+        <li><a href={localizePath('/moderation-software', locale)} class="font-medium text-brand-600 hover:text-brand-500">De moderatiesoftware van OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/alternatives', locale)} class="font-medium text-brand-600 hover:text-brand-500">Alle vergelijkingen &rarr;</a></li>
+        <li><a href={localizePath('/pricing', locale)} class="font-medium text-brand-600 hover:text-brand-500">De prijzen van OpenModeration &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Modereer je reacties met een tool die alleen daarvoor is gemaakt." subtitle="Koppel je pagina's en je website, schrijf je regels en lees de reden achter elke verborgen reactie. Gratis tot 1.000 verzoeken per maand." />
+</BaseLayout>

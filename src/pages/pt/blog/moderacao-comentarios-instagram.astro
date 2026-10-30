@@ -1,0 +1,234 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const title = "Moderação de comentários no Instagram: guia completo";
+const description = "Como moderar comentários no Instagram: Palavras ocultas, Limites e Restringir, onde eles falham, como conectar uma ferramenta e ativar a moderação automática.";
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Moderação de comentários no Instagram: como configurar a moderação automática",
+  "description": description,
+  "inLanguage": "pt",
+  "datePublished": "2026-10-30",
+  "dateModified": "2026-10-30",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/pt/blog/moderacao-comentarios-instagram" }
+};
+
+const comparison = [
+  { need: "Filtrar comentários ofensivos em geral", builtin: "Sim, com Palavras ocultas e a lista do próprio Instagram", tool: "Sim, com leitura no contexto" },
+  { need: "Bloquear as suas próprias palavras e emojis", builtin: "Sim, com uma lista personalizada, só correspondências exatas", tool: "Sim, inclusive variações e erros de grafia" },
+  { need: "Entender sarcasmo, linguagem cifrada e contexto", builtin: "Não", tool: "Sim" },
+  { need: "Aplicar regras específicas da sua conta", builtin: "Limitado a listas de palavras e a quem pode comentar", tool: "Sim, as suas regras e os seus casos de uso escritos em linguagem natural" },
+  { need: "Enviar os comentários duvidosos para uma pessoa", builtin: "Não", tool: "Sim, para uma fila de revisão em um único console" },
+  { need: "Motivo por escrito para cada decisão", builtin: "Não", tool: "Sim" },
+  { need: "Trilha de auditoria das decisões", builtin: "Não", tool: "Sim, cada decisão fica registrada" },
+  { need: "Várias contas e redes no mesmo lugar", builtin: "Não, conta por conta no app", tool: "Sim, com Facebook, YouTube e WordPress" },
+];
+
+const faqItems = [
+  {
+    question: "O que é a moderação automática no Instagram?",
+    answer: "Moderação automática no Instagram significa que os comentários são filtrados sem que ninguém precise lê-los antes. O Instagram faz parte disso com as Palavras ocultas. Uma ferramenta de moderação vai além: lê cada novo comentário no contexto, aplica as suas próprias regras, oculta o que as viola, e os casos duvidosos são tratados por pessoas. Com o OpenModeration, é a nossa equipe que cuida deles.",
+  },
+  {
+    question: "Do que eu preciso para conectar uma ferramenta de moderação de comentários ao Instagram?",
+    answer: "Uma conta profissional do Instagram (Empresa ou Criador de conteúdo), acesso de administrador a ela e, conforme o modo de conexão da ferramenta, uma Página do Facebook vinculada à conta. Depois você entra pela Meta e aprova as permissões de que a ferramenta precisa para ler e gerenciar os comentários. Contas pessoais não podem ser conectadas.",
+  },
+  {
+    question: "Posso moderar comentários no Instagram sem uma conta comercial?",
+    answer: "Você pode usar as ferramentas nativas do Instagram (Palavras ocultas, Limites, Restringir, exclusão de comentários) em qualquer conta. Mas as ferramentas de terceiros só se conectam a contas profissionais, porque a API da Meta não está disponível para contas pessoais. Mudar para uma conta profissional é gratuito.",
+  },
+  {
+    question: "As Palavras ocultas pegam todos os comentários ofensivos?",
+    answer: "Não. Elas se baseiam em listas de palavras, frases e emojis, então deixam passar erros de grafia, sarcasmo, linguagem cifrada e insultos feitos com palavras comuns. Também não conseguem aplicar regras específicas da sua marca, como divulgação de concorrentes ou clientes que publicam dados pessoais.",
+  },
+  {
+    question: "A pessoa fica sabendo que o comentário dela no Instagram foi ocultado?",
+    answer: "O Instagram não notifica o autor. Um comentário ocultado por um filtro ou por uma ferramenta de moderação deixa de aparecer para os outros visitantes, enquanto o autor em geral continua vendo, o que evita que a conversa escale.",
+  },
+  {
+    question: "A moderação automática no Instagram está em conformidade com o DSA?",
+    answer: "Pode estar, desde que cada decisão seja explicada e registrada. O Regulamento dos Serviços Digitais (DSA) pede uma exposição de motivos quando um conteúdo é restringido, indicando inclusive se foram usados meios automatizados. O OpenModeration escreve um motivo para cada decisão, mantém um log completo e é hospedado na UE.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} ogType="article" jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Início", href: localizePath("/", locale) }, { label: "Blog", href: localizePath("/blog", locale) }, { label: "Moderação de comentários no Instagram" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-30">30 de outubro de 2026</time>
+        <span>&middot;</span>
+        <span>8 min de leitura</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Moderação de comentários no Instagram: como configurar a moderação automática</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        No Instagram, os comentários embaixo de um post fazem parte do post. Bots de spam, sorteios falsos, insultos
+        e trolls acabam ao lado das fotos dos seus produtos e das suas campanhas. O Instagram oferece alguns
+        filtros nativos, mas eles foram pensados para pessoas físicas, não para marcas que recebem milhares de
+        comentários. Este guia mostra o que o Instagram oferece, onde ele para e como configurar a moderação
+        automática com uma ferramenta.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">A resposta curta</h2>
+      <ul>
+        <li><strong>Ferramentas nativas:</strong> Palavras ocultas, uma lista personalizada de palavras e emojis, Limites, Restringir, controles de comentários e exclusão manual.</li>
+        <li><strong>O limite delas:</strong> funcionam com listas de palavras e com quem pode comentar, não com o que um comentário significa.</li>
+        <li><strong>Para conectar uma ferramenta:</strong> você precisa de uma conta profissional (Empresa ou Criador de conteúdo) e deve aprovar as permissões da Meta.</li>
+        <li><strong>Uma ferramenta de moderação acrescenta</strong> análise atenta ao contexto, as suas regras e os seus casos de uso, revisão humana dos casos duvidosos e um motivo por escrito para cada decisão.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Quais são as ferramentas nativas de moderação do Instagram?</h2>
+      <p>O Instagram renomeia e muda as configurações de lugar com frequência, então procure por elas nas configurações de privacidade da sua conta, e não em um lugar fixo. Os recursos em si existem há anos.</p>
+      <ul>
+        <li>
+          <strong>Palavras ocultas.</strong> O Instagram filtra os comentários que considera ofensivos, com base na própria
+          lista, e os tira de vista. Uma opção mais rigorosa oculta mais comentários que podem ser inadequados.
+        </li>
+        <li>
+          <strong>Lista personalizada de palavras.</strong> Dentro de Palavras ocultas, você adiciona as suas próprias palavras, frases e emojis.
+          Os comentários que os contêm são ocultados.
+        </li>
+        <li>
+          <strong>Limites.</strong> Durante uma onda de ataques, você limita temporariamente os comentários e mensagens de
+          contas que não seguem você ou que começaram a seguir há pouco tempo.
+        </li>
+        <li>
+          <strong>Restringir.</strong> Os novos comentários de uma pessoa restringida só ficam visíveis para ela, a menos que você
+          os aprove. Ela não é avisada de que foi restringida.
+        </li>
+        <li>
+          <strong>Controles de comentários.</strong> Você escolhe quem pode comentar, impede contas específicas de
+          comentar ou desativa os comentários de um post.
+        </li>
+        <li>
+          <strong>Moderação manual.</strong> Você exclui comentários um a um ou vários de uma vez, e bloqueia
+          ou denuncia os autores.
+        </li>
+      </ul>
+      <p>Ative esses recursos de qualquer forma. Eles são gratuitos e eliminam uma parte do spam e dos insultos mais óbvios.</p>
+
+      <h2 class="text-xl font-bold text-surface-900">Onde as ferramentas do Instagram ficam devendo</h2>
+      <ul>
+        <li><strong>Palavras, não sentido.</strong> "Que filtro lindo, pena o rosto" não contém nenhuma palavra proibida. Sarcasmo, ironia e linguagem cifrada passam.</li>
+        <li><strong>Fáceis de contornar.</strong> Espaços, pontos, emojis ou uma letra trocada bastam para driblar uma lista.</li>
+        <li><strong>Vários idiomas.</strong> Uma marca global recebe comentários em muitos idiomas, e uma lista só cobre o que você lembrou de adicionar.</li>
+        <li><strong>Controles grosseiros.</strong> Limitar ou desativar os comentários também cala os seus clientes de verdade, o oposto do que uma campanha quer.</li>
+        <li><strong>Nenhuma regra própria.</strong> Você não consegue dizer ao Instagram "oculte divulgação de concorrentes" ou "oculte comentários com o número do pedido de um cliente".</li>
+        <li><strong>Nem motivos, nem log.</strong> Nada registra o que foi filtrado e por quê, algo de que você precisa nas revisões e para o DSA.</li>
+        <li><strong>Uma conta por vez.</strong> Cada conta é gerenciada no app. Equipes que cuidam de várias contas, ou também do Facebook, se dividem entre várias interfaces.</li>
+      </ul>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">O que você precisa</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Ferramentas nativas do Instagram</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Ferramenta de moderação automática</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {comparison.map((row) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{row.need}</td>
+              <td class="px-4 py-3 text-surface-600">{row.builtin}</td>
+              <td class="px-4 py-3 text-surface-600">{row.tool}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">Do que você precisa para conectar uma ferramenta de moderação ao Instagram?</h2>
+      <p>É nesta pergunta que a maioria das equipes trava. As ferramentas de terceiros passam pela API oficial da Meta, que vem com algumas condições.</p>
+      <ol>
+        <li><strong>Uma conta profissional.</strong> A conta precisa ser de Empresa ou de Criador de conteúdo. Contas pessoais não são acessíveis pela API. A mudança é gratuita e pode ser feita nas configurações da conta.</li>
+        <li><strong>Uma Página do Facebook vinculada, conforme o método de conexão.</strong> Muitas ferramentas se conectam pelo Login do Facebook, o que exige que a conta do Instagram esteja vinculada a uma Página do Facebook que você gerencia.</li>
+        <li><strong>Direitos de administrador.</strong> Você precisa ter controle total da conta (e da Página, quando houver uma vinculada), por exemplo pelo Meta Business Suite.</li>
+        <li><strong>Permissões da Meta.</strong> Você entra pela Meta e aprova as permissões que a ferramenta solicita, principalmente ler as mídias e os comentários da conta e gerenciar os comentários. A ferramenta nunca precisa da sua senha.</li>
+        <li><strong>Webhooks.</strong> Depois da conexão, a Meta avisa a ferramenta de cada novo comentário, para que ela possa agir instantes depois da publicação.</li>
+      </ol>
+      <p>
+        Com o OpenModeration, não há código para escrever. Você conecta a conta e a nossa equipe confere os
+        pré-requisitos e configura as suas regras com você. Os detalhes estão na
+        <a href={localizePath("/integrations/instagram", locale)} class="text-brand-600 hover:text-brand-500">página da integração com o Instagram</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">O que uma ferramenta de moderação automática para Instagram acrescenta?</h2>
+      <ul>
+        <li><strong>Contexto.</strong> Cada comentário é lido pelo que significa, então insultos disfarçados, ofertas de golpe e assédio são detectados mesmo sem nenhuma palavra proibida.</li>
+        <li><strong>As suas regras e os seus casos de uso.</strong> Você descreve em linguagem natural o que aceita e o que não aceita: links de concorrentes, contas de sorteios falsos, dados pessoais, debates fora do tema.</li>
+        <li><strong>Ocultação automática.</strong> Os comentários que violam claramente as suas regras são ocultados assim que chegam, de dia e de noite.</li>
+        <li><strong>Revisão humana.</strong> Os comentários duvidosos são tratados pela nossa equipe, e você vê cada decisão em tempo real em um único console.</li>
+        <li><strong>Um motivo por escrito.</strong> Cada decisão é explicada e registrada, que é o que o DSA espera.</li>
+        <li><strong>Um só lugar para todas as redes.</strong> O OpenModeration também se conecta a Páginas do Facebook, canais do YouTube e WordPress.</li>
+      </ul>
+      <p>
+        Para marcas que fazem campanhas e parcerias com influenciadores, é a diferença entre uma seção de comentários
+        que você precisa vigiar e uma em que você pode confiar. Veja o <a href={localizePath("/use-cases/brands-retail", locale)} class="text-brand-600 hover:text-brand-500">caso de uso para marcas e varejo</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Como escolher uma ferramenta de moderação de comentários para o Instagram</h2>
+      <ol>
+        <li><strong>Só a API oficial.</strong> A ferramenta deve se conectar pela API da Meta e nunca pedir a sua senha.</li>
+        <li><strong>Tempo real.</strong> Os comentários devem ser tratados conforme chegam, não em lotes horas depois.</li>
+        <li><strong>Ocultar por padrão.</strong> Ocultar é reversível e discreto. A exclusão deve ficar reservada para casos específicos.</li>
+        <li><strong>Regras personalizadas.</strong> Você deve poder descrever as suas próprias regras, e não apenas ligar e desligar categorias genéricas.</li>
+        <li><strong>Contexto e idiomas.</strong> Teste a ferramenta com comentários reais da sua conta: sarcasmo, emojis, gírias, outros idiomas.</li>
+        <li><strong>Fila de revisão.</strong> Os casos duvidosos precisam de um lugar em que a sua equipe decida rápido.</li>
+        <li><strong>Motivos e log.</strong> Cada decisão deve ser explicada e exportável, em linha com o <a href={localizePath("/dsa-compliance", locale)} class="text-brand-600 hover:text-brand-500">DSA</a>.</li>
+        <li><strong>Hospedagem dos dados.</strong> Verifique onde os comentários são processados. O OpenModeration é hospedado na UE.</li>
+        <li><strong>Facebook também.</strong> Se você também tem uma Página no Facebook, use as mesmas regras nas duas.</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Você também modera o Facebook?</h2>
+      <p>
+        As Páginas do Facebook têm outras ferramentas nativas e outra forma de ocultar comentários. Leia o nosso guia sobre
+        <a href={localizePath("/blog/hide-facebook-comments-automatically", locale)} class="text-brand-600 hover:text-brand-500">como ocultar comentários no Facebook automaticamente</a>,
+        ou <a href={localizePath("/demo", locale)} class="text-brand-600 hover:text-brand-500">teste a demonstração ao vivo</a> para experimentar a moderação nos seus próprios comentários.
+      </p>
+    </div>
+
+    <div class="mt-12">
+      <FAQ title="Perguntas frequentes" items={faqItems} />
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Continue explorando</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath("/integrations/instagram", locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderação automática no Instagram com o OpenModeration &rarr;</a></li>
+        <li><a href={localizePath("/blog/hide-facebook-comments-automatically", locale)} class="font-medium text-brand-600 hover:text-brand-500">Como ocultar comentários no Facebook automaticamente &rarr;</a></li>
+        <li><a href={localizePath("/use-cases/brands-retail", locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderação de comentários para marcas e varejo &rarr;</a></li>
+        <li><a href={localizePath("/dsa-compliance", locale)} class="font-medium text-brand-600 hover:text-brand-500">O que o DSA exige das decisões de moderação &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

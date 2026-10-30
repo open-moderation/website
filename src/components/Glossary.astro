@@ -1,0 +1,97 @@
+---
+// Lexique : index alphabétique (sans `term`) ou page d'un terme (avec `term`). Données : src/data/glossary/<locale>.json
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from './Breadcrumb.astro';
+import CTASection from './CTASection.astro';
+import { getLocale, localizePath } from '../i18n/routes';
+import { glossaryBase, glossaryTerms, type GlossaryTerm } from '../data/glossary';
+
+export interface Props { term?: GlossaryTerm }
+
+const locale = getLocale(Astro.url.pathname);
+const terms = glossaryTerms(locale);
+const base = glossaryBase[locale];
+const { term } = Astro.props;
+
+const L = {
+  en: { home: 'Home', name: 'Content moderation glossary', title: 'Content Moderation Glossary: DSA, AI and Community Terms', desc: 'Clear definitions of the terms of comment and content moderation: DSA, statement of reasons, notice and action, AI moderation, false positives and more.', h1: 'Content moderation glossary', intro: 'The words of comment moderation, the DSA and AI moderation, explained simply.', what: 'What is', short: 'In short', related: 'Go further', see: 'See also', all: 'All terms', termTitle: (t: string) => `${t}: Definition` },
+  fr: { home: 'Accueil', name: 'Lexique de la modération', title: 'Lexique de la modération : DSA, IA et communautés', desc: "Les définitions claires des termes de la modération des commentaires et des contenus : DSA, exposé des motifs, signalement, modération par IA, faux positifs…", h1: 'Lexique de la modération', intro: 'Les mots de la modération des commentaires, du DSA et de la modération par IA, expliqués simplement.', what: "Qu'est-ce que", short: 'En bref', related: 'Pour aller plus loin', see: 'Voir aussi', all: 'Tous les termes', termTitle: (t: string) => `${t} : définition` },
+  es: { home: 'Inicio', name: 'Glosario de moderación', title: 'Glosario de moderación de contenidos: DSA, IA y comunidad', desc: 'Definiciones claras de los términos de la moderación de comentarios y contenidos: DSA, exposición de motivos, notificación y acción, moderación con IA y más.', h1: 'Glosario de moderación de contenidos', intro: 'Las palabras de la moderación de comentarios, la DSA y la moderación con IA, explicadas de forma sencilla.', what: 'Qué es', short: 'En resumen', related: 'Para saber más', see: 'Ver también', all: 'Todos los términos', termTitle: (t: string) => `${t}: definición` },
+  de: { home: 'Startseite', name: 'Glossar der Moderation', title: 'Glossar Content Moderation: DSA, KI und Community', desc: 'Klare Definitionen der Begriffe aus Kommentar- und Content-Moderation: DSA, Begründung, Melde- und Abhilfeverfahren, KI-Moderation, False Positives und mehr.', h1: 'Glossar der Content Moderation', intro: 'Die Begriffe der Kommentarmoderation, des DSA und der KI-Moderation, einfach erklärt.', what: 'Was ist', short: 'Kurz gesagt', related: 'Weiterlesen', see: 'Siehe auch', all: 'Alle Begriffe', termTitle: (t: string) => `${t}: Definition` },
+  it: { home: 'Home', name: 'Glossario della moderazione', title: 'Glossario della moderazione: DSA, IA e community', desc: 'Definizioni chiare dei termini della moderazione di commenti e contenuti: DSA, motivazione, notifica e azione, moderazione con IA, falsi positivi e altro.', h1: 'Glossario della moderazione dei contenuti', intro: 'Le parole della moderazione dei commenti, del DSA e della moderazione con IA, spiegate in modo semplice.', what: "Che cos'è", short: 'In breve', related: 'Per approfondire', see: 'Vedi anche', all: 'Tutti i termini', termTitle: (t: string) => `${t}: definizione` },
+  pt: { home: 'Início', name: 'Glossário de moderação', title: 'Glossário de moderação de conteúdo: DSA, IA e comunidade', desc: 'Definições claras dos termos da moderação de comentários e conteúdo: DSA, fundamentação, notificação e ação, moderação com IA, falsos positivos e mais.', h1: 'Glossário de moderação de conteúdo', intro: 'As palavras da moderação de comentários, do DSA e da moderação com IA, explicadas de forma simples.', what: 'O que é', short: 'Em resumo', related: 'Saiba mais', see: 'Veja também', all: 'Todos os termos', termTitle: (t: string) => `${t}: definição` },
+  pl: { home: 'Strona główna', name: 'Słownik moderacji', title: 'Słownik moderacji treści: DSA, AI i społeczności', desc: 'Jasne definicje pojęć z moderacji komentarzy i treści: DSA, uzasadnienie decyzji, zgłoszenia i działania, moderacja AI, fałszywe alarmy i inne.', h1: 'Słownik moderacji treści', intro: 'Pojęcia moderacji komentarzy, DSA i moderacji AI wyjaśnione prosto.', what: 'Czym jest', short: 'W skrócie', related: 'Dowiedz się więcej', see: 'Zobacz też', all: 'Wszystkie pojęcia', termTitle: (t: string) => `${t}: definicja` },
+  nl: { home: 'Home', name: 'Woordenlijst moderatie', title: 'Woordenlijst contentmoderatie: DSA, AI en community', desc: 'Heldere definities van de begrippen uit reactie- en contentmoderatie: DSA, motivering, melding en actie, AI-moderatie, fout-positieven en meer.', h1: 'Woordenlijst contentmoderatie', intro: 'De woorden van reactiemoderatie, de DSA en AI-moderatie, eenvoudig uitgelegd.', what: 'Wat is', short: 'Kort gezegd', related: 'Verder lezen', see: 'Zie ook', all: 'Alle begrippen', termTitle: (t: string) => `${t}: definitie` },
+}[locale] ?? null;
+const l = L!;
+const url = (slug?: string) => `https://www.openmoderation.com${base}${slug ? `/${slug}` : ''}`;
+const byId = Object.fromEntries(terms.map((t) => [t.id, t]));
+const letters = [...new Set(terms.map((t) => t.term[0].toUpperCase()))].sort((a, b) => a.localeCompare(b, locale));
+const sorted = [...terms].sort((a, b) => a.term.localeCompare(b.term, locale));
+
+const jsonLd = term
+  ? { '@context': 'https://schema.org', '@type': 'DefinedTerm', name: term.term, description: term.short, url: url(term.slug), inLanguage: locale, inDefinedTermSet: { '@type': 'DefinedTermSet', name: l.name, url: url() } }
+  : { '@context': 'https://schema.org', '@type': 'DefinedTermSet', name: l.name, url: url(), inLanguage: locale, hasDefinedTerm: sorted.map((t) => ({ '@type': 'DefinedTerm', name: t.term, description: t.short, url: url(t.slug) })) };
+---
+
+<BaseLayout title={term ? (term.title ?? l.termTitle(term.term)) : l.title} description={term ? term.description ?? term.short : l.desc} jsonLd={jsonLd}>
+  <Breadcrumb items={[{ label: l.home, href: localizePath('/', locale) }, ...(term ? [{ label: l.name, href: base }, { label: term.term }] : [{ label: l.name }])]} />
+  {term ? (
+    <article class="mx-auto max-w-3xl px-4 py-14 sm:px-6 lg:px-8">
+      <p class="mb-3 inline-flex rounded-full bg-violet-50 px-3 py-1 text-xs font-semibold text-violet-700 ring-1 ring-violet-100">📖 {l.name}</p>
+      <h1 class="text-4xl font-extrabold tracking-tight text-surface-900">{term.h1 ?? `${l.what} ${term.term} ?`.replace(' ?', locale === 'fr' ? ' ?' : '?')}</h1>
+      <div class="mt-6 rounded-2xl border border-violet-100 bg-gradient-to-br from-violet-50 to-white p-5">
+        <p class="text-xs font-semibold uppercase tracking-wider text-violet-600">{l.short}</p>
+        <p class="mt-1 text-lg leading-relaxed text-surface-800">{term.short}</p>
+      </div>
+      <div class="prose mt-8 max-w-none text-surface-700">
+        {term.body.map((p) => <p>{p}</p>)}
+      </div>
+      {term.related?.length > 0 && (
+        <div class="mt-10">
+          <h2 class="text-lg font-bold text-surface-900">{l.related}</h2>
+          <ul class="mt-3 flex flex-wrap gap-2">
+            {term.related.map((r) => (
+              <li><a href={localizePath(r.href, locale)} class="inline-flex rounded-full border border-surface-200 bg-white px-3 py-1.5 text-sm font-medium text-brand-700 transition hover:border-violet-300">{r.label} &rarr;</a></li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {term.see?.length > 0 && (
+        <div class="mt-8">
+          <h2 class="text-lg font-bold text-surface-900">{l.see}</h2>
+          <ul class="mt-3 flex flex-wrap gap-2">
+            {term.see.filter((id) => byId[id]).map((id) => (
+              <li><a href={`${base}/${byId[id].slug}`} class="inline-flex rounded-full bg-violet-50 px-3 py-1.5 text-sm font-medium text-violet-700 transition hover:bg-violet-100">{byId[id].term}</a></li>
+            ))}
+          </ul>
+        </div>
+      )}
+      <p class="mt-10"><a href={base} class="text-sm font-semibold text-brand-700">&larr; {l.all}</a></p>
+    </article>
+  ) : (
+    <section class="bg-gradient-to-b from-brand-50 to-white py-16">
+      <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+        <h1 class="text-4xl font-extrabold tracking-tight text-surface-900 sm:text-5xl">{l.h1}</h1>
+        <p class="mt-4 max-w-2xl text-lg text-surface-600">{l.intro}</p>
+        <nav class="mt-8 flex flex-wrap gap-2" aria-label={l.all}>
+          {letters.map((c) => <a href={`#${c}`} class="flex h-9 w-9 items-center justify-center rounded-lg bg-white text-sm font-bold text-violet-700 shadow-sm ring-1 ring-violet-100 hover:bg-violet-50">{c}</a>)}
+        </nav>
+        {letters.map((c) => (
+          <div id={c} class="mt-10">
+            <h2 class="font-display text-2xl font-extrabold text-violet-600">{c}</h2>
+            <dl class="mt-4 grid gap-4 sm:grid-cols-2">
+              {sorted.filter((t) => t.term[0].toUpperCase() === c).map((t) => (
+                <a href={`${base}/${t.slug}`} class="lift block rounded-2xl border border-surface-100 bg-white p-5 shadow-sm">
+                  <dt class="font-semibold text-surface-900">{t.term}</dt>
+                  <dd class="mt-1 text-sm leading-relaxed text-surface-600">{t.short}</dd>
+                </a>
+              ))}
+            </dl>
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+  <CTASection />
+</BaseLayout>

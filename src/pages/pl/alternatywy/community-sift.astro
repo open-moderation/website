@@ -1,0 +1,214 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const pageTitle = "Alternatywa dla Community Sift: porównanie";
+const pageDescription = "Szukasz alternatywy dla Community Sift? Status, oferta, ceny i modele AI w porównaniu z OpenModeration – moderacją komentarzy z hostingiem w UE.";
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/pl/alternatywy/community-sift",
+  "name": "Alternatywa dla Community Sift: porównanie z OpenModeration",
+  "description": pageDescription,
+  "inLanguage": "pl",
+  "about": {
+    "@id": "https://www.openmoderation.com/#software"
+  }
+};
+
+const rows = [
+  { feature: "Status", competitor: "Strona produktu nadal dostępna, bez informacji o wycofaniu (30 października 2026); konkurencyjny dostawca twierdzi, że umowy nie będą odnawiane w 2026 roku – bez publicznego potwierdzenia Microsoftu", openmod: "Aktywnie rozwijane przez Logora (Paryż, od 2019 roku)" },
+  { feature: "Oferta", competitor: "AI i wiedza ekspertów do klasyfikowania, filtrowania i eskalowania treści użytkowników w czasie rzeczywistym, głównie dla gier i społeczności online", openmod: "Moderacja komentarzy z AI dla mediów, marek i instytucji publicznych, konfigurowana razem z Tobą przez zespół Logora" },
+  { feature: "Integracje", competitor: "Niewymienione na stronie; wtyczka do Discorda i OCR jako opcje", openmod: "Strony internetowe (API), strony na Facebooku, konta profesjonalne na Instagramie, kanały YouTube, WordPress" },
+  { feature: "Rodzaje treści", competitor: "Tekst, obrazy i wideo", openmod: "Komentarze" },
+  { feature: "Modele AI", competitor: "Nie określono: według strony Microsoftu AI połączona z wiedzą ekspertów", openmod: "Własna AI do moderacji, weryfikowana przez inne modele AI; nowe modele podłączane na bieżąco, gdy się pojawiają" },
+  { feature: "Zasady", competitor: "Wytyczne dostosowane do zasad Twojej społeczności", openmod: "Dopasowane do Twoich zasad i przypadków użycia: oczywiste naruszenia ukryte, uzasadniona krytyka widoczna, wątpliwe przypadki do weryfikacji przez człowieka" },
+  { feature: "Języki", competitor: "Podano 22 języki premium", openmod: "Ustalane z Tobą podczas konfiguracji" },
+  { feature: "DSA i przejrzystość", competitor: "Nie określono na stronie", openmod: "Pisemne uzasadnienie każdej decyzji, dziennik aktywności, zgłoszenia i działania, uzasadnienia decyzji, weryfikacja zakwestionowanych decyzji przez człowieka, eksportowalne statystyki" },
+  { feature: "Hosting", competitor: "Nie określono na stronie", openmod: "Hosting w UE, RODO" },
+  { feature: "Cena", competitor: "Kilka poziomów, na zapytanie", openmod: "Za darmo do 1000 zapytań miesięcznie; Pro za 99 € miesięcznie (10 000 zapytań); Enterprise – wycena indywidualna" },
+  { feature: "Klienci", competitor: "Xbox, Electronic Arts, Supercell, Kabam, Flip, MSN", openmod: "L'Équipe, Challenges, Sud Ouest, actu.fr, Estadão, Südkurier, Egora" },
+];
+
+const faqItems = [
+  {
+    question: "Jaka jest najlepsza alternatywa dla Community Sift?",
+    answer: "Do moderowania komentarzy w mediach, na stronach marek i w kanałach instytucji publicznych OpenModeration jest solidnym wyborem: konektory do stron internetowych, Facebooka, Instagrama, YouTube i WordPressa, publiczny cennik, pisemne uzasadnienie każdej decyzji, narzędzia DSA i hosting w UE. Do czatu w czasie rzeczywistym w dużych grach warto wybrać narzędzie stworzone z myślą o grach.",
+  },
+  {
+    question: "Ile kosztuje Community Sift?",
+    answer: "Microsoft nie publikuje cen: strona wspomina o kilku poziomach cenowych i opcjach dostępnych na zapytanie. OpenModeration jest darmowe do 1000 zapytań miesięcznie, następnie kosztuje 99 € miesięcznie za 10 000 zapytań, a Enterprise jest wyceniany indywidualnie.",
+  },
+  {
+    question: "Czy Community Sift zniknie z rynku?",
+    answer: "30 października 2026 strona produktu Microsoftu była nadal dostępna, bez informacji o wycofaniu. Konkurencyjny dostawca napisał w lutym 2026, że Microsoft poinformował klientów, iż umowy nie zostaną odnowione po wygaśnięciu. Nie znaleźliśmy publicznego potwierdzenia Microsoftu: zapytaj o harmonogram swojego opiekuna w Microsofcie.",
+  },
+  {
+    question: "Community Sift vs OpenModeration: co się zmienia?",
+    answer: "Community Sift, obecnie w Microsofcie, jest nastawiony na gry i duże społeczności online, z moderacją tekstu, obrazów i wideo. OpenModeration powstało z myślą o komentarzach w mediach, u marek i w instytucjach publicznych, publikuje cennik, jest hostowane w UE i zapewnia pisemne uzasadnienie oraz zapis każdej decyzji.",
+  },
+  {
+    question: "Czy można testować OpenModeration, gdy Community Sift nadal działa?",
+    answer: "Tak. W trybie sandbox OpenModeration analizuje prawdziwe treści, niczego nie ukrywając, więc decyzje można porównać przed zmianą narzędzia.",
+  },
+  {
+    question: "Kto konfiguruje OpenModeration?",
+    answer: "Zespół Logora, działający w Paryżu od 2019 roku i należący do swoich pracowników. Razem z Tobą dopasowujemy moderację do Twoich zasad i przypadków użycia, a w pierwszych tygodniach ją dostrajamy.",
+  },
+];
+---
+
+<BaseLayout title={pageTitle} description={pageDescription} jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Strona główna", href: localizePath('/', locale) }, { label: "Alternatywy", href: localizePath('/alternatives', locale) }, { label: "Community Sift" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Porównanie
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Alternatywa dla Community Sift: porównanie z OpenModeration</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Jeśli moderujesz komentarze w serwisie informacyjnym, na stronach marki lub w kanałach instytucji publicznej, OpenModeration jest solidną alternatywą dla Community Sift: konektory do stron internetowych, Facebooka, Instagrama, YouTube i WordPressa, publiczny cennik, narzędzia DSA i hosting w UE. Jeśli obsługujesz czat w czasie rzeczywistym w dużych grach online, Community Sift powstał właśnie do tego; poniżej sprawdzisz, na jakim etapie jest obecnie, ze źródłami.
+      </p>
+      <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a href={localizePath('/book-a-call', locale)} class="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-500">Umów rozmowę</a>
+        <a href={localizePath('/pricing', locale)} class="inline-flex items-center gap-2 rounded-lg border border-surface-200 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">Zobacz cennik</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold tracking-tight text-surface-900 sm:text-3xl">Dla kogo jest Community Sift?</h2>
+      <p class="mt-4 text-surface-600">Community Sift stworzyła kanadyjska firma Two Hat, którą Microsoft przejął w 2021 roku; twohat.com przekierowuje teraz na stronę Microsoftu. Strona ta opisuje platformę moderacji, która „łączy to, co najlepsze z obu światów”, czyli AI i wiedzę ekspertów, aby klasyfikować, filtrować i eskalować treści użytkowników w czasie rzeczywistym, w tym slang, l33t speak, emoji i sztuczki z Unicode, a także moderować obrazy i wideo. Podaje 22 języki premium i pokazuje Xbox, Electronic Arts, Supercell, Kabam, Flip i MSN.</p>
+      <p class="mt-4 text-surface-600">Status: 30 października 2026 strona produktu Microsoftu była nadal dostępna, bez informacji o wycofaniu. Konkurencyjny dostawca napisał w lutym 2026, że Microsoft poinformował klientów, iż umowy będą realizowane do końca okresu obowiązywania i nie zostaną odnowione. Nie znaleźliśmy publicznego komunikatu Microsoftu, który by to potwierdzał: sprawdź to u swojego opiekuna w Microsofcie.</p>
+    </div>
+  </section>
+
+  <section class="bg-white pb-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Wybierz OpenModeration, jeśli…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>moderujesz komentarze w serwisie informacyjnym, na stronach marki lub w kanałach instytucji publicznej;</li>
+          <li>chcesz gotowych konektorów do Facebooka, Instagrama, YouTube i WordPressa oraz API dla swojej strony;</li>
+          <li>chcesz poznać ceny przed rozmową z działem sprzedaży;</li>
+          <li>potrzebujesz pisemnego uzasadnienia każdej decyzji i narzędzi DSA;</li>
+          <li>Twoje dane muszą być hostowane w UE i chcesz zespołu, który skonfiguruje moderację razem z Tobą.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">Community Sift może lepiej pasować, jeśli…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>filtrujesz czat w czasie rzeczywistym w dużych grach online, gdzie korzystają z niego Xbox, EA i Supercell;</li>
+          <li>potrzebujesz moderacji obrazów i wideo z kontrolą ryzyka i rozmyciem chroniącym moderatorów;</li>
+          <li>korzystasz z jego wtyczki do Discorda lub opcji OCR;</li>
+          <li>Twoja umowa z Microsoftem nadal obowiązuje i na razie pokrywa Twoje potrzeby.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Community Sift i OpenModeration punkt po punkcie</h2>
+      <p class="mt-4 text-surface-500">Informacje o Community Sift pochodzą ze strony Microsoftu, developer.microsoft.com, dostęp: 30 października 2026. Jeśli strona czegoś nie podaje, zaznaczamy to.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Kryterium</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Community Sift</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.competitor}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Silnik AI, który nadąża za rynkiem</h2>
+      <p class="mt-4 text-surface-600">OpenModeration działa na własnej AI do moderacji, a w delikatnych przypadkach jej decyzje weryfikują inne modele AI. Silnik nie zależy od jednego modelu: gdy pojawia się lepszy lub tańszy, nasz zespół szybko go podłącza, bez żadnych zmian po Twojej stronie.</p>
+      <p class="mt-4 text-surface-600">Strona Microsoftu podaje, że Community Sift łączy AI z wiedzą ekspertów, nie wymieniając używanych modeli. Z OpenModeration moderacja korzysta z postępu modeli AI, zamiast tkwić w jednym algorytmie – to ważne, gdy wybierasz narzędzie na kilka lat.</p>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Cennik Community Sift i OpenModeration</h2>
+      <p class="mt-4 text-surface-600">Microsoft nie publikuje cen Community Sift: strona mówi o „kilku poziomach cenowych” i opcjach takich jak OCR czy wtyczka do Discorda i odsyła do działu sprzedaży.</p>
+      <p class="mt-4 text-surface-600">OpenModeration publikuje swój cennik: za darmo do 1000 zapytań miesięcznie, Pro za 99 € miesięcznie (10 000 zapytań) i Enterprise – wycena indywidualna dla dużych wolumenów. Wdrożenie on-premise jest możliwe na życzenie: porozmawiajmy.</p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Odejście od Community Sift w 3 krokach</h2>
+      <ol class="mt-8 grid gap-6 md:grid-cols-3">
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">1</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Przenieś swoją politykę</h3>
+          <p class="mt-2 text-sm text-surface-600">Razem z naszym zespołem przełóż politykę z Community Sift, z jej tematami i poziomami ryzyka, na zasady dla Twoich przypadków użycia: co ukrywać, co zostawiać, a co przekazywać do weryfikacji naszemu zespołowi.</p>
+        </li>
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">2</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Uruchom oba narzędzia równolegle</h3>
+          <p class="mt-2 text-sm text-surface-600">Podłącz stronę przez API lub konta na Facebooku, Instagramie, YouTube i WordPress w trybie sandbox. Nic nie jest ukrywane, a Ty porównujesz decyzje dla tych samych treści.</p>
+        </li>
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">3</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Przełącz się przed końcem umowy</h3>
+          <p class="mt-2 text-sm text-surface-600">Włącz automatyczną moderację w OpenModeration i przestań wysyłać treści do Community Sift – najlepiej na długo przed wygaśnięciem umowy.</p>
+        </li>
+      </ol>
+      <p class="mt-8 text-surface-600">Chcesz najpierw zobaczyć to na własnych komentarzach? <a href={localizePath('/book-a-call', locale)} class="font-medium text-brand-600 hover:text-brand-500">Umów rozmowę z zespołem Logora</a>, a skonfigurujemy z Tobą sandbox.</p>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Najczęstsze pytania" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        Community Sift i Two Hat są znakami towarowymi ich właściciela, firmy Microsoft. Źródła: <a href="https://developer.microsoft.com/en-us/games/products/community-sift/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">developer.microsoft.com/en-us/games/products/community-sift</a>, <a href="https://www.twohat.com" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">twohat.com</a>, <a href="https://www.lassomoderation.com/blog/what-is-community-sift/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">lassomoderation.com/blog/what-is-community-sift</a> (dostęp: 30 października 2026). Widzisz błąd? Napisz do nas: <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Dowiedz się więcej</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/blog/comment-moderation-guide', locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderacja komentarzy: kompletny poradnik &rarr;</a></li>
+        <li><a href={localizePath('/use-cases/social-platforms', locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderacja dla platform społecznościowych &rarr;</a></li>
+        <li><a href={localizePath('/moderation-software', locale)} class="font-medium text-brand-600 hover:text-brand-500">Oprogramowanie do moderacji OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/pricing', locale)} class="font-medium text-brand-600 hover:text-brand-500">Cennik OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/alternatives', locale)} class="font-medium text-brand-600 hover:text-brand-500">Wszystkie porównania &rarr;</a></li>
+        <li><a href={localizePath('/book-a-call', locale)} class="font-medium text-brand-600 hover:text-brand-500">Umów rozmowę z naszym zespołem &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Przygotuj odejście od Community Sift z zespołem Logora." subtitle="Przenosimy Twoją politykę, uruchamiamy sandbox na Twoich prawdziwych treściach i przełączamy, gdy wszystko będzie gotowe. Za darmo do 1000 zapytań miesięcznie." buttonText="Umów rozmowę" buttonHref={localizePath('/book-a-call', locale)} />
+</BaseLayout>

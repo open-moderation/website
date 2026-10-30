@@ -1,0 +1,177 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import BrowserFrame from '../../../components/BrowserFrame.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const faqItems = [
+  {
+    question: "Kan één tool advertenties, reviews en berichten van kopers op één plek modereren?",
+    answer: "Ja. Advertenties, reviews en berichten tussen kopers en verkopers gaan door dezelfde API en dezelfde regels, en je ziet alle beslissingen in realtime in één dashboard."
+  },
+  {
+    question: "Herkent het betaalverzoeken buiten het platform en oplichterslinks in marktplaatschats?",
+    answer: "Ja. Beschrijf het patroon in gewone taal als eigen categorie (\"vraagt om buiten het platform te betalen\", \"deelt een externe betaallink\") en de AI markeert het, ook als oplichters het anders formuleren. Bekende domeinen en zinnen kun je bovendien al blokkeren met het woordvoorfilter, nog vóór er een AI-aanroep plaatsvindt."
+  },
+  {
+    question: "Hoe voorkom je dat legitieme advertenties van verkopers onterecht worden verwijderd?",
+    answer: "Elke regel heeft twee drempels. Alleen duidelijke gevallen worden automatisch verborgen; alles daartussen wordt door ons team beoordeeld. Jij ziet de reden achter elke beslissing, kunt die op elk moment terugdraaien, en elke correctie wordt vastgelegd."
+  },
+  {
+    question: "Kunnen we met reviews beginnen voordat we berichten modereren?",
+    answer: "Ja. Jij kiest wat je naar OpenModeration stuurt. Veel teams beginnen met één onderdeel, zoals reviews, bekijken de resultaten in het dashboard en voegen daarna advertenties en berichten toe met dezelfde regels."
+  },
+  {
+    question: "Kan ik mijn hele bestaande catalogus modereren?",
+    answer: "Ja. Het batch-endpoint verwerkt tot 10.000 items asynchroon, ideaal voor een eerste ronde over bestaande advertenties, reviews en berichten. De resultaten worden naar je webhook gestuurd zodra ze klaar zijn."
+  },
+  {
+    question: "Wat gebeurt er met twijfelachtige advertenties?",
+    answer: "Dat bepaal je per regel: boven een drempel automatisch verbergen of verwijderen, daaronder beoordeeld door ons team. In de moderatieconsole zie je de redenering achter elke beslissing en kun je die terugdraaien, en elke correctie wordt vastgelegd."
+  },
+];
+
+const useCaseJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "AI-contentmoderatie voor marktplaatsen en e-commerce | OpenModeration",
+  "description": "Modereer productadvertenties, reviews en berichten van verkopers op e-commerce- en advertentieplatforms met AI. DSA-conform moderatieplatform, gehost in de EU.",
+  "inLanguage": "nl",
+  "url": "https://www.openmoderation.com/nl/toepassingen/marktplaatsen"
+};
+---
+
+<BaseLayout title="Moderatie voor marktplaatsen: advertenties en reviews" description="Modereer advertenties, reviews en berichten op één plek: vang oplichting en betaalverzoeken buiten het platform af; twijfelgevallen doen wij. Met DSA-audit." jsonLd={useCaseJsonLd}>
+  <Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: "Toepassingen", href: localizePath('/use-cases', locale) }, { label: "Marktplaatsen" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">Toepassing</div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">AI-contentmoderatie voor marktplaatsen</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">Houd je e-commerceplatform veilig en compliant door productadvertenties, reviews van gebruikers en berichten van verkopers automatisch te modereren, bij elk volume.</p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mb-16 grid gap-8 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="text-lg font-semibold text-surface-900">De uitdaging</h3>
+          <p class="mt-2 text-sm text-surface-600">Eén nepadvertentie, valse review of frauduleus bericht kan maanden aan opgebouwd vertrouwen tenietdoen. Handmatige moderatie houdt de groei van de marktplaats niet bij, en starre trefwoordfilters geven te veel valse positieven.</p>
+        </div>
+        <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+          <h3 class="text-lg font-semibold text-brand-700">De oplossing van OpenModeration</h3>
+          <p class="mt-2 text-sm text-surface-700">AI leest advertenties en berichten in hun context, en de Action Engine verbergt de risicovolle automatisch. Twijfelgevallen handelt ons team af, en je ziet elke beslissing in realtime in het dashboard.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="text-lg font-semibold text-surface-900">Het resultaat</h3>
+          <p class="mt-2 text-sm text-surface-600">Je team hoeft niets handmatig te controleren, tenzij het dat wil. Volledige audittrails houden je DSA-compliant, en problemen worden opgevangen voordat kopers ze zien.</p>
+        </div>
+      </div>
+
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Modereer elk onderdeel van je platform</h2>
+          <p class="mt-4 text-lg text-surface-500">Kopers en verkopers communiceren via advertenties, reviews en berichten, en alles moet gemodereerd worden. OpenModeration dekt het allemaal met één integratie.</p>
+          <div class="mt-8 space-y-4">
+            <div class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600"><strong>Productadvertenties:</strong> blokkeer verboden artikelen, herken oplichtingspatronen en markeer misleidende beschrijvingen voordat ze live gaan.</p>
+            </div>
+            <div class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600"><strong>Reviews en beoordelingen:</strong> herken nepreviews, haatzaaiende taal en spam in feedback van gebruikers, zodat kopers kunnen vertrouwen wat ze lezen.</p>
+            </div>
+            <div class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600"><strong>Berichten van verkopers:</strong> controleer berichten tussen kopers en verkopers op intimidatie, pogingen om de verkoop buiten het platform af te handelen en fraude.</p>
+            </div>
+          </div>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-8">
+          <h4 class="mb-3 text-sm font-semibold text-surface-900">Bestaande content achteraf modereren in batches</h4>
+          <p class="text-sm text-surface-500">Maanden aan historie opschonen hoeft geen handwerk te zijn. Stuur tot 10.000 bestaande items in één batch in (advertenties, reviews, berichten, beschrijvingen) en OpenModeration markeert oplichting, verboden artikelen en nepreviews. De resultaten komen direct in je reviewdashboard terecht.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-red-200 bg-red-50 px-3 py-1 text-xs font-medium text-red-700">
+            <span class="flex h-1.5 w-1.5 rounded-full bg-red-500"></span>
+            Wat er op het spel staat
+          </div>
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Eén slechte advertentie kost meer dan duizend goede opleveren</h2>
+          <p class="mt-4 text-lg text-surface-500">
+            Kopers die op oplichting of een vloedgolf aan nepreviews stuiten, komen niet terug. En toezichthouders kijken nu ook hoe snel je die verwijdert.
+          </p>
+          <ul class="mt-8 space-y-3">
+            <li class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+              <p class="text-sm text-surface-600"><strong>Nepreviews:</strong> volgens schattingen uit de sector is 30-40% van de online reviews nep of betaald, wat het vertrouwen van kopers in je hele catalogus aantast.</p>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+              <p class="text-sm text-surface-600"><strong>Nepadvertenties:</strong> verboden artikelen, namaakproducten en trucs om betalingen om te leiden glippen langs starre trefwoordfilters.</p>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+              <p class="text-sm text-surface-600"><strong>Druk vanuit de DSA:</strong> marktplaatsen die in de EU actief zijn, moeten optreden tegen illegale content en daarover rapporteren. Boetes kunnen oplopen tot 6% van de wereldwijde omzet.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6 shadow-sm">
+          <h3 class="text-lg font-semibold text-surface-900">Handhaaf je marktplaatsbeleid automatisch</h3>
+          <BrowserFrame
+            src="/images/rules.png"
+            video="om-rules"
+            alt="OpenModeration-dashboard: regelconfiguratie met drempels per categorie en automatische acties"
+          />
+          <p class="mt-4 text-sm text-surface-500">Duidelijke oplichting wordt direct verborgen, en twijfelgevallen worden door ons team afgehandeld. Elke beslissing wordt vastgelegd voor DSA-compliance.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ items={faqItems} title="Veelgestelde vragen over moderatie voor marktplaatsen" />
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8 text-2xl font-bold text-surface-900 sm:text-3xl">Gerelateerde artikelen</h2>
+      <div class="grid gap-6 md:grid-cols-3">
+        <a href={localizePath('/blog/dsa-compliance-sme-guide', locale)} class="group rounded-xl border border-surface-200 bg-white p-6 transition hover:shadow-md">
+          <div class="mb-2 text-xs font-medium text-brand-600">Guide</div>
+          <h3 class="text-lg font-semibold text-surface-900 group-hover:text-brand-600">DSA-compliance voor kleine en middelgrote platforms</h3>
+          <p class="mt-2 text-sm text-surface-500">Praktische stappen voor marktplaatsen om in 2026 aan de DSA-eisen te voldoen.</p>
+        </a>
+        <a href={localizePath('/alternatives/azure-content-safety', locale)} class="group rounded-xl border border-surface-200 bg-white p-6 transition hover:shadow-md">
+          <div class="mb-2 text-xs font-medium text-brand-600">Vergelijking</div>
+          <h3 class="text-lg font-semibold text-surface-900 group-hover:text-brand-600">OpenModeration vs Azure Content Safety</h3>
+          <p class="mt-2 text-sm text-surface-500">Waarom e-commerceplatforms een volledig moderatieplatform nodig hebben in plaats van een losse API.</p>
+        </a>
+        <a href={localizePath('/features', locale)} class="group rounded-xl border border-surface-200 bg-white p-6 transition hover:shadow-md">
+          <div class="mb-2 text-xs font-medium text-brand-600">Platform</div>
+          <h3 class="text-lg font-semibold text-surface-900 group-hover:text-brand-600">Bekijk alle functies</h3>
+          <p class="mt-2 text-sm text-surface-500">Ontdek de Action Engine, teambeheer en geautomatiseerde workflows.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <CTASection
+    title="Houd je marktplaats betrouwbaar."
+    subtitle="Controleer advertenties, reviews en berichten automatisch. Je data blijft in de beheerde EU-cloud."
+    buttonText="Gratis proberen"
+    buttonHref="https://app.openmoderation.com/signup"
+  />
+</BaseLayout>

@@ -1,0 +1,196 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "OpenAI Moderation API: omni-moderation-latest, categorieën, prijzen en grenzen",
+  "description": "Een praktische gids voor de OpenAI Moderation API: wat omni-moderation-latest detecteert, de 13 categorieën, het antwoordformaat, of hij gratis is en wat hij aan jou overlaat.",
+  "inLanguage": "nl",
+  "datePublished": "2026-10-20",
+  "dateModified": "2026-10-20",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/nl/blog/openai-moderation-api-gids" }
+};
+
+const categories = [
+  { id: "harassment", desc: "Intimiderende taal tegen wie dan ook.", inputs: "Tekst" },
+  { id: "harassment/threatening", desc: "Intimidatie die ook geweld of ernstige schade tegen wie dan ook omvat.", inputs: "Tekst" },
+  { id: "hate", desc: "Haat op grond van ras, gender, etniciteit, religie, nationaliteit, seksuele geaardheid, handicap of kaste. Haatdragende content tegen niet-beschermde groepen telt als intimidatie.", inputs: "Tekst" },
+  { id: "hate/threatening", desc: "Haatdragende content die ook geweld of ernstige schade tegen de beoogde groep omvat.", inputs: "Tekst" },
+  { id: "illicit", desc: "Advies of instructies over het plegen van illegale handelingen.", inputs: "Tekst" },
+  { id: "illicit/violent", desc: "Illegale content die ook verwijst naar geweld of het verkrijgen van een wapen.", inputs: "Tekst" },
+  { id: "self-harm", desc: "Content die zelfbeschadiging promoot, aanmoedigt of afbeeldt.", inputs: "Tekst en afbeeldingen" },
+  { id: "self-harm/intent", desc: "De spreker geeft aan zichzelf te beschadigen of dat van plan te zijn.", inputs: "Tekst en afbeeldingen" },
+  { id: "self-harm/instructions", desc: "Content die zelfbeschadiging aanmoedigt of uitlegt hoe je het doet.", inputs: "Tekst en afbeeldingen" },
+  { id: "sexual", desc: "Content bedoeld om seksueel op te winden, of die seksuele diensten promoot (seksuele voorlichting en welzijn uitgezonderd).", inputs: "Tekst en afbeeldingen" },
+  { id: "sexual/minors", desc: "Seksuele content waarbij iemand onder de 18 betrokken is.", inputs: "Tekst" },
+  { id: "violence", desc: "Content die dood, geweld of lichamelijk letsel afbeeldt.", inputs: "Tekst en afbeeldingen" },
+  { id: "violence/graphic", desc: "Content die dood, geweld of lichamelijk letsel in expliciet detail afbeeldt.", inputs: "Tekst en afbeeldingen" },
+];
+
+const curlExample = `curl https://api.openai.com/v1/moderations \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer \$OPENAI_API_KEY" \
+  -d '{
+    "model": "omni-moderation-latest",
+    "input": "De reactie die je wilt controleren"
+  }'`;
+
+const faqItems = [
+  {
+    question: "Is de OpenAI Moderation API gratis?",
+    answer: "Ja. OpenAI geeft aan dat het moderation-endpoint gratis te gebruiken is. Afbeeldingen mogen tot 20 MB groot zijn.",
+  },
+  {
+    question: "Wat is omni-moderation-latest?",
+    answer: "omni-moderation-latest is het huidige moderatiemodel van OpenAI. Het accepteert tekst en afbeeldingen, maar classificeert geen audio.",
+  },
+  {
+    question: "Welke categorieën detecteert de OpenAI Moderation API?",
+    answer: "Dertien: harassment, harassment/threatening, hate, hate/threatening, illicit, illicit/violent, self-harm, self-harm/intent, self-harm/instructions, sexual, sexual/minors, violence en violence/graphic. Zes daarvan gelden ook voor afbeeldingen.",
+  },
+  {
+    question: "Wat doet de OpenAI Moderation API niet?",
+    answer: "Hij geeft scores en markeringen terug, meer niet. Beslissen wat je verbergt, je communityregels opstellen, grensgevallen beoordelen, elke beslissing aan de auteur uitleggen en een audittrail voor de DSA bijhouden laat hij aan jou over. OpenModeration voegt die laag toe, met een eigen moderatie-AI die door andere modellen wordt gecontroleerd en twijfelgevallen die ons team behandelt.",
+  },
+];
+---
+
+<BaseLayout title="OpenAI Moderation API: categorieën, prijs en grenzen" description="Zo werkt de OpenAI Moderation API: wat omni-moderation-latest detecteert, de 13 categorieën, het antwoordformaat, of hij gratis is en wat hij je laat doen." ogType="article" jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: "Blog", href: localizePath('/blog', locale) }, { label: "Gids OpenAI Moderation API" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-20">20 oktober 2026</time>
+        <span>&middot;</span>
+        <span>6 min lezen</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">OpenAI Moderation API: omni-moderation-latest, categorieën, prijzen en grenzen</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        De OpenAI Moderation API vertelt je of een tekst of afbeelding mogelijk schadelijk is,
+        en in welke categorie. Hij is gratis, snel aan te roepen en een veelgebruikte eerste stap voor teams die
+        content van gebruikers moeten modereren. Deze gids zet op een rij wat hij detecteert, wat hij teruggeeft en wat hij
+        aan jou overlaat om te bouwen.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Het korte antwoord</h2>
+      <ul>
+        <li><strong>Model:</strong> <code>omni-moderation-latest</code>, dat tekst en afbeeldingen accepteert. Audio classificeert het niet.</li>
+        <li><strong>Prijs:</strong> gratis. OpenAI geeft aan dat "the moderation endpoint is free to use", en afbeeldingen mogen tot 20 MB groot zijn.</li>
+        <li><strong>Output:</strong> een boolean <code>flagged</code> plus, per categorie, een boolean en een betrouwbaarheidsscore tussen 0 en 1.</li>
+        <li><strong>Categorieën:</strong> 13, waarvan zes ook voor afbeeldingen gelden.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Zo roep je hem aan</h2>
+      <p>
+        Stuur een POST-verzoek naar het endpoint <code>/v1/moderations</code> met de naam van het model en je input.
+      </p>
+      <pre class="overflow-x-auto rounded-lg bg-ink-900 p-4 text-sm text-surface-100"><code set:text={curlExample} /></pre>
+      <p>
+        Je kunt ook inline moderatie inschakelen via de parameter <code>moderation</code> van de
+        Responses API. Het resultaat bevat dan aparte secties <code>input</code> en
+        <code>output</code>, en elk daarvan kan een foutobject zijn in plaats van scores.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Wat het antwoord bevat</h2>
+      <ul>
+        <li><code>flagged</code>: <code>true</code> als het model de content als mogelijk schadelijk classificeert, anders <code>false</code>.</li>
+        <li><code>categories</code>: één boolean per categorie, die aangeeft of die categorie wordt geschonden.</li>
+        <li><code>category_scores</code>: één betrouwbaarheidsscore per categorie, van 0 tot 1. Hoger betekent zekerder.</li>
+        <li><code>category_applied_input_types</code>: per categorie de inputtypes (tekst, afbeelding) waarop de score van toepassing is.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">De 13 categorieën</h2>
+      <p>
+        Stuur je alleen een afbeelding, dan geven categorieën die alleen voor tekst gelden een score van 0.
+      </p>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Categorie</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Wat eronder valt</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Input</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {categories.map((c) => (
+            <tr>
+              <td class="px-4 py-3 font-mono text-xs text-surface-900">{c.id}</td>
+              <td class="px-4 py-3 text-surface-600">{c.desc}</td>
+              <td class="px-4 py-3 text-surface-500">{c.inputs}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">Aandachtspunten</h2>
+      <ul>
+        <li>OpenAI waarschuwt dat eigen beleid dat op <code>category_scores</code> leunt, na verloop van tijd opnieuw gekalibreerd moet worden, omdat het model verandert.</li>
+        <li>Bij inline moderatie zitten de scores niet in gedeeltelijke gestreamde output-delta's.</li>
+        <li>Bij tool calls worden de argumenten en de output van tools gemodereerd, maar niet de namen, beschrijvingen en schema's van de tools.</li>
+        <li>Stuur bekend of vermoedelijk materiaal van seksueel kindermisbruik niet naar de Moderation API.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Wat de Moderation API aan jou overlaat</h2>
+      <p>
+        Een score is geen moderatiebeslissing. Zodra je hem hebt, moet je nog beslissen waar je de drempel
+        per categorie legt, wat je doet met de reacties daartussen, hoe je regels toepast
+        die specifiek zijn voor je community en hoe je elke verwijdering aan de auteur uitlegt. Onder de
+        Digital Services Act moeten hostingdiensten bij elke verwijdering een motivering geven en
+        vermelden of er geautomatiseerde middelen zijn gebruikt.
+      </p>
+      <p>
+        OpenModeration voegt die ontbrekende laag toe, bovenop een eigen moderatie-AI die door andere modellen
+        wordt gecontroleerd: regels in gewone taal, twee drempels per categorie met een grijze zone die ons team
+        behandelt, een console waarin je elke beslissing in realtime ziet, een schriftelijke reden bij elke beslissing
+        en een volledige auditlog. Komt er een beter of goedkoper AI-model uit, dan sluiten we het aan, zonder dat
+        er iets aan je integratie verandert.
+      </p>
+      <p class="text-sm text-surface-400">
+        Bron: <a href="https://developers.openai.com/api/docs/guides/moderation" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">OpenAI Moderation guide</a>, geraadpleegd op 20 oktober 2026.
+      </p>
+    </div>
+
+    <div class="mt-12">
+      <FAQ title="Veelgestelde vragen" items={faqItems} />
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Lees verder</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/alternatives/openai-moderation', locale)} class="font-medium text-brand-600 hover:text-brand-500">OpenAI Moderation API vs OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/blog/openai-vs-azure-vs-llama-guard-comparison', locale)} class="font-medium text-brand-600 hover:text-brand-500">OpenAI, Azure en Llama Guard vergeleken &rarr;</a></li>
+        <li><a href={localizePath('/content-moderation-api', locale)} class="font-medium text-brand-600 hover:text-brand-500">Eén contentmoderatie-API met een schriftelijke reden bij elke beslissing &rarr;</a></li>
+        <li><a href={localizePath('/dsa-compliance', locale)} class="font-medium text-brand-600 hover:text-brand-500">Wat de DSA eist van moderatiebeslissingen &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

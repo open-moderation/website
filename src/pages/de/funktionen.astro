@@ -10,25 +10,23 @@ const pageJsonLd = {
   "@id": "https://www.openmoderation.com/de/funktionen",
   "url": "https://www.openmoderation.com/de/funktionen",
   "name": "Funktionen für Content Moderation: zentrale API & Regel-Engine",
-  "description": "Alle Funktionen von OpenModeration: zentrale API, Moderationskonsole, Action Engine, native Konnektoren, BYOK, Batch-Verarbeitung und DSA-konformer Audit-Trail.",
+  "description": "Alle Funktionen von OpenModeration: eigene KI, zentrale API, Moderationskonsole, Action Engine, native Konnektoren, Batch-Verarbeitung und DSA-Audit-Trail.",
   "inLanguage": "de",
   "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
 };
 
-const curlExample = `# Funktioniert mit jedem Anbieter gleich
+const curlExample = `# Eine Anfrage, eine standardisierte Antwort
 curl -X POST https://api.openmoderation.com/v1/moderation \\
   -H "Authorization: Bearer om_key_..." \\
   -H "Content-Type: application/json" \\
   -d '{
     "input": "Ihr zu moderierender Text",
-    "model": "openai/omni-moderation-latest",
     "language": "en"
   }'
 
 # Antwort (immer im selben Format)
 {
   "id": "modr_01JXK...",
-  "model": "openai/omni-moderation-latest",
   "results": [{
     "category": "hate",
     "score": 0.02,
@@ -36,34 +34,33 @@ curl -X POST https://api.openmoderation.com/v1/moderation \\
   }],
   "flagged": false,
   "usage": {
-    "latency_ms": 243,
-    "provider": "openai"
+    "latency_ms": 243
   }
 }`;
 
 const featureCategories = [
   {
     title: 'Eine einzige Integration',
-    description: 'Ein API-Endpunkt, der immer gleich funktioniert, egal welchen Anbieter Sie wählen. Die Ergebnisse haben immer dasselbe Format, zusätzlicher Code ist nicht nötig.',
+    description: 'Ein API-Endpunkt, der immer gleich funktioniert, auch wenn wir neue KI-Modelle anbinden. Die Ergebnisse haben immer dasselbe Format, zusätzlicher Code ist nicht nötig.',
     items: [
-      { title: 'Eine Verbindung zu allen Moderationsanbietern', desc: 'Inhalt einmal senden, ein klares Urteil (bestanden oder nicht) und Scores pro Kategorie zurückbekommen, ob Sie nun OpenAI, Azure oder ein LLM nutzen.' },
+      { title: 'Unsere eigene Moderations-KI', desc: 'Inhalt einmal senden, ein klares Urteil (bestanden oder nicht) und Scores pro Kategorie zurückbekommen. Heikle Fälle prüfen weitere KI-Modelle, bevor die Entscheidung angewendet wird.' },
       { title: 'Vordefinierte Inhaltskategorien', desc: 'Fertige Kategorien für Hassrede, Belästigung, sexuelle Inhalte, Gewalt, Selbstverletzung, Spam, Desinformation, personenbezogene Daten und mehr.' },
-      { title: 'Automatische Anbieterwahl', desc: 'Nennen Sie uns Sprache, Inhaltstyp und Budget. Wir leiten jede Anfrage automatisch an den passendsten Anbieter weiter.' },
+      { title: 'Immer auf dem Stand der KI', desc: 'Kommt ein besseres oder günstigeres KI-Modell heraus, binden wir es schnell an. Für Sie ändert sich nichts, und Sie profitieren vom Fortschritt der KI.' },
       { title: 'Treffsicherere Moderationsentscheidungen', desc: 'Gesprächskontext, Historie des Verfassers, Kanaltyp und Ihre eigenen Regeln fließen ein, damit Entscheidungen genauer ausfallen.' },
       { title: 'Massenprüfung von Inhalten', desc: 'Senden Sie bis zu 10.000 Elemente auf einmal zur asynchronen Verarbeitung. Die Ergebnisse werden an Ihr System übermittelt, sobald sie vorliegen.' },
-      { title: 'Eigene Moderationsregeln', desc: 'Definieren Sie mit einem beliebigen LLM Ihre eigenen Kategorien. Geben Sie Beispiele vor und lassen Sie das Modell Inhalte nach Ihren Vorstellungen klassifizieren.' },
+      { title: 'Eigene Moderationsregeln', desc: 'Definieren Sie in natürlicher Sprache Ihre eigenen Kategorien. Geben Sie Beispiele vor und lassen Sie das Modell Inhalte nach Ihren Vorstellungen klassifizieren.' },
     ],
   },
   {
     title: 'Moderationskonsole',
     description: 'Eine vollständige Weboberfläche, um Ihre Content-Moderation zu steuern.',
     items: [
-      { title: 'Zugriffsverwaltung', desc: 'Erstellen und verwalten Sie Zugriffsschlüssel. Legen Sie Nutzungslimits pro Schlüssel fest und hinterlegen Sie die Zugangsdaten Ihrer Anbieter.' },
-      { title: 'Team- und Rollenverwaltung', desc: 'Verwalten Sie Ihr Moderationsteam, vergeben Sie Rollen und Berechtigungen, ohne auf Ihre IT-Abteilung angewiesen zu sein.' },
-      { title: 'Verwaltung von Meldungen', desc: 'Eine zentrale Warteschlange, um Nutzermeldungen zu bearbeiten, ihren Status zu verfolgen und sicherzustellen, dass kein markierter Inhalt durchrutscht.' },
-      { title: 'Aktivitätsverlauf', desc: 'Jede Moderationsanfrage wird mit Urteil, Anbieter, Antwortzeit und Kategorie-Scores protokolliert.' },
-      { title: 'Statusüberwachung der Anbieter', desc: 'Sehen Sie den Echtzeitstatus all Ihrer Anbieter: Verfügbarkeit, Antwortzeiten und Fehlerraten.' },
-      { title: 'Leistungsberichte', desc: 'Verfolgen Sie Moderationsvolumen und Markierungsquoten, vergleichen Sie die Leistung der Anbieter und behalten Sie die Kostenentwicklung im Blick.' },
+      { title: 'Zugriffsverwaltung', desc: 'Erstellen und verwalten Sie Zugriffsschlüssel. Legen Sie Nutzungslimits pro Schlüssel fest und widerrufen Sie Schlüssel jederzeit.' },
+      { title: 'Team- und Rollenverwaltung', desc: 'Geben Sie Ihren Kolleginnen und Kollegen Zugriff, vergeben Sie Rollen und Berechtigungen, ohne auf Ihre IT-Abteilung angewiesen zu sein.' },
+      { title: 'Verwaltung von Meldungen', desc: 'Unser Team bearbeitet Nutzermeldungen. Sie verfolgen ihren Status in Echtzeit und sehen, dass kein markierter Inhalt durchrutscht.' },
+      { title: 'Aktivitätsverlauf', desc: 'Jede Moderationsanfrage wird mit Urteil, Begründung, Antwortzeit und Kategorie-Scores protokolliert.' },
+      { title: 'Entscheidungen in Echtzeit', desc: 'Sehen Sie jede Entscheidung, sobald sie fällt, mit ihrer schriftlichen Begründung, und greifen Sie ein, wann immer Sie wollen.' },
+      { title: 'Leistungsberichte', desc: 'Verfolgen Sie Moderationsvolumen und Markierungsquoten, und behalten Sie die Kostenentwicklung im Blick.' },
       { title: 'Verwaltung der Konnektoren', desc: 'Verbinden Sie Ihre Social-Media-Konten mit Ihren eigenen Zugangsdaten.' },
       { title: 'Regelkonfiguration', desc: 'Legen Sie verbotene Wörter fest, definieren Sie Schwellenwerte pro Kategorie und formulieren Sie Ihre Regeln in natürlicher Sprache: drei einfache Werkzeuge, ganz ohne Code.' },
     ],
@@ -74,9 +71,9 @@ const featureCategories = [
     items: [
       { title: 'Kontextbezogene KI-Regeln', desc: 'Kombinieren Sie die Konfidenzwerte der KI mit Ihren Regeln statt sich auf eine starre Wortliste zu verlassen.' },
       { title: 'Automatische Aktionen', desc: 'Wird ein Schwellenwert überschritten, greift die Action Engine ein: ausblenden, löschen, markieren, benachrichtigen oder als Spam kennzeichnen.' },
-      { title: 'Human-in-the-Loop', desc: 'Heikle Fälle und Grenzfälle gehen an Ihr Moderationsteam. Dort fällt die endgültige Entscheidung.' },
-      { title: 'Manuelle Prüfwarteschlange', desc: 'Markierte Inhalte landen in einer Warteschlange, in der Ihre Moderatoren sie freigeben oder ablehnen.' },
-      { title: 'Webhook-Benachrichtigungen', desc: 'Erhalten Sie Echtzeit-Benachrichtigungen zu markierten Inhalten, abgeschlossenen Batches, Anbieterfehlern und mehr.' },
+      { title: 'Human-in-the-Loop', desc: 'Heikle Fälle und Grenzfälle übernimmt unser Team. Sie sehen jede Entscheidung in Echtzeit und können jederzeit eingreifen.' },
+      { title: 'Eingreifen mit einem Klick', desc: 'Sie müssen nichts tun. Wenn Sie möchten, geben Sie markierte Inhalte mit einem Klick frei oder lehnen sie ab.' },
+      { title: 'Webhook-Benachrichtigungen', desc: 'Erhalten Sie Echtzeit-Benachrichtigungen zu markierten Inhalten, abgeschlossenen Batches und mehr.' },
       { title: 'Vollständiger Audit-Trail', desc: 'Jede Aktion wird protokolliert: welche Regel gegriffen hat, welche Aktion ausgeführt wurde und mit welchem Ergebnis.' },
     ],
   },
@@ -86,7 +83,7 @@ const featureCategories = [
     items: [
       { title: 'Facebook', desc: 'Kommentare und Beiträge empfangen. Inhalte, die gegen Ihre Regeln verstoßen, automatisch ausblenden oder entfernen.' },
       { title: 'Instagram', desc: 'Instagram-Kommentare und -Nachrichten moderieren. Halten Sie Ihr Profil frei von toxischen Inhalten und Spam.' },
-      { title: 'YouTube', desc: 'Videokommentare erfassen. Als Spam markieren oder in Ihre Prüfwarteschlange schicken.' },
+      { title: 'YouTube', desc: 'Videokommentare erfassen. Als Spam markieren oder zur Prüfung durch unser Team zurückhalten.' },
       { title: 'WordPress', desc: 'Kommentare in Ihrem Blog moderieren. Automatisch freigeben, zur Prüfung zurückhalten oder als Spam markieren.' },
       { title: 'Eigene Plattformzugänge nutzen', desc: 'Bringen Sie Ihre eigenen Plattform-Tokens mit. Wir speichern sie niemals im Klartext.' },
       { title: 'Generischer Webhook-Empfang', desc: 'Erfassen Sie Inhalte von jeder Plattform, die ausgehende Webhooks unterstützt.' },
@@ -96,7 +93,7 @@ const featureCategories = [
 ];
 ---
 
-<BaseLayout title="Content-Moderation-Funktionen: zentrale API & Regel-Engine" description="Alle Funktionen von OpenModeration: zentrale API, Moderationskonsole, Action Engine, native Konnektoren, BYOK, Batch-Verarbeitung und DSA-konformer Audit-Trail." jsonLd={pageJsonLd}>
+<BaseLayout title="Content-Moderation-Funktionen: zentrale API & Regel-Engine" description="Alle Funktionen von OpenModeration: eigene KI, zentrale API, Moderationskonsole, Action Engine, native Konnektoren, Batch-Verarbeitung und DSA-Audit-Trail." jsonLd={pageJsonLd}>
 <Breadcrumb items={[{ label: "Startseite", href: "/de" }, { label: "Funktionen" }]} />
   <section class="bg-gradient-to-b from-brand-50 to-white py-20">
     <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
@@ -133,12 +130,12 @@ const featureCategories = [
         <div>
           <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Eine API mit vorhersehbaren Antworten</h2>
           <p class="mt-4 text-lg text-surface-500">
-            Jeder Anbieter liefert Ergebnisse im selben Format. Sie integrieren also nur einmal.
+            Die Ergebnisse haben immer dasselbe Format, welches Modell auch dahintersteht. Sie integrieren also nur einmal.
           </p>
           <div class="mt-6 space-y-4">
             <div class="flex items-start gap-3">
               <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <p class="text-sm text-surface-600"><strong>Dasselbe Format</strong> für OpenAI, Azure, HuggingFace, Mistral oder jedes LLM, ohne zusätzlichen Code.</p>
+              <p class="text-sm text-surface-600"><strong>Dasselbe Format</strong>, auch wenn wir neue KI-Modelle anbinden, ohne zusätzlichen Code.</p>
             </div>
             <div class="flex items-start gap-3">
               <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>

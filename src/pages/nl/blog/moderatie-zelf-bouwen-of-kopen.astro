@@ -1,0 +1,207 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+import { bookingUrl } from '../../../i18n/ui';
+
+const locale = getLocale(Astro.url.pathname);
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Zelf bouwen of kopen: wat moderatie-infrastructuur kost in 2026",
+  "description": "Wat het echt kost om je eigen systeem voor contentmoderatie te bouwen, vergeleken met het kopen van een product als OpenModeration.",
+  "inLanguage": "nl",
+  "datePublished": "2026-06-14",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/nl/blog/moderatie-zelf-bouwen-of-kopen" },
+  "dateModified": "2026-06-14"
+};
+---
+
+<BaseLayout title="Moderatie zelf bouwen of kopen: de kosten in 2026" description="Wat kost het echt om zelf een systeem voor contentmoderatie te bouwen? Een vergelijking van de totale kosten met het kopen van een product als OpenModeration." jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: "Blog", href: localizePath('/blog', locale) }, { label: "Zelf bouwen of kopen" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-06-14">14 juni 2026</time>
+        <span>&middot;</span>
+        <span>9 min lezen</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Zelf bouwen of kopen: wat moderatie-infrastructuur kost in 2026</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Elk platform dat door gebruikers gemaakte content host, komt vroeg of laat voor dezelfde vraag te staan:
+        bouwen we ons eigen systeem voor contentmoderatie, of kopen we er een?
+        Die keuze draait meer om de totale eigendomskosten over meerdere jaren
+        dan om een lijst met functies.
+      </p>
+      <p>
+        In 2026, met de DSA volledig van kracht en meer AI-modellen om uit te kiezen, zien de cijfers
+        er anders uit. In dit artikel lopen we de echte kosten van beide benaderingen door.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Argumenten om je moderatie zelf te bouwen</h2>
+      <p>
+        Een eigen moderatiepijplijn bouwen is verleidelijk. Je beheert de hele stack, je
+        bent van geen enkele leverancier afhankelijk en je kunt het systeem precies op je eigen situatie afstemmen.
+        De eerste maanden engineering voelen meer als een investering dan als een kostenpost.
+      </p>
+      <p>
+        Een typische zelfgebouwde moderatiestack heeft nodig:
+      </p>
+      <ul>
+        <li>Een moderatieservice die een of meer API's van AI-providers aanroept</li>
+        <li>Een Action Engine met drie eenvoudige tools: verboden woorden, drempels en je eigen regels in gewone taal</li>
+        <li>Een systeem voor auditlogging met bewaarbeleid</li>
+        <li>Een wachtrij voor menselijke beoordeling van grensgevallen</li>
+        <li>Een dashboard voor monitoring en configuratie</li>
+        <li>Connectoren voor sociale platforms en blogs (als je Facebook, Instagram, WordPress enzovoort modereert)</li>
+        <li>Alerting en observability</li>
+        <li>CI/CD, tests en stagingomgevingen</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">De echte kosten van zelf bouwen: engineeringtijd</h2>
+      <p>
+        Hier volgt een ruwe schatting van de inspanning. Een senior backend-engineer kost $150-200k per jaar
+        (alles inbegrepen). Een degelijke moderatiepijplijn met één provider kost 3-6 maanden om te bouwen.
+        Routing over meerdere providers voegt nog eens 2-3 maanden toe. Het dashboard
+        kost 2-4 maanden. Elke connector kost 1-2 maanden.
+      </p>
+      <p>
+        <strong>Voorzichtige schatting: 6-8 engineermaanden.</strong>
+        Dat is $75k-$130k aan salaris alleen al voor een eenvoudig moderatiesysteem
+        met één provider. Meerdere providers, een dashboard en connectoren kunnen dat makkelijk verdubbelen.
+      </p>
+      <p>
+        En dat is alleen het eerste jaar. Het tweede jaar brengt onderhoud, wijzigingen in de API's van providers,
+        schaalwerk en featureverzoeken.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Verborgen kosten van zelf bouwen</h2>
+      <p>
+        De eerste bouw is maar een deel van de rekening. Deze kosten zien teams vaak over het hoofd:
+      </p>
+      <p>
+        <strong>Doorlopend onderhoud (~$30k-$60k per jaar):</strong> API's van providers veranderen. OpenAI
+        stopt met modellen. Azure past endpoints aan. Je integratie gaat stuk, en iemand moet
+        die repareren. Elke update van een provider kost 2-5 dagen engineeringtijd.
+      </p>
+      <p>
+        <strong>Kosten om van provider te wisselen:</strong> als je een provider wilt toevoegen of vervangen,
+        bouw je de integratie opnieuw. Bij een eigen systeem betekent dat nieuwe code, tests
+        en een migratie. Die kosten komen terug telkens als je een provider toevoegt.
+      </p>
+      <p>
+        <strong>Opportuniteitskosten:</strong> elk uur dat je team aan moderatie-infrastructuur besteedt,
+        gaat niet naar je kernproduct. Voor een startup is dit de duurste
+        post op de balans.
+      </p>
+      <p>
+        <strong>Compliancerisico:</strong> als je audittrail niet aan de DSA voldoet,
+        riskeer je boetes tot 6% van de wereldwijde omzet. Compliance goed regelen vraagt juridische
+        toetsing en gespecialiseerde engineering.
+      </p>
+      <p>
+        <strong>Schaalkosten:</strong> je eigen systeem werkte bij 10k verzoeken per dag. Bij
+        100k verzoeken per dag heb je queuebeheer, rate limiting en prestatie-optimalisatie nodig.
+        Bij 1M verzoeken per dag heb je gedistribueerde verwerking nodig en mogelijk een
+        eigen SRE.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Argumenten om moderatie te kopen</h2>
+      <p>
+        Kopen betekent betalen voor een product dat deze problemen al heeft opgelost.
+        Met OpenModeration krijg je:
+      </p>
+      <ul>
+        <li><strong>Onze eigen moderatie-AI:</strong> ingericht op jouw regels en jouw use cases, waarbij andere AI-modellen de lastige gevallen controleren.</li>
+        <li><strong>Een modelonafhankelijke engine:</strong> komt er een beter of goedkoper AI-model uit, dan sluiten we het snel aan. Voor jou verandert er niets.</li>
+        <li><strong>Action Engine:</strong> drie eenvoudige tools (verboden woorden, drempels per categorie en je eigen regels in gewone taal), zonder code.</li>
+        <li><strong>Ingebouwde audittrail:</strong> DSA-conforme logging, direct beschikbaar.</li>
+        <li><strong>Sociale connectoren:</strong> kant-en-klare integraties voor Facebook, Instagram, YouTube en WordPress.</li>
+        <li><strong>Dashboard:</strong> beheeromgeving voor monitoring, analyses en configuratie.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Kostenvergelijking: moderatie bouwen of kopen</h2>
+      <p>
+        Dit zijn de totale eigendomskosten over 3 jaar voor een platform dat
+        100k moderatieverzoeken per dag verwerkt:
+      </p>
+      <p>
+        <strong>Zelf bouwen (TCO over 3 jaar):</strong>
+      </p>
+      <ul>
+        <li>Bouw in jaar 1: $100k-$250k aan engineering</li>
+        <li>Onderhoud jaar 1-3: $90k-$180k</li>
+        <li>Kosten van provider-API's: $50k-$150k per jaar, afhankelijk van de providers</li>
+        <li>Infrastructuur (servers, database, monitoring): $20k-$50k per jaar</li>
+        <li><strong>Totaal: $350k-$780k over 3 jaar</strong></li>
+      </ul>
+      <p>
+        <strong>Kopen (OpenModeration, TCO over 3 jaar):</strong>
+      </p>
+      <ul>
+        <li>Integratie: 1-2 dagen engineering</li>
+        <li>AI-modellen: inbegrepen in het abonnement</li>
+        <li>Gehoste SaaS: prijs per verzoek, geen infrastructuurkosten</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Het oordeel: wanneer bouwen, wanneer kopen</h2>
+      <p>
+        <strong>Bouw zelf als:</strong> je een eigen infrastructuurteam hebt, moderatie je
+        belangrijkste onderscheidende factor is en je functies nodig hebt die geen enkel bestaand product biedt.
+        Overweeg zelfs dan om de API van OpenModeration in je eigen systeem in te pluggen in plaats van bij nul te beginnen.
+      </p>
+      <p>
+        <strong>Koop als:</strong> je wilt dat moderatie betrouwbaar werkt terwijl je team zich
+        op je product richt. Dat geldt voor 95% van de platforms. Je bespaart geld, en je
+        gaat ook sneller, houdt je focus en loopt minder risico.
+      </p>
+      <p>
+        Voor de meeste organisaties is de keuze tussen moderatie bouwen of kopen geen twijfelgeval.
+        In 2026 is je eigen moderatie-infrastructuur bouwen vergelijkbaar met je eigen
+        database of je eigen load balancer bouwen. Technisch kan het, maar het is geen goede
+        besteding van je engineeringcapaciteit.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Aan de slag met OpenModeration</h2>
+      <p>
+        OpenModeration is een gehoste dienst, met de gegevens in de EU. Ons team zet het samen met je op
+        rond je eigen regels en use cases, en nieuwe AI-modellen worden aangesloten zonder dat jij er iets voor hoeft te doen.
+        Een on-premise installatie is op aanvraag mogelijk:
+        <a href={bookingUrl(locale)} class="text-brand-600 hover:text-brand-500">laten we het bespreken</a>.
+      </p>
+      <p>
+        We hebben teams in één sprint van een eigen systeem naar OpenModeration zien overstappen.
+        Het rendement is meteen zichtbaar: niemand hoeft nog AI-integraties bij te houden, bugs in de audittrail
+        te repareren of dashboardverzoeken van het productteam af te handelen.
+      </p>
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Lees verder</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/build-vs-buy', locale)} class="font-medium text-brand-600 hover:text-brand-500">Bouwen of kopen: de echte kosten van moderatie-infrastructuur &rarr;</a></li>
+        <li><a href={localizePath('/pricing', locale)} class="font-medium text-brand-600 hover:text-brand-500">Eenvoudige, transparante prijzen &rarr;</a></li>
+        <li><a href={localizePath('/features', locale)} class="font-medium text-brand-600 hover:text-brand-500">Alles wat het platform voor je doet &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

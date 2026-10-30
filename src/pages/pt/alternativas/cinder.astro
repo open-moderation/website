@@ -1,0 +1,237 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+const L = (p: string) => localizePath(p, locale);
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/pt/alternativas/cinder",
+  "name": "Alternativa ao Cinder: comparativo com o OpenModeration",
+  "description": "Cinder ou OpenModeration? Comparativo com fontes da filtragem automática de comentários: oferta, conectores, modelos de IA, DSA, preço e hospedagem na UE.",
+  "inLanguage": "pt",
+  "about": {
+    "@id": "https://www.openmoderation.com/#software"
+  }
+};
+
+const rows = [
+  {
+    "feature": "Oferta",
+    "competitor": "Infraestrutura de trust & safety: gestão de casos, agentes de IA (moderação, investigações, propriedade intelectual, fraude), segurança de modelos de IA e serviços gerenciados",
+    "openmod": "Moderação de comentários com IA, adaptada às suas regras e aos seus casos de uso, configurada com você pela equipe da Logora"
+  },
+  {
+    "feature": "Pensado para",
+    "competitor": "IA generativa, desenvolvedores de modelos, marketplaces, games e streaming, aplicativos sociais e de namoro",
+    "openmod": "Veículos de mídia digital, marcas e órgãos públicos"
+  },
+  {
+    "feature": "Integrações",
+    "competitor": "Uma API para enviar dados e um webhook para receber resultados; integrações citadas: IWF, StopNCII, Salesforce. Não menciona conectores de Facebook, Instagram, YouTube ou WordPress",
+    "openmod": "Sites (API), páginas do Facebook, contas profissionais do Instagram, canais do YouTube, WordPress"
+  },
+  {
+    "feature": "Automação e revisão humana",
+    "competitor": "Plataforma de gestão de casos e revisão com controle de qualidade e registros de auditoria; os agentes aprendem com a revisão humana, com escalonamento para revisores",
+    "openmod": "Violações claras ocultadas automaticamente, críticas legítimas visíveis, casos duvidosos tratados pela nossa equipe; você acompanha tudo em tempo real em um único console; um motivo por escrito para cada decisão e um registro de atividade completo"
+  },
+  {
+    "feature": "DSA",
+    "competitor": "Não especificado no seu site",
+    "openmod": "Recursos para notificação e ação, declaração de motivos, revisão humana de decisões contestadas e números exportáveis"
+  },
+  {
+    "feature": "Modelos de IA",
+    "competitor": "Usa \"modelos de linguagem e de visão de última geração\", segundo o seu site; não especifica se são próprios. Também é possível conectar os seus próprios agentes",
+    "openmod": "IA de moderação própria, verificada por outros modelos de IA; novos modelos integrados assim que são lançados"
+  },
+  {
+    "feature": "Preço",
+    "competitor": "Não divulgado; serviços gerenciados com preço por resultados, segundo o seu FAQ",
+    "openmod": "Públicos: grátis até 1.000 requisições/mês, Pro a 99 €/mês para 10 mil requisições, Enterprise sob consulta"
+  },
+  {
+    "feature": "Hospedagem e segurança",
+    "competitor": "Hospedagem não especificada no seu site; selos SOC 2, RGPD e HIPAA",
+    "openmod": "Hospedagem na UE, RGPD; implantação on-premise sob consulta"
+  },
+  {
+    "feature": "Referências",
+    "competitor": "Logos exibidos, entre eles OpenAI, Midjourney, ElevenLabs, Character.AI, Depop e Synthesia",
+    "openmod": "L'Équipe, Challenges, Sud Ouest, actu.fr, Estadão, Südkurier, Egora"
+  }
+];
+
+const faqItems = [
+  {
+    "question": "Qual é a melhor alternativa ao Cinder para a filtragem automática de conteúdo?",
+    "answer": "Para os comentários de um veículo de mídia, uma marca ou um órgão público, o OpenModeration é uma alternativa direta: filtra automaticamente os comentários do seu site (API), páginas do Facebook, Instagram, YouTube e WordPress, explica cada decisão por escrito e divulga os seus preços. Para investigações, fraude e revisão terceirizada em escala de plataforma, o Cinder foi pensado para isso."
+  },
+  {
+    "question": "Quanto custa o Cinder?",
+    "answer": "O Cinder não divulga os seus preços no site; segundo o seu FAQ, os serviços gerenciados são cobrados por resultados. O OpenModeration é grátis até 1.000 requisições por mês, o plano Pro custa 99 € por mês para 10 mil requisições e o Enterprise é sob consulta."
+  },
+  {
+    "question": "Cinder ou OpenModeration: qual é a principal diferença?",
+    "answer": "O Cinder é uma infraestrutura de trust & safety para empresas de IA e grandes plataformas, construída em torno da gestão de casos e de agentes de IA. O OpenModeration se concentra nos comentários: oculta as violações claras, mantém visíveis as críticas legítimas e deixa os casos duvidosos com a nossa equipe; você acompanha cada decisão em tempo real em um único console, com um motivo por escrito para cada decisão."
+  },
+  {
+    "question": "O OpenModeration filtra o conteúdo automaticamente?",
+    "answer": "Sim. As violações claras são ocultadas automaticamente, segundo as suas regras e os seus casos de uso. A nossa equipe trata os casos duvidosos, você acompanha tudo em tempo real no console, e cada decisão, automática ou humana, fica no registro de atividade."
+  },
+  {
+    "question": "Posso testar o OpenModeration sem desligar a minha ferramenta atual?",
+    "answer": "Sim. No modo sandbox, o OpenModeration analisa os seus comentários reais sem ocultar nada. A sua ferramenta atual continua funcionando e você compara as decisões comentário por comentário."
+  },
+  {
+    "question": "O OpenModeration ajuda a cumprir o DSA?",
+    "answer": "Sim. Ele oferece recursos para notificação e ação, uma declaração de motivos para cada decisão, revisão humana de decisões contestadas, um registro de atividade completo e números exportáveis. Os dados ficam hospedados na UE e são tratados conforme o RGPD."
+  }
+];
+---
+
+<BaseLayout title="Alternativa ao Cinder: comparativo com o OpenModeration" description="Cinder ou OpenModeration? Comparativo com fontes da filtragem automática de comentários: oferta, conectores, modelos de IA, DSA, preço e hospedagem na UE." jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Início", href: L('/') }, { label: "Alternativas", href: L('/alternatives') }, { label: "Cinder" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Comparativo
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Alternativa ao Cinder: comparativo com o OpenModeration</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Se você procura uma alternativa ao Cinder para filtrar automaticamente os comentários de um veículo de mídia, as páginas de uma marca ou os canais de um órgão público, o OpenModeration faz esse trabalho com conectores prontos, um motivo por escrito para cada decisão e preços públicos. O Cinder continua sendo uma opção sólida para empresas de IA e grandes plataformas que precisam de gestão de casos, investigações e revisão terceirizada.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900">Para quem é o Cinder</h2>
+      <p class="mt-4 text-surface-600">O Cinder (cinder.ai, antes cinder.co) vende infraestrutura de trust & safety para plataformas, com foco em conteúdo gerado por IA. Segundo o seu site, ele combina uma plataforma de gestão de casos e revisão (revisão humana, controle de qualidade, modelo de dados configurável, registros de auditoria), agentes de IA prontos para moderação, investigações, propriedade intelectual e fraude, ferramentas de segurança para modelos de IA (filtragem de prompts e respostas, guardrails, red teaming, avaliações) e serviços gerenciados como moderação terceirizada e rotulagem de dados. Os seus agentes cobrem mais de 100 idiomas, segundo o site.</p>
+      <p class="mt-4 text-surface-600">Os seus clientes são empresas de IA generativa, desenvolvedores de modelos, marketplaces, games e streaming, aplicativos sociais e de namoro. Entre os logos exibidos: OpenAI, Midjourney, ElevenLabs, Character.AI, Depop e Synthesia.</p>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Cinder vs OpenModeration, ponto a ponto</h2>
+      <p class="mt-4 text-surface-500">Informações sobre o Cinder extraídas do seu site (cinder.ai), consultado em 30 de outubro de 2026.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Critério</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Cinder</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.competitor}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Escolha o OpenModeration se…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>você quer filtrar automaticamente os comentários do seu site, das suas páginas do Facebook, Instagram, YouTube ou WordPress, com conectores prontos;</li>
+          <li>você quer ocultar automaticamente as violações claras e manter visíveis as críticas legítimas;</li>
+          <li>você precisa dos recursos do DSA: notificação e ação, declaração de motivos, revisão humana de decisões contestadas, números exportáveis;</li>
+          <li>você quer preços públicos e dados hospedados na UE;</li>
+          <li>você quer uma equipe que configure a moderação com você, segundo as suas regras e os seus casos de uso.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">O Cinder pode ser mais indicado se…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>você tem um produto de IA generativa ou um marketplace e precisa gerenciar investigações, fraude e propriedade intelectual em uma única ferramenta;</li>
+          <li>você quer moderação terceirizada e rotulagem de dados com o mesmo fornecedor;</li>
+          <li>você precisa de integrações de denúncia para proteção infantil, como IWF ou StopNCII.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900">O motor de IA: acompanhar o progresso dos modelos</h2>
+      <p class="mt-4 text-surface-600">O Cinder informa que os seus agentes usam modelos de linguagem e de visão de última geração, sem especificar se são próprios. O OpenModeration usa a sua própria IA de moderação, e as suas decisões nos casos delicados são verificadas por outros modelos de IA. O motor não depende de nenhum modelo: quando sai um melhor ou mais barato, a nossa equipe o integra rapidamente, sem que você precise mudar nada. Assim, a sua moderação acompanha o progresso do mercado de IA em vez de ficar congelada em um algoritmo próprio.</p>
+      <h2 class="mt-16 text-3xl font-bold tracking-tight text-surface-900">Preço: Cinder vs OpenModeration</h2>
+      <p class="mt-4 text-surface-600">O Cinder não divulga os seus preços; o seu FAQ indica que os serviços gerenciados são cobrados por resultados, e não por hora. Os preços do OpenModeration são públicos: grátis até 1.000 requisições por mês, Pro a 99 €/mês para 10 mil requisições, Enterprise sob consulta, e implantação on-premise disponível sob consulta. <a href={L('/pricing')} class="font-medium text-brand-600 hover:text-brand-500">Os preços do OpenModeration &rarr;</a></p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Migrar do Cinder para o OpenModeration em 3 etapas</h2>
+      <ol class="mt-8 grid gap-6 md:grid-cols-3">
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">1</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Conecte as suas fontes e compartilhe as suas regras</h3>
+          <p class="mt-2 text-sm text-surface-600">Conecte o seu site via API, as suas páginas do Facebook, contas profissionais do Instagram, canais do YouTube ou WordPress. A nossa equipe adapta com você a moderação às suas regras e aos seus casos de uso.</p>
+        </li>
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">2</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Teste no modo sandbox com comentários reais</h3>
+          <p class="mt-2 text-sm text-surface-600">O OpenModeration analisa os seus comentários reais sem ocultar nada. O Cinder continua funcionando enquanto você compara as decisões, cada uma com o seu motivo por escrito.</p>
+        </li>
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">3</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Ative a moderação automática</h3>
+          <p class="mt-2 text-sm text-surface-600">As violações claras são ocultadas automaticamente, a nossa equipe trata os casos duvidosos, você acompanha tudo no console, e o registro de atividade e os números exportáveis ficam prontos para o DSA.</p>
+        </li>
+      </ol>
+      <p class="mt-8 text-surface-600">Quer ver antes com os seus próprios comentários? <a href={L('/book-a-call')} class="font-medium text-brand-600 hover:text-brand-500">Agende uma reunião com a nossa equipe &rarr;</a></p>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Perguntas frequentes" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        Cinder é uma marca do seu titular. As informações sobre ela vêm do seu próprio site (consultado em 30 de outubro de 2026); o que não consta é indicado como não especificado. Viu algum erro? Escreva para <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+      <p class="mx-auto mt-4 max-w-3xl text-center text-sm text-surface-400">
+        Fontes: <a href="https://cinder.ai/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">cinder.ai</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Para saber mais</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={L('/book-a-call')} class="font-medium text-brand-600 hover:text-brand-500">Agende uma reunião com a equipe do OpenModeration &rarr;</a></li>
+        <li><a href={L('/moderation-software')} class="font-medium text-brand-600 hover:text-brand-500">O software de moderação OpenModeration &rarr;</a></li>
+        <li><a href={L('/blog/comment-moderation-guide')} class="font-medium text-brand-600 hover:text-brand-500">Moderação de comentários: o guia completo &rarr;</a></li>
+        <li><a href={L('/blog/dsa-compliance-sme-guide')} class="font-medium text-brand-600 hover:text-brand-500">Guia do DSA para pequenas e médias empresas &rarr;</a></li>
+        <li><a href={L('/alternatives')} class="font-medium text-brand-600 hover:text-brand-500">Todos os comparativos &rarr;</a></li>
+        <li><a href={L('/pricing')} class="font-medium text-brand-600 hover:text-brand-500">Os preços do OpenModeration &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Filtre os seus comentários automaticamente sem encerrar o debate." subtitle="Conecte o seu site e as suas redes sociais, teste o sandbox com comentários reais e leia o motivo de cada decisão. Grátis para começar." />
+</BaseLayout>

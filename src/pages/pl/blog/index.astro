@@ -1,0 +1,190 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const blogJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "@id": "https://www.openmoderation.com/pl/blog",
+  "url": "https://www.openmoderation.com/pl/blog",
+  "name": "Blog o moderacji treści: DSA, bezpieczeństwo AI i poradniki",
+  "description": "Artykuły o moderacji treści, zgodności z DSA, bezpieczeństwie AI i infrastrukturze moderacji: poradniki dla marek, mediów, platform i zespołów programistów.",
+  "inLanguage": "pl",
+  "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
+};
+
+const posts = [
+  {
+    title: "Moderacja komentarzy na TikToku: filtry, zasady i porady",
+    description: "Jak moderować komentarze na TikToku: filtry komentarzy, filtrowane słowa kluczowe, ręczne zatwierdzanie, moderatorzy LIVE, ich ograniczenia dla marek i plan kryzysowy.",
+    href: localizePath('/blog/tiktok-comment-moderation', locale),
+    date: "2026-10-30",
+    readTime: "9 min",
+    tags: ["poradnik"],
+  },
+  {
+    title: "Moderacja mediów społecznościowych: kompletny poradnik (2026)",
+    description: "Jak moderować media społecznościowe: metody, zasady, specyfika Facebooka, Instagrama, YouTube, TikToka, LinkedIna i X, organizacja zespołu, kryzysy, wskaźniki i narzędzia.",
+    href: localizePath('/blog/social-media-moderation-guide', locale),
+    date: "2026-10-30",
+    readTime: "11 min",
+    tags: ["poradnik"],
+  },
+  {
+    title: "Moderacja komentarzy na YouTube: narzędzia Studio i ich granice",
+    description: "Jak moderować komentarze na YouTube: wstrzymywanie do sprawdzenia, blokowane słowa i linki, zatwierdzeni i ukryci użytkownicy, moderatorzy, czat na żywo i kiedy automatyzować.",
+    href: localizePath('/blog/youtube-comment-moderation', locale),
+    date: "2026-10-30",
+    readTime: "9 min",
+    tags: ["poradnik"],
+  },
+  {
+    title: "Negatywne komentarze i trolle: jak reagować (poradnik 2026)",
+    description: "Jak radzić sobie z negatywnymi komentarzami i trollami: krytyka a hejt, kiedy odpowiadać, ukrywać, usuwać lub banować, wzory odpowiedzi, naloty, kryzysy i dobrostan zespołu.",
+    href: localizePath('/blog/handle-negative-comments-trolls', locale),
+    date: "2026-10-30",
+    readTime: "9 min",
+    tags: ["poradnik"],
+  },
+  {
+    title: "Czym jest moderacja treści? Definicja i rodzaje",
+    description: "Co oznacza moderacja treści: co się moderuje, 6 rodzajów moderacji, praca moderatora treści, jak działa moderacja AI, DSA i jak wybrać właściwe podejście.",
+    href: localizePath('/blog/what-is-content-moderation', locale),
+    date: "2026-10-30",
+    readTime: "9 min",
+    tags: ["poradnik"],
+  },
+  {
+    title: "Moderacja komentarzy: kompletny poradnik",
+    description: "Jak moderować komentarze: porównanie metod, co powinny obejmować zasady, szare strefy, DSA, wybór narzędzia i 10 dobrych praktyk.",
+    href: localizePath('/blog/comment-moderation-guide', locale),
+    date: "2026-10-30",
+    readTime: "12 min",
+    tags: ["poradnik", "komentarze", "DSA"],
+  },
+  {
+    title: "Jak automatycznie ukrywać komentarze na Facebooku",
+    description: "Ukrycie, usunięcie czy blokada, wbudowane filtry Facebooka i ich granice oraz jak wybrać narzędzie do moderacji komentarzy na Facebooku.",
+    href: localizePath('/blog/hide-facebook-comments-automatically', locale),
+    date: "2026-10-30",
+    readTime: "8 min",
+    tags: ["facebook", "poradnik"],
+  },
+  {
+    title: "Moderacja komentarzy na Instagramie: poradnik automoderacji",
+    description: "Ukryte słowa, Limity i Ograniczanie: czego nie wychwytują, czego potrzeba do podłączenia narzędzia i jak skonfigurować automoderację.",
+    href: localizePath('/blog/instagram-comment-moderation', locale),
+    date: "2026-10-30",
+    readTime: "8 min",
+    tags: ["instagram", "poradnik"],
+  },
+  {
+    title: "OpenAI Moderation API: omni-moderation-latest, kategorie, cena i ograniczenia",
+    description: "Co wykrywa OpenAI Moderation API, 13 kategorii, format odpowiedzi, czy jest darmowe i co pozostaje do zbudowania po Twojej stronie.",
+    href: localizePath('/blog/openai-moderation-api-guide', locale),
+    date: "2026-10-20",
+    readTime: "6 min",
+    tags: ["openai", "API", "poradnik"],
+  },
+  {
+    title: "Zgodność z DSA dla małych i średnich platform: praktyczny poradnik",
+    description: "Praktyczny poradnik zgodności z aktem o usługach cyfrowych (DSA) dla mniejszych platform: automatyczna moderacja, ścieżka audytu i konkretne kroki.",
+    href: localizePath('/blog/dsa-compliance-sme-guide', locale),
+    date: "2026-06-16",
+    readTime: "8 min",
+    tags: ["DSA", "zgodność", "poradnik"],
+  },
+  {
+    title: "Zbudować czy kupić? Koszty infrastruktury moderacji treści w 2026 roku",
+    description: "Prawdziwy koszt budowy własnej moderacji w porównaniu z OpenModeration: czas programistów, utrzymanie i ukryte koszty.",
+    href: localizePath('/blog/build-vs-buy-moderation', locale),
+    date: "2026-06-14",
+    readTime: "9 min",
+    tags: ["porównanie", "zbudować czy kupić"],
+  },
+  {
+    title: "Koniec Google Perspective API: przewodnik migracji dla forów",
+    description: "Google wyłącza Perspective API pod koniec 2026 roku. Jak przenieść moderację forum lub społeczności przed upływem terminu.",
+    href: localizePath('/blog/perspective-api-migration-guide', locale),
+    date: "2026-06-12",
+    readTime: "7 min",
+    tags: ["perspective", "migracja", "poradnik"],
+  },
+  {
+    title: "OpenAI Moderation, Azure czy Llama Guard: porównanie 2026",
+    description: "Rzetelne porównanie głównych dostawców moderacji AI: wydajność, ceny, obsługiwane języki i kiedy sięgnąć po które rozwiązanie.",
+    href: localizePath('/blog/openai-vs-azure-vs-llama-guard-comparison', locale),
+    date: "2026-06-10",
+    readTime: "8 min",
+    tags: ["porównanie", "dostawcy"],
+  },
+  {
+    title: "Zgodność z DSA w moderacji komentarzy – prościej, niż myślisz",
+    description: "Jak spełnić wymogi aktu o usługach cyfrowych (DSA) w moderacji komentarzy: pisemne uzasadnienia, pełny ślad audytowy, raporty przejrzystości i hosting w UE.",
+    href: localizePath('/blog/dsa-compliance-open-source-moderation', locale),
+    date: "2026-06-08",
+    readTime: "6 min",
+    tags: ["DSA", "zgodność", "przejrzystość"],
+  },
+  {
+    title: "Moderacja treści w aplikacjach AI: poradnik dla programistów",
+    description: "Jak wdrożyć filtrowanie wejścia i wyjścia w aplikacjach opartych na LLM. Dobre praktyki ochrony przed prompt injection i bezpieczeństwa treści.",
+    href: localizePath('/blog/ai-content-moderation-developer-guide', locale),
+    date: "2026-06-05",
+    readTime: "10 min",
+    tags: ["AI", "LLM", "poradnik"],
+  },
+  {
+    title: "Przedstawiamy OpenModeration: zunifikowaną platformę moderacji",
+    description: "Budujemy platformę moderacji: własna AI weryfikowana przez inne modele i pisemne uzasadnienie każdej decyzji.",
+    href: localizePath('/blog/introducing-open-moderation', locale),
+    date: "2026-06-01",
+    readTime: "5 min",
+    tags: ["ogłoszenie"],
+  },
+];
+---
+
+<BaseLayout title="Blog o moderacji treści: DSA, AI i poradniki" description="Artykuły o moderacji treści, zgodności z DSA, bezpieczeństwie AI i infrastrukturze moderacji: poradniki dla marek, mediów, platform i zespołów programistów." jsonLd={blogJsonLd}>
+<Breadcrumb items={[{ label: "Strona główna", href: localizePath('/', locale) }, { label: "Blog" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Blog</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Analizy i poradniki o moderacji treści, bezpieczeństwie AI, zgodności z DSA i budowie infrastruktury moderacji.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-8">
+        {posts.map((post) => (
+          <a href={post.href} class="group rounded-xl border border-surface-200 bg-white p-6 transition hover:shadow-md">
+            <div class="flex items-center gap-3 text-xs text-surface-400">
+              <time datetime={post.date}>{new Date(post.date + "T00:00:00").toLocaleDateString("pl-PL", { year: "numeric", month: "long", day: "numeric" })}</time>
+              <span>&middot;</span>
+              <span>{post.readTime} czytania</span>
+              <span>&middot;</span>
+              {post.tags.map((tag) => (
+                <span class="rounded-full bg-surface-100 px-2 py-0.5 text-xs text-surface-500">{tag}</span>
+              ))}
+            </div>
+            <h2 class="mt-3 text-xl font-bold text-surface-900 group-hover:text-brand-600">{post.title}</h2>
+            <p class="mt-2 text-sm text-surface-500">{post.description}</p>
+            <div class="mt-4 flex items-center gap-1 text-sm font-medium text-brand-600">
+              Czytaj więcej
+              <svg class="h-3.5 w-3.5 transition group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

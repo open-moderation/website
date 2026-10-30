@@ -1,0 +1,277 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import BrowserFrame from '../../../components/BrowserFrame.astro';
+import ModerationVerdict from '../../../components/ModerationVerdict.astro';
+import FAQ from '../../../components/FAQ.astro';
+import SectionTitle from '../../../components/SectionTitle.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const faqItems = [
+  {
+    question: "Dlaczego mój komentarz został ukryty?",
+    answer: "Ponieważ naruszył jedną z Twoich reguł. Konsola pokazuje dokładny powód zwykłym językiem, na przykład „Ten komentarz zawiera obelgę” albo „Ten komentarz promuje oszustwo”, wraz z pełną historią działań związanych z decyzją.",
+  },
+  {
+    question: "Czy można zobaczyć uzasadnienie AI dla każdej decyzji?",
+    answer: "Tak. Każda automatyczna decyzja ma pisemne uzasadnienie. Komentarze z szarej strefy weryfikuje nasz zespół z pełnym kontekstem, a decyzje ludzi są rejestrowane w ten sam sposób: kto zdecydował, kiedy i dlaczego.",
+  },
+  {
+    question: "Gdzie przechowywane są moje dane?",
+    answer: "W Unii Europejskiej, zgodnie z zasadami RODO. Na tej stronie nie ma śledzących plików cookie, dane nie są odsprzedawane. Swoje dane możesz wyeksportować w dowolnym momencie. Na życzenie możliwe jest wdrożenie na własnych serwerach.",
+  },
+];
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://www.openmoderation.com/pl/produkt/przejrzystosc",
+      "url": "https://www.openmoderation.com/pl/produkt/przejrzystosc",
+      "name": "Przejrzystość: zobacz, dlaczego każdy komentarz został ukryty",
+      "description": "Każda decyzja moderacyjna ma pisemne uzasadnienie, pełny dziennik audytu decyzji AI i ludzi, eksport danych i hosting w UE.",
+      "inLanguage": "pl",
+      "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://www.openmoderation.com/pl/produkt/przejrzystosc#faq",
+      "inLanguage": "pl",
+      "mainEntity": faqItems.map((item) => ({
+        "@type": "Question",
+        "name": item.question,
+        "acceptedAnswer": { "@type": "Answer", "text": item.answer }
+      }))
+    }
+  ]
+};
+
+const steps = [
+  {
+    title: "AI ukrywa komentarz",
+    description: "Komentarz narusza jedną z Twoich reguł: obelgi, spam, oszustwa lub cokolwiek innego, czego zabraniają Twoje reguły.",
+  },
+  {
+    title: "Dołączane jest pisemne uzasadnienie",
+    description: "Zwykłym językiem wyjaśnia, co zrobił komentarz i jaką regułę naruszył, więc nie trzeba odszyfrowywać żadnych wyników liczbowych.",
+  },
+  {
+    title: "Wszystko trafia do dziennika",
+    description: "Każda decyzja AI i człowieka jest opatrzona znacznikiem czasu i łatwa do wyszukania: kto zdecydował, kiedy i dlaczego.",
+  },
+];
+
+const proofs = [
+  {
+    title: "Pisemne uzasadnienia",
+    description: "Każdy ukryty komentarz ma wyjaśnienie zapisane zwykłym językiem, bezpośrednio w konsoli.",
+    icon: "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z",
+    href: null,
+    hrefLabel: null,
+  },
+  {
+    title: "Pełny dziennik audytu",
+    description: "Decyzje AI i ludzi w jednym miejscu, ze znacznikami czasu i pełnym kontekstem, gotowe na audyt DSA.",
+    icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
+    href: localizePath('/dsa-compliance', locale),
+    hrefLabel: "Zobacz dziennik audytu DSA",
+  },
+  {
+    title: "Twoje dane do eksportu",
+    description: "Eksportuj dane moderacji i historię decyzji w dowolnym momencie, na własne potrzeby lub dla organu regulacyjnego.",
+    icon: "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4",
+  },
+  {
+    title: "Hosting w UE i RODO",
+    description: "Twoje dane pozostają w Unii Europejskiej. Na życzenie możliwe jest wdrożenie na własnych serwerach.",
+    icon: "M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+    href: localizePath('/faq', locale),
+    hrefLabel: "Pytania o dane w FAQ",
+  },
+];
+---
+
+<BaseLayout
+  title="Przejrzystość: dlaczego komentarz został ukryty"
+  description="Każda decyzja moderacyjna ma pisemne uzasadnienie, a do tego pełny dziennik audytu decyzji AI i moderatorów, eksport danych i hosting w Unii Europejskiej."
+  jsonLd={pageJsonLd}
+>
+  <Breadcrumb items={[{ label: 'Strona główna', href: localizePath('/', locale) }, { label: 'Produkt' }, { label: 'Przejrzystość' }]} />
+
+  <!-- Hero -->
+  <section class="relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-brand-50 via-white to-surface-50" />
+    <div class="relative mx-auto max-w-7xl px-4 pb-12 pt-10 sm:px-6 lg:px-8 lg:pt-14">
+      <div class="mx-auto max-w-3xl text-center">
+        <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600 shadow-sm">
+          <span class="flex h-2 w-2 animate-pulse-dot rounded-full bg-accent-500" />
+          Nasza obietnica · Przejrzystość
+        </div>
+        <h1 class="animate-fade-in-up text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">
+          Każdy ukryty komentarz ma pisemne <em class="italic text-brand-800">uzasadnienie</em>.
+        </h1>
+        <p class="animate-fade-in-up delay-1 mt-6 text-lg leading-relaxed text-surface-500 sm:text-xl">
+          Decyzji moderacyjnej, której nie da się wyjaśnić, nie da się też obronić. OpenModeration za każdym razem
+          wyjaśnia zwykłym językiem, dlaczego komentarz został ukryty.
+        </p>
+        <div class="animate-fade-in-up delay-2 mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">
+            Wypróbuj za darmo
+          </a>
+          <a href={localizePath('/how-it-works', locale)} class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">
+            Zobacz, jak to działa
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+        <p class="animate-fade-in-up delay-2 mt-4 text-sm text-surface-400">Bez karty kredytowej</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Proof capture -->
+  <section class="bg-white pb-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-xl">
+        <BrowserFrame
+          caption="Przestrzeń demonstracyjna: odrzucony komentarz z oszustwem, jego pisemne uzasadnienie i pełna historia działań."
+        >
+          <ModerationVerdict slot="content" />
+          <div slot="annotation" class="absolute bottom-3 right-3 rounded-full border border-brand-200 bg-white/95 px-3 py-1 text-xs font-semibold text-brand-800 shadow-sm">
+            &#x270D; Pisemne uzasadnienie
+          </div>
+        </BrowserFrame>
+      </div>
+    </div>
+  </section>
+
+  <!-- Black box vs open -->
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-3xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">
+          Ukryty komentarz, którego nie da się wyjaśnić, to ryzyko
+        </h2>
+        <p class="mt-4 text-lg text-surface-500">
+          Gdy klient, przełożony lub organ regulacyjny zapyta: &bdquo;dlaczego to zostało ukryte?&rdquo;,
+          &bdquo;tak zdecydował algorytm&rdquo; nie jest odpowiedzią.
+        </p>
+      </div>
+      <div class="grid gap-8 md:grid-cols-2">
+        <div class="rounded-xl border border-red-100 bg-red-50/50 p-8">
+          <h3 class="flex items-center gap-2 text-xl font-semibold text-red-700">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            Moderacja typu „czarna skrzynka”
+          </h3>
+          <ul class="mt-6 space-y-3 text-sm text-surface-600">
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Surowe wyniki bez kontekstu i wyjaśnień</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Brak pisemnego uzasadnienia ukrytych komentarzy</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Nic do pokazania podczas audytu lub sporu</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Błędy wychodzą na jaw, gdy jest już za późno</li>
+          </ul>
+        </div>
+        <div class="rounded-xl border border-brand-200 bg-brand-50 p-8 shadow-sm">
+          <h3 class="flex items-center gap-2 text-xl font-semibold text-brand-700">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            Z OpenModeration
+          </h3>
+          <ul class="mt-6 space-y-3 text-sm text-surface-700">
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Pisemne uzasadnienie każdego ukrytego komentarza</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Działania AI i ludzi w jednym dzienniku</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Decyzje, które można wyjaśnić klientom, przełożonym i regulatorom</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Twoje własne reguły, skonfigurowane z naszym zespołem</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="border-t border-surface-100 bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <SectionTitle
+        title="Jak działa przejrzystość"
+        subtitle="Trzy kroki od oznaczonego komentarza do uzasadnienia, które można pokazać każdemu."
+      />
+      <div class="grid gap-6 md:grid-cols-3">
+        {steps.map((step, i) => (
+          <div class="relative rounded-xl border border-surface-200 bg-white p-8">
+            <span class="text-4xl font-bold text-brand-100">0{i + 1}</span>
+            <h3 class="mt-4 text-lg font-semibold text-surface-900">{step.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-surface-500">{step.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Proofs -->
+  <section class="border-t border-surface-100 bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <SectionTitle
+        title="Jak to sprawdzić"
+        subtitle="Cztery rzeczy, które możesz zweryfikować samodzielnie, zamiast wierzyć nam na słowo."
+      />
+      <div class="stagger-fade-in grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {proofs.map((p) => (
+          <div class="flex flex-col rounded-xl border border-surface-200 bg-white p-6 transition hover:-translate-y-0.5 hover:shadow-md">
+            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
+              <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={p.icon}/></svg>
+            </div>
+            <h3 class="mt-4 text-lg font-semibold text-surface-900">{p.title}</h3>
+            <p class="mt-2 flex-1 text-sm leading-relaxed text-surface-500">{p.description}</p>
+            {p.href && (
+              <a href={p.href} class="mt-4 text-sm font-medium text-brand-600 hover:text-brand-500">
+                {p.hrefLabel} &rarr;
+              </a>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Stat -->
+  <section class="border-t border-surface-100 bg-white py-16">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <p class="text-5xl font-bold tracking-tight text-brand-900 sm:text-6xl">68%</p>
+      <p class="mt-4 text-lg text-surface-600 sm:text-xl">
+        konsumentów czyta Twoje komentarze przed zakupem.
+      </p>
+      <p class="mt-2 text-sm text-surface-400">Źródło: badanie konsumenckie cytowane przez Respondology</p>
+      <p class="mx-auto mt-6 max-w-2xl text-surface-500">
+        To, co tam znajdą, decyduje o tym, czy Ci zaufają. Dlatego każda decyzja moderacyjna
+        powinna mieć uzasadnienie na piśmie.
+      </p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="border-t border-surface-100 bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <SectionTitle title="Najczęstsze pytania" />
+      <FAQ items={faqItems} disableJsonLd />
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="relative overflow-hidden bg-ink-900 py-20">
+    <div class="relative mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+        Każda decyzja moderacyjna ma swoje wyjaśnienie.
+      </h2>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-300">
+        Połącz swoją stronę lub profil w kilka kliknięć i zobacz pisemne uzasadnienie każdego ukrytego komentarza.
+      </p>
+      <div class="mt-8">
+        <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 text-sm font-semibold text-surface-900 shadow-sm transition hover:bg-surface-100">
+          Wypróbuj za darmo
+        </a>
+        <p class="mt-4 text-sm text-surface-400">Bez karty kredytowej</p>
+      </div>
+      <p class="mt-12 text-xs text-surface-500">Bez śledzących plików cookie. Hosting w UE. Każda decyzja wyjaśniona.</p>
+    </div>
+  </section>
+</BaseLayout>

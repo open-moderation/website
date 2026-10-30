@@ -1,0 +1,177 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import BrowserFrame from '../../../components/BrowserFrame.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const faqItems = [
+  {
+    question: "Uma única ferramenta consegue moderar anúncios, avaliações e mensagens de compradores no mesmo lugar?",
+    answer: "Sim. Anúncios, avaliações e mensagens entre compradores e vendedores passam pela mesma API e pelas mesmas regras. Os casos duvidosos são tratados pela nossa equipe, e você acompanha tudo em um único painel."
+  },
+  {
+    question: "Ela detecta pedidos de pagamento fora da plataforma e links de golpe nos chats do marketplace?",
+    answer: "Sim. Descreva o padrão em linguagem natural como uma categoria personalizada (\"pede para pagar fora da plataforma\", \"compartilha um link de pagamento externo\") e a IA o sinaliza mesmo quando os golpistas mudam as palavras. Domínios e frases conhecidos também podem ser bloqueados pelo pré-filtro de palavras antes de qualquer chamada à IA."
+  },
+  {
+    question: "Como vocês evitam remover por engano anúncios legítimos de vendedores?",
+    answer: "Cada regra tem dois limites. Só os casos evidentes são ocultados automaticamente; tudo o que fica no meio vai para revisão humana. Os moderadores veem o motivo de cada decisão da IA, podem revertê-la, e cada reversão fica registrada."
+  },
+  {
+    question: "Podemos começar pelas avaliações antes de moderar as mensagens?",
+    answer: "Sim. Você escolhe o que envia ao OpenModeration. Muitas equipes começam por uma única superfície, como as avaliações, conferem os resultados no painel e depois acrescentam anúncios e mensagens com as mesmas regras."
+  },
+  {
+    question: "Posso moderar todo o meu catálogo existente?",
+    answer: "Sim. O endpoint em lote processa até 10.000 itens de forma assíncrona, o que funciona bem para uma primeira passada sobre os anúncios, avaliações e mensagens já existentes. Os resultados são enviados ao seu webhook quando ficam prontos."
+  },
+  {
+    question: "O que acontece com os anúncios limítrofes?",
+    answer: "Você decide por regra: acima de um limite, ocultar ou excluir automaticamente; abaixo dele, enviar para revisão humana no console de moderação. Os moderadores veem o raciocínio da IA e podem revertê-lo, e cada reversão fica registrada."
+  },
+];
+
+const useCaseJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Moderação de conteúdo com IA para marketplaces e e-commerce | OpenModeration",
+  "description": "Modere com IA anúncios de produtos, avaliações e mensagens de vendedores em plataformas de e-commerce e classificados. Plataforma de moderação em conformidade com o DSA e hospedada na UE.",
+  "inLanguage": "pt",
+  "url": "https://www.openmoderation.com/pt/casos-de-uso/marketplaces"
+};
+---
+
+<BaseLayout title="Moderação para marketplaces: anúncios, avaliações e chats" description="Modere anúncios, avaliações e mensagens entre compradores e vendedores: detecte golpes e pagamentos fora da plataforma e mantenha uma trilha de auditoria DSA." jsonLd={useCaseJsonLd}>
+  <Breadcrumb items={[{ label: "Início", href: localizePath("/", locale) }, { label: "Casos de uso", href: localizePath("/use-cases", locale) }, { label: "Marketplaces" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">Caso de uso</div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Moderação de conteúdo com IA para marketplaces</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">Mantenha a sua plataforma de e-commerce segura e em conformidade moderando automaticamente anúncios de produtos, avaliações de usuários e mensagens de vendedores, em qualquer volume.</p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mb-16 grid gap-8 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="text-lg font-semibold text-surface-900">O desafio</h3>
+          <p class="mt-2 text-sm text-surface-600">Um único anúncio de golpe, uma avaliação falsa ou uma mensagem fraudulenta pode desfazer meses de confiança. A moderação manual não acompanha o crescimento do marketplace, e os filtros rígidos de palavras-chave geram falsos positivos demais.</p>
+        </div>
+        <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+          <h3 class="text-lg font-semibold text-brand-700">A solução OpenModeration</h3>
+          <p class="mt-2 text-sm text-surface-700">A IA lê anúncios e mensagens no contexto, e o Action Engine oculta automaticamente os de alto risco. Os casos-limite são tratados pela nossa equipe, e você vê cada decisão em tempo real.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="text-lg font-semibold text-surface-900">O resultado</h3>
+          <p class="mt-2 text-sm text-surface-600">A sua equipe não precisa mais fazer revisões manuais. Trilhas de auditoria completas mantêm você em conformidade com o DSA, e os problemas são detectados antes que os compradores os vejam.</p>
+        </div>
+      </div>
+
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Modere todas as superfícies da sua plataforma</h2>
+          <p class="mt-4 text-lg text-surface-500">Compradores e vendedores se comunicam em anúncios, avaliações e mensagens, e cada um desses espaços precisa de moderação. O OpenModeration cobre todos eles com uma única integração.</p>
+          <div class="mt-8 space-y-4">
+            <div class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600"><strong>Anúncios de produtos:</strong> bloqueie itens proibidos, detecte padrões de golpe e sinalize descrições enganosas antes que entrem no ar.</p>
+            </div>
+            <div class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600"><strong>Avaliações e notas:</strong> detecte avaliações falsas, discurso de ódio e spam no feedback dos usuários, para que os compradores possam confiar no que leem.</p>
+            </div>
+            <div class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600"><strong>Mensagens de vendedores:</strong> monitore as mensagens entre compradores e vendedores em busca de assédio, tentativas de levar a venda para fora da plataforma e fraudes.</p>
+            </div>
+          </div>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-8">
+          <h4 class="mb-3 text-sm font-semibold text-surface-900">Moderação retroativa em lote do conteúdo existente</h4>
+          <p class="text-sm text-surface-500">Limpar meses de histórico não precisa ser um projeto manual. Envie até 10.000 itens existentes em um único lote (anúncios, avaliações, mensagens, descrições) e o OpenModeration sinaliza golpes, itens proibidos e avaliações falsas. Os resultados chegam direto ao seu painel de revisão.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-red-200 bg-red-50 px-3 py-1 text-xs font-medium text-red-700">
+            <span class="flex h-1.5 w-1.5 rounded-full bg-red-500"></span>
+            O que está em jogo
+          </div>
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Um anúncio ruim custa mais que mil anúncios bons</h2>
+          <p class="mt-4 text-lg text-surface-500">
+            Compradores que caem em um golpe ou em uma enxurrada de avaliações falsas não voltam. E os reguladores agora também observam a rapidez com que você remove esse conteúdo.
+          </p>
+          <ul class="mt-8 space-y-3">
+            <li class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+              <p class="text-sm text-surface-600"><strong>Avaliações falsas:</strong> estimativas do setor indicam que 30-40% das avaliações online são falsas ou incentivadas, o que corrói a confiança dos compradores em todo o seu catálogo.</p>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+              <p class="text-sm text-surface-600"><strong>Anúncios de golpe:</strong> itens proibidos, produtos falsificados e esquemas de desvio de pagamento escapam dos filtros rígidos de palavras-chave.</p>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+              <p class="text-sm text-surface-600"><strong>Pressão do DSA:</strong> marketplaces que operam na UE precisam agir contra conteúdo ilegal e prestar contas disso. As multas podem chegar a 6% do faturamento global.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6 shadow-sm">
+          <h3 class="text-lg font-semibold text-surface-900">Aplique automaticamente as regras do seu marketplace</h3>
+          <BrowserFrame
+            src="/images/rules.png"
+            video="om-rules"
+            alt="Painel do OpenModeration: configuração de regras com limites por categoria e ações automáticas"
+          />
+          <p class="mt-4 text-sm text-surface-500">Os golpes evidentes são ocultados na hora, e os casos limítrofes são tratados pela nossa equipe. Cada decisão fica registrada para a conformidade com o DSA.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ items={faqItems} title="Perguntas frequentes sobre moderação de marketplaces" />
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8 text-2xl font-bold text-surface-900 sm:text-3xl">Conteúdos relacionados</h2>
+      <div class="grid gap-6 md:grid-cols-3">
+        <a href={localizePath("/blog/dsa-compliance-sme-guide", locale)} class="group rounded-xl border border-surface-200 bg-white p-6 transition hover:shadow-md">
+          <div class="mb-2 text-xs font-medium text-brand-600">Guia</div>
+          <h3 class="text-lg font-semibold text-surface-900 group-hover:text-brand-600">Conformidade com o DSA para pequenas e médias plataformas</h3>
+          <p class="mt-2 text-sm text-surface-500">Passos práticos para marketplaces cumprirem as exigências do DSA em 2026.</p>
+        </a>
+        <a href={localizePath("/alternatives/azure-content-safety", locale)} class="group rounded-xl border border-surface-200 bg-white p-6 transition hover:shadow-md">
+          <div class="mb-2 text-xs font-medium text-brand-600">Comparativo</div>
+          <h3 class="text-lg font-semibold text-surface-900 group-hover:text-brand-600">OpenModeration vs Azure Content Safety</h3>
+          <p class="mt-2 text-sm text-surface-500">Por que plataformas de e-commerce precisam de uma plataforma de moderação completa, e não de uma API isolada.</p>
+        </a>
+        <a href={localizePath("/features", locale)} class="group rounded-xl border border-surface-200 bg-white p-6 transition hover:shadow-md">
+          <div class="mb-2 text-xs font-medium text-brand-600">Plataforma</div>
+          <h3 class="text-lg font-semibold text-surface-900 group-hover:text-brand-600">Conheça todas as funcionalidades</h3>
+          <p class="mt-2 text-sm text-surface-500">Veja o Action Engine, a gestão de equipes e os fluxos de trabalho automatizados.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <CTASection
+    title="Mantenha o seu marketplace confiável."
+    subtitle="Analise anúncios, avaliações e mensagens automaticamente. Os seus dados ficam na nuvem gerenciada na UE."
+    buttonText="Teste grátis"
+    buttonHref="https://app.openmoderation.com/signup"
+  />
+</BaseLayout>

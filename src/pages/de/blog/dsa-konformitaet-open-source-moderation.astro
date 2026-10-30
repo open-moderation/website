@@ -1,6 +1,8 @@
 ---
+import { bookingUrl } from '../../../i18n/ui';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
 import Breadcrumb from '../../../components/Breadcrumb.astro';
 
 const articleJsonLd = {
@@ -78,30 +80,31 @@ const articleJsonLd = {
       <p>So sieht ein DSA-konformes Setup mit OpenModeration aus:</p>
       <ol>
         <li><strong>Erfassung der Inhalte:</strong> Inhalte kommen per API, Webhook oder Social-Media-Konnektor an. Jedes Element erhält eine eindeutige ID und wird verschlüsselt gespeichert.</li>
-        <li><strong>KI-Moderation:</strong> Weiterleitung an den am besten geeigneten Anbieter. Die Ergebnisse enthalten Scores pro Kategorie und eine Entscheidung „markiert“ oder „nicht markiert“.</li>
+        <li><strong>KI-Moderation:</strong> Unsere eigene Moderations-KI analysiert den Inhalt, heikle Fälle werden von weiteren KI-Modellen gegengeprüft. Die Ergebnisse enthalten Scores pro Kategorie und eine Entscheidung „markiert“ oder „nicht markiert“.</li>
         <li><strong>Regelauswertung:</strong> Ihre Regeln kombinieren verbotene Wörter für die sofortige Sperre, Schwellenwerte pro Kategorie für automatische Entscheidungen und Vorgaben, die Sie in Alltagssprache formulieren.</li>
-        <li><strong>Audit-Logging:</strong> Jeder Schritt wird protokolliert: Inhalt, Anbieter, Scores, ausgelöste Regel, ergriffene Maßnahme, Zeitstempel.</li>
+        <li><strong>Audit-Logging:</strong> Jeder Schritt wird protokolliert: Inhalt, Modell, Scores, ausgelöste Regel, ergriffene Maßnahme, Zeitstempel.</li>
         <li><strong>Transparenz-Export:</strong> GET /v1/analytics/usage liefert die Daten, die Sie für die DSA-Transparenzberichte benötigen.</li>
       </ol>
 
       <h2 class="text-xl font-bold text-surface-900">Konkrete DSA-Anforderungen erfüllen</h2>
       <p>
-        <strong>Audit-Trail:</strong> OpenModeration protokolliert jede Moderation mit Anbieter, Latenz, Scores und Entscheidung.
+        <strong>Audit-Trail:</strong> OpenModeration protokolliert jede Moderation mit Modell, Latenz, Scores, Entscheidung und schriftlicher Begründung.
         Die Daten werden gemäß Ihrer konfigurierten Richtlinie aufbewahrt (standardmäßig 7 Tage für Eingabetexte, 90 Tage für Logs).
         Alles lässt sich für behördliche Prüfungen exportieren.
       </p>
       <p>
-        <strong>Transparenzberichte:</strong> Die Analytics-API liefert Nutzungsdaten nach Zeitraum, Anbieter und Kategorie.
-        Gesamtzahl der Anfragen, Markierungsquoten, Leistung der Anbieter: genau das, was DSA-Transparenzberichte verlangen.
+        <strong>Transparenzberichte:</strong> Die Analytics-API liefert Nutzungsdaten nach Zeitraum, Maßnahme und Kategorie.
+        Gesamtzahl der Anfragen, Markierungsquoten, Einsatz automatisierter Mittel: genau das, was DSA-Transparenzberichte verlangen.
       </p>
       <p>
         <strong>Datensouveränität:</strong> Ihre Daten werden in der EU gehostet und lassen sich jederzeit exportieren.
         Das ist wichtig für die DSGVO-Konformität und die Risikobewertungen nach dem DSA. Eine On-Premise-Bereitstellung ist auf Anfrage möglich:
-        <a href="https://calendly.com/sylvia-logora/60min" target="_blank" rel="noopener noreferrer">Sprechen wir darüber</a>.
+        <a href={bookingUrl('de')} target="_blank" rel="noopener noreferrer">Sprechen wir darüber</a>.
       </p>
       <p>
-        <strong>Manuelle Prüfung:</strong> Über die Prüfwarteschlange bearbeiten menschliche Moderatoren Grenzfälle
-        und erfüllen damit die DSA-Anforderungen an die Bearbeitung von Beschwerden und Einsprüchen.
+        <strong>Menschliche Prüfung:</strong> Grenzfälle, Nutzermeldungen und Beschwerden bearbeitet unser Team, nicht Ihres.
+        So sind die DSA-Anforderungen an die Bearbeitung von Beschwerden und Einsprüchen erfüllt, und Sie sehen in der
+        Konsole jede Entscheidung in Echtzeit und können jederzeit eingreifen.
       </p>
     </div>
   </article>
@@ -116,6 +119,8 @@ const articleJsonLd = {
       </ul>
     </div>
   </section>
+
+  <GuideComparisons />
 
   <CTASection />
 </BaseLayout>

@@ -1,4 +1,5 @@
 ---
+import { bookingUrl } from '../../i18n/ui';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import FAQ from '../../components/FAQ.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
@@ -6,11 +7,11 @@ import Breadcrumb from '../../components/Breadcrumb.astro';
 const faqItems = [
   {
     question: "Devo saper programmare per impostare le regole di moderazione?",
-    answer: "No. OpenModeration usa tre strumenti semplici: le parole vietate per il blocco immediato, le soglie per categoria per le decisioni automatiche e una carta della community che scrivi in linguaggio naturale. Il motore di azioni si occupa automaticamente dell'applicazione, senza codice.",
+    answer: "No. OpenModeration usa tre strumenti semplici: le parole vietate per il blocco immediato, le soglie per categoria per le decisioni automatiche e le tue regole, scritte in linguaggio naturale. Il motore di azioni si occupa automaticamente dell'applicazione, senza codice.",
   },
   {
     question: "Posso ribaltare manualmente una decisione dell'IA?",
-    answer: "Sì. La console di moderazione offre una coda di revisione dedicata al tuo team Trust & Safety. I moderatori possono esaminare i contenuti segnalati, vedere il ragionamento dell'IA e approvare, respingere o ribaltare le decisioni con piena tracciabilità.",
+    answer: "Sì, ma non è un lavoro che devi fare: i casi dubbi li gestisce il nostro team. Dalla console vedi in tempo reale ogni decisione con il ragionamento dell'IA, e puoi approvare, respingere o ribaltare qualsiasi decisione quando vuoi, con piena tracciabilità.",
   },
   {
     question: "C'è un piano gratuito?",
@@ -18,23 +19,23 @@ const faqItems = [
   },
   {
     question: "In cosa si differenzia da OpenAI Moderation API?",
-    answer: "OpenAI Moderation API ti vincola a un solo fornitore, senza alcuna visibilità su come funziona la moderazione. OpenModeration è multi-fornitore (OpenAI, Azure, HuggingFace, Mistral, LLM personalizzati), supporta le tue chiavi (BYOK), spiega ogni decisione per iscritto, offre una console di revisione e include un motore di azioni per i flussi automatizzati.",
+    answer: "OpenAI Moderation API è un singolo classificatore che mostra poco di come funziona la moderazione. OpenModeration usa la propria IA di moderazione, configurata sulle tue regole e sui tuoi casi d'uso, e fa verificare i casi delicati da altri modelli di IA. Ogni decisione è spiegata per iscritto, i casi dubbi li gestisce il nostro team e un motore di azioni automatizza i flussi.",
   },
   {
     question: "In cosa si differenzia da Nima (Tremau)?",
-    answer: "Nima (Tremau) è una piattaforma proprietaria e a codice chiuso che richiede di condividere i dati dei tuoi contenuti con la sua infrastruttura. OpenModeration spiega ogni decisione per iscritto, ti permette di usare le tue chiavi API ed è ospitato nell'UE, con un registro di audit completo e dati esportabili.",
+    answer: "OpenModeration spiega ogni decisione per iscritto, conserva un registro di audit completo, fa verificare i casi delicati da altri modelli di IA e ospita i tuoi dati nell'Unione europea. Un'installazione on-premise è possibile su richiesta.",
   },
   {
     question: "In cosa si differenzia da Checkstep?",
-    answer: "Checkstep è un SaaS proprietario. OpenModeration è pensato fin dall'inizio API-first, spiega ogni decisione per iscritto e applica le tue regole, con un team che lo configura insieme a te per integrare la moderazione direttamente nel tuo stack.",
+    answer: "OpenModeration è API-first e usa la propria IA di moderazione, verificata da altri modelli di IA sui casi delicati. Ogni decisione è spiegata per iscritto, i dati sono ospitati nell'UE e il nostro team configura la moderazione con te, sulle tue regole.",
   },
   {
     question: "Cosa significa conforme al DSA?",
     answer: "OpenModeration fornisce un registro di audit completo di tutte le decisioni di moderazione, policy di conservazione dei dati configurabili e report esportabili, aiutando le piattaforme a rispettare gli obblighi di trasparenza e responsabilità del Digital Services Act (DSA) dell'UE.",
   },
   {
-    question: "Posso usare le mie chiavi API?",
-    answer: "Sì, il BYOK (bring your own keys) è una funzionalità centrale. Puoi configurare le chiavi API su tre livelli: globale (condiviso tra tutti gli spazi di lavoro), per spazio di lavoro (impostato dall'amministratore per la sua organizzazione) e per chiave API (prevale su tutte le altre impostazioni).",
+    question: "Quale IA usa OpenModeration?",
+    answer: "OpenModeration usa la propria IA di moderazione, addestrata per moderare i commenti e configurata sulle tue regole e sui tuoi casi d'uso. Sui casi delicati, altri modelli di IA arbitrano la decisione prima che venga applicata: meno errori, meno commenti nascosti per sbaglio.",
   },
   {
     question: "Posso installarlo sulla mia infrastruttura?",
@@ -42,23 +43,23 @@ const faqItems = [
   },
   {
     question: "Offrite un cloud gestito?",
-    answer: "Sì, il nostro SaaS in cloud gestito parte da 99 € al mese. Include 10.000 richieste al mese, nessuna infrastruttura da gestire, chiavi dei fornitori gestite dalla piattaforma, infrastruttura ospitata nell'UE, supporto prioritario e SLA. Trovi tutti i dettagli nella pagina dei prezzi.",
+    answer: "Sì, il nostro SaaS in cloud gestito parte da 99 € al mese. Include 10.000 richieste al mese, nessuna infrastruttura da gestire, modelli di IA inclusi, infrastruttura ospitata nell'UE, supporto prioritario e SLA. Trovi tutti i dettagli nella pagina dei prezzi.",
   },
   {
     question: "Quanto tempo serve per ottenere un valore operativo?",
-    answer: "Pochi minuti se usi l'API REST per la moderazione di base. Qualche ora per installare la piattaforma completa con console, motore di azioni e connettori, seguendo la guida rapida. Il tuo team operativo può iniziare subito a esaminare i contenuti.",
+    answer: "Pochi minuti se usi l'API REST per la moderazione di base. Qualche ora per installare la piattaforma completa con console, motore di azioni e connettori, seguendo la guida rapida. Poi l'automazione e il nostro team si occupano del resto: tu vedi ogni decisione in tempo reale.",
   },
   {
-    question: "Quali fornitori sono supportati?",
-    answer: "Supportiamo OpenAI (incluso GPT-4o), Azure OpenAI Service, gli endpoint di inferenza di HuggingFace, Mistral AI e qualsiasi fornitore di LLM compatibile con OpenAI (incluso Claude tramite l'API di Anthropic). Ogni fornitore può essere configurato con modelli e parametri personalizzati.",
+    question: "Cosa succede quando esce un modello di IA migliore?",
+    answer: "Il nostro motore non dipende da un solo modello. Quando esce un modello di IA migliore o più economico, il nostro team lo collega rapidamente e per te non cambia nulla. I modelli di IA migliorano ogni anno e tu approfitti di questi progressi invece di restare fermo al modello di ieri.",
   },
   {
     question: "Posso aggiungere categorie personalizzate?",
-    answer: "Sì, usando la moderazione basata su LLM con prompt personalizzati. A differenza dei classificatori tradizionali a categorie fisse, puoi definire qualsiasi categoria di moderazione tramite prompt in linguaggio naturale e adattare la moderazione alle tue regole e ai tuoi casi d'uso.",
+    answer: "Sì. A differenza dei classificatori tradizionali a categorie fisse, puoi definire qualsiasi categoria di moderazione tramite prompt in linguaggio naturale e adattare la moderazione alle tue regole e ai tuoi casi d'uso.",
   },
   {
     question: "E per immagini e video?",
-    answer: "La versione attuale si concentra sulla moderazione del testo. La moderazione di immagini e video è nella roadmap e sfrutterà i fornitori di LLM multimodali man mano che saranno disponibili.",
+    answer: "La versione attuale si concentra sulla moderazione del testo. La moderazione di immagini e video è nella roadmap e sfrutterà i modelli di IA multimodali man mano che saranno disponibili.",
   },
 ];
 
@@ -92,7 +93,7 @@ const faqJsonLd = {
 
 <BaseLayout
   title="FAQ sulla moderazione dei contenuti: prezzi, hosting e DSA"
-  description="Le risposte alle domande più frequenti su OpenModeration: prezzi, hosting, BYOK, conformità DSA, fornitori supportati e integrazione."
+  description="Le risposte alle domande più frequenti su OpenModeration: prezzi, hosting, conformità DSA, il nostro motore di IA e l'integrazione."
   jsonLd={faqJsonLd}
 >
 <Breadcrumb items={[{ label: "Home", href: "/it" }, { label: "FAQ" }]} />
@@ -100,7 +101,7 @@ const faqJsonLd = {
     <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
       <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Domande frequenti</h1>
       <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
-        Tutto quello che c'è da sapere su OpenModeration. Non trovi quello che cerchi? <a href="https://calendly.com/jesuslogora/1h" target="_blank" rel="noopener" class="font-medium text-brand-600 hover:text-brand-500">Prenota un incontro</a>.
+        Tutto quello che c'è da sapere su OpenModeration. Non trovi quello che cerchi? <a href={bookingUrl('it')} target="_blank" rel="noopener" class="font-medium text-brand-600 hover:text-brand-500">Prenota un incontro</a>.
       </p>
       <div class="mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row">
         <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">

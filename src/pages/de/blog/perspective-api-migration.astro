@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
 import Breadcrumb from '../../../components/Breadcrumb.astro';
 
 const articleJsonLd = {
@@ -89,7 +90,7 @@ const articleJsonLd = {
       </p>
       <ul>
         <li><strong>Abgedeckte Kategorien:</strong> Perspective erkennt Toxizität, schwere Toxizität, Angriffe auf die Identität, Beleidigungen, Obszönitäten, Drohungen und sexuell explizite Inhalte. Ihr Ersatz sollte diese Kategorien und weitere abdecken.</li>
-        <li><strong>Unterstützung mehrerer Anbieter:</strong> Wer auf einen einzigen Anbieter setzt, wiederholt diese Migration beim nächsten Strategiewechsel. Mit einer einheitlichen API wechseln Sie ohne eine einzige Codeänderung.</li>
+        <li><strong>Unabhängigkeit vom Modell:</strong> Wer seine Integration fest an ein einziges Modell koppelt, wiederholt diese Migration beim nächsten Wechsel. Achten Sie auf eine Lösung, die neue Modelle anbindet, ohne dass sich für Sie etwas ändert.</li>
         <li><strong>Latenz:</strong> Die Moderation in Foren muss erfolgen, bevor Inhalte erscheinen. Streben Sie Antwortzeiten unter einer Sekunde an.</li>
         <li><strong>Datenkontrolle:</strong> Wenn Sie Inhalte von Nutzern aus der EU verarbeiten, zählt die DSGVO. Achten Sie auf Hosting in der EU und darauf, dass Sie Ihre Daten jederzeit exportieren können.</li>
       </ul>
@@ -98,18 +99,18 @@ const articleJsonLd = {
       <p>So gehen Sie bei der Migration von der Perspective API vor:</p>
       <ol>
         <li><strong>Prüfen Sie Ihre aktuelle Nutzung.</strong> Zählen Sie die täglichen API-Aufrufe, ermitteln Sie die genutzten Kategorien und messen Sie Ihre Latenzanforderungen. So erhalten Sie eine Ausgangsbasis für das neue Setup.</li>
-        <li><strong>Wählen Sie eine Ersatzarchitektur.</strong> Mit einer einheitlichen Moderationsplattform wie OpenModeration bleibt Ihre Integration stabil, auch wenn Sie später den Anbieter wechseln.</li>
-        <li><strong>Ordnen Sie die Kategorien zu.</strong> Ordnen Sie Ihre bisherigen Perspective-Kategorien den Entsprechungen beim neuen Anbieter zu. TOXICITY aus Perspective entspricht in den meisten modernen Systemen etwa Kategorien wie Hass und Belästigung.</li>
-        <li><strong>Justieren Sie die Schwellenwerte neu.</strong> Jeder Anbieter bewertet anders. Lassen Sie beide Systeme eine Woche lang parallel laufen, um Ihre Schwellenwerte zu kalibrieren.</li>
+        <li><strong>Wählen Sie eine Ersatzarchitektur.</strong> Mit einer Moderationsplattform wie OpenModeration bleibt Ihre Integration stabil, auch wenn sich die KI-Modelle dahinter weiterentwickeln.</li>
+        <li><strong>Ordnen Sie die Kategorien zu.</strong> Ordnen Sie Ihre bisherigen Perspective-Kategorien den Entsprechungen im neuen System zu. TOXICITY aus Perspective entspricht in den meisten modernen Systemen etwa Kategorien wie Hass und Belästigung.</li>
+        <li><strong>Justieren Sie die Schwellenwerte neu.</strong> Jedes System bewertet anders. Lassen Sie beide Systeme eine Woche lang parallel laufen, um Ihre Schwellenwerte zu kalibrieren.</li>
         <li><strong>Aktualisieren Sie Ihre Integration.</strong> Ersetzen Sie den Aufruf der Perspective API durch den neuen API-Endpunkt. Mit OpenModeration ist das ein einziger Aufruf von POST /v1/moderation.</li>
         <li><strong>Stellen Sie um.</strong> Leiten Sie den Produktionsverkehr auf das neue System. Behalten Sie Perspective während der Übergangszeit als Fallback.</li>
       </ol>
 
       <h2 class="text-xl font-bold text-surface-900">Migration zu OpenModeration</h2>
       <p>
-        OpenModeration ist der einfachste Migrationspfad weg von der Perspective API. Die Plattform bietet
-        eine einzige API, die jede Anfrage an den am besten geeigneten Anbieter weiterleitet. Sie können mit
-        einem Anbieter beginnen und wechseln, ohne Code zu ändern.
+        OpenModeration ist der einfachste Migrationspfad weg von der Perspective API. Die Plattform setzt
+        eine eigene Moderations-KI ein, die in heiklen Fällen von weiteren KI-Modellen gegengeprüft wird.
+        Kommt ein besseres oder günstigeres Modell heraus, binden wir es schnell an, ohne dass Sie Code ändern.
       </p>
       <p>
         So sieht eine Migration mit OpenModeration aus:
@@ -117,13 +118,13 @@ const articleJsonLd = {
       <p>
         <strong>Vorher (Perspective API):</strong> Ihr Code ruft
         commentanalyzer.googleapis.com direkt mit einem bestimmten API-Schlüssel auf. Sie erhalten Attribut-Scores zurück.
-        Die Schwellenwerte sind fest im Code verankert. Ein Anbieterwechsel bedeutet, diese Integration neu zu schreiben.
+        Die Schwellenwerte sind fest im Code verankert. Ein Wechsel des Modells bedeutet, diese Integration neu zu schreiben.
       </p>
       <p>
         <strong>Nachher (OpenModeration):</strong> Ihr Code ruft POST /v1/moderation mit
-        dem Text des Inhalts auf. OpenModeration leitet die Anfrage an den konfigurierten Anbieter weiter, normalisiert die
-        Antwort und liefert ein einheitliches Format zurück. Um den Anbieter zu wechseln, passen Sie eine Konfigurationsdatei an.
-        Codeänderungen sind nicht nötig.
+        dem Text des Inhalts auf. OpenModeration wendet Ihre Regeln und Ihre Anwendungsfälle an
+        und liefert ein einheitliches Format mit schriftlicher Begründung zurück. Wenn wir ein neues Modell anbinden,
+        bleibt dieses Format gleich. Codeänderungen sind nicht nötig.
       </p>
 
       <h2 class="text-xl font-bold text-surface-900">Was Sie über die Migration hinaus gewinnen</h2>
@@ -134,7 +135,7 @@ const articleJsonLd = {
       <ul>
         <li><strong>Action Engine:</strong> Regeln mit drei einfachen Werkzeugen definieren: verbotene Wörter, Schwellenwerte und Regeln in Alltagssprache. Ganz ohne eigenen Code.</li>
         <li><strong>Audit-Trail:</strong> Jede Moderationsentscheidung wird mit vollständigem Kontext protokolliert und lässt sich für Compliance-Berichte exportieren.</li>
-        <li><strong>Analysen:</strong> Ein Dashboard mit Moderationsvolumen, Markierungsquoten, Leistung der Anbieter und Aufschlüsselung nach Kategorien.</li>
+        <li><strong>Analysen:</strong> Ein Dashboard mit Moderationsvolumen, Markierungsquoten und Aufschlüsselung nach Kategorien.</li>
         <li><strong>DSA-Bereitschaft:</strong> Die Audit-Logs und Transparenzdaten, die Sie für die Konformität mit dem Digital Services Act der EU brauchen.</li>
       </ul>
 
@@ -146,8 +147,8 @@ const articleJsonLd = {
         zu starten.
       </p>
       <p>
-        Eine vollständige Anleitung zur Einrichtung von OpenModeration finden Sie in unserer Dokumentation. Die Integration
-        Ihres ersten Anbieters dauert etwa 30 Minuten.
+        Eine vollständige Anleitung zur Einrichtung von OpenModeration finden Sie in unserer Dokumentation. Die erste
+        Integration dauert etwa 30 Minuten.
       </p>
     </div>
   </article>
@@ -163,6 +164,8 @@ const articleJsonLd = {
       </ul>
     </div>
   </section>
+
+  <GuideComparisons />
 
   <CTASection />
 </BaseLayout>

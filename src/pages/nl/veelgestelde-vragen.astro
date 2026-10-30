@@ -1,0 +1,126 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FAQ from '../../components/FAQ.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import { getLocale, localizePath } from '../../i18n/routes';
+import { bookingUrl } from '../../i18n/ui';
+
+const locale = getLocale(Astro.url.pathname);
+const BOOKING_URL = bookingUrl(locale);
+
+const faqItems = [
+  {
+    question: "Moet ik kunnen programmeren om moderatieregels in te stellen?",
+    answer: "Nee. OpenModeration werkt met drie eenvoudige hulpmiddelen: verboden woorden om direct te blokkeren, drempels per categorie voor automatische beslissingen, en je eigen regels in gewone taal. De Action Engine past ze daarna automatisch toe, zonder code.",
+  },
+  {
+    question: "Kan ik een beslissing van de AI handmatig terugdraaien?",
+    answer: "Ja. Twijfelgevallen worden afgehandeld door ons team, dus jij hoeft niets te doen. Maar je ziet elke beslissing in realtime in de console, met de redenering van de AI, en je kunt op elk moment goedkeuren, afwijzen of overrulen. Elke actie wordt vastgelegd voor audits.",
+  },
+  {
+    question: "Is er een gratis abonnement?",
+    answer: "OpenModeration heeft een gratis abonnement tot 1.000 verzoeken per maand, zonder creditcard. Het Pro-abonnement kost € 99 per maand voor 10.000 verzoeken. Bekijk de prijzenpagina voor alle details.",
+  },
+  {
+    question: "Wat is het verschil met de OpenAI Moderation API?",
+    answer: "De OpenAI Moderation API is één enkele classifier die weinig laat zien van hoe de moderatie werkt. OpenModeration draait zijn eigen moderatie-AI, ingericht op jouw regels en jouw use cases, en laat lastige gevallen controleren door andere AI-modellen. Elke beslissing krijgt een schriftelijke reden, twijfelgevallen worden afgehandeld door ons team, en je krijgt een realtime dashboard en een action engine voor geautomatiseerde workflows.",
+  },
+  {
+    question: "Wat is het verschil met Nima (Tremau)?",
+    answer: "OpenModeration licht elke beslissing schriftelijk toe, houdt een volledig audittraject bij, laat lastige gevallen controleren door andere AI-modellen en host je gegevens in de Europese Unie. Een on-premise installatie is op aanvraag mogelijk.",
+  },
+  {
+    question: "Wat is het verschil met Checkstep?",
+    answer: "OpenModeration is API-first en draait zijn eigen moderatie-AI, bij lastige gevallen gecontroleerd door andere AI-modellen. Elke beslissing krijgt een schriftelijke reden, de gegevens worden in de EU gehost, en ons team zet de moderatie samen met jou op, rond je eigen regels.",
+  },
+  {
+    question: "Wat betekent DSA-proof?",
+    answer: "OpenModeration houdt een volledig audittraject bij van elke moderatiebeslissing, met instelbare bewaartermijnen en exporteerbare rapporten. Zo kunnen platforms voldoen aan de eisen voor transparantie en verantwoording van de Europese Digital Services Act (DSA).",
+  },
+  {
+    question: "Welke AI gebruikt OpenModeration?",
+    answer: "OpenModeration draait zijn eigen moderatie-AI, getraind op het modereren van reacties en ingericht op jouw regels en jouw use cases. Bij lastige gevallen beoordelen andere AI-modellen de beslissing voordat die wordt toegepast: minder fouten en minder reacties die onterecht verborgen worden.",
+  },
+  {
+    question: "Kan ik OpenModeration op mijn eigen infrastructuur draaien?",
+    answer: "Een on-premise installatie is op aanvraag mogelijk. Laten we het bespreken: plan een gesprek met ons. Standaard draait OpenModeration in onze beheerde cloud, gehost in de Europese Unie.",
+  },
+  {
+    question: "Bieden jullie een beheerde cloud aan?",
+    answer: "Ja, onze beheerde cloud-SaaS begint bij € 99 per maand. Daarin zitten 10.000 verzoeken per maand, geen infrastructuur om te beheren, AI-modellen inbegrepen, infrastructuur gehost in de EU, prioriteitssupport en een SLA. Bekijk de prijzenpagina voor alle details.",
+  },
+  {
+    question: "Hoe snel levert het iets op?",
+    answer: "Binnen enkele minuten als je de REST API voor basismoderatie gebruikt. Een paar uur om het volledige platform met dashboard, action engine en connectoren uit te rollen als je de snelstartgids volgt. Daarna draait de moderatie vanzelf, en jij ziet elke beslissing in realtime.",
+  },
+  {
+    question: "Wat gebeurt er als er een beter AI-model uitkomt?",
+    answer: "Onze engine is model-agnostisch. Komt er een beter of goedkoper AI-model uit, dan sluit ons team het snel aan, en voor jou verandert er niets. AI-modellen worden elk jaar beter, en jij profiteert van die vooruitgang in plaats van vast te zitten aan het model van gisteren.",
+  },
+  {
+    question: "Kan ik eigen categorieën toevoegen?",
+    answer: "Ja. Anders dan bij traditionele classifiers met vaste categorieën kun je willekeurige moderatiecategorieën definiëren via prompts in gewone taal, zodat de moderatie precies aansluit op je eigen contentbeleid.",
+  },
+  {
+    question: "En afbeeldingen en video?",
+    answer: "De huidige versie richt zich op tekstmoderatie. Moderatie van afbeeldingen en video staat op de roadmap en zal multimodale AI-modellen gebruiken zodra die beschikbaar zijn.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://www.openmoderation.com/nl/veelgestelde-vragen",
+      "url": "https://www.openmoderation.com/nl/veelgestelde-vragen",
+      "name": "Veelgestelde vragen over moderatie: prijs, hosting, DSA",
+      "inLanguage": "nl",
+      "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://www.openmoderation.com/nl/veelgestelde-vragen#faq",
+      "inLanguage": "nl",
+      "mainEntity": faqItems.map(item => ({
+        "@type": "Question",
+        "name": item.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": item.answer.replace(/&mdash;/g, '—')
+        }
+      }))
+    }
+  ]
+};
+---
+
+<BaseLayout
+  title="Veelgestelde vragen over moderatie: prijs, hosting, DSA"
+  description="Antwoorden op veelgestelde vragen over OpenModeration: prijzen, hosting, DSA-naleving, onze AI-engine en integratie."
+  jsonLd={faqJsonLd}
+>
+<Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: "Veelgestelde vragen" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Veelgestelde vragen</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Antwoorden op de vragen die we het vaakst krijgen over OpenModeration. Staat jouw vraag er niet bij? <a href={BOOKING_URL} class="text-brand-600 hover:text-brand-500" target="_blank" rel="noopener">Laten we praten</a>.
+      </p>
+      <div class="mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">
+          Probeer het gratis
+        </a>
+        <a href={localizePath('/pricing', locale)} class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">
+          Bekijk de prijzen
+        </a>
+      </div>
+      <p class="mt-4 text-sm text-surface-400">Geen creditcard nodig</p>
+    </div>
+  </section>
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ items={faqItems} disableJsonLd />
+    </div>
+  </section>
+</BaseLayout>

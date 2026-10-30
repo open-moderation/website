@@ -1,4 +1,5 @@
 ---
+import { bookingUrl } from '../../i18n/ui';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import FAQ from '../../components/FAQ.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
@@ -10,7 +11,7 @@ const faqItems = [
   },
   {
     question: "¿Puedo corregir manualmente una decisión de la IA?",
-    answer: "Sí. La consola de moderación tiene una cola de revisión para tu equipo. Los moderadores ven el contenido señalado y el razonamiento de la IA, y aprueban, rechazan o corrigen la decisión. Cada corrección queda registrada.",
+    answer: "Sí, aunque no tienes por qué hacerlo: nuestro equipo se ocupa de los casos dudosos y de las denuncias. En la consola ves cada decisión en tiempo real, con el razonamiento de la IA, y puedes aprobarla, rechazarla o corregirla cuando quieras. Cada corrección queda registrada.",
   },
   {
     question: "¿OpenModeration es realmente gratis?",
@@ -18,23 +19,23 @@ const faqItems = [
   },
   {
     question: "¿En qué se diferencia de la API de moderación de OpenAI?",
-    answer: "La API de moderación de OpenAI te ata a un único proveedor y no te deja ver cómo funciona la moderación. OpenModeration trabaja con varios proveedores (OpenAI, Azure, HuggingFace, Mistral, LLM personalizados), admite tus propias claves (BYOK), explica cada decisión por escrito, ofrece una consola para la revisión e incluye un motor de acciones para automatizar los flujos de trabajo.",
+    answer: "La API de moderación de OpenAI devuelve puntuaciones de un único modelo y no te deja ver cómo se toma la decisión. OpenModeration usa su propia IA de moderación, arbitrada por otros modelos de IA en los casos delicados, explica cada decisión por escrito, ofrece una consola donde lo ves todo en tiempo real e incluye un motor de acciones. Cuando sale un modelo mejor o más barato, lo incorporamos sin que cambie nada por tu parte.",
   },
   {
     question: "¿En qué se diferencia de Nima (Tremau)?",
-    answer: "Nima (Tremau) trata los datos de tu contenido en su propia infraestructura. OpenModeration te permite usar tus propias claves de API, explica cada decisión por escrito, aloja tus datos en la UE y te deja exportarlos cuando quieras. Un despliegue on-premise es posible bajo petición.",
+    answer: "Nima (Tremau) trata los datos de tu contenido en su propia infraestructura. OpenModeration explica cada decisión por escrito, aloja tus datos en la UE y te deja exportarlos cuando quieras. Un despliegue on-premise es posible bajo petición.",
   },
   {
     question: "¿En qué se diferencia de Checkstep?",
-    answer: "Checkstep es un SaaS propietario. OpenModeration está diseñado desde el principio en torno a su API y pensado para desarrolladores que quieren integrar la moderación directamente en su stack sin depender de un solo proveedor de IA.",
+    answer: "Checkstep es un SaaS propietario. OpenModeration está diseñado desde el principio en torno a su API y pensado para desarrolladores que quieren integrar la moderación directamente en su stack sin quedar atados a un único modelo de IA: cuando sale uno mejor, lo incorporamos sin que cambie nada por su parte.",
   },
   {
     question: "¿Qué significa cumplir con la DSA?",
     answer: "OpenModeration ofrece un registro de auditoría completo de todas las decisiones de moderación, políticas de conservación de datos configurables e informes exportables, lo que ayuda a las plataformas a cumplir los requisitos de transparencia y rendición de cuentas de la Ley de Servicios Digitales de la UE (DSA).",
   },
   {
-    question: "¿Puedo usar mis propias claves de API?",
-    answer: "Sí, BYOK (usar tus propias claves) es una funcionalidad central. Puedes configurar las claves de API en tres niveles: global (compartidas entre todos los espacios de trabajo), por espacio de trabajo (definidas por el administrador de cada organización) y por clave de API (prevalece sobre cualquier otro ajuste de claves).",
+    question: "¿Tengo que contratar yo los modelos de IA?",
+    answer: "No. OpenModeration funciona con su propia IA de moderación, arbitrada por otros modelos de IA en los casos delicados, y todo está incluido. Cuando sale un modelo mejor o más barato, lo incorporamos rápido y no cambia nada por tu parte.",
   },
   {
     question: "¿Se puede desplegar on-premise?",
@@ -42,15 +43,15 @@ const faqItems = [
   },
   {
     question: "¿Ofrecéis una nube gestionada?",
-    answer: "Sí, nuestro SaaS en la nube gestionada empieza en 99 €/mes. Incluye 10.000 solicitudes al mes, nos ocupamos de la infraestructura, y tienes claves de proveedor gestionadas por la plataforma, infraestructura alojada en la UE, soporte prioritario y SLA. Consulta la página de precios para ver todos los detalles.",
+    answer: "Sí, nuestro SaaS en la nube gestionada empieza en 99 €/mes. Incluye 10.000 solicitudes al mes, nos ocupamos de la infraestructura, nuestro equipo gestiona los casos dudosos y las denuncias, y tienes infraestructura alojada en la UE, soporte prioritario y SLA. Consulta la página de precios para ver todos los detalles.",
   },
   {
     question: "¿Cuánto se tarda en sacarle partido?",
-    answer: "Unos minutos si usas la API REST para una moderación básica. Unas pocas horas para desplegar la plataforma completa con la consola, el motor de acciones y los conectores siguiendo la guía de inicio rápido. Tu equipo de operaciones puede empezar a revisar contenido de inmediato.",
+    answer: "Unos minutos si usas la API REST para una moderación básica. Unas pocas horas para desplegar la plataforma completa con la consola, el motor de acciones y los conectores siguiendo la guía de inicio rápido. Después no tienes nada que hacer: ves cada decisión en tiempo real y puedes intervenir cuando quieras.",
   },
   {
-    question: "¿Qué proveedores son compatibles?",
-    answer: "Admitimos OpenAI (incluido GPT-4o), Azure OpenAI Service, los endpoints de inferencia de HuggingFace, Mistral AI y cualquier proveedor de LLM compatible con OpenAI (incluido Claude a través de la API de Anthropic). Cada proveedor puede configurarse con modelos y parámetros personalizados.",
+    question: "¿Qué modelos de IA utiliza OpenModeration?",
+    answer: "Nuestra propia IA de moderación, entrenada para los comentarios y configurada según tus reglas y tus casos de uso. En los casos delicados, otros modelos de IA arbitran la decisión antes de aplicarla. Somos independientes de los modelos: cuando sale uno mejor o más barato, lo incorporamos rápido, sin que tengas nada que cambiar.",
   },
   {
     question: "¿Puedo añadir categorías personalizadas?",
@@ -58,7 +59,7 @@ const faqItems = [
   },
   {
     question: "¿Y las imágenes y los vídeos?",
-    answer: "La versión actual se centra en la moderación de texto. La moderación de imágenes y vídeos está en la hoja de ruta y se apoyará en proveedores de LLM multimodales a medida que estén disponibles.",
+    answer: "La versión actual se centra en la moderación de texto. La moderación de imágenes y vídeos está en la hoja de ruta y se apoyará en los modelos de IA multimodales a medida que estén disponibles.",
   },
 ];
 
@@ -92,7 +93,7 @@ const faqJsonLd = {
 
 <BaseLayout
   title="Preguntas frecuentes: precios, alojamiento y DSA | OpenModeration"
-  description="Respuestas a las preguntas más habituales sobre OpenModeration: precios, BYOK, cumplimiento de la DSA, proveedores compatibles e integración."
+  description="Respuestas a las preguntas más habituales sobre OpenModeration: precios, IA de moderación, cumplimiento de la DSA, revisión humana e integración."
   jsonLd={faqJsonLd}
 >
 <Breadcrumb items={[{ label: "Inicio", href: "/es" }, { label: "Preguntas frecuentes" }]} />
@@ -100,7 +101,7 @@ const faqJsonLd = {
     <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
       <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Preguntas frecuentes</h1>
       <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
-        Las respuestas a las preguntas más habituales sobre OpenModeration. Si no encuentras la tuya, <a href="https://calendly.com/jesuslogora/1h" target="_blank" rel="noopener" class="font-medium text-brand-600 hover:text-brand-500">hablemos</a>.
+        Las respuestas a las preguntas más habituales sobre OpenModeration. Si no encuentras la tuya, <a href={bookingUrl('es')} target="_blank" rel="noopener" class="font-medium text-brand-600 hover:text-brand-500">hablemos</a>.
       </p>
       <div class="mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row">
         <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">

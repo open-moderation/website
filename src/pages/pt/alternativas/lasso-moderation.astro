@@ -1,0 +1,241 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+const L = (p: string) => localizePath(p, locale);
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/pt/alternativas/lasso-moderation",
+  "name": "Alternativa ao Lasso: comparativo com o OpenModeration",
+  "description": "Lasso Moderation ou OpenModeration? Comparativo com fontes: integrações, Facebook e Instagram, preços públicos, DSA e hospedagem na UE das duas ferramentas.",
+  "inLanguage": "pt",
+  "about": {
+    "@id": "https://www.openmoderation.com/#software"
+  }
+};
+
+const rows = [
+  {
+    "feature": "Hospedagem",
+    "them": "Desenvolvido e hospedado na UE, RGPD",
+    "openmod": "Hospedado na UE, em conformidade com o RGPD"
+  },
+  {
+    "feature": "DSA",
+    "them": "Exposição de motivos para cada ação e relatórios de transparência exportáveis",
+    "openmod": "Notificação e ação, exposição de motivos, revisão humana das decisões contestadas, números exportáveis e registro de atividade completo"
+  },
+  {
+    "feature": "Conteúdos",
+    "them": "Texto, imagens, vídeo e áudio",
+    "openmod": "Comentários de texto"
+  },
+  {
+    "feature": "Principais clientes",
+    "them": "Comunidades, chat e games (CrazyGames, Insticator, Tutorful, COOL Media)",
+    "openmod": "Veículos de mídia, marcas e instituições públicas"
+  },
+  {
+    "feature": "Integrações",
+    "them": "Slack, Bettermode, Circle, TalkJS, Stream, Sendbird, PubNub, Tencent Cloud Chat, API REST",
+    "openmod": "Sites (API), WordPress, páginas do Facebook, contas profissionais do Instagram e canais do YouTube"
+  },
+  {
+    "feature": "Facebook, Instagram, YouTube, WordPress",
+    "them": "Não aparecem no site",
+    "openmod": "Conectores nativos"
+  },
+  {
+    "feature": "Preço",
+    "them": "Lite a partir de 99 US$/mês (10.000 itens, 1 moderador), Pro a partir de 499 US$/mês (100.000, 3 moderadores), Enterprise sob consulta",
+    "openmod": "Público: grátis até 1.000 requisições/mês, Pro a 99 €/mês para 10 mil requisições, Enterprise sob consulta"
+  },
+  {
+    "feature": "Implementação",
+    "them": "Não especificada no site",
+    "openmod": "A equipe da Logora a configura com você conforme as suas regras e os seus casos de uso"
+  },
+  {
+    "feature": "Idiomas",
+    "them": "Mais de 200",
+    "openmod": "Explicações no idioma que você escolher"
+  },
+  {
+    "feature": "Modelos de IA",
+    "them": "Modelos de detecção personalizáveis e modelos sob medida por setor; origem não especificada",
+    "openmod": "IA de moderação própria, verificada por outros modelos de IA; novos modelos integrados assim que são lançados"
+  }
+];
+
+const faqItems = [
+  {
+    "question": "Qual é a melhor alternativa ao Lasso Moderation?",
+    "answer": "A melhor alternativa ao Lasso Moderation depende de onde estão os seus comentários: se você modera Facebook, Instagram, YouTube ou WordPress, o OpenModeration se conecta a eles de forma nativa, com um plano gratuito e uma explicação por escrito para cada decisão. Se você modera chats, comunidades, imagens ou áudio, o Lasso cobre isso."
+  },
+  {
+    "question": "Quanto custa o Lasso Moderation?",
+    "answer": "O Lasso publica os seus preços: Lite a partir de 99 US$/mês para 10.000 itens e 1 moderador, Pro a partir de 499 US$/mês para 100.000 itens e 3 moderadores, Enterprise sob consulta. O OpenModeration começa com um plano gratuito de 1.000 requisições por mês, segue com o Pro a 99 €/mês para 10 mil requisições e oferece Enterprise sob consulta. Com 10.000 itens por mês, o preço de entrada é parecido; a diferença está no plano gratuito."
+  },
+  {
+    "question": "Lasso Moderation ou OpenModeration: qual escolher?",
+    "answer": "Escolha o Lasso Moderation se você precisa moderar imagens, vídeo ou áudio. Escolha o OpenModeration se você modera comentários no Facebook, Instagram, YouTube ou WordPress e quer preços públicos e uma explicação por escrito para cada decisão, com uma equipe que configura a moderação com você conforme as suas regras e os seus casos de uso."
+  },
+  {
+    "question": "Posso testar o OpenModeration sem sair do Lasso Moderation?",
+    "answer": "Sim. Em modo sandbox, o OpenModeration analisa os seus comentários reais sem ocultar nada. O Lasso Moderation continua funcionando e você compara as duas séries de decisões, comentário por comentário, antes de mudar qualquer coisa."
+  },
+  {
+    "question": "Quais modelos de IA o OpenModeration usa?",
+    "answer": "O OpenModeration funciona com a sua própria IA de moderação e, nos casos delicados, outros modelos de IA verificam a decisão. Quando sai um modelo melhor ou mais econômico, a equipe o integra rapidamente, sem que você precise mudar nada: a sua moderação aproveita o progresso dos modelos de IA."
+  },
+  {
+    "question": "Quem configura as regras de moderação?",
+    "answer": "Com o OpenModeration, a equipe da Logora configura a moderação com você a partir das suas regras, dos seus casos de uso e dos seus comentários reais, e a ajusta nas primeiras semanas."
+  }
+];
+---
+
+<BaseLayout title="Alternativa ao Lasso: comparativo com o OpenModeration" description="Lasso Moderation ou OpenModeration? Comparativo com fontes: integrações, Facebook e Instagram, preços públicos, DSA e hospedagem na UE das duas ferramentas." jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Início", href: L('/') }, { label: "Alternativas", href: L('/alternatives') }, { label: "Lasso Moderation" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Comparativo
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Alternativa ao Lasso Moderation: comparativo com o OpenModeration</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        A melhor alternativa ao Lasso Moderation depende de onde estão os seus comentários: se você modera Facebook, Instagram, YouTube ou WordPress, o OpenModeration se conecta a eles de forma nativa, com um plano gratuito e uma explicação por escrito para cada decisão. Se você modera chats, comunidades, imagens ou áudio, o Lasso cobre isso.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold tracking-tight text-surface-900">Para quem é o Lasso Moderation?</h2>
+      <p class="mt-4 text-surface-600">O Lasso Moderation é, no papel, a ferramenta mais próxima do OpenModeration: segundo o seu site, ele é desenvolvido e hospedado na UE e dá uma exposição de motivos para cada ação. Ele se dirige a comunidades online, apps de chat e games, modera texto, imagens, vídeo e áudio, e se integra com Slack, Circle, Bettermode, Stream, Sendbird ou PubNub.</p>
+      <p class="mt-4 text-surface-600">O OpenModeration modera com IA os comentários de veículos de mídia, marcas e instituições públicas, no site e nas páginas do Facebook, contas do Instagram e canais do YouTube. Ele oculta automaticamente as violações claras, mantém visível a crítica legítima, e os casos duvidosos são tratados pela nossa equipe. Você vê cada decisão em tempo real num único console e pode intervir quando quiser. A equipe da Logora, em Paris desde 2019, o configura com você conforme as suas regras e os seus casos de uso.</p>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Lasso Moderation e OpenModeration, ponto a ponto</h2>
+      <p class="mt-4 text-surface-500">Informações sobre o Lasso Moderation extraídas do seu site, lassomoderation.com, consultado em 30 de outubro de 2026.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Critério</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Lasso Moderation</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.them}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Escolha o OpenModeration se…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>você modera comentários no Facebook, Instagram, YouTube ou WordPress;</li>
+          <li>você quer começar com um plano gratuito;</li>
+          <li>você quer que uma equipe configure a moderação com você conforme as suas regras e os seus casos de uso;</li>
+          <li>você dirige um veículo de mídia e quer que a IA leia cada comentário com o título do artigo e o fio da conversa.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">O Lasso Moderation pode ser melhor para você se…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>você precisa moderar imagens, vídeo ou áudio;</li>
+          <li>a sua comunidade funciona sobre Slack, Circle, Bettermode, Stream, Sendbird ou similar;</li>
+          <li>você quer relatórios de transparência gerados pela ferramenta.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h2 class="text-xl font-bold text-surface-900">Uma IA que acompanha o progresso dos modelos</h2>
+          <p class="mt-3 text-sm text-surface-600">O OpenModeration funciona com a sua própria IA de moderação e, nos casos delicados, outros modelos de IA verificam a decisão. Quando sai um modelo melhor ou mais econômico, a equipe o integra rapidamente, sem que você precise mudar nada. A sua moderação acompanha o progresso do mercado de IA em vez de ficar presa a um único algoritmo. O Lasso fala no seu site em modelos personalizáveis e em modelos sob medida por setor, sem dizer a sua origem.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h2 class="text-xl font-bold text-surface-900">Preços: Lasso Moderation vs OpenModeration</h2>
+          <p class="mt-3 text-sm text-surface-600">O Lasso publica os seus preços: Lite a partir de 99 US$/mês para 10.000 itens e 1 moderador, Pro a partir de 499 US$/mês para 100.000 itens e 3 moderadores, Enterprise sob consulta. O OpenModeration começa com um plano gratuito de 1.000 requisições por mês, segue com o Pro a 99 €/mês para 10 mil requisições e oferece Enterprise sob consulta. Com 10.000 itens por mês, o preço de entrada é parecido; a diferença está no plano gratuito. A implantação on-premise é possível sob consulta. <a href={L('/book-a-call')} class="font-medium text-brand-600 hover:text-brand-500">Agende uma reunião</a> para calcular o seu caso.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Migrar do Lasso Moderation para o OpenModeration em 3 etapas</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">1. Teste em modo sandbox</h3>
+          <p class="mt-2 text-sm text-surface-600">Conecte o seu site, o WordPress ou as suas páginas do Facebook, Instagram e YouTube. O OpenModeration analisa comentários reais sem ocultar nada, enquanto o Lasso Moderation continua funcionando.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">2. Ajuste com a equipe da Logora</h3>
+          <p class="mt-2 text-sm text-surface-600">Comparamos as decisões com as da sua ferramenta atual e adaptamos a moderação às suas regras e aos seus casos de uso, com a explicação por escrito de cada decisão à vista.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">3. Ative canal por canal</h3>
+          <p class="mt-2 text-sm text-surface-600">Você ativa a moderação num canal, depois nos outros. Os casos duvidosos são tratados pela nossa equipe, você vê cada decisão em tempo real e ela fica no registro de atividade.</p>
+        </div>
+      </div>
+      <p class="mt-8 text-center text-surface-600">Quer ver com os seus próprios comentários? <a href={L('/book-a-call')} class="font-medium text-brand-600 hover:text-brand-500">Agende uma reunião com a nossa equipe</a>.</p>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Perguntas frequentes" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        Lasso Moderation é uma marca da sua empresa titular. Fontes: <a href="https://www.lassomoderation.com" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">www.lassomoderation.com</a>, <a href="https://www.lassomoderation.com/pricing" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">www.lassomoderation.com/pricing</a> (consultadas em 30 de outubro de 2026). Viu algum erro? Escreva para <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Para saber mais</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={L('/connectors')} class="font-medium text-brand-600 hover:text-brand-500">Os conectores do OpenModeration &rarr;</a></li>
+        <li><a href={L('/dsa-compliance/statement-of-reasons')} class="font-medium text-brand-600 hover:text-brand-500">A exposição de motivos exigida pelo DSA &rarr;</a></li>
+        <li><a href={L('/blog/comment-moderation-guide')} class="font-medium text-brand-600 hover:text-brand-500">Guia de moderação de comentários &rarr;</a></li>
+        <li><a href={L('/moderation-software')} class="font-medium text-brand-600 hover:text-brand-500">O software de moderação OpenModeration &rarr;</a></li>
+        <li><a href={L('/pricing')} class="font-medium text-brand-600 hover:text-brand-500">Os preços do OpenModeration &rarr;</a></li>
+        <li><a href={L('/alternatives')} class="font-medium text-brand-600 hover:text-brand-500">Todos os comparativos &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Compare a sua moderação atual com o OpenModeration." subtitle="Teste o OpenModeration em modo sandbox com os seus próprios comentários, sem ocultar nada. Grátis até 1.000 requisições por mês." buttonText="Agende uma reunião" buttonHref={L('/book-a-call')} />
+</BaseLayout>

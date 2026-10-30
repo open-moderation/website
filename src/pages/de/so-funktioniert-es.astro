@@ -11,7 +11,7 @@ const pageJsonLd = {
   "@id": "https://www.openmoderation.com/de/so-funktioniert-es",
   "url": "https://www.openmoderation.com/de/so-funktioniert-es",
   "name": "So funktioniert KI-Moderation: die komplette Pipeline",
-  "description": "Die komplette Moderationspipeline im Überblick: Erfassung, KI-Moderation über mehrere Anbieter, automatische Regeln und Aktionen sowie manuelle Prüfung.",
+  "description": "Die komplette Moderationspipeline im Überblick: Erfassung, KI-Moderation mit Prüfung durch weitere Modelle, automatische Regeln und Aktionen sowie manuelle Prüfung.",
   "inLanguage": "de",
   "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
 };
@@ -26,7 +26,6 @@ const facebookWebhookExample = `// Facebook sendet den Kommentar per Webhook
 }`;
 
 const moderationResponseExample = `{
-  "model": "openai/omni-moderation-latest",
   "results": [{
     "category": "hate",
     "score": 0.02,
@@ -34,8 +33,7 @@ const moderationResponseExample = `{
   }],
   "flagged": false,
   "usage": {
-    "latency_ms": 243,
-    "provider": "openai"
+    "latency_ms": 243
   }
 }`;
 
@@ -63,7 +61,6 @@ const auditTrailExample = `// Vollständiger Audit-Trail für jeden Inhalt
   "platform": "facebook",
   "status": "actioned",
   "moderation": {
-    "provider": "openai",
     "flagged": true,
     "results": [...]
   },
@@ -75,7 +72,7 @@ const auditTrailExample = `// Vollständiger Audit-Trail für jeden Inhalt
 }`;
 ---
 
-<BaseLayout title="So funktioniert KI-Moderation: die komplette Pipeline" description="Die komplette Moderationspipeline im Überblick: Erfassung, KI-Moderation über mehrere Anbieter, automatische Regeln und Aktionen sowie manuelle Prüfung." jsonLd={pageJsonLd}>
+<BaseLayout title="So funktioniert KI-Moderation: die komplette Pipeline" description="Die komplette Moderationspipeline im Überblick: Erfassung, KI-Moderation mit Prüfung durch weitere Modelle, automatische Regeln und Aktionen sowie manuelle Prüfung." jsonLd={pageJsonLd}>
 <Breadcrumb items={[{ label: "Startseite", href: "/de" }, { label: "So funktioniert es" }]} />
   <section class="bg-gradient-to-b from-brand-50 to-white py-20">
     <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
@@ -114,12 +111,10 @@ const auditTrailExample = `// Vollständiger Audit-Trail für jeden Inhalt
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
               </div>
               <h3 class="text-lg font-semibold text-surface-900">2. KI-Moderation</h3>
-              <p class="mt-2 text-sm text-surface-500">Intelligentes Routing schickt den Inhalt zum passendsten Anbieter. Zurück kommt ein standardisiertes Ergebnis.</p>
+              <p class="mt-2 text-sm text-surface-500">Unsere eigene Moderations-KI analysiert den Inhalt, weitere KIs prüfen heikle Fälle, und Sie erhalten ein standardisiertes Ergebnis.</p>
               <div class="mt-4 flex flex-wrap justify-center gap-2">
-                <span class="rounded-full bg-brand-100 px-2.5 py-0.5 text-xs text-brand-700">OpenAI</span>
-                <span class="rounded-full bg-brand-100 px-2.5 py-0.5 text-xs text-brand-700">Azure</span>
-                <span class="rounded-full bg-brand-100 px-2.5 py-0.5 text-xs text-brand-700">HuggingFace</span>
-                <span class="rounded-full bg-brand-100 px-2.5 py-0.5 text-xs text-brand-700">LLMs</span>
+                <span class="rounded-full bg-brand-100 px-2.5 py-0.5 text-xs text-brand-700">OpenModeration-KI</span>
+                <span class="rounded-full bg-brand-100 px-2.5 py-0.5 text-xs text-brand-700">Prüfung durch andere KIs</span>
               </div>
             </div>
             <div class="hidden lg:flex lg:items-center lg:justify-center">
@@ -146,7 +141,7 @@ const auditTrailExample = `// Vollständiger Audit-Trail für jeden Inhalt
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
               </div>
               <h3 class="text-lg font-semibold text-surface-900">4. Manuelle Prüfung</h3>
-              <p class="mt-2 text-sm text-surface-500">Grenzfälle werden markiert, damit menschliche Moderatoren sie freigeben oder ablehnen.</p>
+              <p class="mt-2 text-sm text-surface-500">Zweifelsfälle übernimmt unser Team. Sie sehen alles in Echtzeit und können jederzeit eingreifen.</p>
               <div class="mt-4 flex flex-wrap justify-center gap-2">
                 <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Prüfwarteschlange</span>
                 <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Freigeben</span>
@@ -185,14 +180,14 @@ const auditTrailExample = `// Vollständiger Audit-Trail für jeden Inhalt
             <span class="mb-2 inline-flex items-center rounded-full bg-brand-100 px-3 py-0.5 text-sm font-medium text-brand-700">Schritt 2</span>
             <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">Die KI moderiert den Inhalt</h2>
             <p class="mt-4 text-surface-500">
-              Der Inhalt wird je nach Sprache, Inhaltstyp, benötigten Kategorien und Kosten an den
-              passendsten verfügbaren Anbieter geleitet. Jeder Anbieter liefert standardisierte Ergebnisse
-               mit Scores von 0,0 bis 1,0 in 10 Inhaltskategorien.
+              Unsere eigene Moderations-KI, eingerichtet nach Ihren Regeln und Anwendungsfällen, analysiert jeden Inhalt.
+              Bei heiklen Fällen prüfen weitere KI-Modelle die Entscheidung, bevor sie angewendet wird. Die Ergebnisse sind
+               standardisiert, mit Scores von 0,0 bis 1,0 in 10 Inhaltskategorien.
             </p>
             <ul class="mt-6 space-y-2 text-sm text-surface-600">
-              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Das <strong>Routing</strong> wählt den passendsten Anbieter, wenn Sie keinen angeben.</li>
-              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Mit <strong>BYOK</strong> nutzen Sie Ihre eigenen API-Schlüssel der Anbieter (oder die der Plattform).</li>
-              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Die <strong>Ausgabe</strong> hat immer dasselbe Format, egal welcher Anbieter dahintersteht.</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Gegengeprüft:</strong> Weitere KI-Modelle prüfen heikle Fälle</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Modellunabhängig:</strong> Bessere oder günstigere Modelle binden wir an, sobald sie erscheinen</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Die <strong>Ausgabe</strong> hat immer dasselbe Format, egal welches Modell dahintersteht.</li>
             </ul>
           </div>
           <div class="rounded-xl border border-surface-200 bg-surface-50 p-8 lg:order-1">
@@ -240,10 +235,10 @@ const auditTrailExample = `// Vollständiger Audit-Trail für jeden Inhalt
         <div class="grid items-center gap-8 lg:grid-cols-2">
           <div class="lg:order-2">
             <span class="mb-2 inline-flex items-center rounded-full bg-brand-100 px-3 py-0.5 text-sm font-medium text-brand-700">Schritt 4</span>
-            <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">Grenzfälle manuell prüfen</h2>
+            <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">Zweifelsfälle übernimmt unser Team</h2>
             <p class="mt-4 text-surface-500">
-              Ihr Trust-&-Safety-Team hat einen eigenen Arbeitsbereich.
-              Dort prüft es markierte Inhalte, bearbeitet Nutzermeldungen und korrigiert KI-Entscheidungen. Jeder Schritt bleibt nachvollziehbar.
+              Unser Team prüft zweifelhafte Inhalte und bearbeitet Nutzermeldungen. Sie sehen jede Entscheidung
+              in Echtzeit in Ihrem Arbeitsbereich und können sie jederzeit korrigieren. Jeder Schritt bleibt nachvollziehbar.
             </p>
             <ul class="mt-6 space-y-2 text-sm text-surface-600">
               <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Ein Klick</strong> genügt zum Freigeben oder Ablehnen. Jede Korrektur wird mit Entscheider und Begründung protokolliert.</li>
@@ -280,7 +275,7 @@ const auditTrailExample = `// Vollständiger Audit-Trail für jeden Inhalt
             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
           </div>
           <h3 class="font-semibold text-surface-900">Zur Prüfung zurückhalten</h3>
-          <p class="mt-1 text-sm text-surface-500">Grenzwertige Inhalte werden zurückgehalten und warten in Ihrer Prüfwarteschlange. Bis zur Entscheidung wird nichts veröffentlicht, und es geht nichts verloren.</p>
+          <p class="mt-1 text-sm text-surface-500">Grenzwertige Inhalte werden zurückgehalten, bis unser Team entschieden hat. Bis dahin wird nichts veröffentlicht, und es geht nichts verloren.</p>
         </div>
         <div class="rounded-xl border border-surface-200 bg-white p-6">
           <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-green-100 text-green-600">

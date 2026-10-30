@@ -1,0 +1,239 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const title = "Tremau alternatief: vergelijking met OpenModeration";
+const description = "Tremau (Nima) of OpenModeration? Vergelijking met bronnen voor media, merken en overheid: aanbod, connectoren, AI-modellen, DSA, prijs en hosting.";
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/nl/alternatieven/tremau",
+  "name": title,
+  "description": description,
+  "inLanguage": "nl",
+  "about": {
+    "@id": "https://www.openmoderation.com/#software"
+  }
+};
+
+const rows = [
+  {
+    "feature": "Aanbod",
+    "competitor": "Trust & safety-platform Nima (workflow, regelengine, wachtrijen, rapportages), plus adviesdiensten",
+    "openmod": "AI-moderatie van reacties, afgestemd op je regels en je use cases, samen met jou ingericht door het team van Logora"
+  },
+  {
+    "feature": "Bedoeld voor",
+    "competitor": "Onlineplatforms en -diensten: marktplaatsen, games, sociale platforms en creatorplatforms",
+    "openmod": "Digitale media, merken en overheidsinstanties"
+  },
+  {
+    "feature": "Integraties",
+    "competitor": "Eén API-endpoint, gepresenteerd als een uitbreiding van je backend; integraties met de DSA-transparantiedatabank en het NCMEC. Geen connectoren voor Facebook, Instagram, YouTube of WordPress genoemd",
+    "openmod": "Websites (API), Facebook-pagina's, professionele Instagram-accounts, YouTube-kanalen, WordPress"
+  },
+  {
+    "feature": "Automatisering en menselijke beoordeling",
+    "competitor": "Geautomatiseerde en handmatige verwerking, gespecialiseerde wachtrijen voor moderatoren, sanctiesysteem, afhandeling van meldingen en realtime dashboard",
+    "openmod": "Duidelijke overtredingen automatisch verborgen, legitieme kritiek zichtbaar, twijfelgevallen afgehandeld door ons team en zichtbaar in één console; een geschreven reden bij elke beslissing en een volledig activiteitenlogboek"
+  },
+  {
+    "feature": "DSA",
+    "competitor": "Meldingen van gebruikers, bezwaren, aanpasbare verklaringen voor de DSA en de Britse Online Safety Act, betrouwbare flaggers, transparantierapporten, EU-transparantiedatabank",
+    "openmod": "Bouwstenen voor melding en actie, motivering van beslissingen, menselijke beoordeling van betwiste beslissingen en exporteerbare cijfers"
+  },
+  {
+    "feature": "AI-modellen",
+    "competitor": "Toegang tot detectietools van derden (de website noemt onder meer Bodyguard, Utopia Analytics, Sightengine en Amazon Rekognition); geen eigen model vermeld",
+    "openmod": "Eigen moderatie-AI, gecontroleerd door andere AI-modellen; nieuwe modellen worden aangesloten zodra ze uitkomen"
+  },
+  {
+    "feature": "Prijs",
+    "competitor": "Niet gepubliceerd",
+    "openmod": "Publiek: gratis tot 1.000 verzoeken/maand, Pro € 99/maand voor 10.000 verzoeken, Enterprise op aanvraag"
+  },
+  {
+    "feature": "Hosting en beveiliging",
+    "competitor": "Kan in je eigen cloud worden uitgerold (Bring Your Own Cloud); SOC 2, auditlogboeken",
+    "openmod": "Hosting in de EU, AVG; on-premise installatie op aanvraag"
+  },
+  {
+    "feature": "Referenties",
+    "competitor": "Getoonde logo's, waaronder Eventbrite, Ko-fi, Pinterest, Bluesky en AliExpress",
+    "openmod": "L'Équipe, Challenges, Sud Ouest, actu.fr, Estadão, Südkurier, Egora"
+  }
+];
+
+const faqItems = [
+  {
+    "question": "Wat is het beste alternatief voor Tremau?",
+    "answer": "Voor de reacties van een mediabedrijf, een merk of een overheidsinstantie is OpenModeration een direct alternatief: een eigen moderatie-AI, connectoren voor je website (API), Facebook-pagina's, Instagram, YouTube en WordPress, een geschreven reden bij elke beslissing, bouwstenen voor de DSA en publieke prijzen. Voor een platform dat meerdere detectieleveranciers in zijn eigen cloud wil orkestreren, is Nima van Tremau daarvoor gemaakt."
+  },
+  {
+    "question": "Wat kost Tremau?",
+    "answer": "Tremau publiceert de prijs van Nima niet op de website; je moet contact opnemen met het bedrijf. OpenModeration is gratis tot 1.000 verzoeken per maand, het Pro-abonnement kost € 99 per maand voor 10.000 verzoeken en Enterprise is op aanvraag."
+  },
+  {
+    "question": "Tremau vs OpenModeration: wat is het belangrijkste verschil?",
+    "answer": "Nima van Tremau is een platform voor trust & safety-workflows dat detectietools van andere leveranciers koppelt. OpenModeration is een dienst voor het modereren van reacties met een eigen AI: het verbergt duidelijke overtredingen, laat legitieme kritiek zichtbaar en stuurt twijfelgevallen naar menselijke beoordeling in één console, alles samen met jou ingericht door ons team."
+  },
+  {
+    "question": "Dekt OpenModeration de DSA zoals Tremau?",
+    "answer": "OpenModeration biedt bouwstenen voor melding en actie, een motivering bij elke beslissing, menselijke beoordeling van betwiste beslissingen, een volledig activiteitenlogboek en exporteerbare cijfers. De data worden in de EU gehost en verwerkt volgens de AVG."
+  },
+  {
+    "question": "Kan ik OpenModeration testen zonder mijn huidige tool uit te zetten?",
+    "answer": "Ja. In sandboxmodus analyseert OpenModeration je echte reacties zonder iets te verbergen. Je huidige tool blijft gewoon werken en je vergelijkt de beslissingen reactie per reactie."
+  },
+  {
+    "question": "Kan OpenModeration op onze eigen infrastructuur draaien?",
+    "answer": "Standaard wordt OpenModeration in de Europese Unie gehost. Een on-premise installatie is mogelijk op aanvraag: laten we het bespreken."
+  }
+];
+---
+
+<BaseLayout title={title} description={description} jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: "Alternatieven", href: localizePath('/alternatives', locale) }, { label: "Tremau" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Vergelijking
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Alternatief voor Tremau: vergelijking met OpenModeration</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Het beste alternatief voor Tremau voor een mediabedrijf, merk of overheidsinstantie die reacties modereert, is een tool met een eigen AI die je direct koppelt aan je website en je sociale media: dat doet OpenModeration, met publieke prijzen. Nima, het platform van Tremau, is bedoeld voor onlineplatforms die meerdere detectietools in één trust & safety-workflow willen orkestreren.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900">Voor wie is Tremau?</h2>
+      <p class="mt-4 text-surface-600">Tremau is volgens de website in 2021 gestart en is volgens investeerder G+D Ventures gevestigd in Parijs. Het verkoopt Nima, dat de website omschrijft als „het door AI aangedreven trust & safety-platform om gebruikers te beschermen met efficiënte geautomatiseerde en menselijke moderatie”, plus adviesdiensten op het gebied van trust & safety, techbeleid en risicobeheer.</p>
+      <p class="mt-4 text-surface-600">Nima centraliseert signalen en detectiebronnen, met een regelengine, gespecialiseerde wachtrijen voor moderatoren, een sanctiesysteem, meldingen van gebruikers, bezwaren, meldingen van betrouwbare flaggers, transparantierapporten en een koppeling met de DSA-transparantiedatabank. Het geeft toegang tot detectietools van derden en kan in de cloud van de klant worden uitgerold. Tussen de getoonde logo's: Eventbrite, Ko-fi, Pinterest, Bluesky en AliExpress.</p>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Tremau en OpenModeration, punt voor punt</h2>
+      <p class="mt-4 text-surface-500">Informatie over Tremau afkomstig van de website (tremau.com), geraadpleegd op 30 oktober 2026.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Criterium</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Tremau</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.competitor}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Kies OpenModeration als…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>je reacties modereert en de AI inbegrepen wilt, in plaats van een workflow die je aan losse detectieleveranciers moet koppelen;</li>
+          <li>je kant-en-klare connectoren wilt voor je website (API), je Facebook-pagina's, Instagram, YouTube en WordPress;</li>
+          <li>je een team wilt dat de moderatie samen met jou inricht, volgens je regels en je use cases;</li>
+          <li>je publieke prijzen wilt, met een gratis abonnement om te beginnen;</li>
+          <li>je een geschreven reden bij elke beslissing, een volledig activiteitenlogboek en de DSA-bouwstenen nodig hebt zonder groot trust & safety-team.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">Tremau past misschien beter als…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>je een platform beheert met een eigen trust & safety-team en meerdere detectieleveranciers in één workflow wilt orkestreren;</li>
+          <li>je betrouwbare flaggers, een sanctiesysteem en transparantierapporten op platformschaal moet beheren;</li>
+          <li>je de tool in je eigen cloud wilt uitrollen, of advies wilt over de DSA en de Online Safety Act.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900">De AI-engine: de vooruitgang van de modellen volgen</h2>
+      <p class="mt-4 text-surface-600">Nima van Tremau orkestreert detectietools van andere leveranciers die je zelf kiest en koppelt. OpenModeration gebruikt een eigen moderatie-AI, en bij gevoelige gevallen worden de beslissingen gecontroleerd door andere AI-modellen. De engine is niet aan één model gebonden: komt er een beter of goedkoper model uit, dan sluit ons team het snel aan, zonder dat jij iets hoeft te veranderen. Zo gaat je moderatie mee met de vooruitgang van de AI-markt, in plaats van vast te zitten aan één eigen algoritme.</p>
+      <h2 class="mt-16 text-3xl font-bold tracking-tight text-surface-900">Prijs: Tremau tegenover OpenModeration</h2>
+      <p class="mt-4 text-surface-600">Tremau publiceert zijn prijzen niet op de website. De prijzen van OpenModeration zijn publiek: gratis tot 1.000 verzoeken per maand, Pro voor € 99 per maand voor 10.000 verzoeken, Enterprise op aanvraag, en een on-premise installatie mogelijk op aanvraag. <a href={localizePath('/pricing', locale)} class="font-medium text-brand-600 hover:text-brand-500">De prijzen van OpenModeration &rarr;</a></p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Overstappen van Tremau naar OpenModeration in 3 stappen</h2>
+      <ol class="mt-8 grid gap-6 md:grid-cols-3">
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">1</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Koppel je bronnen en deel je regels</h3>
+          <p class="mt-2 text-sm text-surface-600">Koppel je website via de API, je Facebook-pagina's, professionele Instagram-accounts, YouTube-kanalen of WordPress. Ons team stemt de moderatie samen met jou af op je regels en je use cases.</p>
+        </li>
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">2</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Test in sandboxmodus op echte reacties</h3>
+          <p class="mt-2 text-sm text-surface-600">OpenModeration analyseert je echte reacties zonder iets te verbergen. Tremau blijft gewoon werken terwijl je de beslissingen vergelijkt, elk met een geschreven reden.</p>
+        </li>
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">3</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Zet automatische moderatie aan</h3>
+          <p class="mt-2 text-sm text-surface-600">Duidelijke overtredingen worden automatisch verborgen, twijfelgevallen gaan naar menselijke beoordeling in de console, en het activiteitenlogboek en de exporteerbare cijfers staan klaar voor de DSA.</p>
+        </li>
+      </ol>
+      <p class="mt-8 text-surface-600">Wil je het eerst zien op je eigen reacties? <a href={localizePath('/book-a-call', locale)} class="font-medium text-brand-600 hover:text-brand-500">Plan een gesprek met ons team &rarr;</a></p>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Veelgestelde vragen" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        Tremau is een merk van de eigenaar ervan. De informatie komt van de eigen website (geraadpleegd op 30 oktober 2026); wat daar niet staat, geven we aan als niet vermeld. Zie je een fout? Schrijf ons op <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+      <p class="mx-auto mt-4 max-w-3xl text-center text-sm text-surface-400">
+        Bronnen: <a href="https://tremau.com/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">tremau.com</a> · <a href="https://tremau.com/platform/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">tremau.com/platform</a> · <a href="https://tremau.com/about-us/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">tremau.com/about-us</a> · <a href="https://www.gi-de.com/en/ventures/tremau" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">www.gi-de.com/en/ventures/tremau</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Meer weten</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/book-a-call', locale)} class="font-medium text-brand-600 hover:text-brand-500">Plan een gesprek met het team van OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/moderation-software', locale)} class="font-medium text-brand-600 hover:text-brand-500">De moderatiesoftware van OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/blog/comment-moderation-guide', locale)} class="font-medium text-brand-600 hover:text-brand-500">Reacties modereren: de complete gids &rarr;</a></li>
+        <li><a href={localizePath('/blog/dsa-compliance-sme-guide', locale)} class="font-medium text-brand-600 hover:text-brand-500">DSA-gids voor het mkb &rarr;</a></li>
+        <li><a href={localizePath('/alternatives', locale)} class="font-medium text-brand-600 hover:text-brand-500">Alle vergelijkingen &rarr;</a></li>
+        <li><a href={localizePath('/pricing', locale)} class="font-medium text-brand-600 hover:text-brand-500">De prijzen van OpenModeration &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Moderatie van reacties met de AI inbegrepen." subtitle="Koppel je website en je sociale media, test de sandbox op echte reacties en lees de reden achter elke beslissing. Gratis om te beginnen." />
+</BaseLayout>

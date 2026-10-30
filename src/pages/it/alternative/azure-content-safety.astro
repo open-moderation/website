@@ -1,7 +1,9 @@
 ---
+import { bookingUrl } from '../../../i18n/ui';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumb from '../../../components/Breadcrumb.astro';
 import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
 import CodeBlock from '../../../components/CodeBlock.astro';
 import FAQ from '../../../components/FAQ.astro';
 
@@ -14,7 +16,7 @@ const res = await fetch(endpoint + "/contentsafety/text:analyze?api-version=2024
 });
 // Risultato: formato specifico di Azure, 4 categorie, installazione per regione
 
-# OpenModeration (unificato)
+# OpenModeration
 const result = await fetch('https://api.openmoderation.com/v1/moderation', {
   method: 'POST',
   headers: { 'Authorization': 'Bearer om_key_...' },
@@ -24,44 +26,44 @@ const result = await fetch('https://api.openmoderation.com/v1/moderation', {
     threshold: 0.5
   })
 });
-// In più: pre-filtro, doppia soglia, azioni automatiche, registro di audit, console per il team`;
+// In più: pre-filtro, doppia soglia, azioni automatiche, registro di audit, console in tempo reale`;
 
 const comparisonJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
   "name": "Alternativa all'API di moderazione di Azure | OpenModeration",
-  "description": "Confronta OpenModeration e Azure Content Safety per la moderazione con IA. Azure ti vincola all'ecosistema Microsoft con una moderazione solo via API. OpenModeration ti permette di usare Azure insieme ad altri 9 fornitori con un'unica API, con console di revisione integrata, regole senza codice e dati ospitati nell'UE.",
+  "description": "Confronta OpenModeration e Azure Content Safety per la moderazione con IA. Azure ti dà un'API legata a Microsoft. OpenModeration usa la propria IA di moderazione, verificata da altri modelli di IA, con i casi dubbi gestiti dal nostro team, regole senza codice e installazione on-premise per la sovranità dei dati.",
   "inLanguage": "it"
 };
 
 const faqItems = [
   {
     question: "Quanto costa Azure Content Safety rispetto a OpenModeration?",
-    answer: "Azure AI Content Safety fattura per blocchi di 1.000 record di testo (un record arriva a 1.000 caratteri) dopo una soglia gratuita di 5.000 record al mese, a una tariffa che dipende dalla tua regione Azure. OpenModeration è gratuito fino a 1.000 richieste al mese e il cloud gestito parte da 99 €/mese per 10.000 richieste, e il pre-filtro elimina dal 10 al 30% delle chiamate fatturabili prima che arrivino ad Azure."
+    answer: "Azure AI Content Safety fattura per blocchi di 1.000 record di testo (un record arriva a 1.000 caratteri) dopo una soglia gratuita di 5.000 record al mese, a una tariffa che dipende dalla tua regione Azure. OpenModeration è gratuito fino a 1.000 richieste al mese e il cloud gestito parte da 99 €/mese per 10.000 richieste."
   },
   {
-    question: "Posso continuare a usare Azure Content Safety con OpenModeration?",
-    answer: "Sì. Usa la tua chiave Azure (BYOK) e indirizza le richieste ad Azure Content Safety come fornitore principale. Aggiungi OpenAI o Mistral come fallback modificando la configurazione: nessun codice da riscrivere, nessun riaddestramento."
+    question: "Come passo da Azure Content Safety a OpenModeration?",
+    answer: "Un'unica chiamata standardizzata POST /v1/moderation sostituisce l'endpoint Content Safety. Non devi riaddestrare nulla: la nostra IA di moderazione viene configurata sulle tue regole e sui tuoi casi d'uso, e i casi delicati vengono verificati da altri modelli di IA."
   },
   {
-    question: "OpenModeration supporta i modelli di moderazione di Azure OpenAI?",
-    answer: "Sì. Sono supportati come fornitori sia l'endpoint Azure AI Content Safety sia i modelli di moderazione di Azure OpenAI. Le risposte vengono uniformate in un unico formato per tutti i 10 fornitori."
+    question: "Resterò vincolato a un solo modello, come con Azure?",
+    answer: "No. Il motore di OpenModeration non dipende da un solo modello: quando esce un modello di IA migliore o più economico, il nostro team lo collega rapidamente. Le risposte mantengono lo stesso formato standardizzato, quindi per te non cambia nulla."
   },
   {
     question: "Cosa ottengo in più rispetto ai semplici punteggi di Azure?",
-    answer: "Una piattaforma completa: pre-filtro, doppie soglie (approvazione automatica / revisione umana / rifiuto automatico), regole senza codice, una console di moderazione con ruoli per il team e un registro di audit pronto per il DSA, con report esportabili."
+    answer: "Una piattaforma completa: pre-filtro, doppie soglie (approvazione automatica, revisione da parte del nostro team, rifiuto automatico), regole senza codice, una console in cui vedi ogni decisione in tempo reale e un registro di audit pronto per il DSA, con report esportabili."
   },
   {
     question: "I miei dati possono restare in Europa invece che nel cloud di Microsoft?",
-    answer: "Sì. Il cloud di OpenModeration è ospitato nell'UE, ai fini di GDPR e DSA, con Azure sempre disponibile come uno dei fornitori. Un'installazione on-premise è possibile su richiesta: parliamone."
+    answer: "Sì. OpenModeration è sviluppato e ospitato nell'Unione europea, e un'installazione on-premise è possibile su richiesta."
   },
 ];
 
 const comparisonPoints = [
-  { feature: "Ambito della moderazione", azure: "Fornitore singolo (solo Azure)", openmod: "Multi-fornitore (Azure, OpenAI, Mistral, LLM) + console unificata" },
-  { feature: "Interfaccia operativa", azure: "Solo API. La UI di revisione devi costruirla tu", openmod: "Console Trust & Safety completa, con coda di revisione manuale inclusa" },
-  { feature: "Motore di regole", azure: "La logica personalizzata va costruita e mantenuta internamente", openmod: "Tre livelli integrati: filtri di parole, soglie di punteggio e un regolamento della community in linguaggio naturale" },
-  { feature: "Dipendenza dal fornitore", azure: "Alta (legata all'ecosistema Microsoft)", openmod: "Nessuna (le tue chiavi, cambi fornitore all'istante)" },
+  { feature: "Ambito della moderazione", azure: "Solo modelli Microsoft", openmod: "Una propria IA di moderazione, verificata da altri modelli di IA sui casi delicati" },
+  { feature: "Interfaccia operativa", azure: "Solo API. La UI di revisione devi costruirla tu", openmod: "Casi dubbi gestiti dal nostro team; una console in cui vedi ogni decisione in tempo reale" },
+  { feature: "Motore di regole", azure: "La logica personalizzata va costruita e mantenuta internamente", openmod: "Tre livelli integrati: filtri di parole, soglie di punteggio e le tue regole in linguaggio naturale" },
+  { feature: "Dipendenza", azure: "Alta (legata all'ecosistema Microsoft)", openmod: "Bassa: motore indipendente dai modelli, i modelli migliori collegati appena escono" },
   { feature: "Sovranità dei dati", azure: "Dati elaborati sull'infrastruttura Microsoft", openmod: "Hosting nell'UE per la conformità a GDPR e DSA; on-premise su richiesta" },
   { feature: "Modello di prezzo", azure: "Fatturazione API a richiesta", openmod: "Prezzi pubblici: gratis fino a 1.000 richieste al mese, poi Pro a 99 €/mese." }
 ];
@@ -69,7 +71,7 @@ const comparisonPoints = [
 
 <BaseLayout
   title="Alternativa all'API di moderazione di Azure: prezzi e confronto"
-  description="Azure Content Safety è solo un'API e ti lega a Microsoft. OpenModeration unisce Azure e altri 9 fornitori, regole senza codice, revisione umana e audit DSA."
+  description="Azure Content Safety ti lega a Microsoft. OpenModeration usa la propria IA, verificata da altri modelli, con regole, revisione umana e audit DSA."
   jsonLd={comparisonJsonLd}
 >
   <Breadcrumb items={[{ label: "Home", href: "/it" }, { label: "Alternative", href: "/it/alternative" }, { label: "Alternativa ad Azure Content Safety" }]} />
@@ -93,21 +95,21 @@ const comparisonPoints = [
         <div>
           <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Migra da Azure in meno di un'ora</h2>
           <p class="mt-4 text-lg text-surface-500">
-            Tieni la tua chiave Azure (BYOK) come fornitore principale. Un'unica chiamata standardizzata sostituisce
+            Un'unica chiamata standardizzata sostituisce
             l'endpoint Content Safety: i punteggi arrivano in un solo formato, con soglie che controlli tu.
           </p>
           <ul class="mt-6 space-y-3">
             <li class="flex items-start gap-3">
               <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <p class="text-sm text-surface-600"><strong>Tieni Azure</strong> come fornitore principale e aggiungi OpenAI o Mistral come fallback quando Azure è lento o non disponibile.</p>
+              <p class="text-sm text-surface-600"><strong>IA verificata</strong>: la nostra IA di moderazione, con i casi delicati arbitrati da altri modelli di IA.</p>
             </li>
             <li class="flex items-start gap-3">
               <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <p class="text-sm text-surface-600"><strong>Il pre-filtro</strong> blocca lo spam evidente prima di qualsiasi chiamata Azure fatturabile: risparmi dal 10 al 30% sui costi API.</p>
+              <p class="text-sm text-surface-600"><strong>Il pre-filtro</strong> blocca lo spam evidente prima di qualsiasi chiamata all'IA.</p>
             </li>
             <li class="flex items-start gap-3">
               <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <p class="text-sm text-surface-600"><strong>Dati ospitati nell'UE</strong> con il cloud gestito, on-premise possibile su richiesta (<a href="https://calendly.com/jesuslogora/1h" class="text-brand-600 underline">parliamone</a>): Azure resta disponibile come uno dei fornitori.</p>
+              <p class="text-sm text-surface-600"><strong>Dati ospitati nell'UE</strong> per impostazione predefinita, on-premise possibile su richiesta: <a href={bookingUrl('it')} class="text-brand-600 underline" rel="noopener noreferrer" target="_blank">parliamone</a>.</p>
             </li>
           </ul>
         </div>
@@ -160,12 +162,12 @@ const comparisonPoints = [
         <div class="rounded-xl border border-brand-200 bg-brand-50 p-8 shadow-sm">
           <h3 class="text-xl font-bold text-brand-700">Il vantaggio di OpenModeration</h3>
           <p class="mt-4 text-surface-700">
-            OpenModeration può usare Azure Content Safety come uno dei suoi fornitori di backend, ma lo inserisce in un livello operativo completo:
+            OpenModeration usa la propria IA di moderazione e aggiunge tutto ciò che le serve attorno:
           </p>
           <ul class="mt-4 space-y-3 text-sm text-surface-700">
-            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> <strong>Console pronta all'uso:</strong> il tuo team Trust &amp; Safety può iniziare subito a rivedere i contenuti.</li>
-            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> <strong>Configurazione semplice delle regole:</strong> tre strumenti, cioè parole vietate, soglie per categoria e il regolamento della tua community. Nessun codice necessario.</li>
-            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> <strong>Fallback multi-fornitore:</strong> se Azure è lento o va in errore, le richieste passano in automatico a OpenAI o Mistral.</li>
+            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> <strong>Niente da gestire:</strong> i casi dubbi li gestisce il nostro team. Tu vedi ogni decisione in tempo reale e puoi intervenire quando vuoi.</li>
+            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> <strong>Configurazione semplice delle regole:</strong> tre strumenti, cioè parole vietate, soglie per categoria e le tue regole in linguaggio naturale. Nessun codice necessario.</li>
+            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> <strong>IA verificata:</strong> i casi delicati vengono verificati da altri modelli di IA, e i modelli migliori vengono collegati appena escono.</li>
             <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> <strong>Conformità integrata:</strong> ogni decisione, dell'IA o umana, viene registrata con un registro di audit completo.</li>
           </ul>
         </div>
@@ -179,16 +181,18 @@ const comparisonPoints = [
     </div>
   </section>
 
+  <RelatedComparisons />
+
   <CTASection
     title="Smetti di costruire strumenti di moderazione interni."
-    subtitle="Ottieni una piattaforma di moderazione con IA completa, con integrazione Azure, regole automatiche e una console di revisione umana. Provala oggi."
+    subtitle="Collega le tue pagine: la nostra IA e il nostro team si occupano del resto, e tu vedi ogni decisione in tempo reale."
     buttonText="Provalo gratis"
     buttonHref="https://app.openmoderation.com/signup"
   />
 
   <section class="border-t border-surface-100 bg-surface-50 py-16">
     <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-      <h2 class="text-2xl font-bold text-surface-900">Confronta altri fornitori</h2>
+      <h2 class="text-2xl font-bold text-surface-900">Confronta altre alternative</h2>
       <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
         <a href="/it/alternative/openai-moderation" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">OpenAI Moderation</a>
         <a href="/it/alternative/mistral-moderation" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Mistral Moderation</a>

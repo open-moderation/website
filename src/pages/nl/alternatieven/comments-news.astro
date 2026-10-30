@@ -1,0 +1,189 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const title = "Comments News alternatief: vergelijking met OpenModeration";
+const description = "Comments News of OpenModeration? Een reactiesysteem tegenover software die je bestaande reacties en social media modereert, met een reden bij elk besluit.";
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/nl/alternatieven/comments-news",
+  "name": title,
+  "description": description,
+  "inLanguage": "nl",
+  "about": { "@id": "https://www.openmoderation.com/#software" }
+};
+
+const rows = [
+  { feature: "Soort product", commentsnews: "Een reactie- en discussieplatform voor nieuwsmedia, met ingebouwde AI-moderatie", openmod: "Moderatiesoftware die werkt op je bestaande reactiesysteem en je social media; geen reactiewidget inbegrepen" },
+  { feature: "Installatie", commentsnews: "Een script op de website, met de login van het medium zelf", openmod: "Kant-en-klare koppelingen voor Facebook, Instagram, YouTube en WordPress; REST-API en webhooks voor de rest" },
+  { feature: "Social media", commentsnews: "Niet vermeld", openmod: "Facebook, Instagram en YouTube" },
+  { feature: "Prijs", commentsnews: "Cabecera 49 USD per maand (lijstprijs 99 USD), Redacción 149 USD (lijstprijs 299 USD), Grupo 299 USD (lijstprijs 599 USD)", openmod: "Gratis tot 1.000 verzoeken per maand, Pro voor € 99 per maand voor 10.000 verzoeken, maatwerk voor grote volumes" },
+  { feature: "AI-moderatie", commentsnews: "Basis in het Cabecera-plan; ‘moderación PRO con IA’ in de plannen Redacción en Grupo", openmod: "Je regels in gewone taal, een drempel per categorie en een grijze zone die ons team beoordeelt" },
+  { feature: "Context", commentsnews: "Het Redacción-plan ‘begrijpt de redactionele context’; het basisplan niet", openmod: "De AI leest elke reactie samen met de kop en de discussiedraad" },
+  { feature: "AI-modellen", commentsnews: "Niet vermeld op de website", openmod: "Eigen moderatie-AI, gecontroleerd door andere AI-modellen; nieuwe modellen worden toegevoegd zodra ze uitkomen" },
+  { feature: "Reden bij elke beslissing", commentsnews: "Niet vermeld", openmod: "Een schriftelijke reden bij elke beslissing, in de taal van je keuze, teruggegeven door de API" },
+  { feature: "Logboek voor de DSA", commentsnews: "Niet vermeld", openmod: "Activiteitenlogboek: bij elke beslissing staat of die automatisch was of welke moderator hem nam" },
+  { feature: "Hosting", commentsnews: "Niet vermeld", openmod: "Ontwikkeld en gehost in de EU; on-premise mogelijk op aanvraag" },
+  { feature: "Referenties", commentsnews: "El Destape, El Día, El Tribuno, Tiempo de San Juan, El Deber, El Chubut, La Nueva en andere media in Argentinië en Bolivia", openmod: "L'Équipe, Challenges, Sud Ouest, actu.fr, Estadão, Südkurier, Egora" },
+];
+
+const faqItems = [
+  {
+    question: "Wat is het beste Comments News alternatief?",
+    answer: "Dat hangt af van wat je mist. Zoek je een compleet reactiesysteem, met discussies en statistieken, dan biedt Comments News dat en OpenModeration niet. Heb je je reacties al (in WordPress, op een eigen platform of op social media) en wil je ze modereren volgens je regels, met een schriftelijke reden bij elke beslissing, dan is OpenModeration daarvoor gemaakt.",
+  },
+  {
+    question: "Wat kost Comments News?",
+    answer: "Volgens de website kost het Cabecera-plan 49 USD per maand, het Redacción-plan 149 USD en het Grupo-plan 299 USD, gepresenteerd als 50 % korting op de lijstprijs. OpenModeration is gratis tot 1.000 verzoeken per maand en kost € 99 per maand in het Pro-plan, voor 10.000 verzoeken.",
+  },
+  {
+    question: "Comments News vs OpenModeration: wat is het verschil?",
+    answer: "Comments News is een reactiesysteem voor nieuwsmedia met ingebouwde AI-moderatie. OpenModeration vervangt je reactiesysteem niet: het modereert de reacties die je al hebt, op je website en op Facebook, Instagram en YouTube, en geeft bij elke beslissing een schriftelijke reden, vastgelegd in het activiteitenlogboek.",
+  },
+  {
+    question: "Kan ik OpenModeration testen zonder Comments News op te zeggen?",
+    answer: "OpenModeration vervangt geen reactiesysteem. Je kunt het in sandboxmodus testen op je Facebook-pagina's, Instagram of YouTube, of op een WordPress-site: het analyseert de echte reacties en laat zien wat het zou hebben besloten, zonder iets te verbergen of te verwijderen.",
+  },
+  {
+    question: "Welke AI-modellen gebruikt OpenModeration?",
+    answer: "OpenModeration werkt met een eigen moderatie-AI, en in gevoelige gevallen wordt de beslissing gecontroleerd door andere AI-modellen. Komt er een beter of goedkoper model uit, dan voegt het team het snel toe, zonder dat jij iets hoeft aan te passen.",
+  },
+  {
+    question: "Werkt OpenModeration ook voor media buiten Europa?",
+    answer: "Ja. OpenModeration werkt als online dienst vanuit elk land, begrijpt Spaanstalige reacties en schrijft de redenen in de taal van je keuze. Estadão in Brazilië is een van onze klanten. De prijzen worden in euro gefactureerd.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: "Alternatieven", href: localizePath('/alternatives', locale) }, { label: "Comments News" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Vergelijking
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Comments News alternatief: modereer de reacties die je al hebt</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Comments News is een reactiesysteem voor nieuwsmedia, gebruikt in Argentinië en Bolivia, met AI-moderatie inbegrepen. OpenModeration vervangt je reactiesysteem niet: het modereert de reacties die je al hebt, op je website en je social media, en onderbouwt elke beslissing schriftelijk. Dit zijn de verschillen, met bronnen.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Kies OpenModeration als…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>je je huidige reactiesysteem wilt houden;</li>
+          <li>je ook reacties op Facebook, Instagram of YouTube modereert;</li>
+          <li>je bij elke verborgen reactie een schriftelijke reden wilt;</li>
+          <li>je in Europa publiceert en aan de DSA moet voldoen;</li>
+          <li>je een volledig activiteitenlogboek wilt en je data wilt kunnen exporteren.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">Comments News past misschien beter als…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>je een compleet reactiesysteem zoekt, met discussies en moderatie inbegrepen;</li>
+          <li>je reactie-events naar GA4 of Marfeel wilt sturen;</li>
+          <li>je medium in Latijns-Amerika zit en je een leverancier met referenties in de regio verkiest;</li>
+          <li>je liever een vast tarief per domein in dollars betaalt.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Comments News en OpenModeration naast elkaar</h2>
+      <p class="mt-4 text-surface-500">Informatie over Comments News afkomstig van de eigen website, comments.news, geraadpleegd op 20 oktober 2026.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Criterium</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Comments News</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.commentsnews}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Wat er in de praktijk echt verandert</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Je reacties blijven waar ze zijn</h3>
+          <p class="mt-2 text-sm text-surface-600">Je wisselt niet van widget of gebruikersbestand. OpenModeration koppelt met WordPress, met je platform via de API en met je Facebook-pagina's, Instagram en YouTube, en modereert alles met dezelfde regels.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Context, in elk plan</h3>
+          <p class="mt-2 text-sm text-surface-600">De AI leest elke reactie samen met de kop en de discussiedraad. Zo onderscheidt hij ironie van een belediging, en harde kritiek van een persoonlijke aanval.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Je weet waarom elke reactie verborgen is</h3>
+          <p class="mt-2 text-sm text-surface-600">Elke beslissing komt met een schriftelijke reden, en het activiteitenlogboek laat zien of de AI of welke moderator hem nam. Zo kun je een lezer die protesteert antwoorden, en in Europa verplicht de DSA je om elke verwijdering te motiveren.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">Volledig activiteitenlogboek</h3>
+          <p class="mt-2 text-sm text-surface-600">Elke beslissing wordt vastgelegd, met de schriftelijke reden en wie hem nam, en je kunt je data altijd exporteren. Heb je een on-premise installatie nodig, dan kan dat op aanvraag: <a href={localizePath('/book-a-call', locale)} class="font-medium text-brand-600 hover:text-brand-500">laten we praten</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900">Een AI die de vooruitgang van AI-modellen volgt</h2>
+      <p class="mt-4 text-surface-600">OpenModeration werkt met een eigen moderatie-AI, waarvan de beslissingen in gevoelige gevallen door andere AI-modellen worden gecontroleerd. Komt er een beter of goedkoper model uit, dan voegt ons team het snel toe, zonder dat jij iets hoeft aan te passen. Zo volgt je moderatie de vooruitgang van de AI-markt in plaats van vast te zitten aan één eigen algoritme. Comments News vermeldt op zijn website niet welke AI-modellen het gebruikt.</p>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Veelgestelde vragen" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        Comments News is een merk van de betreffende eigenaar. Bronnen: <a href="https://comments.news/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">comments.news</a> (geraadpleegd op 20 oktober 2026). Fout gezien? Mail ons op <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Meer weten</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/use-cases/news-publishers', locale)} class="font-medium text-brand-600 hover:text-brand-500">Reactiemoderatie voor nieuwsmedia &rarr;</a></li>
+        <li><a href={localizePath('/integrations/wordpress', locale)} class="font-medium text-brand-600 hover:text-brand-500">WordPress-reacties modereren &rarr;</a></li>
+        <li><a href={localizePath('/pricing', locale)} class="font-medium text-brand-600 hover:text-brand-500">De prijzen van OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/alternatives', locale)} class="font-medium text-brand-600 hover:text-brand-500">Alle vergelijkingen &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Vergelijk je huidige moderatie met OpenModeration." subtitle="Test OpenModeration in sandboxmodus op je eigen reacties, zonder iets te verbergen. Gratis tot 1.000 verzoeken per maand." buttonText="Plan een gesprek" buttonHref={localizePath('/book-a-call', locale)} />
+</BaseLayout>

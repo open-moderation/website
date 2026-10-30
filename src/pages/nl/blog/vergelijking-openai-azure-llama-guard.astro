@@ -1,0 +1,168 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "OpenAI Moderation vs Azure vs Llama Guard: vergelijking 2026",
+  "description": "Een eerlijke vergelijking van de belangrijkste AI-moderatieproviders op prestaties, prijs en taalondersteuning.",
+  "inLanguage": "nl",
+  "datePublished": "2026-06-10",
+  "dateModified": "2026-09-04",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/nl/blog/vergelijking-openai-azure-llama-guard" }
+};
+---
+
+<BaseLayout title="OpenAI Moderation vs Azure vs Llama Guard (2026)" description="OpenAI Moderation API, Azure AI Content Safety en Llama Guard naast elkaar: prestaties, prijs, ondersteunde talen en wanneer je welke inzet." jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: "Blog", href: localizePath('/blog', locale) }, { label: "Vergelijking van providers" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-06-10">10 juni 2026</time>
+        <span>&middot;</span>
+        <span>Bijgewerkt op 4 september 2026</span>
+        <span>&middot;</span>
+        <span>8 min lezen</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">OpenAI Moderation vs Azure vs Llama Guard: vergelijking 2026</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        De keuze van een moderatieprovider is een van de grotere beslissingen voor elk platform
+        dat door gebruikers gemaakte content host. Vergelijken is lastig, want elke provider heeft een eigen API,
+        eigen categorieën, eigen prijzen en een eigen taaldekking.
+      </p>
+      <p>
+        In dit artikel vergelijken we de drie meest gebruikte opties: de <strong>OpenAI Moderation API</strong>,
+        <strong>Azure AI Content Safety</strong> en <strong>Llama Guard van Meta</strong>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">OpenAI Moderation API</h2>
+      <p>
+        De Moderation API van OpenAI is de meest gebruikte AI-moderatiedienst. Hij zit in
+        het OpenAI-platform en vraagt geen extra infrastructuur.
+      </p>
+      <p><strong>Sterke punten:</strong></p>
+      <ul>
+        <li>Uitstekende nauwkeurigheid in het Engels, steeds de beste van de drie</li>
+        <li>Gedetailleerde categorieën, waaronder haat, intimidatie, seksueel, geweld, zelfbeschadiging en illegale activiteiten</li>
+        <li>Eenvoudige API: je stuurt tekst en krijgt scores terug</li>
+        <li>Lage latency, meestal 200-300 ms</li>
+      </ul>
+      <p><strong>Beperkingen:</strong></p>
+      <ul>
+        <li>Vendor lock-in: overstappen betekent je integratie herschrijven</li>
+        <li>Invoer beperkt tot 32K tekens</li>
+        <li>Wisselend buiten het Engels: goed voor de grote Europese talen, zwakker voor andere</li>
+        <li>Geen moderatie van afbeeldingen of video</li>
+        <li>Prijs: gratis (OpenAI geeft aan dat het moderation-endpoint gratis te gebruiken is)</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Azure AI Content Safety</h2>
+      <p>
+        Azure AI Content Safety van Microsoft is de gangbare keuze voor grote organisaties. Het maakt deel uit van Azure
+        en biedt sterke compliancefuncties en ondersteuning voor tekst en afbeeldingen.
+      </p>
+      <p><strong>Sterke punten:</strong></p>
+      <ul>
+        <li>Compliancecertificeringen voor enterprise: SOC 2, ISO 27001, HIPAA</li>
+        <li>Moderatie van zowel tekst als afbeeldingen</li>
+        <li>Eigen ernstdrempels en blocklists</li>
+        <li>Goede integratie met andere Azure-diensten</li>
+      </ul>
+      <p><strong>Beperkingen:</strong></p>
+      <ul>
+        <li>Vereist een Azure-abonnement, wat kleinere teams kan afschrikken</li>
+        <li>Vendor lock-in bij Microsoft</li>
+        <li>Complexere authenticatie en API-structuur</li>
+        <li>Prijs: gefactureerd per 1.000 tekstrecords (één record is maximaal 1.000 tekens), met een gratis laag van 5.000 records per maand; het betaalde tarief hangt af van je Azure-regio</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Llama Guard (HuggingFace)</h2>
+      <p>
+        Llama Guard van Meta is een veiligheidsclassificatiemodel dat speciaal voor deze taak is gebouwd en beschikbaar is op HuggingFace.
+        Het is open source, gratis te gebruiken en kan op je eigen hardware draaien.
+      </p>
+      <p><strong>Sterke punten:</strong></p>
+      <ul>
+        <li>Gratis, zonder API-kosten en zonder gebruikslimieten</li>
+        <li>Draait lokaal, dus er verlaten geen gegevens je infrastructuur</li>
+        <li>Open source, dus je kunt het controleren en aanpassen</li>
+        <li>Geen vendor lock-in</li>
+      </ul>
+      <p><strong>Beperkingen:</strong></p>
+      <ul>
+        <li>Vereist GPU-hardware voor een redelijke latency</li>
+        <li>1-2 seconden latency op een GPU, veel trager op een CPU</li>
+        <li>In de praktijk alleen Engels</li>
+        <li>Geen beheerde API: je host het zelf of gebruikt de HF Inference API</li>
+        <li>Minder categorieën dan OpenAI</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Vergelijking naast elkaar</h2>
+      <div class="overflow-hidden rounded-xl border border-surface-200">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-4 py-3 text-left font-semibold text-surface-900">Criterium</th>
+              <th class="px-4 py-3 text-left font-semibold text-surface-900">OpenAI</th>
+              <th class="px-4 py-3 text-left font-semibold text-surface-900">Azure</th>
+              <th class="px-4 py-3 text-left font-semibold text-surface-900">Llama Guard</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200">
+            <tr><td class="px-4 py-3">Nauwkeurigheid Engels</td><td class="px-4 py-3 text-accent-600">Beste</td><td class="px-4 py-3">Goed</td><td class="px-4 py-3">Goed</td></tr>
+            <tr><td class="px-4 py-3">Andere talen</td><td class="px-4 py-3">Goed (grote talen)</td><td class="px-4 py-3">Goed</td><td class="px-4 py-3">Beperkt</td></tr>
+            <tr><td class="px-4 py-3">Latency</td><td class="px-4 py-3">~250 ms</td><td class="px-4 py-3">~300 ms</td><td class="px-4 py-3">~1,5 s (GPU)</td></tr>
+            <tr><td class="px-4 py-3">Prijs</td><td class="px-4 py-3">Gratis</td><td class="px-4 py-3">Per 1.000 tekstrecords, verschilt per regio</td><td class="px-4 py-3">$0 (zelf gehost)</td></tr>
+            <tr><td class="px-4 py-3">Zelf te hosten</td><td class="px-4 py-3">Nee</td><td class="px-4 py-3">Nee</td><td class="px-4 py-3">Ja</td></tr>
+            <tr><td class="px-4 py-3">Open source</td><td class="px-4 py-3">Nee</td><td class="px-4 py-3">Nee</td><td class="px-4 py-3">Ja</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="text-xl font-bold text-surface-900">Ons advies: gebruik ze alle drie</h2>
+      <p>
+        Je hoeft niet voor één provider te kiezen. Meerdere providers die samenwerken, presteren meestal
+        beter. Gebruik OpenAI voor Engelstalige reacties die gedetailleerde categorieën nodig hebben. Gebruik Azure
+        als enterprise-compliance dat vereist. Gebruik Llama Guard voor gevoelige content die
+        op je eigen servers moet blijven, zonder API-kosten.
+      </p>
+      <p>
+        OpenModeration kiest een andere route: het draait op zijn eigen moderatie-AI en laat lastige
+        gevallen controleren door andere AI-modellen. De engine is modelonafhankelijk: komt er een beter of
+        goedkoper model uit, dan sluiten we het snel aan, en voor jou verandert er niets.
+      </p>
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Lees verder</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/content-moderation-api', locale)} class="font-medium text-brand-600 hover:text-brand-500">Eén contentmoderatie-API, gecontroleerd door meerdere AI-modellen &rarr;</a></li>
+        <li><a href={localizePath('/alternatives/openai-moderation', locale)} class="font-medium text-brand-600 hover:text-brand-500">Alternatief voor OpenAI Moderation: de workflow rond de scores &rarr;</a></li>
+        <li><a href={localizePath('/alternatives/azure-content-safety', locale)} class="font-medium text-brand-600 hover:text-brand-500">Alternatief voor Azure Content Safety: zonder lock-in &rarr;</a></li>
+        <li><a href={localizePath('/features', locale)} class="font-medium text-brand-600 hover:text-brand-500">Eén integratie, alle functies &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

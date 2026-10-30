@@ -1,0 +1,277 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import BrowserFrame from '../../../components/BrowserFrame.astro';
+import ModerationVerdict from '../../../components/ModerationVerdict.astro';
+import FAQ from '../../../components/FAQ.astro';
+import SectionTitle from '../../../components/SectionTitle.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const faqItems = [
+  {
+    question: "Waarom is mijn reactie verborgen?",
+    answer: "Omdat ze een van je regels overtrad. De console toont de exacte reden in gewone taal, bijvoorbeeld \"Deze reactie bevat een belediging\" of \"Deze reactie promoot oplichting\", samen met de volledige activiteitengeschiedenis van de beslissing.",
+  },
+  {
+    question: "Kan ik de redenering van de AI bij elke beslissing zien?",
+    answer: "Ja. Elke automatische beslissing heeft een schriftelijke onderbouwing. Reacties in het grijze gebied worden met hun volledige context door ons team beoordeeld, en die menselijke beslissingen, net als die van jezelf als je ingrijpt, worden op dezelfde manier vastgelegd: wie besliste, wanneer en waarom.",
+  },
+  {
+    question: "Waar worden mijn gegevens opgeslagen?",
+    answer: "In de Europese Unie, onder de regels van de AVG. Geen trackingcookies op deze site, geen doorverkoop van gegevens. Je kunt je gegevens op elk moment exporteren. Een on-premise installatie is op aanvraag mogelijk.",
+  },
+];
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://www.openmoderation.com/nl/product/transparantie",
+      "url": "https://www.openmoderation.com/nl/product/transparantie",
+      "name": "Transparantie: zie precies waarom elke reactie is verborgen",
+      "description": "Bij elke moderatiebeslissing hoort een schriftelijke reden, een volledig auditlog van AI en mensen, export van je gegevens en hosting in de EU.",
+      "inLanguage": "nl",
+      "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://www.openmoderation.com/nl/product/transparantie#faq",
+      "inLanguage": "nl",
+      "mainEntity": faqItems.map((item) => ({
+        "@type": "Question",
+        "name": item.question,
+        "acceptedAnswer": { "@type": "Answer", "text": item.answer }
+      }))
+    }
+  ]
+};
+
+const steps = [
+  {
+    title: "De AI verbergt een reactie",
+    description: "Ze overtreedt een van je regels: beledigingen, spam, oplichting of iets anders wat je regels verbieden.",
+  },
+  {
+    title: "Er komt een schriftelijke reden bij",
+    description: "Die zegt in gewone taal wat de reactie deed en welke regel ze overtrad, dus er zijn geen scores om te ontcijferen.",
+  },
+  {
+    title: "Alles komt in het log",
+    description: "Elke beslissing van AI of mens krijgt een tijdstempel en is doorzoekbaar, met wie besliste, wanneer en waarom.",
+  },
+];
+
+const proofs = [
+  {
+    title: "Schriftelijke redenen",
+    description: "Elke verborgen reactie verklaart zichzelf, in gewone taal, direct in de console.",
+    icon: "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z",
+    href: null,
+    hrefLabel: null,
+  },
+  {
+    title: "Volledig auditlog",
+    description: "Beslissingen van AI en mensen staan op één plek, met tijdstempels en volledige context, klaar voor een DSA-audit.",
+    icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
+    href: localizePath('/dsa-compliance', locale),
+    hrefLabel: "Bekijk de DSA-audittrajecten",
+  },
+  {
+    title: "Je gegevens, exporteerbaar",
+    description: "Exporteer je moderatiegegevens en beslissingsgeschiedenis op elk moment, voor je eigen administratie of voor een toezichthouder.",
+    icon: "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4",
+  },
+  {
+    title: "Gehost in de EU en AVG",
+    description: "Je gegevens blijven in de Europese Unie. Een on-premise installatie is op aanvraag mogelijk.",
+    icon: "M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+    href: localizePath('/faq', locale),
+    hrefLabel: "Vragen over gegevens in de FAQ",
+  },
+];
+---
+
+<BaseLayout
+  title="Transparantie: zie waarom elke reactie is verborgen"
+  description="Bij elke moderatiebeslissing hoort een schriftelijke reden, een volledig auditlog van AI en mensen, export van je gegevens en hosting in de Europese Unie."
+  jsonLd={pageJsonLd}
+>
+  <Breadcrumb items={[{ label: 'Home', href: localizePath('/', locale) }, { label: 'Product' }, { label: 'Transparantie' }]} />
+
+  <!-- Hero -->
+  <section class="relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-brand-50 via-white to-surface-50" />
+    <div class="relative mx-auto max-w-7xl px-4 pb-12 pt-10 sm:px-6 lg:px-8 lg:pt-14">
+      <div class="mx-auto max-w-3xl text-center">
+        <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600 shadow-sm">
+          <span class="flex h-2 w-2 animate-pulse-dot rounded-full bg-accent-500" />
+          Onze belofte · Transparantie
+        </div>
+        <h1 class="animate-fade-in-up text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">
+          Bij elke verborgen reactie hoort een schriftelijke <em class="italic text-brand-800">reden</em>.
+        </h1>
+        <p class="animate-fade-in-up delay-1 mt-6 text-lg leading-relaxed text-surface-500 sm:text-xl">
+          Als je een moderatiebeslissing niet kunt uitleggen, kun je haar ook niet verdedigen. OpenModeration vertelt je
+          in gewone taal waarom elke reactie is verborgen, elke keer weer.
+        </p>
+        <div class="animate-fade-in-up delay-2 mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">
+            Probeer het gratis
+          </a>
+          <a href={localizePath('/how-it-works', locale)} class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">
+            Bekijk hoe het werkt
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+        <p class="animate-fade-in-up delay-2 mt-4 text-sm text-surface-400">Geen creditcard nodig</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Proof capture -->
+  <section class="bg-white pb-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-xl">
+        <BrowserFrame
+          caption="Demo-workspace: een afgewezen oplichtingsreactie, de schriftelijke reden en de volledige activiteitengeschiedenis."
+        >
+          <ModerationVerdict slot="content" />
+          <div slot="annotation" class="absolute bottom-3 right-3 rounded-full border border-brand-200 bg-white/95 px-3 py-1 text-xs font-semibold text-brand-800 shadow-sm">
+            &#x270D; De schriftelijke reden
+          </div>
+        </BrowserFrame>
+      </div>
+    </div>
+  </section>
+
+  <!-- Black box vs open -->
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-3xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">
+          Een verborgen reactie die je niet kunt uitleggen, is een risico
+        </h2>
+        <p class="mt-4 text-lg text-surface-500">
+          Op de dag dat een klant, je baas of een toezichthouder vraagt &ldquo;waarom is dit verborgen?&rdquo;,
+          is &ldquo;het algoritme besliste&rdquo; geen antwoord.
+        </p>
+      </div>
+      <div class="grid gap-8 md:grid-cols-2">
+        <div class="rounded-xl border border-red-100 bg-red-50/50 p-8">
+          <h3 class="flex items-center gap-2 text-xl font-semibold text-red-700">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            Black-boxmoderatie
+          </h3>
+          <ul class="mt-6 space-y-3 text-sm text-surface-600">
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Kale scores zonder context of uitleg</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Geen schriftelijke onderbouwing bij verborgen reacties</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Niets om te laten zien bij een audit of geschil</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Je ontdekt fouten pas als het te laat is</li>
+          </ul>
+        </div>
+        <div class="rounded-xl border border-brand-200 bg-brand-50 p-8 shadow-sm">
+          <h3 class="flex items-center gap-2 text-xl font-semibold text-brand-700">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            Met OpenModeration
+          </h3>
+          <ul class="mt-6 space-y-3 text-sm text-surface-700">
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Een schriftelijke reden bij elke verborgen reactie</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Acties van AI en mensen in één log</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Uit te leggen aan klanten, leidinggevenden en toezichthouders</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Je eigen regels, opgezet met ons team</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="border-t border-surface-100 bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <SectionTitle
+        title="Zo werkt transparantie"
+        subtitle="Drie stappen brengen je van de gemarkeerde reactie naar een reden die je aan iedereen kunt laten zien."
+      />
+      <div class="grid gap-6 md:grid-cols-3">
+        {steps.map((step, i) => (
+          <div class="relative rounded-xl border border-surface-200 bg-white p-8">
+            <span class="text-4xl font-bold text-brand-100">0{i + 1}</span>
+            <h3 class="mt-4 text-lg font-semibold text-surface-900">{step.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-surface-500">{step.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Proofs -->
+  <section class="border-t border-surface-100 bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <SectionTitle
+        title="Zo kun je het controleren"
+        subtitle="Vier dingen die je zelf kunt nagaan, in plaats van ons op ons woord te geloven."
+      />
+      <div class="stagger-fade-in grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {proofs.map((p) => (
+          <div class="flex flex-col rounded-xl border border-surface-200 bg-white p-6 transition hover:-translate-y-0.5 hover:shadow-md">
+            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
+              <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={p.icon}/></svg>
+            </div>
+            <h3 class="mt-4 text-lg font-semibold text-surface-900">{p.title}</h3>
+            <p class="mt-2 flex-1 text-sm leading-relaxed text-surface-500">{p.description}</p>
+            {p.href && (
+              <a href={p.href} class="mt-4 text-sm font-medium text-brand-600 hover:text-brand-500">
+                {p.hrefLabel} &rarr;
+              </a>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Stat -->
+  <section class="border-t border-surface-100 bg-white py-16">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <p class="text-5xl font-bold tracking-tight text-brand-900 sm:text-6xl">68%</p>
+      <p class="mt-4 text-lg text-surface-600 sm:text-xl">
+        van de consumenten leest je reacties voordat ze iets kopen.
+      </p>
+      <p class="mt-2 text-sm text-surface-400">Bron: consumentenonderzoek aangehaald door Respondology</p>
+      <p class="mx-auto mt-6 max-w-2xl text-surface-500">
+        Wat ze daar vinden, bepaalt of ze je vertrouwen. Daarom hoort bij elke moderatiebeslissing
+        de reden, op schrift.
+      </p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="border-t border-surface-100 bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <SectionTitle title="Veelgestelde vragen" />
+      <FAQ items={faqItems} disableJsonLd />
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="relative overflow-hidden bg-ink-900 py-20">
+    <div class="relative mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+        Bij elke moderatiebeslissing hoort de uitleg.
+      </h2>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-300">
+        Koppel je pagina in een paar klikken en zie de schriftelijke reden achter elke verborgen reactie.
+      </p>
+      <div class="mt-8">
+        <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 text-sm font-semibold text-surface-900 shadow-sm transition hover:bg-surface-100">
+          Probeer het gratis
+        </a>
+        <p class="mt-4 text-sm text-surface-400">Geen creditcard nodig</p>
+      </div>
+      <p class="mt-12 text-xs text-surface-500">Geen trackingcookies. Gehost in de EU. Elke beslissing uitgelegd.</p>
+    </div>
+  </section>
+</BaseLayout>

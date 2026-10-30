@@ -4,6 +4,9 @@ import { bookingUrl, useTranslations } from '../i18n/ui';
 
 const BOOKING_URL = bookingUrl(getLocale(Astro.url.pathname));
 const locale = getLocale(Astro.url.pathname);
+const glossary = ({ en: ['Glossary', 'DSA, AI and moderation terms'], fr: ['Lexique', 'Les termes du DSA, de l’IA et de la modération'], es: ['Glosario', 'Términos de DSA, IA y moderación'], de: ['Glossar', 'Begriffe zu DSA, KI und Moderation'], it: ['Glossario', 'Termini di DSA, IA e moderazione'], pt: ['Glossário', 'Termos de DSA, IA e moderação'], pl: ['Słownik', 'Pojęcia DSA, AI i moderacji'], nl: ['Woordenlijst', 'Begrippen rond DSA, AI en moderatie'] } as Record<string, string[]>)[locale] ?? ['Glossary', 'DSA, AI and moderation terms'];
+const glossaryHref = localizePath('/glossary', locale);
+const compare = ({ en: ['Alternative to'], fr: ['Alternative à'], es: ['Alternativa a'], de: ['Alternative zu'], it: ['Alternativa a'], pt: ['Alternativa ao'], pl: ['Alternatywa dla'], nl: ['Alternatief voor'] } as Record<string, string[]>)[locale] ?? ['Alternative to'];
 const t = useTranslations(locale);
 const l = (path: string) => localizePath(path, locale);
 const alternates = getAlternates(Astro.url.pathname);
@@ -119,10 +122,10 @@ const switchTargets = locales.map((code) => ({ code, href: alternates[code] ?? l
               <p class="om-mega-eyebrow">{t('nav.whyOm')}</p>
               <a href={l('/features')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.features')}</strong><br /><span class="text-xs text-surface-500">{t('nav.featuresDesc')}</span></div></a>
               <a href={l('/build-vs-buy')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.buildVsBuy')}</strong><br /><span class="text-xs text-surface-500">{t('nav.buildVsBuyDesc')}</span></div></a>
-              <a href={l('/alternatives/perspective-api')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.perspective')}</strong><br /><span class="text-xs text-surface-500">{t('nav.perspectiveDesc')}</span></div></a>
-              <a href={l('/alternatives/openai-moderation')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.openai')}</strong><br /><span class="text-xs text-surface-500">{t('nav.openaiDesc')}</span></div></a>
-              <a href={l('/alternatives/azure-content-safety')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.azure')}</strong><br /><span class="text-xs text-surface-500">{t('nav.azureDesc')}</span></div></a>
-              <a href={l('/alternatives/checkstep')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.checkstep')}</strong><br /><span class="text-xs text-surface-500">{t('nav.checkstepDesc')}</span></div></a>
+              <a href={l('/alternatives/bodyguard')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Bodyguard</strong><br /><span class="text-xs text-surface-500">{compare[0]} Bodyguard</span></div></a>
+              <a href={l('/alternatives/utopia')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Utopia</strong><br /><span class="text-xs text-surface-500">{compare[0]} Utopia</span></div></a>
+              <a href={l('/alternatives/ferret-go-vs-conversario')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Conversario & Ferret Go</strong><br /><span class="text-xs text-surface-500">{compare[0]} Conversario</span></div></a>
+              <a href={l('/alternatives/netino')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">Netino</strong><br /><span class="text-xs text-surface-500">{compare[0]} Netino</span></div></a>
               <a href={l('/alternatives')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-surface-100 text-surface-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.allComparisons')}</strong><br /><span class="text-xs text-surface-500">{t('nav.allComparisonsDesc')}</span></div></a>
             </div>
           </div>
@@ -140,6 +143,7 @@ const switchTargets = locales.map((code) => ({ code, href: alternates[code] ?? l
               <p class="om-mega-eyebrow">{t('nav.learn')}</p>
               <a href={l('/blog')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.blog')}</strong><br /><span class="text-xs text-surface-500">{t('nav.blogDesc')}</span></div></a>
               <a href={l('/faq')} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{t('nav.faq')}</strong><br /><span class="text-xs text-surface-500">{t('nav.faqDesc')}</span></div></a>
+              <a href={glossaryHref} class="om-mega-link"><div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg></div><div><strong class="text-sm font-semibold text-surface-900">{glossary[0]}</strong><br /><span class="text-xs text-surface-500">{glossary[1]}</span></div></a>
             </div>
             <div>
               <p class="om-mega-eyebrow">{t('nav.company')}</p>
@@ -171,8 +175,8 @@ const switchTargets = locales.map((code) => ({ code, href: alternates[code] ?? l
         </div>
       </div>
       <a href="https://app.openmoderation.com/login" class="hidden whitespace-nowrap px-2 py-2 text-sm font-medium text-surface-600 transition hover:text-surface-900 xl:inline-block">{t('nav.login')}</a>
-      <a href={BOOKING_URL} target="_blank" rel="noopener" class="hidden whitespace-nowrap rounded-lg border border-surface-300 px-4 py-2 text-sm font-medium text-surface-700 transition hover:border-surface-900 hover:text-surface-900 sm:inline-block">{t('cta.book')}</a>
-      <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 whitespace-nowrap rounded-lg bg-brand-900 px-5 py-2 text-sm font-medium text-white shadow-sm hover:bg-brand-800">{t('nav.signup')}</a>
+      <a href="https://app.openmoderation.com/signup" class="hidden whitespace-nowrap rounded-lg border border-surface-300 px-4 py-2 text-sm font-medium text-surface-700 transition hover:border-surface-900 hover:text-surface-900 sm:inline-block">{t('nav.signup')}</a>
+      <a href={BOOKING_URL} target="_blank" rel="noopener" class="inline-flex items-center gap-2 whitespace-nowrap rounded-lg bg-brand-900 px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">📅 {t('cta.book')}</a>
     </div>
 
     <!-- Mobile hamburger -->
@@ -186,8 +190,8 @@ const switchTargets = locales.map((code) => ({ code, href: alternates[code] ?? l
   <!-- Mobile menu -->
   <div id="om-menu">
     <div class="om-actions-mobile">
-      <a href="https://app.openmoderation.com/signup" style="background:#1e3a8a;color:white">{t('nav.signup')}</a>
-      <a href={BOOKING_URL} target="_blank" rel="noopener" style="color:#1e3a8a;border:1px solid #1e3a8a">{t('cta.book')}</a>
+      <a href={BOOKING_URL} target="_blank" rel="noopener" style="background:#1e3a8a;color:white">📅 {t('cta.book')}</a>
+      <a href="https://app.openmoderation.com/signup" style="color:#1e3a8a;border:1px solid #1e3a8a">{t('nav.signup')}</a>
       <a href="https://app.openmoderation.com/login" style="color:#334155;border:1px solid #cbd5e1">{t('nav.login')}</a>
     </div>
     <hr style="margin: 0; border-color: #e2e8f0;" />
@@ -212,12 +216,12 @@ const switchTargets = locales.map((code) => ({ code, href: alternates[code] ?? l
     <a href={l('/use-cases/enterprise-saas')}>{t('nav.saas')}</a>
     <hr />
     <a href={l('/build-vs-buy')}>{t('nav.buildVsBuy')}</a>
-    <a href={l('/alternatives/perspective-api')}>{t('nav.perspective')}</a>
-    <a href={l('/alternatives/openai-moderation')}>{t('nav.openai')}</a>
+    <a href={l('/alternatives/bodyguard')}>Bodyguard</a>
+    <a href={l('/alternatives/utopia')}>Utopia</a>
     <a href={l('/alternatives/mistral-moderation')}>{t('nav.mistral')}</a>
     <a href={l('/alternatives/hive-moderation')}>{t('nav.hive')}</a>
-    <a href={l('/alternatives/azure-content-safety')}>{t('nav.azure')}</a>
-    <a href={l('/alternatives/checkstep')}>{t('nav.checkstep')}</a>
+    <a href={l('/alternatives/ferret-go-vs-conversario')}>Conversario & Ferret Go</a>
+    <a href={l('/alternatives/netino')}>Netino</a>
     <a href={l('/alternatives')}>{t('nav.allComparisons')}</a>
     <a href={l('/dsa-compliance')}>{t('nav.dsa')}</a>
     <a href={l('/pricing')}>{t('nav.pricing')}</a>

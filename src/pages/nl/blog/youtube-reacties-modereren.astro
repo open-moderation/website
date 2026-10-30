@@ -1,0 +1,307 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const title = "YouTube-reacties modereren: tools van Studio en grenzen";
+const description = "YouTube-reacties modereren: ter beoordeling vasthouden, geblokkeerde woorden en links, goedgekeurde en verborgen gebruikers, livechat en automatisering.";
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "YouTube-reacties modereren: zo gebruik je de tools van YouTube Studio en wanneer automatiseer je",
+  "description": description,
+  "inLanguage": "nl",
+  "datePublished": "2026-10-30",
+  "dateModified": "2026-10-30",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/nl/blog/youtube-reacties-modereren" }
+};
+
+const levels = [
+  { level: "Geen reacties vasthouden", effect: "Alles wordt gepubliceerd. Je grijpt alleen achteraf in.", fit: "Kleine kanalen met een rustig, bekend publiek" },
+  { level: "Mogelijk ongepaste reacties vasthouden", effect: "Het automatische systeem van YouTube houdt reacties vast die het riskant vindt; de rest gaat live.", fit: "De verstandige standaard voor de meeste kanalen" },
+  { level: "Strenger vasthouden", effect: "Een breder scala aan reacties wordt vastgehouden, dus meer spam en misbruik wordt opgevangen, maar ook meer onschuldige reacties.", fit: "Kanalen die trolls aantrekken of onder een raid liggen" },
+  { level: "Alle reacties vasthouden", effect: "Niets wordt gepubliceerd tot iemand het goedkeurt.", fit: "Gevoelige video's, korte periodes, kleine volumes" },
+];
+
+const comparison = [
+  { need: "Een bekende belediging of verboden woord tegenhouden", builtin: "Ja, met geblokkeerde woorden, als de spelling dicht genoeg in de buurt komt", tool: "Ja, inclusief varianten en omwegen" },
+  { need: "Sarcasme, context en codetaal begrijpen", builtin: "Deels: het filter van YouTube is generiek en je kunt het niet afstellen", tool: "Ja, elke reactie wordt in context gelezen" },
+  { need: "Regels toepassen die specifiek zijn voor je kanaal", builtin: "Nee, alleen woorden, links en een strengheidsniveau", tool: "Ja, je regels en je use cases in gewone taal" },
+  { need: "De achterstand aan vastgehouden reacties wegwerken", builtin: "Nee, iemand moet de wachtrij openen en beslissen", tool: "Ja, duidelijke gevallen worden beslist, alleen twijfelgevallen gaan naar een mens" },
+  { need: "Schriftelijke reden bij elke beslissing", builtin: "Nee", tool: "Ja, bij elke vastgehouden of geweigerde reactie" },
+  { need: "Audittrail van beslissingen", builtin: "Geen exporteerbare geschiedenis", tool: "Ja, elke beslissing wordt gelogd" },
+  { need: "Meerdere kanalen en andere netwerken op één plek", builtin: "Nee, kanaal per kanaal", tool: "Ja, YouTube, Facebook, Instagram, WordPress en je website" },
+];
+
+const faqItems = [
+  {
+    question: "Wat betekent \"ter beoordeling vastgehouden\" op YouTube?",
+    answer: "De reactie is niet gepubliceerd. Ze wacht in het onderdeel Ter beoordeling vastgehouden van YouTube Studio, waar de eigenaar van het kanaal of een moderator haar kan goedkeuren, verwijderen of laten staan. YouTube houdt reacties vast vanwege je geblokkeerde woorden of links, omdat het automatische filter ze mogelijk ongepast vond, of omdat je hebt gekozen om alles vast te houden. Vastgehouden reacties worden een beperkte tijd bewaard (volgens het helpcentrum van YouTube momenteel tot 60 dagen) en verdwijnen daarna als niemand iets doet.",
+  },
+  {
+    question: "Weet de auteur dat zijn YouTube-reactie is vastgehouden?",
+    answer: "Nee. YouTube stuurt de auteur geen melding als een reactie wordt vastgehouden, en vertelt een verborgen gebruiker niet dat hij verborgen is. Die discretie voorkomt veel reacties als \"jullie censureren mij\", maar betekent ook dat je de auteur een uitleg verschuldigd bent als hij erom vraagt.",
+  },
+  {
+    question: "Hoe werken geblokkeerde woorden op YouTube?",
+    answer: "Je voegt een lijst met woorden en zinnen toe in de community- of reactie-instellingen van je kanaal. Reacties die ze bevatten of er sterk op lijken, worden ter beoordeling vastgehouden in plaats van gepubliceerd, en dezelfde lijst geldt voor de livechat. Goedgekeurde gebruikers omzeilen de lijst, en het filter begrijpt geen betekenis, dus een verhulde of sarcastische belediging komt er nog steeds door.",
+  },
+  {
+    question: "Wat is het verschil tussen een goedgekeurde en een verborgen gebruiker?",
+    answer: "Reacties van een goedgekeurde gebruiker worden gepubliceerd zonder door je filters te gaan, wat past bij vaste fans of partners. Reacties en livechatberichten van een verborgen gebruiker worden voor iedereen op je kanaal verborgen, zonder dat die gebruiker het hoort. Gebruik verborgen gebruikers voor hardnekkige trolls en spamaccounts.",
+  },
+  {
+    question: "Kan ik iemand moderatierechten geven zonder mijn account te delen?",
+    answer: "Ja. Je kunt moderators aan je kanaal toevoegen. Standaardmoderators kunnen vastgehouden reacties beoordelen en ingrijpen in de livechat; beherende moderators kunnen ook lijsten beheren, zoals andere standaardmoderators en goedgekeurde gebruikers. Voor volledig kanaalbeheer kun je met de kanaalrechten van YouTube mensen met een rol uitnodigen in plaats van een wachtwoord te delen.",
+  },
+  {
+    question: "Kunnen reacties op YouTube automatisch worden gemodereerd?",
+    answer: "Het eigen filter van YouTube houdt sommige reacties automatisch vast, maar het past je regels niet toe en laat de wachtrij aan jou over. Een tool die via de officiële YouTube Data API is gekoppeld, kan elke reactie volgens je regels publiceren, ter beoordeling vasthouden of weigeren. Dat doet OpenModeration, met een schriftelijke reden bij elke beslissing.",
+  },
+  {
+    question: "Geldt dit ook voor YouTube Shorts?",
+    answer: "Reacties op Shorts horen bij de reacties van je kanaal en volgen dezelfde instellingen: geblokkeerde woorden, geblokkeerde links, verborgen gebruikers en het niveau van vasthouden gelden allemaal. De livechat tijdens een stream is een aparte stroom, met eigen tools zoals de langzame modus en time-outs.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} ogType="article" jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: "Blog", href: localizePath('/blog', locale) }, { label: "YouTube-reacties modereren" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-30">30 oktober 2026</time>
+        <span>&middot;</span>
+        <span>9 min lezen</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">YouTube-reacties modereren: zo gebruik je de tools van YouTube Studio, en wanneer automatiseer je</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Reacties onder een YouTube-video blijven er jaren staan, en vaak zijn ze het eerste waar een kijker
+        naartoe scrolt. Voor een medium of een merk zijn een paar beledigingen, oplichterslinks of botreacties onder een video
+        genoeg om het beeld van het hele kanaal te veranderen. Deze gids legt uit hoe je YouTube-reacties modereert
+        met de tools die YouTube Studio je al geeft, waar die tools ophouden en hoe een
+        tool voor automatische moderatie het repetitieve deel overneemt.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">In het kort</h2>
+      <ul>
+        <li><strong>Begin met YouTube Studio.</strong> Stel een niveau van vasthouden in, een lijst met geblokkeerde woorden, geblokkeerde links, goedgekeurde gebruikers en verborgen gebruikers. Het is gratis en vangt de duidelijke gevallen op.</li>
+        <li><strong>"Ter beoordeling vastgehouden" is een wachtrij, geen beslissing.</strong> Iemand moet elke vastgehouden reactie nog goedkeuren of verwijderen, en vastgehouden reacties verlopen als niemand dat doet.</li>
+        <li><strong>De ingebouwde filters vergelijken woorden en gebruiken het generieke oordeel van YouTube.</strong> Ze kennen je regels, je onderwerpen en je merk niet.</li>
+        <li><strong>Een automatische tool</strong> die via de YouTube Data API is gekoppeld, publiceert, houdt vast of weigert elke reactie volgens je regels en legt bij elke beslissing een reden vast.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Hoe modereer je YouTube-reacties?</h2>
+      <p>
+        YouTube geeft een kanaal drie soorten controle: instellingen die bepalen welke reacties direct worden
+        gepubliceerd, lijsten met personen en woorden, en handmatige acties per reactie. Daarnaast
+        kun je per video reacties aanzetten, vasthouden of uitzetten, en bij video's voor kinderen schakelt YouTube
+        reacties zelf uit.
+      </p>
+      <p>
+        Handmatige acties zijn beschikbaar op de reactiepagina van YouTube Studio en direct onder de video.
+        Bij elke reactie kan de eigenaar van het kanaal antwoorden, liken, de reactie bovenaan vastzetten, verwijderen, rapporteren of
+        de gebruiker voor het kanaal verbergen. De namen in de menu's veranderen af en toe, maar deze functies zijn
+        al jaren stabiel.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Wat zijn de reactie-instellingen van YouTube?</h2>
+      <p>
+        De belangrijkste instelling is hoeveel reacties YouTube ter beoordeling vasthoudt voordat ze worden gepubliceerd.
+        Je kunt een standaard voor het kanaal instellen en die per video aanpassen. Er zijn vier niveaus.
+      </p>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Instelling</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Wat er gebeurt</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Geschikt voor</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {levels.map((row) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{row.level}</td>
+              <td class="px-4 py-3 text-surface-600">{row.effect}</td>
+              <td class="px-4 py-3 text-surface-600">{row.fit}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <p>
+        "Mogelijk ongepaste reacties vasthouden" leunt op de eigen classifier van YouTube. Je kunt niet zien waarom die
+        een reactie vasthield, en je kunt hem niet vertellen wat er voor je kanaal toe doet. Het strengere niveau vangt
+        meer op, ten koste van meer valse positieven die iemand met de hand moet goedkeuren.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Hoe werken geblokkeerde woorden en geblokkeerde links?</h2>
+      <ul>
+        <li>
+          <strong>Geblokkeerde woorden.</strong> Je zet woorden en zinnen op een lijst die je niet onder je video's wilt zien.
+          Reacties die ze bevatten of er sterk op lijken, worden ter beoordeling vastgehouden. Dezelfde lijst blokkeert
+          overeenkomende berichten in de livechat.
+        </li>
+        <li>
+          <strong>Geblokkeerde links.</strong> Staat dit aan, dan worden reacties met een URL vastgehouden in plaats van
+          gepubliceerd, en worden links in de livechat geblokkeerd. Het is de eenvoudigste bescherming tegen phishing,
+          nepwinacties en cryptofraude, die dol zijn op de antwoorden onder populaire video's.
+        </li>
+      </ul>
+      <p>
+        Reacties van jezelf, je moderators en je goedgekeurde gebruikers worden niet door deze filters tegengehouden. Dat
+        is handig, maar het betekent ook dat een gehackt of nagemaakt "vertrouwd" account er rechtstreeks
+        doorheen gaat.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Goedgekeurde gebruikers, verborgen gebruikers en moderators</h2>
+      <ul>
+        <li><strong>Goedgekeurde gebruikers.</strong> Hun reacties worden gepubliceerd zonder langs geblokkeerde woorden, geblokkeerde links of het niveau van vasthouden te gaan. Houd deze lijst kort: vaste bijdragers, partners, je eigen team.</li>
+        <li><strong>Verborgen gebruikers.</strong> Hun reacties en livechatberichten worden voor iedereen op je kanaal verborgen. Ze krijgen het niet te horen. Dit is het antwoord van YouTube op hardnekkige trolls en spamaccounts.</li>
+        <li><strong>Moderators.</strong> Je kunt vertrouwde personen moderatierechten geven. Standaardmoderators beoordelen vastgehouden reacties en helpen in de livechat; beherende moderators kunnen ook sommige lijsten beheren, zoals standaardmoderators en goedgekeurde gebruikers. Voor bredere toegang tot YouTube Studio gebruik je kanaalrechten in plaats van een wachtwoord te delen.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Hoe modereer je de livechat op YouTube?</h2>
+      <p>De livechat gaat veel sneller dan reacties, dus YouTube geeft hem eigen tools.</p>
+      <ul>
+        <li><strong>Een bericht verwijderen, een gebruiker een time-out geven of verbergen</strong> voor de rest van de stream en het kanaal.</li>
+        <li><strong>De langzame modus</strong> beperkt hoe vaak iemand iets kan plaatsen.</li>
+        <li><strong>Chat alleen voor abonnees of leden</strong> beperkt wie er mag schrijven.</li>
+        <li><strong>Geblokkeerde woorden, geblokkeerde links en het vasthouden van mogelijk ongepaste berichten</strong> gelden ook voor de chat.</li>
+        <li><strong>Moderators</strong> zijn onmisbaar: plan er minstens één per livestream, twee voor een groot evenement.</li>
+      </ul>
+      <p>
+        Bereid de instellingen voor een livestream van tevoren voor. Tijdens de uitzending heeft niemand tijd om
+        een woordenlijst bij te werken.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Waarom de tools van YouTube niet genoeg zijn voor media en merken</h2>
+      <p>YouTube Studio is gemaakt voor een creator die zijn eigen kanaal beheert. Media en merken lopen snel tegen de grenzen aan.</p>
+      <ul>
+        <li><strong>De wachtrij groeit sneller dan je hem kunt lezen.</strong> Een nieuwsvideo over een beladen onderwerp of een advertentiecampagne kan in één nacht honderden vastgehouden reacties opleveren. Vastgehouden reacties die niemand beoordeelt, verlopen uiteindelijk, ook de terechte.</li>
+        <li><strong>Woordenlijsten missen wat telt.</strong> "Id10ot", een belediging met spaties ertussen, sarcasme onder een productlancering of een gecodeerd scheldwoord bevat geen woord van je lijst.</li>
+        <li><strong>Het filter van YouTube is generiek.</strong> Het kent je regels niet: geen promotie van concurrenten, geen persoonsgegevens, geen politieke discussie onder een receptvideo, geen smaad over genoemde personen onder een nieuwsreportage.</li>
+        <li><strong>Meerdere talen.</strong> Internationale kanalen krijgen reacties in meerdere talen. Een woordenlijst dekt alleen de woorden die je zelf hebt bedacht, taal per taal.</li>
+        <li><strong>Geen reden, geen geschiedenis.</strong> YouTube vertelt je niet welke regel op een reactie van toepassing was en houdt geen exporteerbare log bij van wie wat besliste. Interne evaluaties en de DSA vragen daar allebei om.</li>
+        <li><strong>Kanaal per kanaal.</strong> Een groep met meerdere kanalen, Facebook-pagina's en Instagram-accounts heeft evenveel instellingenschermen om op één lijn te houden.</li>
+      </ul>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Wat je nodig hebt</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">YouTube Studio</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Tool voor automatische moderatie</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {comparison.map((row) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{row.need}</td>
+              <td class="px-4 py-3 text-surface-600">{row.builtin}</td>
+              <td class="px-4 py-3 text-surface-600">{row.tool}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">Best practices voor het modereren van YouTube-reacties</h2>
+      <ol>
+        <li><strong>Publiceer je regels.</strong> Een korte notitie in de kanaalbeschrijving of een vastgezette reactie onder gevoelige video's schept verwachtingen en geeft je iets om naar te verwijzen.</li>
+        <li><strong>Houd mogelijk ongepaste reacties standaard vast,</strong> en schakel alleen bij video's die problemen aantrekken over naar het strengere niveau.</li>
+        <li><strong>Blokkeer links,</strong> tenzij je community ze echt moet kunnen delen.</li>
+        <li><strong>Onderhoud je geblokkeerde woorden</strong> met varianten, bijnamen van mensen die worden aangevallen en de oplichterszinnen die je in antwoorden ziet.</li>
+        <li><strong>Beoordeel de wachtrij elke dag.</strong> Terechte reacties goedkeuren is net zo belangrijk als slechte weghalen: kritiek is geen misbruik.</li>
+        <li><strong>Verberg gebruikers in plaats van met ze in discussie te gaan.</strong> Verbergen gebeurt stil en stopt de escalatie. Onze gids over <a href={localizePath('/blog/handle-negative-comments-trolls', locale)} class="text-brand-600 hover:text-brand-500">omgaan met negatieve reacties en trolls</a> behandelt de antwoorden die de moeite waard zijn.</li>
+        <li><strong>Zet reacties alleen als laatste redmiddel uit.</strong> Een lege reactiesectie zendt ook een boodschap uit.</li>
+        <li><strong>Houd bij</strong> wat je hebt weggehaald en waarom, zeker voor nieuws- en merkkanalen.</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Hoe modereert een automatische tool YouTube-reacties?</h2>
+      <p>
+        YouTube biedt een officiële API, de YouTube Data API, waarmee een geautoriseerde applicatie de reacties van een
+        kanaal kan lezen en hun moderatiestatus kan instellen. Een automatische tool gebruikt die in drie stappen:
+        hij haalt nieuwe reacties op, analyseert ze een voor een en publiceert ze dan, houdt ze ter beoordeling vast of weigert ze.
+        Dat zijn dezelfde acties als in YouTube Studio, toegepast op elke reactie zonder te wachten
+        tot iemand de wachtrij opent.
+      </p>
+      <p>
+        Zo werkt de <a href={localizePath('/integrations/youtube', locale)} class="text-brand-600 hover:text-brand-500">YouTube-integratie van OpenModeration</a>.
+        Je koppelt je kanaal en beschrijft je regels en je use cases in gewone taal. Duidelijke gevallen
+        worden automatisch afgehandeld, twijfelgevallen worden door ons team behandeld, je ziet alles in realtime in één console, en elke beslissing
+        komt met een schriftelijke reden en wordt gelogd. Dezelfde console dekt je Facebook-pagina's, Instagram-accounts,
+        WordPress-sites en je eigen website, zodat je regels overal hetzelfde blijven.
+      </p>
+      <ul>
+        <li><strong>Voor media:</strong> houd het debat onder nieuwsvideo's open en houd smaad, intimidatie van journalisten en gecoördineerde campagnes tegen. Bekijk de <a href={localizePath('/use-cases/news-publishers', locale)} class="text-brand-600 hover:text-brand-500">toepassing voor nieuwsuitgevers</a>.</li>
+        <li><strong>Voor merken:</strong> bescherm lanceringsvideo's en advertentiecampagnes tegen oplichting, spam en promotie van concurrenten, zonder echte klachten van klanten te verbergen.</li>
+        <li><strong>Voor compliance:</strong> elke beslissing wordt uitgelegd en vastgelegd, wat helpt bij de <a href={localizePath('/dsa-compliance', locale)} class="text-brand-600 hover:text-brand-500">DSA-verplichtingen</a>. De gegevens worden in de EU gehost.</li>
+      </ul>
+      <p>
+        Ons team zet de moderatie samen met je op: regels, voorbeelden uit je eigen reacties en de drempel
+        waarboven een mens moet beslissen. Wil je zien hoe je eigen reacties zouden worden beoordeeld, <a href={localizePath('/demo', locale)} class="text-brand-600 hover:text-brand-500">probeer dan de live demo</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Zo kies je een moderatietool voor YouTube</h2>
+      <ol>
+        <li><strong>Officiële API.</strong> De tool moet via de YouTube Data API koppelen met jouw toestemming, nooit met je wachtwoord.</li>
+        <li><strong>De juiste acties.</strong> Publiceren, ter beoordeling vasthouden en weigeren, te kiezen per regel.</li>
+        <li><strong>Je regels.</strong> Kun je regels voor je kanaal schrijven, of alleen generieke categorieën aan- en uitzetten?</li>
+        <li><strong>Context en talen.</strong> Vangt de tool sarcasme, omwegen en de talen van je publiek op?</li>
+        <li><strong>Menselijke beoordeling.</strong> Is er een gedeelde wachtrij voor twijfelachtige reacties?</li>
+        <li><strong>Uitleg en auditlog.</strong> Komt elke beslissing met een reden, en kun je de geschiedenis exporteren?</li>
+        <li><strong>Andere netwerken.</strong> Kun je dezelfde regels toepassen op Facebook, Instagram en je website?</li>
+        <li><strong>Ondersteuning.</strong> Helpt iemand je bij het opzetten?</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Verder lezen</h2>
+      <p>
+        YouTube is één kanaal tussen andere. Voor de algemene aanpak lees je onze <a href={localizePath('/blog/comment-moderation-guide', locale)} class="text-brand-600 hover:text-brand-500">complete gids over reactiemoderatie</a>.
+      </p>
+    </div>
+
+    <div class="mt-12">
+      <FAQ title="Veelgestelde vragen" items={faqItems} />
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Lees verder</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/integrations/youtube', locale)} class="font-medium text-brand-600 hover:text-brand-500">YouTube-reacties modereren met OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/blog/instagram-comment-moderation', locale)} class="font-medium text-brand-600 hover:text-brand-500">Zo modereer je Instagram-reacties &rarr;</a></li>
+        <li><a href={localizePath('/use-cases/brands-retail', locale)} class="font-medium text-brand-600 hover:text-brand-500">Reactiemoderatie voor merken en retail &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

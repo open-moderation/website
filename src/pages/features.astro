@@ -10,24 +10,22 @@ const pageJsonLd = {
   "@id": "https://www.openmoderation.com/features",
   "url": "https://www.openmoderation.com/features",
   "name": "Content Moderation Features: Unified API & Rule Engine",
-  "description": "All the features of OpenModeration: unified API, admin dashboard, action engine, native connectors, BYOK, batch processing and DSA-compliant audit trails.",
+  "description": "All the features of OpenModeration: moderation API, dashboard, action engine, native connectors, batch processing and DSA-compliant audit trails.",
   "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
 };
 
-const curlExample = `# Works the same way with every provider
+const curlExample = `# One call, standardized scores
 curl -X POST https://api.openmoderation.com/v1/moderation \\
   -H "Authorization: Bearer om_key_..." \\
   -H "Content-Type: application/json" \\
   -d '{
     "input": "Your text to moderate here",
-    "model": "openai/omni-moderation-latest",
     "language": "en"
   }'
 
 # Response (same format, every time)
 {
   "id": "modr_01JXK...",
-  "model": "openai/omni-moderation-latest",
   "results": [{
     "category": "hate",
     "score": 0.02,
@@ -35,34 +33,33 @@ curl -X POST https://api.openmoderation.com/v1/moderation \\
   }],
   "flagged": false,
   "usage": {
-    "latency_ms": 243,
-    "provider": "openai"
+    "latency_ms": 243
   }
 }`;
 
 const featureCategories = [
   {
     title: 'Single Integration',
-    description: 'One API endpoint behaves the same whichever provider you choose, so results stay consistent and you write no extra code.',
+    description: 'One API endpoint, one response format. When we plug in a better AI model, nothing changes in your code.',
     items: [
-      { title: 'One connection to all moderation providers', desc: 'Submit content once and get back a clear pass/fail verdict and category scores, whether you use OpenAI, Azure, or an LLM.' },
+      { title: 'Our own moderation AI', desc: 'Submit content once and get back a clear pass/fail verdict and category scores, set up on your rules and your use cases.' },
       { title: 'Pre-built content categories', desc: 'Ready-made categories covering hate, harassment, sexual content, violence, self-harm, spam, misinformation, PII, and more.' },
-      { title: 'Automatic Provider Selection', desc: 'Tell us your language, content type and budget, and we send each request to the best provider.' },
+      { title: 'Cross-checked by other AIs', desc: 'On delicate cases, other AI models arbitrate the decision before it is applied. Fewer mistakes, fewer wrongly hidden comments.' },
       { title: 'Smarter Moderation Decisions', desc: 'Decisions take into account the conversation, the history of the author, the channel and your own policies.' },
       { title: 'Bulk Content Review', desc: 'Submit up to 10,000 items at once for async processing. Results are pushed to your system when they are ready.' },
-      { title: 'Custom Moderation Policies', desc: 'Define your own categories using any LLM. Provide examples and let the model classify content your way.' },
+      { title: 'Custom Moderation Policies', desc: 'Define your own categories. Provide examples and let the AI classify content your way.' },
     ],
   },
   {
     title: 'Moderation Dashboard',
     description: 'A web interface to run your day-to-day moderation.',
     items: [
-      { title: 'Access Management', desc: 'Create and manage access keys. Set usage limits per key and configure provider credentials.' },
-      { title: 'Team & Role Management', desc: 'Manage your moderators, assign roles and set permissions without going through your IT department.' },
+      { title: 'Access Management', desc: 'Create and manage access keys. Set usage limits per key.' },
+      { title: 'Team & Role Management', desc: 'Give your colleagues access, assign roles and set permissions without going through your IT department.' },
       { title: 'Report Management', desc: 'One queue to process user reports and track their status, so no flagged comment gets forgotten.' },
-      { title: 'Activity History', desc: 'Every moderation request is logged with its verdict, provider, response time and category scores.' },
-      { title: 'Provider Health Monitoring', desc: 'See the real-time status of all your providers: uptime, response times, and error rates.' },
-      { title: 'Performance Reports', desc: 'Follow moderation volume and flag rates, compare providers and watch how costs evolve.' },
+      { title: 'Activity History', desc: 'Every moderation request is logged with its verdict, response time and category scores.' },
+      { title: 'Service Health Monitoring', desc: 'See the real-time status of the service: uptime, response times, and error rates.' },
+      { title: 'Performance Reports', desc: 'Follow moderation volume and flag rates and watch how costs evolve.' },
       { title: 'Connector Management', desc: 'Connect your social platform accounts with your own credentials.' },
       { title: 'Rule Configuration', desc: 'Define forbidden words, set category thresholds and write your rules in plain language. These three tools need no code.' },
     ],
@@ -73,9 +70,9 @@ const featureCategories = [
     items: [
       { title: 'Context-Aware AI Rules', desc: 'Combine AI confidence scores with your own rules instead of relying on keyword lists alone.' },
       { title: 'Auto-Actions', desc: 'When a threshold is crossed, the Action Engine can hide, delete, flag, notify or mark as spam.' },
-      { title: 'Human-in-the-Loop', desc: 'Borderline cases go to your moderators, who make the final call.' },
-      { title: 'Manual Review Queue', desc: 'Flagged content goes to a queue for human moderators to approve or reject.' },
-      { title: 'Webhook Notifications', desc: 'Get real-time alerts for flagged content, finished batches, provider errors and more.' },
+      { title: 'Human-in-the-Loop', desc: 'Borderline cases are handled by our team. You can step in and make the final call whenever you want.' },
+      { title: 'Real-Time View', desc: 'See every decision as it happens, with its written reason, and approve or reject any item yourself.' },
+      { title: 'Webhook Notifications', desc: 'Get real-time alerts for flagged content, finished batches, errors and more.' },
       { title: 'Full Audit Trail', desc: 'Every action is logged with the rule that triggered it, the action taken and the outcome.' },
     ],
   },
@@ -85,9 +82,9 @@ const featureCategories = [
     items: [
       { title: 'Facebook', desc: 'Receive comments and posts. Automatically hide or remove content that breaks your rules.' },
       { title: 'Instagram', desc: 'Moderate Instagram comments and messages. Keep your profile safe from toxic or spammy content.' },
-      { title: 'YouTube', desc: 'Ingest video comments. Mark as spam or send to your review queue.' },
+      { title: 'YouTube', desc: 'Ingest video comments. Mark as spam or hold for review by our team.' },
       { title: 'WordPress', desc: 'Moderate comments on your blog. Approve, hold for review, or mark as spam automatically.' },
-      { title: 'Use Your Own Platform Access', desc: 'Bring your own platform tokens. We never store them in plaintext.' },
+      { title: 'Use Your Own Platform Access', desc: 'Connect with your own platform accounts. Access tokens are never stored in plaintext.' },
       { title: 'Generic Webhook Receiver', desc: 'Ingest content from any platform that supports outgoing webhooks.' },
       { title: 'Generic Webhook Callback', desc: 'Send moderation results to your own webhook for custom integrations.' },
     ],
@@ -95,7 +92,7 @@ const featureCategories = [
 ];
 ---
 
-<BaseLayout title="Content Moderation Features: Unified API & Rule Engine" description="All the features of OpenModeration: unified API, admin dashboard, action engine, native connectors, BYOK, batch processing and DSA-compliant audit trails." jsonLd={pageJsonLd}>
+<BaseLayout title="Content Moderation Features: Unified API & Rule Engine" description="All the features of OpenModeration: moderation API, dashboard, action engine, native connectors, batch processing and DSA-compliant audit trails." jsonLd={pageJsonLd}>
 <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Features" }]} />
   <section class="bg-gradient-to-b from-brand-50 to-white py-20">
     <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
@@ -130,14 +127,14 @@ const featureCategories = [
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="grid items-center gap-12 lg:grid-cols-2">
         <div>
-          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">One format for every provider</h2>
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">One format, whatever the model behind it</h2>
           <p class="mt-4 text-lg text-surface-500">
-            Results look the same whichever provider answers, so you only integrate once.
+            When we plug in a better or cheaper AI model, results keep the same format, so you only integrate once.
           </p>
           <div class="mt-6 space-y-4">
             <div class="flex items-start gap-3">
               <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <p class="text-sm text-surface-600"><strong>The same format</strong> for OpenAI, Azure, HuggingFace, Mistral or any LLM, with no extra code to write.</p>
+              <p class="text-sm text-surface-600"><strong>The same format</strong> every time, with no extra code to write when the AI improves.</p>
             </div>
             <div class="flex items-start gap-3">
               <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>

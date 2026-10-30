@@ -1,0 +1,203 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/de/alternativen/interactora",
+  "name": "Interactora Alternative: Kommentarmoderation in der Hand Ihrer Redaktion",
+  "description": "Interactora oder OpenModeration? Ein Moderationsdienstleister im Vergleich zu Software, die Ihre Redaktion steuert: Preise, Begründungen und KI.",
+  "inLanguage": "de",
+  "about": { "@id": "https://www.openmoderation.com/#software" }
+};
+
+const rows = [
+  { feature: "Art des Angebots", competitor: "Ausgelagerte Moderation: menschliches Team mit automatischen Filtern (Xataka, 2015)", openmod: "Automatisierte Moderation, eingerichtet auf Ihre Regeln und Anwendungsfälle; Zweifelsfälle übernimmt unser Team, Sie sehen alles in Echtzeit" },
+  { feature: "Wer entscheidet", competitor: "Die Moderatoren von Interactora", openmod: "Die KI wendet Ihre Regeln an; Zweifelsfälle entscheidet unser Team. Sie können in der Konsole jederzeit eingreifen" },
+  { feature: "Was die Website beschreibt", competitor: "Dienste für nutzergenerierte Inhalte: Mobile-Chat, Interview-Chat und ein Chat für Gehörlose", openmod: "Kommentarmoderation auf Ihrer Website und Ihren Seiten in sozialen Netzwerken" },
+  { feature: "Soziale Netzwerke", competitor: "Auf der Website nicht angegeben", openmod: "Facebook, Instagram, YouTube und WordPress; API für alles andere" },
+  { feature: "KI-Modelle", competitor: "Nicht angegeben (automatische Filter laut Xataka, 2015)", openmod: "Eigene Moderations-KI, von anderen KI-Modellen gegengeprüft; neue Modelle werden eingebunden, sobald sie erscheinen" },
+  { feature: "Preise", competitor: "Nicht veröffentlicht", openmod: "Kostenlos bis 1.000 Anfragen pro Monat, Pro für 99 € pro Monat mit 10.000 Anfragen, Enterprise auf Anfrage" },
+  { feature: "Begründung jeder Entscheidung", competitor: "Auf der Website nicht angegeben", openmod: "Schriftliche Begründung für jede Entscheidung, in der Konsole und über die API" },
+  { feature: "DSA", competitor: "Auf der Website nicht angegeben", openmod: "Bausteine für Meldeverfahren, Begründung, menschliche Prüfung angefochtener Entscheidungen und exportierbare Kennzahlen; vollständiges Aktivitätsprotokoll" },
+  { feature: "Datenhosting", competitor: "Auf der Website nicht angegeben", openmod: "In der EU gehostet, DSGVO" },
+  { feature: "Genannte Referenzen", competitor: "El País und El Mundo (Xataka, 2015); Prisa und Vocento (Studie, 2021)", openmod: "L'Équipe, Challenges, Sud Ouest, actu.fr, Estadão, Südkurier, Egora" },
+];
+
+const faqItems = [
+  {
+    question: "Was ist die beste Alternative zu Interactora?",
+    answer: "Das hängt davon ab, wie Sie moderieren wollen. Soll ein externes Team die Kommentare für Sie lesen, erfüllt ein Dienst wie Interactora diesen Bedarf. Soll Ihre Redaktion die Regeln setzen, sehen, warum jeder Kommentar ausgeblendet wurde, und den Preis vorab kennen, ist OpenModeration dafür gebaut.",
+  },
+  {
+    question: "Was kostet Interactora?",
+    answer: "Interactora veröffentlicht keine Preise auf seiner Website. OpenModeration nennt seine Preise offen: kostenlos bis 1.000 Anfragen pro Monat, Pro für 99 € pro Monat mit 10.000 Anfragen, Enterprise auf Anfrage.",
+  },
+  {
+    question: "Interactora oder OpenModeration: Was ist der Unterschied?",
+    answer: "Interactora ist eine Dienstleistung mit eigenen Moderatoren. OpenModeration ist Software: eine eigene Moderations-KI, bei heiklen Fällen von anderen KI-Modellen gegengeprüft, wendet Ihre Regeln an, und unser Team entscheidet die Zweifelsfälle, mit einer schriftlichen Begründung für jede Entscheidung. Sie sehen alles in Echtzeit.",
+  },
+  {
+    question: "Kann ich OpenModeration testen, ohne Interactora zu verlassen?",
+    answer: "Ja. Im Sandbox-Modus analysiert OpenModeration echte Kommentare Ihrer Website oder Ihrer Seiten und zeigt, was es entschieden hätte, ohne etwas auszublenden. Sie vergleichen mit Ihrem aktuellen Dienstleister, bevor Sie etwas ändern.",
+  },
+  {
+    question: "Wer moderiert die Leserkommentare großer spanischer Zeitungen?",
+    answer: "Laut einer 2021 in El Profesional de la Información veröffentlichten Studie arbeiteten Vocento und Prisa mit Interactora, Unidad Editorial mit Netino, El Confidencial mit einem hauseigenen Werkzeug. Jede Gruppe hat zwischen Auslagerung und Moderation aus der Redaktion gewählt.",
+  },
+  {
+    question: "Stellt OpenModeration ein Moderationsteam?",
+    answer: "Ja, für die Zweifelsfälle. Die Automatisierung wendet Ihre Regeln an, unser Team übernimmt Zweifelsfälle, Meldungen und angefochtene Entscheidungen und moderiert bei Bedarf auch von Hand. Sie müssen nichts tun, sehen aber alles in Echtzeit. Unser Team richtet die Moderation mit Ihnen auf Ihre Regeln und Anwendungsfälle ein, anhand Ihrer echten Kommentare, und verfeinert sie in den ersten Wochen.",
+  },
+];
+---
+
+<BaseLayout title="Interactora Alternative: Vergleich mit OpenModeration" description="Interactora oder OpenModeration? Ein Moderationsdienstleister im Vergleich zu Software, die Ihre Redaktion steuert: Preise, Begründungen und KI." jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Startseite", href: "/de" }, { label: "Alternativen", href: "/de/alternativen" }, { label: "Interactora" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Vergleich
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Interactora Alternative: Kommentarmoderation in der Hand Ihrer Redaktion</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Wenn Ihre Redaktion die Regeln setzen, für jeden ausgeblendeten Kommentar eine Begründung sehen und den Preis vorab kennen will, ist OpenModeration die passende Interactora-Alternative. Wollen Sie das Lesen der Kommentare an ein externes Team abgeben, ist ein Dienstleister wie Interactora die naheliegendere Wahl.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold tracking-tight text-surface-900 sm:text-3xl">Für wen ist Interactora gedacht?</h2>
+      <p class="mt-4 text-surface-600">Interactora ist ein spanisches Unternehmen, das Leserkommentare für große Mediengruppen moderiert, mit einem menschlichen Team und automatischen Filtern. Xataka nannte 2015 El País und El Mundo als Kunden, eine Studie in El Profesional de la Información von 2021 Prisa und Vocento. Die eigene Website beschreibt vor allem Dienste rund um nutzergenerierte Inhalte wie Chats.</p>
+      <div class="mt-8 grid gap-6 md:grid-cols-2">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h3 class="text-lg font-semibold text-brand-700">Wählen Sie OpenModeration, wenn …</h3>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>Ihre Redaktion die Regeln setzen und bei aktuellen Ereignissen sofort ändern will;</li>
+          <li>Sie den Preis kennen möchten, bevor Sie mit dem Vertrieb sprechen;</li>
+          <li>Sie jede Löschung begründen müssen, wie es der DSA verlangt;</li>
+          <li>Sie auch Kommentare auf Facebook, Instagram oder YouTube moderieren;</li>
+          <li>Ihre Daten in der Europäischen Union bleiben sollen.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h3 class="text-lg font-semibold text-surface-900">Interactora passt womöglich besser, wenn …</h3>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>Sie ein externes Team suchen, das Kommentare für Sie liest und moderiert;</li>
+                    <li>Ihnen ein spezialisiertes Moderationsteam wichtig ist, worauf Interactora laut der Studie von 2021 Wert legt.</li>
+        </ul>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Interactora und OpenModeration im Detail</h2>
+      <p class="mt-4 text-surface-500">Angaben zu Interactora aus den unten genannten Quellen, abgerufen im Oktober 2026.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Kriterium</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Interactora</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.competitor}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Eine Moderations-KI, die mit dem Markt Schritt hält</h2>
+      <p class="mt-4 text-surface-600">OpenModeration arbeitet mit einer eigenen Moderations-KI. Bei heiklen Fällen wird ihre Entscheidung von weiteren KI-Modellen gegengeprüft. Kommt ein besseres oder günstigeres Modell auf den Markt, bindet unser Team es zügig ein, ohne dass Sie auf Ihrer Seite etwas ändern müssen. So profitiert Ihre Moderation vom Fortschritt der KI-Modelle, statt auf einem einzigen hauseigenen Algorithmus stehen zu bleiben.</p>
+      <p class="mt-4 text-surface-600">Zu den eingesetzten Filtern oder Modellen macht Interactora auf seiner Website keine Angaben.</p>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Preise im Vergleich</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">Interactora</h3>
+          <p class="mt-2 text-sm text-surface-600">Interactora veröffentlicht auf seiner Website keine Preise.</p>
+        </div>
+        <div class="rounded-xl border border-brand-200 bg-brand-50 p-6">
+          <h3 class="font-semibold text-brand-700">OpenModeration</h3>
+          <p class="mt-2 text-sm text-surface-700">Kostenlos bis 1.000 Anfragen pro Monat. Pro: 99 € pro Monat für 10.000 Anfragen. Enterprise: auf Anfrage, ebenso eine On-Premise-Installation. Alle Preise stehen auf der <a href="/de/preise" class="text-brand-600 hover:text-brand-500">Preisseite</a>.</p>
+        </div>
+      </div>
+      <p class="mt-6 text-sm text-surface-500">Ein Dienstleister rechnet die Arbeit seiner Moderatoren mit ab. Bei OpenModeration erledigt die Automatisierung den Großteil, und die Zweifelsfälle übernimmt unser Team. Für große Volumen: <a href="/de/termin-vereinbaren" class="text-brand-600 hover:text-brand-500">Termin vereinbaren</a>.</p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Wechsel in drei Schritten</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="flex h-9 w-9 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white">1</div>
+          <h3 class="mt-4 font-semibold text-surface-900">Regeln und Anwendungsfälle klären</h3>
+          <p class="mt-2 text-sm text-surface-600">In einem ersten Gespräch erfassen wir mit Ihnen Ihre Moderationsregeln und Anwendungsfälle. Unser Team richtet die Moderation darauf ein. <a href="/de/termin-vereinbaren" class="text-brand-600 hover:text-brand-500">Termin vereinbaren</a>.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="flex h-9 w-9 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white">2</div>
+          <h3 class="mt-4 font-semibold text-surface-900">Parallel im Sandbox-Modus testen</h3>
+          <p class="mt-2 text-sm text-surface-600">OpenModeration analysiert Ihre echten Kommentare, ohne etwas auszublenden, während Interactora weiterläuft. Sie vergleichen beide Ergebnisse Kommentar für Kommentar, jeweils mit unserer Begründung.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="flex h-9 w-9 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white">3</div>
+          <h3 class="mt-4 font-semibold text-surface-900">Schrittweise umstellen</h3>
+          <p class="mt-2 text-sm text-surface-600">Sie schalten das automatische Ausblenden Seite für Seite ein. Eindeutige Verstöße verschwinden sofort, berechtigte Kritik bleibt sichtbar, Zweifelsfälle übernimmt unser Team, und Sie sehen jede Entscheidung in Echtzeit. Den Vertrag mit Interactora kündigen Sie erst, wenn Sie mit dem Ergebnis zufrieden sind.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Häufige Fragen" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        Interactora ist eine Marke ihres Inhabers. Quellen: <a href="http://interactora.com/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">interactora.com</a>, <a href="https://www.xataka.com/especiales/la-transformacion-de-los-comentarios-en-medios-online-la-conversacion-evoluciona" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">Xataka</a>, <a href="https://revista.profesionaldelainformacion.com/index.php/EPI/article/download/86568/63065/290349" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">Studie von Paz-Rebollo et al. (2021)</a> (abgerufen im Oktober 2026). Ein Fehler? Schreiben Sie uns an <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Weiterlesen</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/de/moderation-auslagern" class="font-medium text-brand-600 hover:text-brand-500">Moderation auslagern oder selbst steuern? &rarr;</a></li>
+        <li><a href="/de/dsa-konformitaet/begruendung" class="font-medium text-brand-600 hover:text-brand-500">Die vom DSA verlangte Begründung &rarr;</a></li>
+        <li><a href="/de/alternativen/digitaller" class="font-medium text-brand-600 hover:text-brand-500">OpenModeration oder Digitaller: der Vergleich &rarr;</a></li>
+        <li><a href="/de/moderationssoftware" class="font-medium text-brand-600 hover:text-brand-500">Die Moderationssoftware OpenModeration &rarr;</a></li>
+        <li><a href="/de/termin-vereinbaren" class="font-medium text-brand-600 hover:text-brand-500">Ein Gespräch mit unserem Team vereinbaren &rarr;</a></li>
+        <li><a href="/de/alternativen" class="font-medium text-brand-600 hover:text-brand-500">Alle Vergleiche &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Ihre Regeln, Ihre Redaktion, eine Begründung für jede Entscheidung." subtitle="Testen Sie OpenModeration im Sandbox-Modus neben Ihrem Dienstleister. Kostenlos starten." />
+</BaseLayout>

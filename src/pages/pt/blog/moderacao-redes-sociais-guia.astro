@@ -1,0 +1,352 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const title = "Moderação de redes sociais: o guia completo (2026)";
+const description = "Como moderar redes sociais: métodos, regras, o que muda no Facebook, Instagram, YouTube, TikTok, LinkedIn e X, equipe, crises, métricas e ferramentas.";
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Moderação de redes sociais: o guia completo para marcas, veículos de mídia e organizações públicas",
+  "description": description,
+  "inLanguage": "pt",
+  "datePublished": "2026-10-30",
+  "dateModified": "2026-10-30",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/pt/blog/moderacao-redes-sociais-guia" }
+};
+
+const networks = [
+  { name: "Facebook", tools: "Bloqueio de palavras-chave, filtro de palavrões, ocultar, excluir, banir", action: "Ocultado (ainda visível para o autor e os amigos dele) ou excluído", om: "Sim" },
+  { name: "Instagram", tools: "Palavras ocultas, lista personalizada de palavras, Restringir, Limites, desativar comentários", action: "Ocultado ou excluído", om: "Sim" },
+  { name: "YouTube", tools: "Retenção para revisão, palavras bloqueadas, bloqueio de links, usuários ocultos, moderadores do canal", action: "Retido para revisão, removido, ou o usuário ocultado do canal", om: "Sim" },
+  { name: "TikTok", tools: "Filtro de spam e comentários ofensivos, filtro de palavras-chave, aprovar todos os comentários, quem pode comentar", action: "Filtrado para aprovação ou excluído", om: "Sem conector nativo" },
+  { name: "LinkedIn", tools: "Excluir, denunciar, limitar quem pode comentar, desativar os comentários de um post", action: "Excluído", om: "Sem conector nativo" },
+  { name: "X", tools: "Controle de respostas, ocultar respostas, silenciar, bloquear, denunciar", action: "Resposta escondida atrás de um clique, ou a conta silenciada ou bloqueada", om: "Sem conector nativo" },
+];
+
+const responses = [
+  { type: "Reclamação ou crítica, mesmo dura", action: "Responder em público e depois passar para mensagens privadas se forem necessários dados pessoais" },
+  { type: "Pergunta sobre um produto, um serviço ou uma matéria", action: "Responder, de preferência em até uma hora durante uma campanha" },
+  { type: "Fora do tema, mas inofensivo", action: "Deixar, ou ocultar se as suas regras disserem isso" },
+  { type: "Insulto, assédio, discurso de ódio", action: "Ocultar, banir os reincidentes, nunca discutir" },
+  { type: "Spam, golpe, sorteio falso, link de phishing", action: "Ocultar ou excluir, banir a conta, avisar o seu público se o golpe se espalhar" },
+  { type: "Dados pessoais publicados em público", action: "Excluir e depois entrar em contato com a pessoa em privado" },
+  { type: "Ameaça, conteúdo ilegal, sinal de automutilação", action: "Escalar na hora: guardar as provas, denunciar à plataforma, alertar a pessoa ou a autoridade competente" },
+];
+
+const faqItems = [
+  {
+    question: "O que é moderação de redes sociais?",
+    answer: "É o trabalho de revisar o que as pessoas publicam nas suas contas de redes sociais, principalmente comentários e respostas, e decidir o que continua visível, o que é ocultado ou excluído e quem é banido, de acordo com regras definidas com antecedência. É diferente de responder, que é o trabalho do social media.",
+  },
+  {
+    question: "O que faz um moderador de redes sociais?",
+    answer: "Um moderador de redes sociais lê os comentários e as respostas nas contas de uma marca, aplica as regras de moderação (ocultar, excluir, banir, manter no ar), escala os casos sensíveis, como ameaças ou uma crise, e faz o relatório do que aconteceu. Em equipes pequenas, o social media faz os dois trabalhos; nas maiores, a moderação é uma função separada, muitas vezes apoiada por uma ferramenta automática.",
+  },
+  {
+    question: "Devo ocultar ou excluir comentários negativos?",
+    answer: "Nenhum dos dois, se eles são apenas negativos. Uma crítica merece resposta, e ocultá-la costuma sair pela culatra. Oculte ou exclua os comentários que violam as suas regras: insultos, ódio, spam, golpes, dados pessoais. No Facebook, ocultar costuma ser a melhor opção padrão, porque o autor continua vendo o próprio comentário.",
+  },
+  {
+    question: "Dá para moderar redes sociais automaticamente?",
+    answer: "Em parte, com os filtros nativos de cada rede, que bloqueiam palavras-chave. Uma ferramenta dedicada vai além: lê cada comentário no contexto, aplica as suas regras, envia os casos duvidosos para uma pessoa e registra um motivo para cada decisão. O OpenModeration faz isso para Facebook, Instagram, YouTube e sites.",
+  },
+  {
+    question: "O OpenModeration modera TikTok, LinkedIn ou X?",
+    answer: "Não. O OpenModeration se conecta a Páginas do Facebook, contas profissionais do Instagram, canais do YouTube, WordPress e sites pela sua API. No TikTok, no LinkedIn e no X, você precisa contar com as ferramentas de cada rede e com a moderação manual.",
+  },
+  {
+    question: "Quais horários a moderação de redes sociais deve cobrir?",
+    answer: "O ideal são os horários em que o seu público está ativo, o que muitas vezes inclui noites e fins de semana, e pelo menos as 24 a 48 horas depois de qualquer post patrocinado ou publicação sensível. A moderação automática cobre os horários em que ninguém está de plantão; as pessoas assumem os casos duvidosos na manhã seguinte.",
+  },
+  {
+    question: "O DSA se aplica às páginas de uma marca nas redes sociais?",
+    answer: "As principais obrigações do DSA, como a exposição de motivos e a notificação e ação, recaem sobre o serviço de hospedagem. Nas redes sociais, é a própria plataforma; no seu site, é você. Dar um motivo para cada decisão e manter um log continua sendo uma boa prática nas suas páginas, e é obrigatório no seu próprio site.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} ogType="article" jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Início", href: localizePath("/", locale) }, { label: "Blog", href: localizePath("/blog", locale) }, { label: "Guia de moderação de redes sociais" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-30">30 de outubro de 2026</time>
+        <span>&middot;</span>
+        <span>11 min de leitura</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Moderação de redes sociais: o guia completo para marcas, veículos de mídia e organizações públicas</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Cada conta que você abre em uma rede social é um espaço em que outras pessoas falam com o seu nome em cima.
+        A maioria faz perguntas, elogia ou reclama. Algumas insultam, assediam, mandam spam ou tentam aplicar golpes nos seus
+        seguidores. A moderação de redes sociais é o que mantém esse espaço utilizável sem calar as críticas
+        legítimas. Este guia cobre os métodos, as particularidades de cada rede, as regras a escrever, como
+        organizar uma equipe, o que fazer em uma crise e como medir o resultado.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Em resumo</h2>
+      <ul>
+        <li><strong>Moderar não é responder.</strong> Moderar é decidir o que continua visível; responder é conversar com o seu público. Os dois são necessários, muitas vezes por pessoas diferentes.</li>
+        <li><strong>Escreva as suas regras primeiro.</strong> Publique regras da casa curtas e depois decida qual ação (manter, ocultar, excluir, banir, escalar) se aplica a cada tipo de conteúdo.</li>
+        <li><strong>Cada rede tem as suas próprias ferramentas</strong> e as suas próprias ações: o Facebook oculta, o YouTube retém para revisão, o X esconde respostas atrás de um clique.</li>
+        <li><strong>Combine automação e pessoas.</strong> Filtros ou uma ferramenta de IA dão conta do volume e das madrugadas; as pessoas cuidam dos casos duvidosos, das respostas e das crises.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">O que é moderação de redes sociais?</h2>
+      <p>
+        Moderação de redes sociais é a revisão do conteúdo que outras pessoas publicam nas suas contas:
+        comentários nos seus posts, respostas às suas mensagens, às vezes avaliações, menções ou mensagens
+        privadas. Para cada conteúdo, toma-se uma decisão: mantê-lo no ar, ocultá-lo, excluí-lo,
+        banir o autor ou escalar para outra pessoa.
+      </p>
+      <p>
+        É um trabalho mais restrito do que a moderação feita pelas próprias plataformas. A Meta, o Google ou o TikTok
+        aplicam as suas diretrizes da comunidade em toda a rede. Você aplica as suas próprias regras nas suas
+        próprias contas. Um comentário pode ser perfeitamente legal e permitido pelo Instagram e, mesmo assim, não ter lugar
+        no seu post: o link de um concorrente, um desabafo político no lançamento de um produto, o telefone de um
+        cliente publicado em público.
+      </p>
+      <p>
+        A moderação de comentários em um site segue a mesma lógica, com mais controle. O nosso
+        <a href={localizePath("/blog/comment-moderation-guide", locale)} class="text-brand-600 hover:text-brand-500">guia de moderação de comentários</a> cobre
+        os dois casos; este se concentra nas redes sociais.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Por que moderar as suas contas nas redes sociais?</h2>
+      <ul>
+        <li><strong>Para proteger o seu público.</strong> Quem vê insultos ou assédio nos seus posts para de comentar. As vozes mais barulhentas acabam falando por toda a sua comunidade.</li>
+        <li><strong>Para proteger a sua marca.</strong> Um golpe ou um comentário de ódio deixado embaixo do seu logo parece tolerância. Prints viajam mais rápido do que correções.</li>
+        <li><strong>Para proteger os seus clientes.</strong> Falsas contas de suporte, sorteios falsos e links de phishing miram os seus seguidores nos seus comentários, usando o seu nome.</li>
+        <li><strong>Para proteger as suas campanhas.</strong> Os posts patrocinados atraem mais comentários, e os piores. Comentários sem moderação em um anúncio prejudicam a mensagem que você pagou para divulgar.</li>
+        <li><strong>Para proteger a sua equipe.</strong> Social medias que leem ofensas o dia inteiro se esgotam. Regras e ferramentas de moderação tiram parte desse peso.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Quais são os métodos de moderação de redes sociais?</h2>
+      <p>Os métodos de moderação variam conforme o momento em que a decisão é tomada e quem a toma.</p>
+      <ul>
+        <li><strong>Pré-moderação.</strong> Nada aparece antes de ser aprovado. É o método mais seguro e o mais lento, e poucas redes o permitem: o YouTube pode reter comentários para revisão, o TikTok pode filtrar todos os comentários para aprovação.</li>
+        <li><strong>Pós-moderação.</strong> Os comentários aparecem na hora e são revisados depois. Mantém a conversa viva, mas o conteúdo nocivo fica visível até que alguém aja.</li>
+        <li><strong>Moderação reativa.</strong> Você só age quando alguém denuncia um comentário ou quando você o vê por acaso. Custa pouco e deixa passar a maioria dos problemas.</li>
+        <li><strong>Moderação automática.</strong> Filtros de palavras-chave ou modelos de IA agem sobre cada comentário assim que ele é publicado, de dia e de noite.</li>
+        <li><strong>Moderação híbrida.</strong> A automação cuida dos casos evidentes, e as pessoas decidem os duvidosos. É o que a maioria das organizações com volume real acaba fazendo.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Como moderar cada rede social?</h2>
+      <p>Os princípios são os mesmos em toda parte; as ferramentas e as ações disponíveis, não. Os menus mudam com frequência, então descrevemos recursos que existem há anos, e não caminhos exatos.</p>
+
+      <h3 class="text-lg font-semibold text-surface-900">Facebook</h3>
+      <p>
+        Uma Página pode bloquear palavras-chave, ativar um filtro de palavrões e ocultar, excluir ou banir manualmente. Ocultar é
+        a ação principal: o comentário continua visível para o autor e os amigos dele, então o autor raramente
+        percebe. Os comentários em anúncios costumam ser os mais difíceis de acompanhar. Veja o nosso guia sobre como
+        <a href={localizePath("/blog/hide-facebook-comments-automatically", locale)} class="text-brand-600 hover:text-brand-500">ocultar comentários no Facebook automaticamente</a>.
+      </p>
+
+      <h3 class="text-lg font-semibold text-surface-900">Instagram</h3>
+      <p>
+        O recurso Palavras ocultas do Instagram filtra comentários ofensivos e permite adicionar as suas próprias palavras. Você
+        também pode restringir uma conta, limitar as interações durante uma onda de ataques ou desativar os comentários de um
+        post. Leia o nosso guia de <a href={localizePath("/blog/instagram-comment-moderation", locale)} class="text-brand-600 hover:text-brand-500">moderação de comentários no Instagram</a>.
+      </p>
+
+      <h3 class="text-lg font-semibold text-surface-900">YouTube</h3>
+      <p>
+        O YouTube é a rede que vai mais longe na pré-moderação: comentários potencialmente inadequados
+        podem ser retidos para revisão, e você pode bloquear palavras e links, ocultar usuários do seu canal e nomear
+        moderadores. Os chats ao vivo merecem atenção própria. Detalhes no nosso guia de
+        <a href={localizePath("/blog/youtube-comment-moderation", locale)} class="text-brand-600 hover:text-brand-500">moderação de comentários no YouTube</a>.
+      </p>
+
+      <h3 class="text-lg font-semibold text-surface-900">TikTok</h3>
+      <p>
+        O TikTok oferece filtros para spam e comentários ofensivos, um filtro de palavras-chave, a opção de aprovar todos os
+        comentários antes que apareçam e controles sobre quem pode comentar. As seções de comentários andam rápido e
+        muitas vezes são movidas por trends. Mais no nosso guia de <a href={localizePath("/blog/tiktok-comment-moderation", locale)} class="text-brand-600 hover:text-brand-500">moderação de comentários no TikTok</a>.
+      </p>
+
+      <h3 class="text-lg font-semibold text-surface-900">LinkedIn</h3>
+      <p>
+        Os comentários no LinkedIn raramente são ofensivos, mas podem ser spam comercial ou debates acalorados. As ferramentas são
+        básicas: excluir, denunciar, limitar quem pode comentar em um post ou desativar os comentários. A moderação é sobretudo
+        manual.
+      </p>
+
+      <h3 class="text-lg font-semibold text-surface-900">X (Twitter)</h3>
+      <p>
+        No X, você não pode excluir as respostas de outras pessoas. Você pode escolher quem pode responder a um post, ocultar
+        respostas (elas continuam acessíveis atrás de um clique) e silenciar, bloquear ou denunciar contas. A moderação no X
+        consiste em limitar a exposição, e não em remover conteúdo.
+      </p>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Rede</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Principais ferramentas nativas</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">O que acontece com um comentário moderado</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">OpenModeration</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {networks.map((row) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{row.name}</td>
+              <td class="px-4 py-3 text-surface-600">{row.tools}</td>
+              <td class="px-4 py-3 text-surface-600">{row.action}</td>
+              <td class="px-4 py-3 text-surface-600">{row.om}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">Que regras a sua moderação de redes sociais deve seguir?</h2>
+      <p>Moderação sem regras escritas depende de quem está de plantão e do humor do dia. As regras tornam as decisões consistentes e defensáveis.</p>
+      <ol>
+        <li><strong>Publique regras da casa curtas.</strong> Algumas linhas na sua bio, um post fixado ou uma página no seu site: o que é bem-vindo, o que é removido, o que leva a um banimento. Apontar para elas resolve muitas discussões.</li>
+        <li><strong>Liste as categorias sobre as quais você age.</strong> Insultos e assédio, discurso de ódio, spam e golpes, dados pessoais, conteúdo ilegal, e os casos de uso específicos da sua marca: divulgação de concorrentes, debates fora do tema, spoilers, alegações de saúde não verificadas.</li>
+        <li><strong>Atribua uma ação a cada categoria.</strong> Manter, ocultar, excluir, banir, escalar. Ocultar é o padrão nas redes que permitem; excluir é para conteúdo que precisa desaparecer para todos.</li>
+        <li><strong>Dê exemplos.</strong> Dois ou três comentários reais por categoria, incluindo os limítrofes, ajudam cada moderador, humano ou automático, a traçar o limite no mesmo lugar.</li>
+        <li><strong>Defina o caminho de escalonamento.</strong> Quem é chamado diante de uma ameaça, de uma questão jurídica, da pergunta de um jornalista ou de uma crise, e com que rapidez.</li>
+      </ol>
+      <p>
+        Para um método completo e um modelo, veja a nossa página sobre como escrever uma
+        <a href={localizePath("/content-moderation-policy", locale)} class="text-brand-600 hover:text-brand-500">política de moderação de conteúdo</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Gestão de comunidade vs moderação: quem faz o quê?</h2>
+      <p>
+        O social media anima: publica, responde, agradece, tira dúvidas, transforma um cliente irritado
+        em um cliente satisfeito. O moderador filtra: aplica as regras, oculta o que não tem lugar
+        ali, bane os reincidentes, sinaliza o que precisa ser escalado. Em uma equipe pequena, uma pessoa faz as duas coisas,
+        e a moderação costuma ser o que fica para trás em um dia corrido.
+      </p>
+      <p>Assim que o volume cresce, organize o trabalho de forma explícita.</p>
+      <ul>
+        <li><strong>Horários de cobertura.</strong> Defina quando há alguém de plantão e quem cobre noites, fins de semana e as horas seguintes a um post sensível.</li>
+        <li><strong>Uma única fila.</strong> Moderar conta por conta no app de cada rede desperdiça tempo e deixa lacunas. Centralize o que precisa de uma decisão humana.</li>
+        <li><strong>Papéis claros.</strong> Quem pode banir? Quem pode excluir? Quem responde à imprensa? Deixe por escrito.</li>
+        <li><strong>Bem-estar.</strong> Faça rodízio na exposição ao pior conteúdo, deixe as pessoas se afastarem e automatize os casos óbvios para que os humanos vejam menos deles.</li>
+        <li><strong>Agência ou equipe interna.</strong> Terceirizar garante a cobertura noturna, mas a agência precisa das suas regras, dos seus exemplos e de uma linha direta para escalonamento.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Responder ou moderar?</h2>
+      <p>
+        O erro mais comum é moderar o que deveria ser respondido. Ocultar uma reclamação legítima
+        diz a todo mundo que você tem algo a esconder, e o autor vai voltar mais alto. Use a moderação para
+        o que viola as suas regras e a resposta para todo o resto. Para os casos difíceis, leia o nosso guia sobre
+        <a href={localizePath("/blog/handle-negative-comments-trolls", locale)} class="text-brand-600 hover:text-brand-500">como lidar com comentários negativos e trolls</a>.
+      </p>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Tipo de comentário</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">O que fazer</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {responses.map((row) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{row.type}</td>
+              <td class="px-4 py-3 text-surface-600">{row.action}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">Como lidar com uma crise de moderação nas redes sociais?</h2>
+      <p>Uma crise é quando os comentários chegam mais rápido do que você consegue ler: um post polêmico, um recall de produto, um ataque coordenado, uma notícia que arrasta a sua marca para o meio.</p>
+      <ol>
+        <li><strong>Separe os dois problemas.</strong> Ofensas e spam são moderados como sempre, com ainda mais rigor. A raiva legítima é respondida, com uma mensagem única e consistente.</li>
+        <li><strong>Use as alavancas de emergência.</strong> Limite quem pode comentar, retenha os comentários para revisão, desative os comentários do post mais exposto. Diga publicamente que está fazendo isso e por quê.</li>
+        <li><strong>Pause os posts patrocinados</strong> que estão atraindo a tempestade, para não pagar para espalhá-la.</li>
+        <li><strong>Guarde as provas.</strong> Tire prints das ameaças e das mensagens coordenadas antes de ocultá-las ou excluí-las.</li>
+        <li><strong>Faça uma breve reunião diária</strong> com comunicação, jurídico e moderadores até a situação se acalmar, e depois atualize as suas regras com o que aprendeu.</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Como medir a moderação de redes sociais?</h2>
+      <p>Acompanhe alguns indicadores, por rede e por post, todo mês.</p>
+      <ul>
+        <li><strong>Volume:</strong> comentários recebidos e a parcela que foi ocultada, excluída ou escalada.</li>
+        <li><strong>Tempo até a ação:</strong> quanto tempo um comentário nocivo fica visível. É o número que mais importa para o seu público.</li>
+        <li><strong>Tempo de resposta</strong> a perguntas e reclamações, medido à parte.</li>
+        <li><strong>Erros:</strong> comentários restaurados após revisão e reclamações de usuários que se sentem censurados. Se forem muitos, as suas regras estão amplas demais.</li>
+        <li><strong>Fila de revisão:</strong> quantos casos duvidosos esperam por uma pessoa, e por quanto tempo.</li>
+        <li><strong>Pontos críticos:</strong> quais posts, temas ou campanhas atraem mais problemas, para planejar a cobertura.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">O que uma ferramenta de moderação de redes sociais deve fazer? Um checklist</h2>
+      <ol>
+        <li>Conectar-se às redes que você realmente usa, pelas APIs oficiais.</li>
+        <li>Agir assim que um comentário é publicado, não horas depois.</li>
+        <li>Aplicar as suas regras e os seus casos de uso, não só categorias genéricas.</li>
+        <li>Entender contexto, erros de grafia, sarcasmo e os idiomas do seu público.</li>
+        <li>Usar a ação certa em cada rede: ocultar, reter, rejeitar, excluir.</li>
+        <li>Enviar os casos duvidosos para uma fila de revisão compartilhada.</li>
+        <li>Dar um motivo por escrito para cada decisão e manter uma trilha de auditoria.</li>
+        <li>Informar onde os dados são processados e armazenados.</li>
+        <li>Vir com pessoas que ajudam você a configurar e ajustar as regras.</li>
+      </ol>
+      <p>
+        A <a href={localizePath("/social-media-moderation", locale)} class="text-brand-600 hover:text-brand-500">moderação de redes sociais do OpenModeration</a> cobre
+        Facebook, Instagram, YouTube e sites (incluindo WordPress) em um único console. Ela não se conecta ao TikTok, ao LinkedIn nem ao X:
+        nessas redes, as ferramentas nativas descritas acima continuam sendo a sua principal opção.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">O que o DSA muda para a moderação de redes sociais?</h2>
+      <p>
+        O Regulamento dos Serviços Digitais (DSA) da UE exige que serviços de hospedagem e plataformas online expliquem as suas
+        decisões de moderação com uma exposição de motivos e ofereçam um meio de denunciar conteúdo ilegal. Nas
+        redes sociais, essas obrigações recaem principalmente sobre a plataforma, não sobre a marca que administra uma Página.
+        No seu próprio site, recaem sobre você. Nos dois casos, guardar um motivo e um registro de cada
+        decisão é a forma mais simples de estar preparado quando um usuário, um gestor ou um regulador perguntar por que um comentário
+        sumiu.
+      </p>
+    </div>
+
+    <div class="mt-12">
+      <FAQ title="Perguntas frequentes" items={faqItems} />
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Continue explorando</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath("/social-media-moderation", locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderação de redes sociais com o OpenModeration &rarr;</a></li>
+        <li><a href={localizePath("/blog/comment-moderation-guide", locale)} class="font-medium text-brand-600 hover:text-brand-500">O guia completo de moderação de comentários &rarr;</a></li>
+        <li><a href={localizePath("/blog/handle-negative-comments-trolls", locale)} class="font-medium text-brand-600 hover:text-brand-500">Como lidar com comentários negativos e trolls &rarr;</a></li>
+        <li><a href={localizePath("/content-moderation-policy", locale)} class="font-medium text-brand-600 hover:text-brand-500">Como escrever uma política de moderação de conteúdo &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

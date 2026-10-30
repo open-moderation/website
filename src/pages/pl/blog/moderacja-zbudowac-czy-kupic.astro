@@ -1,0 +1,208 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+import { bookingUrl } from '../../../i18n/ui';
+
+const locale = getLocale(Astro.url.pathname);
+const BOOKING_URL = bookingUrl(locale);
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Zbudować czy kupić? Koszty infrastruktury moderacji treści w 2026 roku",
+  "description": "Ile naprawdę kosztuje budowa własnego systemu moderacji treści w porównaniu z zakupem gotowego produktu, takiego jak OpenModeration? Analiza kosztów w 3 lata.",
+  "inLanguage": "pl",
+  "datePublished": "2026-06-14",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/pl/blog/moderacja-zbudowac-czy-kupic" },
+  "dateModified": "2026-06-14"
+};
+---
+
+<BaseLayout title="Moderacja: zbudować czy kupić? Koszty w 2026 roku" description="Ile naprawdę kosztuje budowa własnego systemu moderacji treści w porównaniu z zakupem gotowego produktu, takiego jak OpenModeration? Analiza kosztów w 3 lata." jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Strona główna", href: localizePath('/', locale) }, { label: "Blog", href: localizePath('/blog', locale) }, { label: "Zbudować czy kupić" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-06-14">14 czerwca 2026</time>
+        <span>&middot;</span>
+        <span>9 min czytania</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Zbudować czy kupić? Koszty infrastruktury moderacji treści w 2026 roku</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Każda platforma z treściami użytkowników prędzej czy później staje przed tym samym pytaniem:
+        zbudować własny system moderacji treści czy go kupić?
+        O decyzji „zbudować czy kupić” przesądza całkowity koszt posiadania w perspektywie
+        kilku lat, a nie lista funkcji.
+      </p>
+      <p>
+        W 2026 roku, gdy DSA obowiązuje w pełni, a wybór modeli AI jest większy, liczby
+        wyglądają inaczej. Ten artykuł omawia rzeczywiste koszty obu podejść.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Argumenty za budową własnej moderacji</h2>
+      <p>
+        Budowa własnego procesu moderacji kusi. Kontrolujesz cały stos technologiczny, nie
+        zależysz od żadnego dostawcy i możesz dopasować system dokładnie do swojego przypadku.
+        Pierwsze miesiące pracy inżynierów wyglądają raczej na inwestycję niż na koszt.
+      </p>
+      <p>
+        Typowy samodzielnie budowany system moderacji wymaga:
+      </p>
+      <ul>
+        <li>usługi moderacji wywołującej API jednego lub kilku dostawców AI</li>
+        <li>Action Engine z trzema prostymi narzędziami: zakazanymi słowami, progami i własnymi zasadami zapisanymi zwykłym językiem</li>
+        <li>systemu logów audytowych z polityką retencji</li>
+        <li>kolejki do weryfikacji przypadków granicznych przez ludzi</li>
+        <li>panelu do monitorowania i konfiguracji</li>
+        <li>konektorów do mediów społecznościowych i blogów (jeśli moderujesz Facebooka, Instagrama, WordPressa itd.)</li>
+        <li>alertów i obserwowalności</li>
+        <li>CI/CD, testów i środowisk stagingowych</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Rzeczywisty koszt budowy: czas inżynierów</h2>
+      <p>
+        Oto przybliżona ocena nakładu pracy. Starszy inżynier backendu kosztuje 150-200 tys. USD rocznie
+        (z pełnymi kosztami zatrudnienia). Solidny proces moderacji z jednym dostawcą to 3-6 miesięcy
+        pracy. Dodanie drugiego dostawcy AI to kolejne 2-3 miesiące. Panel
+        to 2-4 miesiące. Każdy konektor to 1-2 miesiące.
+      </p>
+      <p>
+        <strong>Ostrożny szacunek: 6-8 osobomiesięcy.</strong>
+        To 75-130 tys. USD samych wynagrodzeń za podstawowy system moderacji
+        z jednym dostawcą. Kilku dostawców, panel i konektory mogą łatwo podwoić tę kwotę.
+      </p>
+      <p>
+        A to dopiero pierwszy rok. Drugi przynosi utrzymanie, zmiany w API dostawców, prace
+        nad skalowaniem i prośby o nowe funkcje.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Ukryte koszty budowy we własnym zakresie</h2>
+      <p>
+        Pierwsza wersja to tylko część rachunku. Oto koszty, które zespoły często pomijają:
+      </p>
+      <p>
+        <strong>Bieżące utrzymanie (ok. 30-60 tys. USD rocznie):</strong> API dostawców się zmieniają. OpenAI
+        wycofuje modele. Azure aktualizuje endpointy. Integracja przestaje działać i ktoś musi
+        ją naprawić. Każda aktualizacja po stronie dostawcy to 2-5 dni pracy inżyniera.
+      </p>
+      <p>
+        <strong>Koszty zmiany dostawcy:</strong> dodanie lub zmiana dostawcy oznacza
+        przebudowę integracji. We własnym systemie to nowy kod, testy
+        i migracja. Ten koszt wraca za każdym razem, gdy dochodzi nowy dostawca.
+      </p>
+      <p>
+        <strong>Koszt utraconych możliwości:</strong> każda godzina, którą zespół poświęca na infrastrukturę moderacji,
+        to godzina odebrana głównemu produktowi. Dla startupu to najdroższa
+        pozycja w budżecie.
+      </p>
+      <p>
+        <strong>Ryzyko regulacyjne:</strong> jeśli ścieżka audytu nie spełnia wymogów DSA,
+        grożą kary do 6% światowego obrotu. Prawidłowa zgodność wymaga analizy
+        prawnej i specjalistycznej pracy inżynierskiej.
+      </p>
+      <p>
+        <strong>Koszty skalowania:</strong> własny system działał przy 10 tys. zapytań dziennie. Przy
+        100 tys. zapytań dziennie potrzebne są zarządzanie kolejkami, limity zapytań i optymalizacja
+        wydajności. Przy 1 mln zapytań dziennie potrzebne jest przetwarzanie rozproszone i być może
+        dedykowany inżynier SRE.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Argumenty za zakupem moderacji</h2>
+      <p>
+        Zakup oznacza płacenie za produkt, który te problemy już rozwiązał.
+        OpenModeration zapewnia:
+      </p>
+      <ul>
+        <li><strong>Własna AI do moderacji:</strong> skonfigurowana według Twoich zasad i przypadków użycia, a trudne przypadki weryfikują inne modele AI.</li>
+        <li><strong>Silnik niezależny od modelu:</strong> gdy pojawia się lepszy lub tańszy model AI, szybko go podłączamy. Po Twojej stronie nic się nie zmienia.</li>
+        <li><strong>Action Engine:</strong> trzy proste narzędzia (zakazane słowa, progi dla kategorii i własne zasady zapisane zwykłym językiem), bez pisania kodu.</li>
+        <li><strong>Wbudowana ścieżka audytu:</strong> logowanie zgodne z DSA od pierwszego dnia.</li>
+        <li><strong>Konektory społecznościowe:</strong> gotowe integracje z Facebookiem, Instagramem, YouTube i WordPressem.</li>
+        <li><strong>Panel:</strong> panel administracyjny do monitorowania, analityki i konfiguracji.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Porównanie kosztów: zbudować czy kupić</h2>
+      <p>
+        Oto całkowity koszt posiadania w ciągu 3 lat dla platformy obsługującej
+        100 tys. zapytań moderacyjnych dziennie:
+      </p>
+      <p>
+        <strong>Budowa własna (TCO na 3 lata):</strong>
+      </p>
+      <ul>
+        <li>Budowa w 1. roku: 100-250 tys. USD na pracę inżynierów</li>
+        <li>Utrzymanie w latach 1-3: 90-180 tys. USD</li>
+        <li>Koszty API dostawców: 50-150 tys. USD rocznie, zależnie od dostawców</li>
+        <li>Infrastruktura (serwery, baza danych, monitoring): 20-50 tys. USD rocznie</li>
+        <li><strong>Razem: 350-780 tys. USD w ciągu 3 lat</strong></li>
+      </ul>
+      <p>
+        <strong>Zakup (OpenModeration, TCO na 3 lata):</strong>
+      </p>
+      <ul>
+        <li>Integracja: 1-2 dni pracy inżyniera</li>
+        <li>Modele AI: w cenie subskrypcji</li>
+        <li>Hostowany SaaS: opłata za zapytanie, bez kosztów infrastruktury</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Werdykt: kiedy budować, a kiedy kupić</h2>
+      <p>
+        <strong>Buduj, jeśli:</strong> masz dedykowany zespół infrastruktury, moderacja jest
+        Twoim głównym wyróżnikiem i potrzebujesz możliwości, których nie oferuje żaden istniejący produkt.
+        Nawet wtedy warto rozważyć podłączenie API OpenModeration do własnego systemu zamiast zaczynać od zera.
+      </p>
+      <p>
+        <strong>Kupuj, jeśli:</strong> potrzebujesz niezawodnej moderacji, podczas gdy zespół skupia się
+        na produkcie. Dotyczy to 95% platform. Oszczędzasz pieniądze, a do tego
+        działasz szybciej, zachowujesz koncentrację i ograniczasz ryzyko.
+      </p>
+      <p>
+        Dla większości organizacji decyzja „zbudować czy kupić” nie jest trudna.
+        W 2026 roku budowa własnej infrastruktury moderacji przypomina budowę własnej
+        bazy danych czy własnego load balancera. Technicznie jest to możliwe, ale to nie jest dobre
+        wykorzystanie zasobów inżynierskich.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Jak zacząć z OpenModeration</h2>
+      <p>
+        OpenModeration to usługa hostowana, z danymi w UE. Nasz zespół konfiguruje ją razem z Tobą
+        wokół Twoich zasad i przypadków użycia, a nowe modele AI są podłączane bez żadnej pracy po Twojej stronie.
+        Wdrożenie on-premise jest możliwe na życzenie:
+        <a href={BOOKING_URL} class="text-brand-600 hover:text-brand-500">porozmawiajmy</a>.
+      </p>
+      <p>
+        Widzieliśmy zespoły, które przeszły z własnych systemów na OpenModeration w ciągu jednego sprintu.
+        Zwrot jest widoczny od razu: nikt już nie utrzymuje integracji z AI, nie poprawia błędów ścieżki audytu
+        ani nie obsługuje próśb zespołu produktowego o nowe funkcje panelu.
+      </p>
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Czytaj dalej</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/build-vs-buy', locale)} class="font-medium text-brand-600 hover:text-brand-500">Zbudować czy kupić: prawdziwy koszt infrastruktury moderacji &rarr;</a></li>
+        <li><a href={localizePath('/pricing', locale)} class="font-medium text-brand-600 hover:text-brand-500">Proste, przejrzyste ceny &rarr;</a></li>
+        <li><a href={localizePath('/features', locale)} class="font-medium text-brand-600 hover:text-brand-500">Wszystko, co platforma robi za Ciebie &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

@@ -1,6 +1,8 @@
 ---
+import { bookingUrl } from '../../i18n/ui';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CTASection from '../../components/CTASection.astro';
+import GuideComparisons from '../../components/GuideComparisons.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 
 const articleJsonLd = {
@@ -75,30 +77,30 @@ const articleJsonLd = {
       <p>Here's what a DSA-compliant setup looks like with OpenModeration:</p>
       <ol>
         <li><strong>Content ingestion:</strong> Receive content via API, webhook, or social connectors. Every item gets a unique ID and is stored encrypted.</li>
-        <li><strong>AI moderation:</strong> The request goes to the best provider. Results include scores per category and a flagged/not-flagged decision.</li>
+        <li><strong>AI moderation:</strong> Our own moderation AI analyses the content, and other AI models cross-check delicate cases. Results include scores per category and a flagged/not-flagged decision.</li>
         <li><strong>Rule evaluation:</strong> Your rules combine forbidden words for instant blocking, category thresholds for automated decisions, and your own rules written in plain language.</li>
-        <li><strong>Audit logging:</strong> Every step is logged: content, provider, scores, rule matched, action taken, timestamp.</li>
+        <li><strong>Audit logging:</strong> Every step is logged: content, scores, rule matched, action taken, timestamp.</li>
         <li><strong>Transparency export:</strong> GET /v1/analytics/usage provides the data needed for DSA transparency reports.</li>
       </ol>
 
       <h2 class="text-xl font-bold text-surface-900">Meeting specific DSA requirements</h2>
       <p>
-        <strong>Audit trail:</strong> OpenModeration logs every moderation with provider, latency, scores, and decision.
+        <strong>Audit trail:</strong> OpenModeration logs every moderation with latency, scores, and decision.
         Data is retained per your configured policy (default 7 days for input text, 90 days for logs).
         All exportable for regulatory audits.
       </p>
       <p>
-        <strong>Transparency reporting:</strong> The analytics API provides usage data by period, provider, and category.
-        It covers total requests, flagged rates and provider performance, which is what DSA transparency reports ask for.
+        <strong>Transparency reporting:</strong> The analytics API provides usage data by period and category.
+        It covers total requests, flagged rates and actions taken, which is what DSA transparency reports ask for.
       </p>
       <p>
         <strong>Data sovereignty:</strong> Data is hosted in the EU and you can export it at any time.
         This matters for GDPR compliance and for DSA risk assessments. On-premise deployment is
-        possible on request: <a href="https://calendly.com/jesuslogora/1h" class="text-brand-600 hover:text-brand-500">let's talk</a>.
+        possible on request: <a href={bookingUrl('en')} class="text-brand-600 hover:text-brand-500">let's talk</a>.
       </p>
       <p>
-        <strong>Human review:</strong> The manual review queue allows human moderators to handle edge cases,
-        meeting DSA requirements for complaint handling and appeals.
+        <strong>Human review:</strong> Our team handles edge cases, user reports and appeals, while you see every
+        decision in real time and can step in, meeting DSA requirements for complaint handling and appeals.
       </p>
     </div>
   </article>
@@ -113,6 +115,8 @@ const articleJsonLd = {
       </ul>
     </div>
   </section>
+
+  <GuideComparisons />
 
   <CTASection />
 </BaseLayout>

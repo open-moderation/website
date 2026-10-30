@@ -1,0 +1,211 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/pl/alternatywy/agorapulse",
+  "name": "Alternatywa dla Agorapulse do moderacji komentarzy: porównanie z OpenModeration",
+  "description": "Agorapulse czy OpenModeration do moderacji komentarzy? Reguły słów kluczowych czy AI, ceny, modele AI, narzędzia DSA i jak używać obu narzędzi razem.",
+  "inLanguage": "pl",
+  "about": {
+    "@id": "https://www.openmoderation.com/#software"
+  }
+};
+
+const rows = [
+  { feature: "Oferta", competitor: "Pakiet do zarządzania mediami społecznościowymi: publikacja, skrzynka odbiorcza, social listening, raporty i ROI", openmod: "Wyłącznie automatyczna moderacja komentarzy, konfigurowana razem z zespołem Logora" },
+  { feature: "Sieci", competitor: "Facebook, Instagram, Threads, X, LinkedIn, YouTube, Pinterest, Google Business, TikTok, Bluesky, Reddit", openmod: "Strony internetowe (API), strony na Facebooku, profesjonalne konta na Instagramie, kanały YouTube, WordPress" },
+  { feature: "Komentarze na Twojej stronie", competitor: "Nie podano na sprawdzonych stronach", openmod: "Tak, przez API lub konektor WordPress" },
+  { feature: "Jak działa automatyczna moderacja", competitor: "Reguły uruchamiane przez słowa kluczowe, linki, emoji, liczbę słów, język lub typ elementu; akcje: ukryj, usuń, otaguj, przypisz, zablokuj", openmod: "AI dopasowana do Twoich zasad i przypadków użycia: oczywiste naruszenia ukryte, uzasadniona krytyka widoczna, wątpliwe przypadki do weryfikacji przez ludzi" },
+  { feature: "Reguły automatyczne w planach", competitor: "1 reguła na profil z 1 warunkiem w planach Standard, Professional i Advanced; bez limitu w Custom", openmod: "Automatyczna moderacja we wszystkich planach, także w darmowym" },
+  { feature: "Modele AI", competitor: "Nie podano; według centrum pomocy AI służy do pisania treści, tekstów alternatywnych, podsumowań raportów i sugestii odpowiedzi, a reguły moderacji opierają się na warunkach", openmod: "Własna AI do moderacji, weryfikowana przez inne modele AI; nowe modele podłączane na bieżąco, gdy się pojawiają" },
+  { feature: "Uzasadnienie każdej decyzji", competitor: "Nie podano na sprawdzonych stronach", openmod: "Pisemne uzasadnienie każdej decyzji i pełny dziennik aktywności" },
+  { feature: "DSA", competitor: "Nie podano na sprawdzonych stronach", openmod: "Zgłoszenia i działania, uzasadnienia decyzji, weryfikacja zakwestionowanych decyzji przez ludzi, eksportowalne statystyki" },
+  { feature: "Hosting", competitor: "Nie podano na sprawdzonych stronach", openmod: "Hosting w UE, RODO" },
+  { feature: "Cena", competitor: "Za użytkownika: Standard 79 $, Professional 119 $, Advanced 149 $ miesięcznie przy płatności rocznej (99 $, 149 $, 199 $ przy miesięcznej), 10 profili; Custom według wyceny; 30 dni bezpłatnego okresu próbnego", openmod: "Za darmo do 1000 zapytań miesięcznie; Pro za 99 € miesięcznie (10 000 zapytań); Enterprise – wycena indywidualna" },
+  { feature: "Publikacja, skrzynka, listening, raporty", competitor: "Tak, to rdzeń pakietu", openmod: "Nie, OpenModeration zajmuje się tylko moderacją" },
+];
+
+const faqItems = [
+  {
+    question: "Jaka jest najlepsza alternatywa dla Agorapulse do moderacji komentarzy?",
+    answer: "Jeśli potrzebujesz moderacji, OpenModeration powstało właśnie w tym celu: AI czyta każdy komentarz, wątpliwe przypadki przekazuje zespołowi, każdą decyzję pisemnie uzasadnia i prowadzi dziennik na potrzeby DSA – w mediach społecznościowych i na Twojej stronie. Jeśli potrzebujesz publikacji, social listeningu i raportów w wielu sieciach, Agorapulse oferuje to, czego OpenModeration nie robi.",
+  },
+  {
+    question: "Ile kosztuje Agorapulse?",
+    answer: "Według cennika, za użytkownika: Standard 79 $, Professional 119 $ i Advanced 149 $ miesięcznie przy płatności rocznej (99 $, 149 $ i 199 $ przy miesięcznej), każdy z 10 profilami, oraz Custom według wyceny; dostępny jest 30-dniowy bezpłatny okres próbny. OpenModeration jest bezpłatne do 1000 zapytań miesięcznie, a potem kosztuje 99 € miesięcznie za 10 000 zapytań.",
+  },
+  {
+    question: "Agorapulse vs OpenModeration: co się zmienia?",
+    answer: "Agorapulse to kompletny pakiet do zarządzania mediami społecznościowymi, w którym automatyczna moderacja działa na regułach warunkowych – poniżej planu Custom jedna reguła na profil. OpenModeration zajmuje się tylko moderacją: jego AI dopasowuje się do Twoich zasad i przypadków użycia, wątpliwe przypadki trafiają do weryfikacji przez ludzi, a każda decyzja ma pisemne uzasadnienie.",
+  },
+  {
+    question: "Czy można zostać przy Agorapulse i moderować przez OpenModeration?",
+    answer: "Tak. Zostaw Agorapulse do publikacji, odpowiedzi i raportów, a automatyczną moderację powierz OpenModeration. Wyłącz tylko reguły ukrywania i usuwania w jednym z narzędzi, aby nigdy nie działały na ten sam komentarz.",
+  },
+  {
+    question: "Czy można przetestować OpenModeration bez zmian w konfiguracji Agorapulse?",
+    answer: "Tak. W trybie sandbox OpenModeration analizuje prawdziwe komentarze, niczego nie ukrywając, więc najpierw porównasz jego decyzje z obecnymi regułami.",
+  },
+  {
+    question: "Kto konfiguruje OpenModeration?",
+    answer: "Zespół Logora, działający w Paryżu od 2019 roku. Dopasowujemy moderację do Twoich zasad i przypadków użycia, uruchamiamy z Tobą sandbox i dostrajamy ją w pierwszych tygodniach. Z OpenModeration korzystają m.in. Estadão, L'Équipe i Sud Ouest.",
+  },
+];
+---
+
+<BaseLayout title="Alternatywa dla Agorapulse: porównanie z OpenModeration" description="Agorapulse czy OpenModeration do moderacji komentarzy? Reguły słów kluczowych czy AI, ceny, modele AI, narzędzia DSA i jak używać obu narzędzi razem." jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Strona główna", href: localizePath('/', locale) }, { label: "Alternatywy", href: localizePath('/alternatives', locale) }, { label: "Agorapulse" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Porównanie
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Alternatywa dla Agorapulse do moderacji komentarzy: porównanie z OpenModeration</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Jeśli potrzebujesz automatycznej moderacji komentarzy, OpenModeration jest alternatywą dla Agorapulse stworzoną właśnie do tego: AI czyta każdy komentarz, ukrywa oczywiste naruszenia, zostawia widoczną uzasadnioną krytykę i przekazuje wątpliwe przypadki zespołowi – zawsze z pisemnym uzasadnieniem. Agorapulse pozostaje lepsza do publikacji, wspólnej skrzynki odbiorczej i raportów, a wiele zespołów może korzystać z obu narzędzi jednocześnie.
+      </p>
+      <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a href={localizePath('/book-a-call', locale)} class="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-500">Umów rozmowę</a>
+        <a href={localizePath('/pricing', locale)} class="inline-flex items-center gap-2 rounded-lg border border-surface-200 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">Zobacz cennik</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold tracking-tight text-surface-900 sm:text-3xl">Dla kogo jest Agorapulse?</h2>
+      <p class="mt-4 text-surface-600">Agorapulse to pakiet do zarządzania mediami społecznościowymi dla marek i agencji: publikacja, wspólna skrzynka odbiorcza na komentarze, wiadomości i opinie, social listening, raporty i pomiar ROI. Według strony głównej korzysta z niej codziennie ponad 31 000 social media managerów. Obsługuje Facebooka, Instagram, Threads, X, LinkedIn, YouTube, Pinterest, Google Business, TikTok, Bluesky i Reddit.</p>
+      <p class="mt-4 text-surface-600">Skrzynka odbiorcza zawiera automatyczną moderację: według centrum pomocy reguły uruchamiają warunki takie jak słowa kluczowe, linki, same emoji, liczba słów czy język, a akcje to ukrycie, usunięcie, otagowanie, przypisanie lub zablokowanie. Plany Standard, Professional i Advanced dają jedną regułę na profil z jednym warunkiem; reguły bez limitu są dostępne w planie Custom.</p>
+    </div>
+  </section>
+
+  <section class="bg-white pb-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Wybierz OpenModeration, jeśli…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>reguły słów kluczowych przepuszczają obelgi z literówkami, a ukrywają krytykę, w której pada niefortunne słowo;</li>
+          <li>chcesz AI, która czyta każdy komentarz w kontekście a wątpliwe przypadki przekazuje naszemu zespołowi;</li>
+          <li>potrzebujesz pisemnego uzasadnienia każdego ukrytego komentarza, dziennika aktywności i narzędzi DSA;</li>
+          <li>komentarze na Twojej stronie lub w WordPressie mają być moderowane tak samo jak profile społecznościowe;</li>
+          <li>dane muszą być hostowane w UE i chcesz zespołu, który skonfiguruje moderację razem z Tobą.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">Agorapulse może lepiej pasować, jeśli…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>potrzebujesz publikacji, kalendarza treści, social listeningu i raportów w jednym narzędziu;</li>
+          <li>zespół spędza większość czasu na odpowiadaniu klientom w komentarzach, wiadomościach i opiniach;</li>
+          <li>prowadzisz TikTok, LinkedIn, X, Threads, Pinterest, Reddit, Bluesky lub Google Business;</li>
+          <li>potrzebujesz funkcji zespołowych, takich jak przypisywanie, wykrywanie kolizji, zapisane odpowiedzi i integracje z CRM.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Agorapulse a OpenModeration: porównanie punkt po punkcie</h2>
+      <p class="mt-4 text-surface-500">Informacje o Agorapulse pochodzą z jej strony agorapulse.com i centrum pomocy, dostęp: 30 października 2026. Jeśli strona czegoś nie podaje, zaznaczamy to.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Kryterium</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Agorapulse</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.competitor}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Silnik AI, który nadąża za postępem rynku</h2>
+      <p class="mt-4 text-surface-600">OpenModeration korzysta z własnej AI do moderacji, a w trudnych przypadkach jej decyzje weryfikują inne modele AI. Silnik nie zależy od jednego modelu: gdy pojawia się lepszy lub tańszy, nasz zespół szybko go podłącza, bez żadnych zmian po Twojej stronie.</p>
+      <p class="mt-4 text-surface-600">Agorapulse używa AI do pisania treści, podsumowań raportów i sugerowania odpowiedzi, a centrum pomocy opisuje automatyczną moderację jako reguły oparte na warunkach, np. słowach kluczowych. OpenModeration umieszcza AI w samej moderacji, a ta korzysta z postępu modeli AI, zamiast tkwić przy jednym algorytmie.</p>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Cennik Agorapulse i OpenModeration</h2>
+      <p class="mt-4 text-surface-600">Agorapulse publikuje ceny za użytkownika: Standard 79 $, Professional 119 $ i Advanced 149 $ miesięcznie przy płatności rocznej (99 $, 149 $ i 199 $ przy miesięcznej), każdy z 10 profilami, oraz plan Custom według wyceny. Oferuje 30 dni bezpłatnego okresu próbnego bez karty. Moderacja komentarzy pod reklamami zaczyna się od planu Professional; reguły bez limitu wymagają planu Custom.</p>
+      <p class="mt-4 text-surface-600">OpenModeration jest bezpłatne do 1000 zapytań miesięcznie, potem Pro za 99 € miesięcznie (10 000 zapytań), a Enterprise – wycena indywidualna; bez opłat za użytkownika. To nie ten sam produkt: jeśli zostajesz przy Agorapulse do publikacji i odpowiedzi, OpenModeration jest dodatkową warstwą moderacji, a nie zamiennikiem pakietu.</p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Dodanie OpenModeration do Agorapulse w 3 krokach</h2>
+      <ol class="mt-8 grid gap-6 md:grid-cols-3">
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">1</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Podłącz w trybie sandbox</h3>
+          <p class="mt-2 text-sm text-surface-600">Podłącz strony na Facebooku, konta na Instagramie i kanały YouTube, a w razie potrzeby także stronę internetową. Nic nie jest ukrywane: reguły Agorapulse działają dalej.</p>
+        </li>
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">2</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Porównaj i dostrój</h3>
+          <p class="mt-2 text-sm text-surface-600">Przez kilka tygodni porównuj decyzje OpenModeration z regułami Agorapulse na tych samych komentarzach. Nasz zespół dopasuje moderację do Twoich zasad i przypadków użycia.</p>
+        </li>
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">3</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Podziel role</h3>
+          <p class="mt-2 text-sm text-surface-600">Włącz automatyczne ukrywanie w OpenModeration i wyłącz reguły ukrywania i usuwania w Agorapulse na tych samych profilach. Agorapulse zostaw do publikacji, odpowiedzi i raportów.</p>
+        </li>
+      </ol>
+      <p class="mt-8 text-surface-600">Chcesz najpierw zobaczyć to na swoich komentarzach? <a href={localizePath('/book-a-call', locale)} class="font-medium text-brand-600 hover:text-brand-500">Umów rozmowę z zespołem Logora</a>, a skonfigurujemy z Tobą sandbox.</p>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Najczęstsze pytania" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        Agorapulse jest znakiem towarowym jego właściciela. Źródła: <a href="https://www.agorapulse.com" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">agorapulse.com</a>, <a href="https://www.agorapulse.com/pricing/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">agorapulse.com/pricing</a>, <a href="https://www.agorapulse.com/features/social-media-inbox/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">agorapulse.com/features/social-media-inbox</a>, <a href="https://support.agorapulse.com/en/articles/10419838-how-to-set-up-automated-moderation-in-the-inbox" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">support.agorapulse.com/en/articles/10419838-how-to-set-up-automated-moderation-in-the-inbox</a> (dostęp: 30 października 2026). Zauważyłeś błąd? Napisz do nas: <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Dowiedz się więcej</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/blog/social-media-moderation-guide', locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderacja mediów społecznościowych: kompletny poradnik &rarr;</a></li>
+        <li><a href={localizePath('/blog/hide-facebook-comments-automatically', locale)} class="font-medium text-brand-600 hover:text-brand-500">Jak automatycznie ukrywać komentarze na Facebooku &rarr;</a></li>
+        <li><a href={localizePath('/moderation-software', locale)} class="font-medium text-brand-600 hover:text-brand-500">Oprogramowanie do moderacji OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/pricing', locale)} class="font-medium text-brand-600 hover:text-brand-500">Cennik OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/alternatives', locale)} class="font-medium text-brand-600 hover:text-brand-500">Wszystkie porównania &rarr;</a></li>
+        <li><a href={localizePath('/book-a-call', locale)} class="font-medium text-brand-600 hover:text-brand-500">Umów rozmowę z naszym zespołem &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Agorapulse do publikacji. OpenModeration do moderacji." subtitle="Uruchom sandbox na prawdziwych komentarzach obok reguł Agorapulse i sprawdź uzasadnienie każdej decyzji. Za darmo do 1000 zapytań miesięcznie." buttonText="Umów rozmowę" buttonHref={localizePath('/book-a-call', locale)} />
+</BaseLayout>

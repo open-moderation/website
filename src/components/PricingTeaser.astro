@@ -1,0 +1,33 @@
+---
+// Tarifs sur l'accueil : sur devis selon les volumes, avec une offre gratuite pour tester.
+import { getLocale, localizePath } from '../i18n/routes';
+import { bookingUrl } from '../i18n/ui';
+
+const locale = getLocale(Astro.url.pathname);
+const BOOKING_URL = bookingUrl(locale);
+const c = ({
+  en: { title: 'A price sized to your volumes', text: 'Every newsroom and brand receives a different number of comments. We size the offer with you, and you can start for free to test it on your own comments.', points: ['Quote based on your volumes and platforms', 'Free plan to test on your real comments', 'Setup and moderation by our team included'], book: 'Get my quote in a call', see: 'See pricing details' },
+  fr: { title: 'Un tarif adapté à vos volumes', text: 'Chaque rédaction et chaque marque reçoit un volume de commentaires différent. On dimensionne l’offre avec vous, et vous pouvez commencer gratuitement pour tester sur vos propres commentaires.', points: ['Devis selon vos volumes et vos plateformes', 'Offre gratuite pour tester sur vos vrais commentaires', 'Mise en place et modération par notre équipe incluses'], book: 'Obtenir mon devis en rendez-vous', see: 'Voir le détail des tarifs' },
+  es: { title: 'Un precio ajustado a tus volúmenes', text: 'Cada medio y cada marca recibe un volumen de comentarios distinto. Dimensionamos la oferta contigo, y puedes empezar gratis para probarla con tus propios comentarios.', points: ['Presupuesto según tus volúmenes y plataformas', 'Plan gratuito para probar con tus comentarios reales', 'Puesta en marcha y moderación por nuestro equipo incluidas'], book: 'Obtener mi presupuesto en una llamada', see: 'Ver los precios' },
+  de: { title: 'Ein Preis passend zu Ihren Volumen', text: 'Jede Redaktion und jede Marke erhält eine andere Menge an Kommentaren. Wir dimensionieren das Angebot mit Ihnen, und Sie können kostenlos starten, um es mit Ihren eigenen Kommentaren zu testen.', points: ['Angebot nach Ihren Volumen und Plattformen', 'Kostenloser Tarif zum Testen mit echten Kommentaren', 'Einrichtung und Moderation durch unser Team inklusive'], book: 'Mein Angebot im Termin erhalten', see: 'Preise im Detail' },
+  it: { title: 'Un prezzo adatto ai tuoi volumi', text: 'Ogni redazione e ogni brand riceve un volume di commenti diverso. Dimensioniamo l’offerta con te, e puoi iniziare gratis per provarla sui tuoi commenti.', points: ['Preventivo in base a volumi e piattaforme', 'Piano gratuito per provare sui tuoi commenti reali', 'Avvio e moderazione del nostro team inclusi'], book: 'Ricevere il preventivo in una call', see: 'Vedi i prezzi' },
+  pt: { title: 'Um preço ajustado aos seus volumes', text: 'Cada redação e cada marca recebe um volume diferente de comentários. Dimensionamos a oferta com você, e você pode começar grátis para testar nos seus próprios comentários.', points: ['Orçamento conforme seus volumes e plataformas', 'Plano gratuito para testar nos seus comentários reais', 'Implantação e moderação pela nossa equipe incluídas'], book: 'Receber meu orçamento em uma conversa', see: 'Ver os preços' },
+  pl: { title: 'Cena dopasowana do Twoich wolumenów', text: 'Każda redakcja i każda marka dostaje inną liczbę komentarzy. Dopasujemy ofertę razem z Tobą, a zacząć możesz za darmo, testując na własnych komentarzach.', points: ['Wycena według wolumenów i platform', 'Darmowy plan do testów na prawdziwych komentarzach', 'Wdrożenie i moderacja przez nasz zespół w cenie'], book: 'Otrzymaj wycenę podczas rozmowy', see: 'Zobacz cennik' },
+  nl: { title: 'Een prijs die past bij je volumes', text: 'Elke redactie en elk merk krijgt een ander aantal reacties. We stemmen het aanbod samen met je af, en je kunt gratis beginnen om het op je eigen reacties te testen.', points: ['Offerte op basis van je volumes en platforms', 'Gratis plan om op je echte reacties te testen', 'Inrichting en moderatie door ons team inbegrepen'], book: 'Mijn offerte in een gesprek', see: 'Bekijk de prijzen' },
+} as Record<string, { title: string; text: string; points: string[]; book: string; see: string }>)[locale] ?? null;
+const copy = c!;
+---
+
+<section class="bg-gradient-to-b from-white to-violet-50 py-20">
+  <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+    <h2 class="text-3xl font-extrabold tracking-tight text-surface-900 sm:text-4xl">{copy.title}</h2>
+    <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-600">{copy.text}</p>
+    <ul class="mx-auto mt-8 grid max-w-3xl gap-3 sm:grid-cols-3">
+      {copy.points.map((pt) => <li class="rounded-2xl bg-white p-4 text-sm font-medium text-surface-800 shadow-sm ring-1 ring-violet-100">✓ {pt}</li>)}
+    </ul>
+    <div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+      <a href={BOOKING_URL} target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white">📅 {copy.book}</a>
+      <a href={localizePath('/pricing', locale)} class="text-sm font-semibold text-brand-700 hover:text-brand-600">{copy.see} &rarr;</a>
+    </div>
+  </div>
+</section>

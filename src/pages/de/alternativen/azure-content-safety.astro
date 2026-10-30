@@ -2,6 +2,7 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumb from '../../../components/Breadcrumb.astro';
 import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
 import CodeBlock from '../../../components/CodeBlock.astro';
 import FAQ from '../../../components/FAQ.astro';
 
@@ -30,38 +31,38 @@ const comparisonJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
   "name": "Alternative zur Azure Moderation API | OpenModeration",
-  "description": "OpenModeration und Azure Content Safety im Vergleich für die KI-Moderation. Azure bindet Sie mit einer reinen API-Moderation an das Microsoft-Ökosystem. Mit OpenModeration nutzen Sie Azure neben 9 weiteren Anbietern über eine einzige API, mit integriertem Prüf-Dashboard, Regeln ohne Code und Deployment on-premise für volle Datensouveränität.",
+  "description": "OpenModeration und Azure Content Safety im Vergleich für die KI-Moderation. Azure bindet Sie mit einer reinen API-Moderation an das Microsoft-Ökosystem. OpenModeration bietet eine eigene Moderations-KI, bei heiklen Fällen von weiteren KI-Modellen geprüft, eine Konsole mit allen Entscheidungen in Echtzeit, Regeln ohne Code, Hosting in der EU und On-Premise auf Anfrage.",
   "inLanguage": "de"
 };
 
 const faqItems = [
   {
     question: "Was kostet Azure Content Safety im Vergleich zu OpenModeration?",
-    answer: "Azure AI Content Safety rechnet nach einem kostenlosen Kontingent von 5.000 Datensätzen pro Monat je 1.000 Textdatensätze ab (ein Datensatz umfasst bis zu 1.000 Zeichen), zu einem Tarif, der von Ihrer Azure-Region abhängt. OpenModeration ist bis 1.000 Anfragen pro Monat kostenlos. Der Pro-Tarif beginnt bei 99 €/Monat für 10K Anfragen, und der Vorfilter spart 10 bis 30 % der abrechenbaren Aufrufe ein, bevor sie Azure erreichen."
+    answer: "Azure AI Content Safety rechnet nach einem kostenlosen Kontingent von 5.000 Datensätzen pro Monat je 1.000 Textdatensätze ab (ein Datensatz umfasst bis zu 1.000 Zeichen), zu einem Tarif, der von Ihrer Azure-Region abhängt. OpenModeration ist bis 1.000 Anfragen pro Monat kostenlos. Der Pro-Tarif beginnt bei 99 €/Monat für 10K Anfragen."
   },
   {
-    question: "Kann ich Azure Content Safety mit OpenModeration weiter nutzen?",
-    answer: "Ja. Hinterlegen Sie Ihren eigenen Azure-Schlüssel (BYOK) und leiten Sie Anfragen an Azure Content Safety als primären Anbieter. OpenAI oder Mistral fügen Sie per Konfigurationsänderung als Fallback hinzu, ohne Code neu zu schreiben und ohne neues Training."
+    question: "Welche KI nutzt OpenModeration?",
+    answer: "Eine eigene Moderations-KI, eingerichtet nach Ihren Regeln und Anwendungsfällen. Bei heiklen Fällen prüfen weitere KI-Modelle die Entscheidung, bevor sie angewendet wird. Kommt ein besseres oder günstigeres Modell heraus, binden wir es schnell an, ohne dass Sie Code neu schreiben müssen."
   },
   {
-    question: "Unterstützt OpenModeration die Moderationsmodelle von Azure OpenAI?",
-    answer: "Ja. Sowohl der Endpunkt von Azure AI Content Safety als auch die Moderationsmodelle von Azure OpenAI werden als Anbieter unterstützt. Die Antworten werden über alle 10 Anbieter hinweg in ein einheitliches Format gebracht."
+    question: "Muss ich meinen Code ändern, wenn OpenModeration die KI-Modelle wechselt?",
+    answer: "Nein. Die Antworten behalten dasselbe standardisierte Format. Kommt ein besseres KI-Modell heraus, bindet unser Team es an, und für Sie ändert sich nichts."
   },
   {
     question: "Was bekomme ich über die reinen Scores von Azure hinaus?",
-    answer: "Eine komplette Plattform: Vorfilter, doppelte Schwellenwerte (automatisch freigeben, manuell prüfen, automatisch ablehnen), Regeln ohne Code, eine Moderationskonsole mit Teamrollen und einen DSA-fähigen Audit-Trail mit exportierbaren Berichten."
+    answer: "Eine komplette Plattform: Vorfilter, doppelte Schwellenwerte (automatisch freigeben, Prüfung durch unser Team, automatisch ablehnen), Regeln ohne Code, eine Moderationskonsole, in der Sie jede Entscheidung in Echtzeit sehen, mit Teamrollen und einen DSA-fähigen Audit-Trail mit exportierbaren Berichten."
   },
   {
     question: "Wo werden meine Daten gehostet, wenn ich nicht die Microsoft-Cloud nutzen will?",
-    answer: "OpenModeration wird in der EU gehostet, und Sie können Ihre Daten jederzeit exportieren. Azure bleibt weiterhin als einer der Anbieter verfügbar. Eine On-Premise-Bereitstellung ist auf Anfrage möglich: Sprechen Sie uns an."
+    answer: "OpenModeration wird in der EU gehostet, und Sie können Ihre Daten jederzeit exportieren. Eine On-Premise-Bereitstellung ist auf Anfrage möglich: Sprechen Sie uns an."
   },
 ];
 
 const comparisonPoints = [
-  { feature: "Umfang der Moderation", azure: "Ein einziger Anbieter (nur Azure)", openmod: "Mehrere Anbieter (Azure, OpenAI, Mistral, LLMs) + zentrales Dashboard" },
-  { feature: "Operative Oberfläche", azure: "Nur API. Eine eigene Prüfoberfläche müssen Sie selbst bauen", openmod: "Vollständiges Trust-&-Safety-Dashboard mit Warteschlange für die manuelle Prüfung inklusive" },
+  { feature: "Umfang der Moderation", azure: "Ein einziges Azure-Modell", openmod: "Eigene Moderations-KI, bei heiklen Fällen von weiteren KI-Modellen geprüft, + zentrale Konsole" },
+  { feature: "Operative Oberfläche", azure: "Nur API. Eine eigene Prüfoberfläche müssen Sie selbst bauen", openmod: "Konsole mit allen Entscheidungen in Echtzeit; Zweifelsfälle prüft unser Team, Sie können jederzeit eingreifen" },
   { feature: "Regel-Engine", azure: "Eigene Logik muss intern gebaut und gepflegt werden", openmod: "Drei integrierte Ebenen: Wortfilter, Score-Schwellenwerte und Community-Richtlinien in natürlicher Sprache" },
-  { feature: "Anbieterbindung", azure: "Hoch (an das Microsoft-Ökosystem gebunden)", openmod: "Keine (eigene API-Schlüssel, Anbieter sofort wechselbar)" },
+  { feature: "Anbieterbindung", azure: "Hoch (an das Microsoft-Ökosystem gebunden)", openmod: "Keine: modellunabhängig, bessere oder günstigere Modelle werden schnell angebunden" },
   { feature: "Datensouveränität", azure: "Datenverarbeitung auf Microsoft-Infrastruktur", openmod: "Hosting in der EU, vollständiger Audit-Trail und Export Ihrer Daten. On-Premise auf Anfrage" },
   { feature: "Preismodell", azure: "API-Abrechnung pro Anfrage", openmod: "Öffentliche Preise: kostenlos bis 1.000 Anfragen pro Monat, Pro für 99 € pro Monat, individuelle Angebote für große Volumen" }
 ];
@@ -69,14 +70,14 @@ const comparisonPoints = [
 
 <BaseLayout
   title="Alternative zur Azure Moderation API: Preise & Vergleich"
-  description="Azure Content Safety ist eine reine API mit Microsoft-Bindung. OpenModeration: Azure + 9 Anbieter, Vorfilter, Regeln ohne Code, Prüfung und DSA-Audit-Trail."
+  description="Azure Content Safety ist eine reine API mit Microsoft-Bindung. OpenModeration: eigene, geprüfte KI, Vorfilter, Regeln ohne Code, DSA-Audit-Trail."
   jsonLd={comparisonJsonLd}
 >
   <Breadcrumb items={[{ label: "Startseite", href: "/de" }, { label: "Alternativen", href: "/de/alternativen" }, { label: "Alternative zu Azure Content Safety" }]} />
   <section class="bg-gradient-to-b from-brand-50 to-white py-20">
     <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
       <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">Alternative zur Azure Moderation API</div>
-      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Azure Content Safety behalten<br/>und den Rest nicht selbst bauen</h1>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Mehr als Azure Content Safety,<br/>ohne den Rest selbst zu bauen</h1>
       <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
         Azure Content Safety bietet gute KI-Moderations-APIs. Für einen vollständigen Moderations-Workflow müssen Sie aber noch viel selbst entwickeln. OpenModeration liefert die API <strong>und</strong> alles, was im Betrieb dazugehört.
       </p>
@@ -93,21 +94,21 @@ const comparisonPoints = [
         <div>
           <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">In weniger als einer Stunde von Azure migrieren</h2>
           <p class="mt-4 text-lg text-surface-500">
-            Behalten Sie Ihren Azure-Schlüssel (BYOK) als primären Anbieter. Ein einziger standardisierter Aufruf ersetzt den
+            Ein einziger standardisierter Aufruf ersetzt den
             Content-Safety-Endpunkt: Die Scores kommen in einem einheitlichen Format zurück, mit Schwellenwerten, die Sie selbst festlegen.
           </p>
           <ul class="mt-6 space-y-3">
             <li class="flex items-start gap-3">
               <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <p class="text-sm text-surface-600"><strong>Azure behalten</strong> als primären Anbieter und OpenAI oder Mistral als Fallback hinzufügen, falls Azure langsam oder nicht erreichbar ist.</p>
+              <p class="text-sm text-surface-600"><strong>Unsere eigene Moderations-KI</strong>, bei heiklen Fällen von weiteren KI-Modellen geprüft, bevor eine Entscheidung angewendet wird.</p>
             </li>
             <li class="flex items-start gap-3">
               <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <p class="text-sm text-surface-600"><strong>Der Vorfilter</strong> blockiert offensichtlichen Spam vor jedem abrechenbaren Azure-Aufruf und spart so 10 bis 30 % der API-Kosten.</p>
+              <p class="text-sm text-surface-600"><strong>Der Vorfilter</strong> blockiert offensichtlichen Spam und verbotene Wörter, bevor überhaupt eine KI aufgerufen wird.</p>
             </li>
             <li class="flex items-start gap-3">
               <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <p class="text-sm text-surface-600"><strong>Hosting in der EU</strong>, wobei Azure als einer der Anbieter verfügbar bleibt. On-Premise auf Anfrage.</p>
+              <p class="text-sm text-surface-600"><strong>Hosting in der EU</strong>, ohne Bindung an die Microsoft-Cloud. On-Premise auf Anfrage.</p>
             </li>
           </ul>
         </div>
@@ -151,21 +152,21 @@ const comparisonPoints = [
             Die Integration von Azure Content Safety ist nur der erste Schritt. Damit sie im Alltag funktioniert, muss Ihr Entwicklungsteam noch Folgendes bauen:
           </p>
           <ul class="mt-4 space-y-3 text-sm text-surface-600">
-            <li class="flex items-start gap-2"><span class="text-red-500">✕</span> Ein Dashboard, in dem menschliche Moderatoren Grenzfälle prüfen</li>
+            <li class="flex items-start gap-2"><span class="text-red-500">✕</span> Ein Dashboard und ein Team, das Grenzfälle prüft</li>
             <li class="flex items-start gap-2"><span class="text-red-500">✕</span> Eine Regel-Engine, die KI-Scores in automatische Aktionen übersetzt (ausblenden, löschen, markieren)</li>
             <li class="flex items-start gap-2"><span class="text-red-500">✕</span> Audit-Logging, um den Behörden die DSA-Konformität nachzuweisen</li>
-            <li class="flex items-start gap-2"><span class="text-red-500">✕</span> Fallback-Logik für den Fall, dass die Azure-APIs ausfallen</li>
+            <li class="flex items-start gap-2"><span class="text-red-500">✕</span> Eine Anpassung an jedes neue Modell, das bessere Ergebnisse liefert</li>
           </ul>
         </div>
         <div class="rounded-xl border border-brand-200 bg-brand-50 p-8 shadow-sm">
           <h3 class="text-xl font-bold text-brand-700">Der Vorteil von OpenModeration</h3>
           <p class="mt-4 text-surface-700">
-            OpenModeration kann Azure Content Safety als einen seiner Backend-Anbieter nutzen und ergänzt ihn um eine vollständige operative Ebene:
+            OpenModeration verbindet seine eigene Moderations-KI mit einer vollständigen operativen Ebene:
           </p>
           <ul class="mt-4 space-y-3 text-sm text-surface-700">
-            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> Im <strong>Dashboard</strong> kann Ihr Trust-&-Safety-Team sofort mit der Prüfung beginnen.</li>
+            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> In der <strong>Konsole</strong> sehen Sie jede Entscheidung in Echtzeit. Zweifelsfälle übernimmt unser Team, Sie können jederzeit eingreifen.</li>
             <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> Die <strong>Regeln</strong> stellen Sie ohne Code mit drei Werkzeugen ein: verbotene Wörter, Schwellenwerte pro Kategorie und Ihre eigenen Vorgaben in natürlicher Sprache.</li>
-            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> Ist Azure langsam oder fällt aus, geht die Anfrage per <strong>Fallback</strong> an OpenAI oder Mistral.</li>
+            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> Bei heiklen Fällen <strong>prüfen weitere KI-Modelle</strong> die Entscheidung. Neue, bessere Modelle binden wir schnell an.</li>
             <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> Jede Entscheidung von KI und Mensch wird mit vollständigem <strong>Audit-Trail</strong> protokolliert.</li>
           </ul>
         </div>
@@ -179,9 +180,11 @@ const comparisonPoints = [
     </div>
   </section>
 
+  <RelatedComparisons />
+
   <CTASection
     title="Schluss mit dem Bau eigener Moderationstools."
-    subtitle="Nutzen Sie eine vollständige KI-Moderationsplattform mit Azure-Integration, automatischen Regeln und einem Dashboard für die manuelle Prüfung."
+    subtitle="Verbinden Sie Ihre Seiten, den Rest übernehmen wir: eigene KI, automatische Regeln und unser Team für die Zweifelsfälle. Sie sehen alles in Echtzeit."
     buttonText="Kostenlos testen"
     buttonHref="https://app.openmoderation.com/signup"
   />

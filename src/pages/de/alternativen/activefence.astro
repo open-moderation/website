@@ -1,0 +1,233 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/de/alternativen/activefence",
+  "name": "ActiveFence Alternative: OpenModeration im Vergleich",
+  "description": "ActiveFence (heute Alice) oder OpenModeration? Vergleich mit Quellen für Medien und Marken: Angebot, Konnektoren, KI-Modelle, DSA, Preise und EU-Hosting.",
+  "inLanguage": "de",
+  "about": {
+    "@id": "https://www.openmoderation.com/#software"
+  }
+};
+
+const rows = [
+  {
+    "feature": "Angebot",
+    "competitor": "Trust & Safety für nutzergenerierte Inhalte (Warnungen, Bedrohungsdaten, Web-Beobachtung, Ermittlungen, das SaaS ActiveMind), dazu KI-Sicherheitsprodukte unter der Marke Alice",
+    "openmod": "KI-Kommentarmoderation, angepasst an Ihre Regeln und Anwendungsfälle, gemeinsam mit Ihnen vom Logora-Team eingerichtet"
+  },
+  {
+    "feature": "Gedacht für",
+    "competitor": "Soziale Plattformen, Marktplätze, Labore für KI-Modelle und Unternehmen, die KI-Anwendungen und Agenten entwickeln",
+    "openmod": "Nachrichtenseiten, Marken und öffentliche Einrichtungen"
+  },
+  {
+    "feature": "Integrationen",
+    "competitor": "Entwicklerdokumentation und eine Integrationsseite; auf der UGC-Seite kein Konnektor für Facebook, Instagram, YouTube oder WordPress genannt",
+    "openmod": "Websites (API), Facebook-Seiten, professionelle Instagram-Konten, YouTube-Kanäle, WordPress"
+  },
+  {
+    "feature": "Automatisierung und menschliche Prüfung",
+    "competitor": "Automatisierte Erkennung und Durchsetzung plus Teams aus Analysten und Policy-Fachleuten; die UGC-Seite beschreibt keine Prüfkonsole",
+    "openmod": "Eindeutige Verstöße werden automatisch ausgeblendet, berechtigte Kritik bleibt sichtbar, Zweifelsfälle prüft unser Team, Sie sehen alles in einer einzigen Konsole; eine schriftliche Begründung für jede Entscheidung und ein vollständiges Aktivitätsprotokoll"
+  },
+  {
+    "feature": "DSA",
+    "competitor": "Auf der UGC-Seite nicht erwähnt; genannt werden EU AI Act, NIST und OWASP",
+    "openmod": "Bausteine für Melde- und Abhilfeverfahren, Begründung, menschliche Prüfung angefochtener Entscheidungen und exportierbare Kennzahlen"
+  },
+  {
+    "feature": "KI-Modelle",
+    "competitor": "Hauseigene große Sprachmodelle für ActiveMind, laut Website",
+    "openmod": "Eigene Moderations-KI, bei heiklen Fällen von anderen KI-Modellen gegengeprüft; neue Modelle werden eingebunden, sobald sie erscheinen"
+  },
+  {
+    "feature": "Preise",
+    "competitor": "Nicht veröffentlicht; Demo auf Anfrage",
+    "openmod": "Öffentlich: kostenlos bis 1.000 Anfragen/Monat, Pro für 99 €/Monat bei 10.000 Anfragen, Enterprise auf Anfrage"
+  },
+  {
+    "feature": "Hosting und Sicherheit",
+    "competitor": "Hosting auf der Website nicht angegeben; SOC 2, ISO 27001 und ISO 42001 aufgeführt",
+    "openmod": "Hosting in der EU, DSGVO; On-Premise-Betrieb auf Anfrage"
+  },
+  {
+    "feature": "Referenzen",
+    "competitor": "Gezeigte Logos u. a. TikTok, Niantic, Deliveroo und Udemy",
+    "openmod": "L'Équipe, Challenges, Sud Ouest, actu.fr, Estadão, Südkurier, Egora"
+  }
+];
+
+const faqItems = [
+  {
+    "question": "Was ist die beste ActiveFence-Alternative?",
+    "answer": "Für die Kommentare einer Nachrichtenseite, einer Marke oder einer öffentlichen Einrichtung ist OpenModeration eine direkte Alternative: Konnektoren für Ihre Website (API), Facebook-Seiten, Instagram, YouTube und WordPress, eine schriftliche Begründung für jede Entscheidung, DSA-Bausteine und öffentliche Preise. Für eine große Plattform, die Threat Intelligence und Analysten braucht, ist ActiveFence gemacht."
+  },
+  {
+    "question": "Was kostet ActiveFence?",
+    "answer": "ActiveFence (heute Alice) veröffentlicht keine Preise auf seiner Website; Sie müssen eine Demo anfragen. OpenModeration ist bis 1.000 Anfragen pro Monat kostenlos, Pro kostet 99 € pro Monat für 10.000 Anfragen, Enterprise gibt es auf Anfrage."
+  },
+  {
+    "question": "ActiveFence vs. OpenModeration: Was ist der wichtigste Unterschied?",
+    "answer": "ActiveFence ist ein nachrichtendienstlich geprägter Trust-&-Safety-Anbieter für große Plattformen und KI-Unternehmen. OpenModeration konzentriert sich auf Kommentare: Eindeutige Verstöße werden automatisch ausgeblendet, berechtigte Kritik bleibt sichtbar, Zweifelsfälle prüft unser Team, jeweils mit schriftlicher Begründung."
+  },
+  {
+    "question": "Heißt ActiveFence jetzt Alice?",
+    "answer": "Ja. Laut Website ist ActiveFence der frühere Name des Unternehmens, das heute als Alice auftritt. Das Angebot für nutzergenerierte Inhalte wird weiterhin als ActiveFence UGC geführt."
+  },
+  {
+    "question": "Kann ich OpenModeration testen, ohne mein aktuelles Tool abzuschalten?",
+    "answer": "Ja. Im Sandbox-Modus analysiert OpenModeration Ihre echten Kommentare, ohne etwas auszublenden. Ihr bisheriges Tool läuft weiter, und Sie vergleichen die Entscheidungen Kommentar für Kommentar."
+  },
+  {
+    "question": "Hilft OpenModeration bei der DSA-Konformität?",
+    "answer": "Ja. Es bietet Bausteine für Melde- und Abhilfeverfahren, eine Begründung für jede Entscheidung, die menschliche Prüfung angefochtener Entscheidungen, ein vollständiges Aktivitätsprotokoll und exportierbare Kennzahlen. Die Daten liegen in der EU und werden DSGVO-konform verarbeitet."
+  }
+];
+---
+
+<BaseLayout title="ActiveFence Alternative: Vergleich mit OpenModeration" description="ActiveFence (heute Alice) oder OpenModeration? Vergleich mit Quellen für Medien und Marken: Angebot, Konnektoren, KI-Modelle, DSA, Preise und EU-Hosting." jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Startseite", href: "/de" }, { label: "Alternativen", href: "/de/alternativen" }, { label: "ActiveFence" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Vergleich
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">ActiveFence Alternative: OpenModeration im Vergleich</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Die beste ActiveFence-Alternative hängt davon ab, was Sie schützen: Für eine große Plattform mit organisierten Bedrohungen ist der nachrichtendienstlich geprägte Trust-&-Safety-Ansatz von ActiveFence gemacht. Für die Kommentare einer Nachrichtenseite, einer Marke oder einer öffentlichen Einrichtung ist OpenModeration die direktere Wahl, mit fertigen Konnektoren, einer schriftlichen Begründung für jede Entscheidung und öffentlichen Preisen.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900">Für wen ActiveFence gedacht ist</h2>
+      <p class="mt-4 text-surface-600">ActiveFence tritt laut eigener Website inzwischen unter dem Namen Alice auf und hat seinen Sitz in New York und Tel Aviv. Das Angebot für nutzergenerierte Inhalte, weiterhin als ActiveFence UGC vermarktet, umfasst Echtzeit-Warnungen zu Bedrohungen, Daten zu böswilligen Akteuren, Beobachtung von offenem Web, Deep Web und Darknet, Ermittlungen sowie ActiveMind, ein SaaS für Moderationsteams, das laut Website auf hauseigenen großen Sprachmodellen beruht. Genannt werden mehr als 117 Sprachen und über 20 Missbrauchsbereiche, etwa Kinderschutz und Wahlbeeinflussung.</p>
+      <p class="mt-4 text-surface-600">Unter der Marke Alice hat sich das Unternehmen zudem der KI-Sicherheit zugewandt: Red Teaming, Guardrails und Evaluierungen für Modell-Labore und Unternehmen, die KI-Anwendungen und Agenten einsetzen. Zu den Kunden zählen vor allem große Online-Plattformen, Marktplätze und KI-Unternehmen.</p>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">ActiveFence und OpenModeration im direkten Vergleich</h2>
+      <p class="mt-4 text-surface-500">Angaben zu ActiveFence von der eigenen Website (alice.io), abgerufen am 30. Oktober 2026.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Kriterium</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">ActiveFence</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.competitor}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Wählen Sie OpenModeration, wenn…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>Sie die Kommentare einer Nachrichtenseite, einer Marke oder einer öffentlichen Einrichtung moderieren, nicht einer Plattform mit Millionen Nutzern;</li>
+          <li>Sie fertige Konnektoren für Ihre Website (API), Facebook-Seiten, Instagram, YouTube und WordPress wollen;</li>
+          <li>Sie DSA-Bausteine brauchen: Meldeverfahren, Begründung, menschliche Prüfung angefochtener Entscheidungen;</li>
+          <li>Sie den Preis vor einer Demo kennen und Ihre Daten in der EU halten möchten;</li>
+          <li>Sie ein Team wollen, das die Moderation mit Ihnen einrichtet, nach Ihren Regeln und Anwendungsfällen.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">ActiveFence passt besser zu Ihnen, wenn…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>Sie eine große Plattform mit organisierten Bedrohungen betreiben (Kinderschutz, Desinformation, Extremismus) und Threat Intelligence brauchen;</li>
+          <li>Sie Darknet-Beobachtung, Ermittlungen und Analysten zusätzlich zum Werkzeug wünschen;</li>
+          <li>Sie KI-Modelle oder Agenten entwickeln und Red Teaming sowie Guardrails suchen.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900">Die KI: mit dem Fortschritt der Modelle mitgehen</h2>
+      <p class="mt-4 text-surface-600">ActiveFence gibt an, dass sein Moderations-SaaS auf eigenen großen Sprachmodellen läuft. OpenModeration nutzt eine eigene Moderations-KI, deren Entscheidungen in heiklen Fällen von anderen KI-Modellen gegengeprüft werden. Die Engine ist modellunabhängig: Erscheint ein besseres oder günstigeres KI-Modell, bindet unser Team es schnell ein, ohne dass Sie etwas ändern müssen. So folgt Ihre Moderation dem Fortschritt des KI-Markts, statt auf einem hauseigenen Algorithmus stehen zu bleiben.</p>
+      <h2 class="mt-16 text-3xl font-bold tracking-tight text-surface-900">Preise: ActiveFence und OpenModeration</h2>
+      <p class="mt-4 text-surface-600">ActiveFence veröffentlicht keine Preise: Die Website lädt zu einer Demo ein. Die Preise von OpenModeration sind öffentlich: kostenlos bis 1.000 Anfragen pro Monat, Pro für 99 € pro Monat bei 10.000 Anfragen, Enterprise auf Anfrage, On-Premise-Betrieb ebenfalls auf Anfrage. <a href="/de/preise" class="font-medium text-brand-600 hover:text-brand-500">Die Preise von OpenModeration &rarr;</a></p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">In 3 Schritten von ActiveFence zu OpenModeration</h2>
+      <ol class="mt-8 grid gap-6 md:grid-cols-3">
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">1</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Quellen verbinden und Regeln teilen</h3>
+          <p class="mt-2 text-sm text-surface-600">Verbinden Sie Ihre Website über die API, Ihre Facebook-Seiten, professionellen Instagram-Konten, YouTube-Kanäle oder WordPress. Unser Team passt die Moderation gemeinsam mit Ihnen an Ihre Regeln und Anwendungsfälle an.</p>
+        </li>
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">2</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Im Sandbox-Modus mit echten Kommentaren testen</h3>
+          <p class="mt-2 text-sm text-surface-600">OpenModeration analysiert Ihre echten Kommentare, ohne etwas auszublenden. ActiveFence läuft weiter, während Sie die Entscheidungen samt schriftlicher Begründung vergleichen.</p>
+        </li>
+        <li class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <span class="text-sm font-semibold text-brand-600">3</span>
+          <h3 class="mt-1 font-semibold text-surface-900">Automatische Moderation einschalten</h3>
+          <p class="mt-2 text-sm text-surface-600">Eindeutige Verstöße werden automatisch ausgeblendet, Zweifelsfälle prüft unser Team, Aktivitätsprotokoll und exportierbare Kennzahlen stehen für den DSA bereit.</p>
+        </li>
+      </ol>
+      <p class="mt-8 text-surface-600">Sie möchten es zuerst an Ihren eigenen Kommentaren sehen? <a href="/de/termin-vereinbaren" class="font-medium text-brand-600 hover:text-brand-500">Termin mit unserem Team vereinbaren &rarr;</a></p>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Häufige Fragen" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        ActiveFence ist eine Marke ihres Inhabers. Die Angaben dazu stammen von der eigenen Website (abgerufen am 30. Oktober 2026); Unbekanntes ist als nicht angegeben gekennzeichnet. Ein Fehler? Schreiben Sie uns an <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+      <p class="mx-auto mt-4 max-w-3xl text-center text-sm text-surface-400">
+        Quellen: <a href="https://alice.io/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">alice.io</a> · <a href="https://alice.io/solutions/activefence-ugc" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">alice.io/solutions/activefence-ugc</a> · <a href="https://alice.io/llms.txt" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">alice.io/llms.txt</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Weiterlesen</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/de/termin-vereinbaren" class="font-medium text-brand-600 hover:text-brand-500">Termin mit dem OpenModeration-Team vereinbaren &rarr;</a></li>
+        <li><a href="/de/moderationssoftware" class="font-medium text-brand-600 hover:text-brand-500">Die Moderationssoftware OpenModeration &rarr;</a></li>
+        <li><a href="/de/blog/kommentarmoderation-leitfaden" class="font-medium text-brand-600 hover:text-brand-500">Kommentarmoderation: der vollständige Leitfaden &rarr;</a></li>
+        <li><a href="/de/blog/dsa-leitfaden-kmu" class="font-medium text-brand-600 hover:text-brand-500">DSA-Leitfaden für KMU &rarr;</a></li>
+        <li><a href="/de/alternativen" class="font-medium text-brand-600 hover:text-brand-500">Alle Vergleiche &rarr;</a></li>
+        <li><a href="/de/preise" class="font-medium text-brand-600 hover:text-brand-500">Die Preise von OpenModeration &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Moderieren Sie Ihre Kommentare mit einem Tool, das dafür gebaut ist." subtitle="Verbinden Sie Website und Social-Media-Seiten, testen Sie die Sandbox an echten Kommentaren und lesen Sie die Begründung jeder Entscheidung. Kostenlos starten." />
+</BaseLayout>

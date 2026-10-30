@@ -1,0 +1,172 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+const L = (p: string) => localizePath(p, locale);
+
+const title = "Checkstep alternatief: vergelijking met OpenModeration";
+const description = "Checkstep is gesloten SaaS met een eenvoudige interface. OpenModeration voegt gecontroleerde AI, menselijke beoordeling door ons team en DSA-naleving toe.";
+
+const comparisonJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/nl/alternatieven/checkstep",
+  "url": "https://www.openmoderation.com/nl/alternatieven/checkstep",
+  "name": title,
+  "description": description,
+  "inLanguage": "nl",
+  "about": {
+    "@id": "https://www.openmoderation.com/#software"
+  }
+};
+
+const comparisonPoints = [
+  { feature: "Reikwijdte van de moderatie", checkstep: "Eén leverancier (eigen technologie)", openmod: "Een eigen moderatie-AI, bij gevoelige gevallen gecontroleerd door andere AI-modellen" },
+  { feature: "AI-modellen", checkstep: "Eigen technologie; modellen niet vermeld", openmod: "Eigen moderatie-AI, gecontroleerd door andere AI-modellen; nieuwe modellen worden toegevoegd zodra ze uitkomen" },
+  { feature: "Werkomgeving", checkstep: "API + eenvoudige interface", openmod: "Twijfelgevallen afgehandeld door ons team; een dashboard waarin je elke beslissing realtime ziet en kunt ingrijpen" },
+  { feature: "Regelengine", checkstep: "Eigen, gesloten logica", openmod: "Drie ingebouwde lagen: woordfilters, scoredrempels en je eigen regels in gewone taal" },
+  { feature: "Afhankelijkheid van de leverancier", checkstep: "Hoog (gesloten SaaS)", openmod: "Laag: engine niet gebonden aan één model, betere modellen toegevoegd zodra ze uitkomen" },
+  { feature: "Datasoevereiniteit", checkstep: "Alleen SaaS in de cloud", openmod: "Ontwikkeld en gehost in de EU voor AVG en DSA; on-premise installatie mogelijk op aanvraag" },
+  { feature: "Prijsmodel", checkstep: "SaaS-facturatie per verzoek", openmod: "Openbare prijzen: gratis tot 1.000 verzoeken per maand, Pro voor € 99 per maand" }
+];
+
+const faqItems = [
+  {
+    question: "Wat is het beste alternatief voor Checkstep?",
+    answer: "Wil je naast een moderatie-API ook de werklaag eromheen, dan is OpenModeration een alternatief: een eigen moderatie-AI gecontroleerd door andere AI-modellen, twijfelgevallen afgehandeld door ons team, regels zonder code en een volledig auditlog, gehost in de EU."
+  },
+  {
+    question: "Wat kost Checkstep vergeleken met OpenModeration?",
+    answer: "Checkstep werkt met SaaS-facturatie per verzoek. OpenModeration publiceert zijn prijzen: gratis tot 1.000 verzoeken per maand, Pro voor € 99 per maand voor 10.000 verzoeken en Enterprise op aanvraag."
+  },
+  {
+    question: "Checkstep vs OpenModeration: wat is het verschil?",
+    answer: "Checkstep levert moderatie-API's met een eenvoudige interface; de rest van de workflow bouw je zelf. OpenModeration levert de API én het dashboard, de regelengine, de beoordeling van twijfelgevallen door ons team en het auditlog voor de DSA."
+  },
+  {
+    question: "Welke AI-modellen gebruikt OpenModeration?",
+    answer: "OpenModeration werkt met een eigen moderatie-AI, en bij gevoelige gevallen controleren andere AI-modellen die beslissing. Komt er een beter of goedkoper model uit, dan voegt het team dat snel toe, zonder dat jij iets hoeft te veranderen."
+  },
+  {
+    question: "Kunnen mijn gegevens in de EU blijven?",
+    answer: "Ja. OpenModeration is ontwikkeld en gehost in de Europese Unie, voor AVG en DSA, en een on-premise installatie is mogelijk op aanvraag."
+  }
+];
+---
+
+<BaseLayout title={title} description={description} jsonLd={comparisonJsonLd}>
+  <Breadcrumb items={[{ label: "Home", href: L('/') }, { label: "Alternatieven", href: L('/alternatives') }, { label: "OpenModeration vs Checkstep" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">Vergelijking</div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Checkstep alternatief: OpenModeration vs Checkstep</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Checkstep levert degelijke AI-moderatie-API's, maar daar een volledige moderatieworkflow van maken vraagt echt ontwikkelwerk. OpenModeration geeft je de API <strong>en</strong> de werklaag eromheen.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-4xl">
+        <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">Checkstep en OpenModeration, punt voor punt</h2>
+        <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+          <table class="w-full text-left text-sm">
+            <thead>
+              <tr class="bg-surface-50">
+                <th class="px-6 py-4 font-semibold text-surface-900">Criterium</th>
+                <th class="px-6 py-4 font-semibold text-surface-500">Checkstep</th>
+                <th class="px-6 py-4 font-semibold text-brand-700">OpenModeration</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-surface-200 bg-white">
+              {comparisonPoints.map((row) => (
+                <tr>
+                  <td class="px-6 py-4 font-medium text-surface-900">{row.feature}</td>
+                  <td class="px-6 py-4 text-surface-600">{row.checkstep}</td>
+                  <td class="px-6 py-4 font-medium text-accent-600">{row.openmod}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="mt-16 grid gap-8 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-8">
+          <h3 class="text-xl font-bold text-surface-900">De verborgen kosten van moderatie met 'alleen een API'</h3>
+          <p class="mt-4 text-surface-600">
+            Checkstep integreren is pas de eerste stap. Voordat het in productie draait, moeten je developers nog bouwen:
+          </p>
+          <ul class="mt-4 space-y-3 text-sm text-surface-600">
+            <li class="flex items-start gap-2"><span class="text-red-500">✕</span> Een dashboard waarin menselijke moderatoren grensgevallen beoordelen</li>
+            <li class="flex items-start gap-2"><span class="text-red-500">✕</span> Een regelengine die AI-scores omzet in automatische acties (verbergen, verwijderen, markeren)</li>
+            <li class="flex items-start gap-2"><span class="text-red-500">✕</span> Auditlogging om DSA-naleving aan toezichthouders te bewijzen</li>
+            <li class="flex items-start gap-2"><span class="text-red-500">✕</span> Terugvallogica voor als de API's van Checkstep uitvallen</li>
+          </ul>
+        </div>
+        <div class="rounded-xl border border-brand-200 bg-brand-50 p-8 shadow-sm">
+          <h3 class="text-xl font-bold text-brand-700">Het voordeel van OpenModeration</h3>
+          <p class="mt-4 text-surface-700">
+            OpenModeration combineert een eigen moderatie-AI met een volledige werklaag:
+          </p>
+          <ul class="mt-4 space-y-3 text-sm text-surface-700">
+            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> Ons team handelt twijfelgevallen en meldingen van gebruikers af. Je ziet elke beslissing realtime en kunt ingrijpen wanneer je wilt.</li>
+            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> Regels komen uit drie tools (verboden woorden, drempels per categorie en je eigen regels in gewone taal), zonder code te schrijven.</li>
+            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> Gevoelige gevallen worden gecontroleerd door andere AI-modellen, en betere modellen worden toegevoegd zodra ze uitkomen.</li>
+            <li class="flex items-start gap-2"><span class="text-accent-500">✓</span> Elke beslissing van AI en mens komt in een volledig auditlog voor de naleving.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h2 class="text-xl font-bold text-surface-900">Een AI die de vooruitgang van AI-modellen volgt</h2>
+          <p class="mt-3 text-sm text-surface-600">OpenModeration werkt met een eigen moderatie-AI, en bij gevoelige gevallen controleren andere AI-modellen die beslissing. Komt er een beter of goedkoper model uit, dan voegt het team dat snel toe, zonder dat jij iets hoeft te veranderen. Zo volgt je moderatie de vooruitgang van de AI-markt in plaats van vast te zitten aan één gesloten algoritme.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h2 class="text-xl font-bold text-surface-900">Prijzen: Checkstep vs OpenModeration</h2>
+          <p class="mt-3 text-sm text-surface-600">Checkstep werkt met SaaS-facturatie per verzoek. OpenModeration publiceert zijn prijzen: gratis tot 1.000 verzoeken per maand, Pro voor € 99 per maand voor 10.000 verzoeken en Enterprise op aanvraag. <a href={L('/pricing')} class="font-medium text-brand-600 hover:text-brand-500">Bekijk de prijzen</a> of <a href={L('/book-a-call')} class="font-medium text-brand-600 hover:text-brand-500">plan een gesprek</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-surface-100 bg-white py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ items={faqItems} title="Checkstep alternatief: veelgestelde vragen" />
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection
+    title="Stop met het bouwen van interne moderatietools."
+    subtitle="Koppel je pagina's: onze AI en ons team doen de rest, en jij ziet elke beslissing realtime."
+    buttonText="Gratis proberen"
+    buttonHref="https://app.openmoderation.com/signup"
+  />
+
+  <section class="border-t border-surface-100 bg-surface-50 py-16">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold text-surface-900">Vergelijk andere alternatieven</h2>
+      <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+        <a href={L('/alternatives/openai-moderation')} class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">OpenAI Moderation</a>
+        <a href={L('/alternatives/azure-content-safety')} class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Azure Content Safety</a>
+        <a href={L('/alternatives/mistral-moderation')} class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Mistral Moderation</a>
+        <a href={L('/alternatives/perspective-api')} class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Perspective API</a>
+        <a href={L('/alternatives/hive-moderation')} class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Hive Moderation</a>
+        <a href={L('/alternatives')} class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Alle vergelijkingen</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

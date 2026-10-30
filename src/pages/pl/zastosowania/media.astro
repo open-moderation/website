@@ -1,0 +1,169 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import BrowserFrame from '../../../components/BrowserFrame.astro';
+import ClientLogos from '../../../components/ClientLogos.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const useCaseJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/pl/zastosowania/media",
+  "url": "https://www.openmoderation.com/pl/zastosowania/media",
+  "name": "Moderacja komentarzy dla wydawców i serwisów informacyjnych",
+  "description": "Moderacja komentarzy z AI dla serwisów informacyjnych i redakcji: moderacja dopasowana do zasad redakcyjnych pod każdym artykułem, pisemne uzasadnienie każdego usuniętego komentarza, weryfikacja wątpliwych przypadków przez nasz zespół i ślad audytowy DSA.",
+  "inLanguage": "pl",
+  "about": { "@id": "https://www.openmoderation.com/#software" }
+};
+
+const faqItems = [
+  {
+    question: "Czy serwisy informacyjne muszą stosować DSA w sekcjach komentarzy?",
+    answer: "Sekcje komentarzy zawierają treści publikowane przez czytelników, więc serwis, który je prowadzi, działa jako usługa hostingu w rozumieniu aktu o usługach cyfrowych (DSA). Art. 17 wymaga jasnego uzasadnienia za każdym razem, gdy komentarz zostaje usunięty lub ograniczony, wraz z informacją, czy użyto środków zautomatyzowanych. OpenModeration pisze takie uzasadnienie przy każdej decyzji i przechowuje je w śladzie audytowym.",
+  },
+  {
+    question: "Czy moderacja może podążać za naszymi zasadami redakcyjnymi?",
+    answer: "Tak. Dopasowujemy moderację do Twoich zasad redakcyjnych i przypadków użycia, zapisanych zwykłym językiem, a OpenModeration stosuje je do każdego komentarza. Dział sportowy i polityczny mogą mieć różne zasady, a każdą zasadę można w dowolnej chwili zaostrzyć lub złagodzić bez kodu.",
+  },
+  {
+    question: "Co dzieje się z komentarzami granicznymi?",
+    answer: "Każda kategoria ma dwa progi. Oczywiste naruszenia są ukrywane automatycznie, komentarze ewidentnie akceptowalne są publikowane, a wszystko pomiędzy weryfikuje nasz zespół. Redakcja widzi każdą decyzję w czasie rzeczywistym i może ją zmienić jednym kliknięciem.",
+  },
+  {
+    question: "Czy dziennikarze mogą nadal moderować ze strony artykułu?",
+    answer: "Tak. Decyzje redakcji są zapisywane w tej samej historii aktywności co decyzje automatyczne, więc masz jeden, kompletny zapis tego, kto, co i dlaczego zdecydował.",
+  },
+  {
+    question: "Gdzie są przechowywane dane?",
+    answer: "OpenModeration jest tworzone i hostowane w Unii Europejskiej i jest zgodne z RODO. Na życzenie możliwe jest wdrożenie on-premise.",
+  },
+];
+---
+
+<BaseLayout title="Moderacja komentarzy dla mediów i serwisów informacyjnych" description="Moderuj komentarze czytelników z AI dopasowaną do zasad redakcji. Pisemne uzasadnienie każdego usunięcia, weryfikacja przez nasz zespół i audyt DSA." jsonLd={useCaseJsonLd}>
+  <Breadcrumb items={[{ label: "Strona główna", href: localizePath('/', locale) }, { label: "Zastosowania", href: localizePath('/use-cases', locale) }, { label: "Media i wydawcy" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Zastosowanie
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Moderacja komentarzy dla wydawców i mediów</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Komentarze czytelników ożywiają artykuł, dopóki wątku nie przejmą obelgi i spam. OpenModeration stosuje Twoje zasady redakcyjne do każdego komentarza, uzasadnia każde usunięcie na piśmie i zostawia redakcji rozstrzyganie trudnych przypadków.
+      </p>
+      <div class="mt-10">
+        <ClientLogos />
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mb-16 grid gap-8 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="text-lg font-semibold text-surface-900">Wyzwanie</h3>
+          <p class="mt-2 text-sm text-surface-600">Popularny serwis informacyjny dostaje komentarze przez całą dobę, z falami przy każdym pilnym newsie. Dziennikarze nie są w stanie przeczytać wszystkiego, a filtry słów kluczowych przepuszczają sarkazm, zakamuflowane obelgi i ataki nie na temat, blokując przy tym uzasadnioną krytykę.</p>
+        </div>
+        <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+          <h3 class="text-lg font-semibold text-brand-700">Podejście OpenModeration</h3>
+          <p class="mt-2 text-sm text-surface-700">AI rozumiejąca kontekst czyta każdy komentarz w świetle Twoich zasad. Oczywiste naruszenia znikają od razu, akceptowalne komentarze są publikowane, a granicznymi zajmuje się nasz zespół, z przypisaną zasadą i pisemnym uzasadnieniem.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="text-lg font-semibold text-surface-900">Efekt</h3>
+          <p class="mt-2 text-sm text-surface-600">Redakcja nie musi nic robić: komentarzami wymagającymi ludzkiej oceny zajmuje się nasz zespół. Każda decyzja, automatyczna czy redakcyjna, jest zapisywana z uzasadnieniem, gotowa na odwołanie czytelnika lub pytanie regulatora.</p>
+        </div>
+      </div>
+
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Stworzone z myślą o pracy redakcji</h2>
+          <p class="mt-4 text-lg text-surface-500">
+            Moderowanie sekcji komentarzy to decyzja redakcyjna. Z OpenModeration zespół zachowuje kontrolę, a powtarzalna praca przestaje go obciążać.
+          </p>
+          <div class="mt-8 space-y-3">
+            <div class="rounded-lg border border-surface-200 bg-surface-50 p-4">
+              <p class="text-sm font-medium text-surface-900">Twoje zasady, zwykłym językiem</p>
+              <p class="mt-1 text-xs text-surface-500">Zapisz zasady, które czytelnicy już znają. Bez list słów kluczowych do utrzymywania i bez zmian w kodzie, gdy granica się przesuwa.</p>
+            </div>
+            <div class="rounded-lg border border-surface-200 bg-surface-50 p-4">
+              <p class="text-sm font-medium text-surface-900">Szara strefa dla ludzkiej oceny</p>
+              <p class="mt-1 text-xs text-surface-500">Dwa progi w każdej kategorii oddzielają to, co jest ukrywane automatycznie, od tego, co weryfikuje nasz zespół. To Ty decydujesz, jak szeroka jest szara strefa.</p>
+            </div>
+            <div class="rounded-lg border border-surface-200 bg-surface-50 p-4">
+              <p class="text-sm font-medium text-surface-900">Jedna historia decyzji AI i redakcji</p>
+              <p class="mt-1 text-xs text-surface-500">Decyzje ludzi, naszego zespołu lub dziennikarzy, którzy chcą interweniować, widnieją w dzienniku aktywności obok automatycznych, z autorem i uzasadnieniem.</p>
+            </div>
+            <div class="rounded-lg border border-surface-200 bg-surface-50 p-4">
+              <p class="text-sm font-medium text-surface-900">Komentarze pod artykułami i w mediach społecznościowych razem</p>
+              <p class="mt-1 text-xs text-surface-500">Moderuj swoją stronę przez API lub konektor WordPress, a komentarze pod postami na Facebooku, Instagramie i YouTube z tej samej konsoli.</p>
+            </div>
+          </div>
+        </div>
+        <BrowserFrame
+          src="/images/dashboard.png"
+          video="om-triage"
+          alt="Kolejka moderacji OpenModeration z komentarzami czytelników, ich statusem i podjętym działaniem"
+          caption="Konsola moderacji: każdy komentarz ze statusem, przypisaną zasadą i pisemnym uzasadnieniem."
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Dlaczego wydawcy wybierają OpenModeration</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">Uzasadnienie każdego usunięcia</h3>
+          <p class="mt-2 text-sm text-surface-500">DSA wymaga od usług hostingu wyjaśnienia każdego usunięcia. OpenModeration pisze je automatycznie, więc czytelnik wie, którą zasadę złamał.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">Tworzone i hostowane w UE</h3>
+          <p class="mt-2 text-sm text-surface-500">Dane czytelników zostają w Europie, a platforma jest zgodna z RODO. Jeśli wymaga tego dział prawny, na życzenie możliwe jest wdrożenie on-premise.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">Bez czarnej skrzynki</h3>
+          <p class="mt-2 text-sm text-surface-500">Każda decyzja ma pisemne uzasadnienie i pełny ślad audytowy. Gdy podłączamy lepszy model AI, integracja się nie zmienia.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Najczęstsze pytania" items={faqItems} />
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8 text-2xl font-bold text-surface-900 sm:text-3xl">Powiązane materiały</h2>
+      <div class="grid gap-6 md:grid-cols-3">
+        <a href={localizePath('/dsa-compliance', locale)} class="group rounded-xl border border-surface-200 bg-white p-6 transition hover:shadow-md">
+          <div class="mb-2 text-xs font-medium text-brand-600">Regulacje</div>
+          <h3 class="text-lg font-semibold text-surface-900 group-hover:text-brand-600">Zgodność z DSA</h3>
+          <p class="mt-2 text-sm text-surface-500">Czego akt o usługach cyfrowych wymaga od serwisów z komentarzami i jak to spełnić.</p>
+        </a>
+        <a href={localizePath('/product/transparency', locale)} class="group rounded-xl border border-surface-200 bg-white p-6 transition hover:shadow-md">
+          <div class="mb-2 text-xs font-medium text-brand-600">Platforma</div>
+          <h3 class="text-lg font-semibold text-surface-900 group-hover:text-brand-600">Każda decyzja uzasadniona</h3>
+          <p class="mt-2 text-sm text-surface-500">Jak OpenModeration pisze uzasadnienie każdej decyzji moderacyjnej.</p>
+        </a>
+        <a href={localizePath('/integrations/wordpress', locale)} class="group rounded-xl border border-surface-200 bg-white p-6 transition hover:shadow-md">
+          <div class="mb-2 text-xs font-medium text-brand-600">Integracja</div>
+          <h3 class="text-lg font-semibold text-surface-900 group-hover:text-brand-600">Moderacja komentarzy w WordPressie</h3>
+          <p class="mt-2 text-sm text-surface-500">Moderuj komentarze w serwisie informacyjnym na WordPressie bez pisania kodu.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <CTASection title="Oddaj sekcję komentarzy czytelnikom." subtitle="Opisz nam swoje zasady, podłącz serwis, a redakcja zajmie się tylko komentarzami, które wymagają ludzkiej decyzji." />
+</BaseLayout>

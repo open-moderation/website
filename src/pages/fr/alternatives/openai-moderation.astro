@@ -2,6 +2,7 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumb from '../../../components/Breadcrumb.astro';
 import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
 import CodeBlock from '../../../components/CodeBlock.astro';
 import FAQ from '../../../components/FAQ.astro';
 
@@ -10,7 +11,7 @@ const openai = new OpenAI({ apiKey: 'sk-...' });
 const mod = await openai.moderations.create({ input: text });
 // Résultat : format propre à OpenAI, 11 catégories, pas de seuils
 
-# OpenModeration (unifié)
+# OpenModeration
 const result = await fetch('https://api.openmoderation.com/v1/moderation', {
   method: 'POST',
   headers: { 'Authorization': 'Bearer om_key_...' },
@@ -26,30 +27,30 @@ const comparisonJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
   "name": "Alternative à l'API OpenAI Moderation : prix et comparatif",
-  "description": "Vous cherchez une alternative à l'API OpenAI Moderation ? OpenModeration vous offre une modération multi-fournisseurs via une seule API, ainsi qu'une couche complète de conformité pour l'entreprise : règles automatiques, revue humaine et journal d'audit DSA.",
+  "description": "Vous cherchez une alternative à l'API OpenAI Moderation ? OpenModeration vous offre sa propre IA de modération, arbitrée par d'autres modèles d'IA sur les cas délicats, ainsi qu'une couche complète de conformité pour l'entreprise : règles automatiques, revue humaine et journal d'audit DSA.",
   "inLanguage": "fr",
 };
 
 const comparisonPoints = [
-  { feature: "Fournisseurs", openai: "OpenAI uniquement (un seul fournisseur)", openmod: "10 fournisseurs : OpenAI, Azure, Mistral, HuggingFace, LLM (GPT-4o, Claude), Cohere, et d'autres" },
-  { feature: "Format d'API", openai: "Format OpenAI propriétaire", openmod: "Format standardisé pour tous les fournisseurs. Changement de fournisseur sans toucher au code." },
-  { feature: "Pré-filtrage", openai: "Non disponible : chaque requête passe par l'API", openmod: "Filtre de mots intégré qui bloque les contenus évidents avant tout appel d'API, pour réduire les coûts" },
-  { feature: "Logique de décision", openai: "Binaire, signalé ou non, par catégorie", openmod: "Double seuil : approbation automatique / zone grise → revue humaine / rejet automatique" },
-  { feature: "Console de modération", openai: "API uniquement, sans console ni interface de revue.", openmod: "Console complète : file de modération, rôles d'équipe, statistiques, état des fournisseurs" },
+  { feature: "Moteur d'IA", openai: "Un seul modèle, celui d'OpenAI", openmod: "Notre propre IA de modération, arbitrée par d'autres modèles d'IA sur les cas délicats" },
+  { feature: "Format d'API", openai: "Format OpenAI propriétaire", openmod: "Format de réponse standardisé : verdict, scores par catégorie et explication écrite" },
+  { feature: "Pré-filtrage", openai: "Non disponible : chaque requête passe par l'API", openmod: "Filtre de mots intégré qui bloque les contenus évidents avant toute analyse par l'IA" },
+  { feature: "Logique de décision", openai: "Binaire, signalé ou non, par catégorie", openmod: "Double seuil : approbation automatique / zone grise → traitée par notre équipe / rejet automatique" },
+  { feature: "Console de modération", openai: "API uniquement, sans console ni interface de revue.", openmod: "Console complète : chaque décision et son explication en temps réel, statistiques, intervention possible à tout moment" },
   { feature: "Règles automatiques", openai: "Intégration à développer vous-même", openmod: "Prêtes à l'emploi : définissez vos règles une fois, le moteur d'actions les applique automatiquement" },
-  { feature: "Revue humaine", openai: "Interface de revue à développer vous-même", openmod: "File de modération intégrée, avec contexte, attribution, validation ou rejet" },
+  { feature: "Revue humaine", openai: "Interface de revue à développer vous-même", openmod: "Assurée par notre équipe sur les cas douteux et les signalements : vous voyez tout et pouvez intervenir quand vous voulez" },
   { feature: "Journal d'audit", openai: "Limité aux logs de l'API", openmod: "Journal d'audit complet : chaque décision de l'IA et des humains est consignée et exportable pour le DSA" },
-  { feature: "Dépendance fournisseur", openai: "Enfermement total dans l'écosystème OpenAI", openmod: "Aucune. BYOK, 10 fournisseurs interchangeables, export de vos données" },
+  { feature: "Évolution du modèle", openai: "Vous dépendez du rythme d'OpenAI", openmod: "Quand un modèle d'IA plus performant ou moins cher sort, nous le branchons rapidement, sans changement de votre côté. Export de vos données." },
   { feature: "Souveraineté des données", openai: "Données traitées sur les serveurs d'OpenAI", openmod: "Hébergé dans l'UE. Déploiement sur site possible sur demande." },
   { feature: "Prix", openai: "Endpoint gratuit (scores uniquement)", openmod: "Gratuit jusqu'à 1 000 requêtes par mois. Cloud managé à partir de 99 €/mois (10 000 requêtes incluses)." },
-  { feature: "Taille d'entrée maximale", openai: "32 000 caractères", openmod: "Jusqu'à 32 000 caractères (selon le fournisseur) + traitement en batch pour les gros volumes" },
+  { feature: "Taille d'entrée maximale", openai: "32 000 caractères", openmod: "Jusqu'à 32 000 caractères + traitement en batch pour les gros volumes" },
 ];
 
 const reasons = [
   {
-    title: "Vous dépendez de la précision d'un seul fournisseur",
+    title: "Vous dépendez d'un seul modèle",
     icon: "lock",
-    description: "OpenAI Moderation est excellent pour les contenus en anglais, mais moins adapté aux autres langues, aux catégories de niche ou aux situations qui exigent de la redondance. Avec OpenModeration, chaque requête part vers le meilleur fournisseur : OpenAI pour la toxicité en anglais, Mistral pour le spam multilingue, des LLM pour les catégories personnalisées."
+    description: "OpenAI Moderation est excellent pour les contenus en anglais, mais moins adapté aux autres langues, aux catégories de niche ou aux situations qui exigent un second avis. OpenModeration s'appuie sur sa propre IA de modération, paramétrée selon vos règles et vos cas d'usage, et fait arbitrer les cas délicats par d'autres modèles d'IA."
   },
   {
     title: "Un appel d'API n'est pas un workflow de modération",
@@ -59,7 +60,7 @@ const reasons = [
   {
     title: "Sans pré-filtrage, chaque commentaire part vers l'API",
     icon: "cost",
-    description: "L'endpoint d'OpenAI est gratuit, mais chaque commentaire y fait quand même un aller-retour, même le spam évident ou les mots interdits. Le pré-filtre d'OpenModeration les bloque avant qu'ils n'atteignent un fournisseur, ce qui réduit aussi les coûts sur les fournisseurs payants que vous ajoutez."
+    description: "L'endpoint d'OpenAI est gratuit, mais chaque commentaire y fait quand même un aller-retour, même le spam évident ou les mots interdits. Le pré-filtre d'OpenModeration les bloque avant même l'analyse par l'IA."
   },
   {
     title: "Une API seule ne suffit pas pour le DSA",
@@ -70,7 +71,7 @@ const reasons = [
 
 const verticals = [
   { name: "Plateformes sociales", desc: "Modérez les commentaires et publications de vos utilisateurs avec une IA attentive au contexte et des règles propres à votre communauté." },
-  { name: "Applications d'IA", desc: "Filtrez à la fois les entrées des utilisateurs et les sorties du LLM. Utilisez la modération par LLM pour des catégories personnalisées et évolutives." },
+  { name: "Applications d'IA", desc: "Filtrez à la fois les entrées des utilisateurs et les sorties du LLM. Ajoutez des consignes en langage courant pour des catégories personnalisées et évolutives." },
   { name: "Jeux vidéo", desc: "Une modération du chat en temps réel dans plusieurs langues, avec une latence inférieure à 250 ms et des actions automatiques." },
   { name: "Marketplaces", desc: "Signalez les annonces de spam, les discours de haine dans les avis et les fuites de données personnelles avant leur mise en ligne." },
 ];
@@ -78,11 +79,11 @@ const verticals = [
 const faqItems = [
   {
     question: "Combien coûte l'API OpenAI Moderation par rapport à OpenModeration ?",
-    answer: "L'endpoint de modération d'OpenAI est gratuit, mais il ne renvoie que des scores : pas de console, pas de règles, pas de revue humaine et pas de journal d'audit. OpenModeration est gratuit jusqu'à 1 000 requêtes par mois et continue d'utiliser omni-moderation-latest en arrière-plan ; le cloud managé démarre à 99 €/mois pour 10 000 requêtes."
+    answer: "L'endpoint de modération d'OpenAI est gratuit, mais il ne renvoie que des scores : pas de console, pas de règles, pas de revue humaine et pas de journal d'audit. OpenModeration est gratuit jusqu'à 1 000 requêtes par mois et ajoute tout le reste ; le cloud managé démarre à 99 €/mois pour 10 000 requêtes."
   },
   {
-    question: "Puis-je continuer à utiliser OpenAI comme fournisseur ?",
-    answer: "Oui. Utilisez votre propre clé OpenAI (BYOK) et gardez omni-moderation-latest. Ajoutez Mistral, Azure ou Llama Guard en secours par simple configuration, sans réécrire de code."
+    question: "Quelle IA OpenModeration utilise-t-il ?",
+    answer: "OpenModeration utilise sa propre IA de modération, paramétrée selon vos règles et vos cas d'usage. Sur les cas délicats, d'autres modèles d'IA arbitrent la décision avant qu'elle soit appliquée. Quand un modèle plus performant ou moins cher sort, nous le branchons rapidement : rien ne change de votre côté."
   },
   {
     question: "Combien de temps prend la migration ?",
@@ -90,22 +91,22 @@ const faqItems = [
   },
   {
     question: "Qu'est-ce que j'obtiens de plus que des scores bruts ?",
-    answer: "Une plateforme complète : pré-filtre, double seuil (approbation automatique, revue humaine, rejet automatique), console de modération, rôles d'équipe et journal d'audit prêt pour le DSA, avec rapports exportables."
+    answer: "Une plateforme complète : pré-filtre, double seuil (approbation automatique, cas douteux traités par notre équipe, rejet automatique), console pour tout suivre en temps réel et journal d'audit prêt pour le DSA, avec rapports exportables."
   },
   {
     question: "Quelle API de modération choisir pour la conformité en entreprise ?",
     answer: "Pour la conformité en entreprise, des scores bruts ne suffisent pas : il faut des décisions documentées, une gestion des accès par rôle, des journaux d'audit et des rapports exportables. OpenModeration fournit tout cela : chaque décision de l'IA et des humains est journalisée, les règles s'appliquent automatiquement et le journal d'audit complet s'exporte en un clic pour vos rapports de transparence DSA. L'hébergement européen et l'export de vos données vous en laissent la maîtrise."
   },
   {
-    question: "OpenModeration fonctionne-t-il avec le modèle omni-moderation-latest d'OpenAI ?",
-    answer: "Oui. Utilisez votre propre clé OpenAI et envoyez toutes vos requêtes vers omni-moderation-latest comme modèle principal. Les réponses sont standardisées entre fournisseurs, et vous pouvez ajouter Mistral, Azure ou HuggingFace en secours par simple configuration, sans réécrire de code."
+    question: "Pourquoi ne pas rester sur un seul modèle de modération ?",
+    answer: "Parce que les modèles d'IA deviennent chaque année meilleurs et moins chers. OpenModeration ne dépend d'aucun modèle figé : nous intégrons rapidement les progrès du marché et vous en profitez sans réécrire de code. Les cas délicats sont en plus arbitrés par d'autres modèles d'IA, ce qui limite les erreurs."
   },
 ];
 ---
 
 <BaseLayout
   title="Alternative à l'API OpenAI Moderation : prix et comparatif"
-  description="L'endpoint gratuit d'OpenAI ne renvoie que des scores. OpenModeration ajoute 10 fournisseurs, le pré-filtrage, les règles, la revue humaine et l'audit DSA."
+  description="L'endpoint gratuit d'OpenAI ne renvoie que des scores. OpenModeration ajoute son IA arbitrée, le pré-filtrage, les règles, la revue humaine et l'audit DSA."
   jsonLd={comparisonJsonLd}
 >
   <Breadcrumb items={[{ label: "Accueil", href: "/fr" }, { label: "Alternatives", href: "/fr/alternatives" }, { label: "Alternative à OpenAI Moderation" }]} />
@@ -121,8 +122,8 @@ const faqItems = [
       </h1>
       <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
         L'API Moderation d'OpenAI vous donne des scores de toxicité. OpenModeration vous donne tout un
-        dispositif Trust &amp; Safety : 10 fournisseurs via une seule API, pré-filtrage, règles automatiques,
-        revue humaine et journal d'audit conforme au DSA. Vous pouvez changer de fournisseur quand vous le souhaitez.
+        dispositif Trust &amp; Safety : sa propre IA arbitrée par d'autres modèles, pré-filtrage, règles automatiques,
+        revue humaine par notre équipe et journal d'audit conforme au DSA. Et vous profitez des progrès de l'IA, sans rien changer.
       </p>
       <div class="mt-8 flex items-center justify-center gap-4">
         <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm">Essayer OpenModeration gratuitement</a>
@@ -162,7 +163,7 @@ const faqItems = [
         <div>
           <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700">
             <span class="flex h-1.5 w-1.5 animate-pulse-dot rounded-full bg-brand-500" />
-            Une intégration, autant de fournisseurs que vous voulez
+            Une intégration, une IA qui suit le marché
           </div>
           <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">
             La même modération de texte, avec plus de contrôle
@@ -175,15 +176,15 @@ const faqItems = [
           <div class="mt-6 space-y-3">
             <div class="flex items-start gap-3">
               <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <p class="text-sm text-surface-600"><strong>Continuez d'utiliser OpenAI</strong> comme fournisseur via OpenModeration, avec vos propres clés d'API (BYOK).</p>
+              <p class="text-sm text-surface-600"><strong>Notre propre IA de modération</strong>, paramétrée selon vos règles et vos cas d'usage.</p>
             </div>
             <div class="flex items-start gap-3">
               <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <p class="text-sm text-surface-600"><strong>Ajoutez de la redondance</strong> en basculant vers Mistral, Azure ou HuggingFace quand OpenAI ralentit ou tombe en panne.</p>
+              <p class="text-sm text-surface-600"><strong>Un second avis</strong> : sur les cas délicats, d'autres modèles d'IA arbitrent la décision avant qu'elle soit appliquée.</p>
             </div>
             <div class="flex items-start gap-3">
               <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <p class="text-sm text-surface-600"><strong>Comparez les fournisseurs</strong> objectivement grâce à des statistiques unifiées sur tout votre trafic de modération.</p>
+              <p class="text-sm text-surface-600"><strong>Toujours à jour</strong> : quand un modèle d'IA plus performant ou moins cher sort, nous le branchons rapidement. Rien ne change de votre côté.</p>
             </div>
           </div>
         </div>
@@ -239,23 +240,23 @@ const faqItems = [
             <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Une console à développer vous-même pour que les modérateurs examinent les cas limites</li>
             <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Un moteur de règles à développer vous-même pour traduire les scores en actions</li>
             <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Un système de journalisation à développer vous-même pour la conformité DSA</li>
-            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Aucune solution de secours si OpenAI ralentit ou est indisponible</li>
-            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Une dépendance à l'écosystème OpenAI</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Aucun second avis sur les cas délicats</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-red-500">✕</span> Un seul modèle, qui évolue au rythme d'OpenAI</li>
           </ul>
         </div>
         <div class="rounded-xl border border-brand-200 bg-brand-50 p-8 shadow-sm">
           <h3 class="flex items-center gap-2 text-xl font-semibold text-brand-700">
             <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-            OpenModeration (avec OpenAI comme fournisseur)
+            OpenModeration
           </h3>
           <ul class="mt-6 space-y-3 text-sm text-surface-700">
-            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Le pré-filtre bloque le spam évident et les mots interdits avant tout appel d'API, soit 10 à 30 % d'économies</li>
-            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Deux seuils configurables décident si un contenu est approuvé, rejeté ou envoyé en revue humaine</li>
-            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Votre équipe Trust &amp; Safety examine les contenus dès le premier jour, dans une console déjà prête</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Le pré-filtre bloque le spam évident et les mots interdits avant même l'analyse par l'IA</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Deux seuils configurables décident si un contenu est approuvé, rejeté ou confié à notre équipe</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Vous n'avez rien à faire : notre équipe traite les cas douteux et les signalements, et vous suivez chaque décision en temps réel</li>
             <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Vos règles tiennent en trois outils (mots interdits, seuils par catégorie et consignes en langage courant) et se règlent sans code.</li>
             <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Le journal d'audit est complet, les rapports s'exportent et la durée de conservation des données se configure</li>
-            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Si OpenAI ralentit, les requêtes partent automatiquement vers Mistral, Azure ou HuggingFace</li>
-            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> La plateforme fonctionne avec vos propres clés (BYOK), est hébergée dans l'UE et vous pouvez exporter vos données. Vos données et vos règles restent les vôtres.</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Sur les cas délicats, d'autres modèles d'IA arbitrent la décision : moins de commentaires masqués à tort</li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span> Quand un meilleur modèle d'IA sort, nous le branchons rapidement. La plateforme est hébergée dans l'UE et vous pouvez exporter vos données. Vos données et vos règles restent les vôtres.</li>
           </ul>
         </div>
       </div>
@@ -267,7 +268,7 @@ const faqItems = [
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="mx-auto mb-12 max-w-2xl text-center">
         <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Pensé pour tous les cas d'usage de la modération de contenu</h2>
-        <p class="mt-4 text-lg text-surface-500">Que vous remplaciez l'API d'OpenAI ou que vous la complétiez, OpenModeration s'intègre à votre stack.</p>
+        <p class="mt-4 text-lg text-surface-500">Que vous remplaciez l'API d'OpenAI ou un outil maison, OpenModeration s'intègre à votre stack.</p>
       </div>
       <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {verticals.map((v) => (
@@ -280,26 +281,26 @@ const faqItems = [
     </div>
   </section>
 
-  <!-- omni-moderation-latest compatibility -->
+  <!-- AI engine -->
   <section class="border-t border-surface-100 bg-white py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="mx-auto mb-12 max-w-2xl text-center">
-        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Compatible avec omni-moderation-latest d'OpenAI, et 9 autres modèles</h2>
-        <p class="mt-4 text-lg text-surface-500">Gardez le modèle de modération OpenAI en qui vous avez déjà confiance comme moteur principal, et entourez-le d'une plateforme.</p>
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Une IA qui suit le marché, au lieu de vieillir</h2>
+        <p class="mt-4 text-lg text-surface-500">Au lieu de rester sur un seul modèle figé, OpenModeration combine sa propre IA, un arbitrage par d'autres modèles et une intégration rapide des progrès du marché.</p>
         <p class="mt-2 text-sm"><a href="/fr/blog/guide-api-openai-moderation" class="font-medium text-brand-600 hover:text-brand-500">Comment fonctionne l'API OpenAI Moderation : catégories, prix et limites &rarr;</a></p>
       </div>
       <div class="grid gap-6 md:grid-cols-3">
         <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-          <h3 class="font-semibold text-surface-900">Gardez omni-moderation-latest</h3>
-          <p class="mt-2 text-sm text-surface-500">Utilisez votre propre clé OpenAI (BYOK) et envoyez chaque requête vers omni-moderation-latest : même modèle, format de réponse standardisé.</p>
+          <h3 class="font-semibold text-surface-900">Notre propre IA de modération</h3>
+          <p class="mt-2 text-sm text-surface-500">Entraînée pour la modération des commentaires et paramétrée selon vos règles et vos cas d'usage, avec un format de réponse standardisé.</p>
         </div>
         <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-          <h3 class="font-semibold text-surface-900">Ajoutez des modèles de secours</h3>
-          <p class="mt-2 text-sm text-surface-500">Si OpenAI ralentit ou tombe en panne, les requêtes partent automatiquement vers Mistral, Azure ou HuggingFace. Aucun changement de code, aucune interruption.</p>
+          <h3 class="font-semibold text-surface-900">Arbitrée par d'autres IA</h3>
+          <p class="mt-2 text-sm text-surface-500">Sur les cas délicats, d'autres modèles d'IA arbitrent la décision avant qu'elle soit appliquée. Moins d'erreurs, moins de commentaires masqués à tort.</p>
         </div>
         <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-          <h3 class="font-semibold text-surface-900">Suivez chaque modèle</h3>
-          <p class="mt-2 text-sm text-surface-500">Des statistiques unifiées montrent la précision et le coût de chaque fournisseur : vous savez toujours quel modèle traite le mieux votre trafic.</p>
+          <h3 class="font-semibold text-surface-900">Vous profitez des progrès de l'IA</h3>
+          <p class="mt-2 text-sm text-surface-500">Les modèles d'IA deviennent chaque année meilleurs et moins chers. Quand un nouveau modèle sort, nous le branchons rapidement : rien ne change de votre côté.</p>
         </div>
       </div>
     </div>
@@ -315,7 +316,7 @@ const faqItems = [
   <!-- Other alternatives -->
   <section class="border-t border-surface-100 bg-surface-50 py-16">
     <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-      <h2 class="text-2xl font-bold text-surface-900">Comparer d'autres fournisseurs</h2>
+      <h2 class="text-2xl font-bold text-surface-900">Comparer d'autres solutions</h2>
       <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
         <a href="/fr/alternatives/azure-content-safety" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Azure Content Safety</a>
         <a href="/fr/alternatives/mistral-moderation" class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Mistral Moderation</a>
@@ -326,9 +327,11 @@ const faqItems = [
     </div>
   </section>
 
+  <RelatedComparisons />
+
   <CTASection
     title="Dépassez les limites d'une API de modération unique."
-    subtitle="10 fournisseurs, pré-filtrage, règles automatiques et console de revue humaine, hébergés dans l'UE. Continuez d'utiliser OpenAI avec vos propres clés, ou ajoutez d'autres fournisseurs."
+    subtitle="Une IA de modération arbitrée par d'autres modèles, pré-filtrage, règles automatiques et cas douteux traités par notre équipe, hébergés dans l'UE."
     buttonText="Essayer gratuitement"
     buttonHref="https://app.openmoderation.com/signup"
   />

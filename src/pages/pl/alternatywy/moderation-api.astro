@@ -1,0 +1,277 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const title = "Alternatywa dla Moderation API: porównanie z OpenModeration";
+const description = "Moderation API (moderationapi.com) czy OpenModeration? Porównanie ze źródłami: wdrożenie, integracje, weryfikacja przez człowieka, DSA, UE, AI i ceny.";
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/pl/alternatywy/moderation-api",
+  "name": title,
+  "description": description,
+  "inLanguage": "pl",
+  "about": {
+    "@id": "https://www.openmoderation.com/#software"
+  }
+};
+
+const rows = [
+  {
+    "feature": "Oferta",
+    "competitor": "API do moderacji z AI i platforma weryfikacji dla platform, marketplace’ów, aplikacji i społeczności, w modelu samoobsługowym",
+    "openmod": "Moderacja komentarzy z AI dla mediów, marek i instytucji publicznych, wdrażana razem z Tobą przez zespół Logora"
+  },
+  {
+    "feature": "Moderowane treści",
+    "competitor": "Tekst, obrazy, wideo i audio; ponad 120 języków według strony",
+    "openmod": "Komentarze publikowane na Twoich stronach i w mediach społecznościowych"
+  },
+  {
+    "feature": "Integracje",
+    "competitor": "REST API, SDK dla Node.js i Pythona, webhooki; 17 integracji, m.in. Facebook, Instagram, YouTube, WordPress, Discord, Slack, Shopify i Zendesk",
+    "openmod": "API dla stron internetowych, strony na Facebooku, konta profesjonalne na Instagramie, kanały YouTube, WordPress"
+  },
+  {
+    "feature": "Modele AI",
+    "competitor": "Ponad 20 gotowych modeli „trenowanych na miliardach etykiet” oraz modele szyte na miarę, trenowane na Twoich przykładach (2 w Growth, 4 w Enterprise)",
+    "openmod": "Własna AI do moderacji, weryfikowana przez inne modele AI; nowe modele podłączane na bieżąco, gdy się pojawiają"
+  },
+  {
+    "feature": "Weryfikacja przez człowieka",
+    "competitor": "Kolejka weryfikacji i moderacja według autora; zapraszasz własnych moderatorów",
+    "openmod": "Oczywiste naruszenia ukrywane automatycznie, wątpliwymi przypadkami zajmuje się nasz zespół w jednej konsoli"
+  },
+  {
+    "feature": "Uzasadnienie decyzji",
+    "competitor": "Nie podano na sprawdzonych stronach",
+    "openmod": "Pisemne uzasadnienie każdej decyzji i pełny dziennik aktywności"
+  },
+  {
+    "feature": "DSA",
+    "competitor": "„Zgodność z DSA od razu”, według strony głównej",
+    "openmod": "Zgłoszenia i działania, uzasadnienie decyzji, weryfikacja zakwestionowanych decyzji przez człowieka, eksportowalne dane"
+  },
+  {
+    "feature": "Hosting i dane",
+    "competitor": "UE jako region domyślny, wybór regionu w Enterprise; RODO; firma z siedzibą w Kopenhadze",
+    "openmod": "Hosting w Unii Europejskiej, RODO; wdrożenie on-premise na życzenie"
+  },
+  {
+    "feature": "Jawne ceny",
+    "competitor": "Za darmo (100 wiadomości miesięcznie), Basic 79 $ miesięcznie (10 000), Growth 249 $ miesięcznie (100 000), Enterprise – wycena indywidualna",
+    "openmod": "Za darmo do 1000 zapytań miesięcznie, Pro za 99 € miesięcznie (10 000 zapytań), Enterprise – wycena indywidualna"
+  },
+  {
+    "feature": "Klienci",
+    "competitor": "Logotypy na stronie głównej, m.in. Disney, Zapier, HubSpot, Nextdoor, OLX i SVT",
+    "openmod": "L'Équipe, Challenges, Sud Ouest, actu.fr, Estadão, Südkurier, Egora"
+  }
+];
+
+const faqItems = [
+  {
+    "question": "Jaka jest najlepsza alternatywa dla Moderation API?",
+    "answer": "Dla mediów, marek i instytucji publicznych, które chcą moderacji dopasowanej razem z nimi, a nie konfigurowanej samodzielnie, dobrze sprawdzi się OpenModeration: zespół Logora wdraża ją według Twoich zasad i przypadków użycia, z trybem sandbox na prawdziwych komentarzach, pisemnym uzasadnieniem każdej decyzji, narzędziami do DSA i hostingiem w UE. Jeśli potrzebujesz samoobsługowego API, które obejmuje też obrazy, audio i wideo, Moderation API jest dobrym wyborem."
+  },
+  {
+    "question": "Ile kosztuje Moderation API?",
+    "answer": "Według moderationapi.com/pricing: za darmo do 100 wiadomości miesięcznie, Basic za 79 $ miesięcznie za 10 000 wiadomości, Growth za 249 $ miesięcznie za 100 000 i Enterprise z wyceną indywidualną; obraz liczy się jako 3 jednostki. OpenModeration jest bezpłatne do 1000 zapytań miesięcznie, a potem kosztuje 99 € miesięcznie za 10 000 zapytań."
+  },
+  {
+    "question": "Moderation API czy OpenModeration: czym się różnią?",
+    "answer": "Oba to usługi moderacji z AI z kolejką weryfikacji, funkcjami pod DSA i hostingiem w UE. Moderation API to samoobsługowa platforma dla zespołów produktowych, obejmująca tekst, obrazy, audio i wideo. OpenModeration koncentruje się na komentarzach mediów, marek i instytucji publicznych, z zespołem, który dopasowuje moderację do Twoich zasad, i silnikiem AI weryfikowanym przez inne modele."
+  },
+  {
+    "question": "Czy można przetestować OpenModeration, nie wyłączając Moderation API?",
+    "answer": "Tak. W trybie sandbox OpenModeration analizuje Twoje prawdziwe komentarze, niczego nie ukrywając. Moderation API działa dalej, a obie serie decyzji porównujesz na tych samych komentarzach, przy czym każda decyzja OpenModeration ma pisemne uzasadnienie."
+  },
+  {
+    "question": "Jakich modeli AI używa OpenModeration?",
+    "answer": "OpenModeration działa na własnej AI do moderacji, a w trudnych przypadkach jej decyzję weryfikują inne modele AI. Gdy pojawia się lepszy lub tańszy model, zespół szybko go podłącza, bez żadnych zmian po Twojej stronie: Twoja moderacja korzysta z postępu modeli AI."
+  },
+  {
+    "question": "Czy Moderation API jest hostowane w UE?",
+    "answer": "Według strony UE jest regionem domyślnym, w planie Enterprise region można wybrać, a firma deklaruje zgodność z RODO. OpenModeration również jest hostowane w Unii Europejskiej, a wdrożenie on-premise jest możliwe na życzenie."
+  }
+];
+---
+
+<BaseLayout title={title} description={description} jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Strona główna", href: localizePath('/', locale) }, { label: "Alternatywy", href: localizePath('/alternatives', locale) }, { label: "Moderation API" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Porównanie
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Alternatywa dla Moderation API: OpenModeration w porównaniu</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Jeśli reprezentujesz media, markę lub instytucję publiczną i chcesz moderacji wdrożonej razem z Tobą, a nie konfigurowanej samodzielnie, OpenModeration to alternatywa dla Moderation API, którą warto rozważyć: zespół Logora dopasowuje AI do Twoich zasad i przypadków użycia, a każda decyzja ma pisemne uzasadnienie. Jeśli jesteś zespołem produktowym, który szuka samoobsługowego API do tekstu, obrazów, audio i wideo, Moderation API (moderationapi.com) powstało właśnie w tym celu.
+      </p>
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+        <a href={localizePath('/book-a-call', locale)} class="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-700">Umów rozmowę</a>
+        <a href="#comparison" class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700">Zobacz porównanie</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold tracking-tight text-surface-900 sm:text-3xl">Dla kogo jest Moderation API?</h2>
+      <p class="mt-4 text-surface-600">Według strony Moderation API, stworzone w Kopenhadze, to API do moderacji z AI i platforma weryfikacji tekstu, obrazów, wideo i audio, z ponad 20 gotowymi modelami, ponad 120 językami, silnikiem reguł i kolejką weryfikacji. Jest skierowane do platform, marketplace’ów, aplikacji i społeczności z treściami, wiadomościami lub komentarzami użytkowników. Rejestrujesz się, podłączasz aplikację przez API, SDK lub integrację i samodzielnie konfigurujesz zasady.</p>
+    </div>
+  </section>
+
+  <section class="bg-white pb-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Wybierz OpenModeration, jeśli…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>reprezentujesz media, markę lub instytucję publiczną i chcesz zespołu, który dopasuje moderację do Twoich zasad i przypadków użycia;</li>
+          <li>chcesz przed zmianą przetestować moderację na prawdziwych komentarzach w trybie sandbox, niczego nie ukrywając;</li>
+          <li>potrzebujesz pisemnego uzasadnienia każdej decyzji w pełnym dzienniku aktywności;</li>
+          <li>chcesz silnika AI weryfikowanego przez inne modele, do którego nowe modele są podłączane, gdy tylko się pojawiają;</li>
+          <li>chcesz większego darmowego limitu na start: 1000 zapytań miesięcznie.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">Moderation API może lepiej pasować, jeśli…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>jesteś zespołem produktowym, który woli wszystko skonfigurować samodzielnie;</li>
+          <li>moderujesz też obrazy, audio, wideo lub czat;</li>
+          <li>potrzebujesz integracji takich jak Discord, Slack, Shopify czy Zendesk;</li>
+          <li>chcesz trenować modele szyte na miarę na własnych oznaczonych danych.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="comparison" class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Moderation API i OpenModeration punkt po punkcie</h2>
+      <p class="mt-4 text-surface-500">Informacje o Moderation API pochodzą z jego strony moderationapi.com (dostęp: 30 października 2026). Ceny netto.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Kryterium</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Moderation API</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.competitor}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">AI, która nadąża za postępem modeli</h2>
+      <p class="mt-4 text-surface-600">Moderation API opisuje ponad 20 gotowych modeli „trenowanych na miliardach etykiet” oraz modele szyte na miarę, trenowane na Twoich przykładach i wytycznych zapisanych językiem naturalnym.</p>
+      <p class="mt-4 text-surface-600">OpenModeration działa na własnej AI do moderacji, a w trudnych przypadkach jej decyzję weryfikują inne modele AI. Silnik nie jest przywiązany do żadnego modelu: gdy pojawia się lepszy lub tańszy, zespół szybko go podłącza, bez żadnych zmian po Twojej stronie. Moderacja podąża za postępem rynku AI, zamiast tkwić przy jednym własnym algorytmie.</p>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Cennik: Moderation API a OpenModeration</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">Moderation API</h3>
+          <ul class="mt-4 list-disc space-y-2 pl-5 text-sm text-surface-600">
+          <li>Hobby: za darmo, 100 wiadomości miesięcznie</li>
+          <li>Basic: 79 $ miesięcznie za 10 000 wiadomości, potem 2,50 $ za każde 1000</li>
+          <li>Growth: 249 $ miesięcznie za 100 000 wiadomości, potem 1 $ za każde 1000</li>
+          <li>Enterprise: wycena indywidualna, od 1 miliona wiadomości</li>
+          <li>Obraz liczy się jako 3 jednostki, audio jako 2</li>
+          </ul>
+        </div>
+        <div class="rounded-xl border border-brand-200 bg-brand-50 p-6">
+          <h3 class="font-semibold text-brand-700">OpenModeration</h3>
+          <ul class="mt-4 list-disc space-y-2 pl-5 text-sm text-surface-700">
+          <li>Free: do 1000 zapytań miesięcznie</li>
+          <li>Pro: 99 € miesięcznie za 10 000 zapytań</li>
+          <li>Enterprise: wycena indywidualna, dla dużych wolumenów</li>
+          <li>Wdrożenie on-premise: tylko na życzenie</li>
+          </ul>
+        </div>
+      </div>
+      <p class="mt-6 text-sm text-surface-500">Przy 10 000 tekstów miesięcznie Moderation API podaje 79 $, a OpenModeration 99 €. Różnica leży w podejściu: narzędzie samoobsługowe, które konfigurujesz sam, albo moderacja, którą zespół dopasowuje razem z Tobą do Twoich zasad i przypadków użycia. OpenModeration daje też większy darmowy limit na start: 1000 zapytań miesięcznie.</p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Przejście z Moderation API na OpenModeration w 3 krokach</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="flex h-8 w-8 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white">1</div>
+          <h3 class="mt-4 font-semibold text-surface-900">Tryb sandbox obok Moderation API</h3>
+          <p class="mt-2 text-sm text-surface-600">Podłącz stronę lub profile w mediach społecznościowych. OpenModeration analizuje prawdziwe komentarze, niczego nie ukrywając, a Moderation API działa dalej.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="flex h-8 w-8 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white">2</div>
+          <h3 class="mt-4 font-semibold text-surface-900">Dopracowanie zasad z zespołem</h3>
+          <p class="mt-2 text-sm text-surface-600">Zespół Logora dopasowuje moderację do Twoich zasad i przypadków użycia. Porównujesz decyzje i ich pisemne uzasadnienia komentarz po komentarzu.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="flex h-8 w-8 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white">3</div>
+          <h3 class="mt-4 font-semibold text-surface-900">Włączenie działań automatycznych</h3>
+          <p class="mt-2 text-sm text-surface-600">Gdy wyniki Cię przekonają, oczywiste naruszenia są ukrywane automatycznie, a wątpliwymi przypadkami zajmuje się nasz zespół; Ty widzisz wszystko w konsoli.</p>
+        </div>
+      </div>
+      <div class="mt-8">
+        <a href={localizePath('/book-a-call', locale)} class="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-700">Umów rozmowę</a>
+      </div>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Najczęściej zadawane pytania" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        Moderation API jest znakiem towarowym swojego właściciela. Informacje o nim pochodzą z jego strony (dostęp: 30 października 2026). Widzisz błąd? Napisz do nas: <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+      <p class="mx-auto mt-4 max-w-3xl text-center text-xs text-surface-400">
+        Źródła: <a href="https://moderationapi.com/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">moderationapi.com/</a> · <a href="https://moderationapi.com/pricing" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">moderationapi.com/pricing</a> · <a href="https://moderationapi.com/integrations" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">moderationapi.com/integrations</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Dowiedz się więcej</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/moderation-software', locale)} class="font-medium text-brand-600 hover:text-brand-500">Oprogramowanie do moderacji OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/use-cases/news-publishers', locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderacja komentarzy dla mediów &rarr;</a></li>
+        <li><a href={localizePath('/blog/comment-moderation-guide', locale)} class="font-medium text-brand-600 hover:text-brand-500">Poradnik moderacji komentarzy &rarr;</a></li>
+        <li><a href={localizePath('/blog/ai-content-moderation-developer-guide', locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderacja treści z AI: poradnik dla programistów &rarr;</a></li>
+        <li><a href={localizePath('/pricing', locale)} class="font-medium text-brand-600 hover:text-brand-500">Cennik OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/alternatives', locale)} class="font-medium text-brand-600 hover:text-brand-500">Wszystkie porównania &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Moderacja wdrożona razem z Tobą, a nie w pojedynkę." subtitle="Umów rozmowę: omówimy Twoje zasady i przypadki użycia, a potem uruchomimy tryb sandbox na Twoich prawdziwych komentarzach, obok Moderation API." buttonText="Umów rozmowę" buttonHref={localizePath('/book-a-call', locale)} />
+</BaseLayout>

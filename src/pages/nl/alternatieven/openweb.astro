@@ -1,0 +1,243 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const title = "OpenWeb alternatief: vergelijking met OpenModeration";
+const description = "OpenWeb of OpenModeration? Vergelijking met bronnen voor media: een communityplatform met advertenties of moderatie per abonnement met publieke prijzen.";
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/nl/alternatieven/openweb",
+  "name": title,
+  "description": description,
+  "inLanguage": "nl",
+  "about": {
+    "@id": "https://www.openmoderation.com/#software"
+  }
+};
+
+const rows = [
+  {
+    "feature": "Wat het is",
+    "them": "Gehost communityplatform voor uitgevers: reacties en fora",
+    "openmod": "Een moderatielaag: beslist over reacties waar ze al staan, zonder ze zelf te tonen"
+  },
+  {
+    "feature": "Verdienmodel",
+    "them": "Monetisatie en advertenties naast de communitytools",
+    "openmod": "Een softwareabonnement, zonder advertenties gekoppeld aan de reacties van je lezers"
+  },
+  {
+    "feature": "Waar het modereert",
+    "them": "De website van de uitgever. Sociale media: niet vermeld",
+    "openmod": "Websites (API), WordPress, Facebook-pagina's, professionele Instagram-accounts en YouTube-kanalen"
+  },
+  {
+    "feature": "Prijs",
+    "them": "Niet gepubliceerd („Let's Talk”)",
+    "openmod": "Publiek: gratis tot 1.000 verzoeken per maand, Pro € 99 per maand voor 10.000, Enterprise op aanvraag"
+  },
+  {
+    "feature": "Hosting en AVG",
+    "them": "Niet vermeld op de website",
+    "openmod": "Gehost in de EU, AVG-conform"
+  },
+  {
+    "feature": "Moderatie",
+    "them": "AI-moderatie „Aida”",
+    "openmod": "Verbergt duidelijke overtredingen, laat legitieme kritiek zichtbaar en stuurt twijfelgevallen naar menselijke beoordeling"
+  },
+  {
+    "feature": "Geschreven uitleg bij elke beslissing",
+    "them": "Niet vermeld op de website",
+    "openmod": "Ja, een geschreven uitleg bij elke beslissing"
+  },
+  {
+    "feature": "DSA",
+    "them": "Niet vermeld op de website",
+    "openmod": "Melding en actie, motivering van beslissingen, menselijke beoordeling van betwiste beslissingen, exporteerbare cijfers en volledig activiteitenlogboek"
+  },
+  {
+    "feature": "AI-modellen",
+    "them": "Aida, moderatie met AI; model niet vermeld",
+    "openmod": "Eigen moderatie-AI, gecontroleerd door andere AI-modellen; nieuwe modellen worden aangesloten zodra ze uitkomen"
+  },
+  {
+    "feature": "Referenties",
+    "them": "CNN, Yahoo!, Forbes, WSJ, The Times, HuffPost; meer dan 5.000 uitgevers volgens de website",
+    "openmod": "L'Équipe, Challenges, Sud Ouest, actu.fr, Estadão, Südkurier, Egora"
+  }
+];
+
+const faqItems = [
+  {
+    "question": "Wat is het beste alternatief voor OpenWeb?",
+    "answer": "Het beste alternatief voor OpenWeb hangt af van je model: wil je je eigen reactiesysteem houden, ook je sociale media modereren en een abonnement met een publieke prijs betalen, dan past OpenModeration. Wil je een gehost product voor reacties en fora dat met advertenties wordt gefinancierd, dan is OpenWeb daarvoor bedoeld."
+  },
+  {
+    "question": "Wat kost OpenWeb?",
+    "answer": "OpenWeb publiceert geen prijzen en vraagt uitgevers contact op te nemen, omdat het met „een beperkt aantal partners” werkt. OpenModeration publiceert zijn prijzen wel: gratis tot 1.000 verzoeken per maand, Pro voor € 99 per maand voor 10.000 verzoeken en Enterprise op aanvraag."
+  },
+  {
+    "question": "OpenWeb vs OpenModeration: wat kies je?",
+    "answer": "Kies OpenWeb als je een compleet product voor reacties en fora op je website wilt. Kies OpenModeration als je je reactiesysteem wilt houden en er moderatie aan wilt toevoegen, met publieke prijzen, een geschreven uitleg bij elke beslissing en een team dat de moderatie samen met jou inricht volgens je regels en je use cases."
+  },
+  {
+    "question": "Kan ik OpenModeration testen zonder OpenWeb op te zeggen?",
+    "answer": "Ja. In sandboxmodus analyseert OpenModeration je echte reacties zonder iets te verbergen. OpenWeb blijft gewoon draaien en je vergelijkt beide reeksen beslissingen, reactie per reactie, voordat je iets verandert."
+  },
+  {
+    "question": "Welke AI-modellen gebruikt OpenModeration?",
+    "answer": "OpenModeration werkt met een eigen moderatie-AI, en bij gevoelige gevallen controleren andere AI-modellen de beslissing. Komt er een beter of goedkoper model uit, dan sluit het team het snel aan, zonder dat jij iets hoeft te veranderen: je moderatie profiteert van de vooruitgang van AI-modellen."
+  },
+  {
+    "question": "Waar worden de data van OpenWeb gehost?",
+    "answer": "De website van OpenWeb vermeldt dat niet op de pagina's die we hebben geraadpleegd. Is dat belangrijk voor je juridische afdeling, vraag het dan rechtstreeks aan de leverancier. OpenModeration wordt gehost in de Europese Unie, en een on-premise installatie is mogelijk op aanvraag."
+  }
+];
+---
+
+<BaseLayout title={title} description={description} jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: "Alternatieven", href: localizePath('/alternatives', locale) }, { label: "OpenWeb" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Vergelijking
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Alternatief voor OpenWeb: vergelijking met OpenModeration</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Het beste alternatief voor OpenWeb hangt af van je model: wil je je eigen reactiesysteem houden, ook je sociale media modereren en een abonnement met een publieke prijs betalen, dan past OpenModeration. Wil je een gehost product voor reacties en fora dat met advertenties wordt gefinancierd, dan is OpenWeb daarvoor bedoeld.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold tracking-tight text-surface-900">Voor wie is OpenWeb?</h2>
+      <p class="mt-4 text-surface-600">Volgens de website beheert OpenWeb de reacties en fora van grote uitgevers, met AI-moderatie (genaamd „Aida”) en een tak voor monetisatie en advertenties. Het zegt meer dan 5.000 uitgevers te bundelen, en tussen de logo's staan CNN, Yahoo!, Forbes, The Wall Street Journal, The Times en HuffPost.</p>
+      <p class="mt-4 text-surface-600">OpenModeration modereert met AI de reacties van media, merken en overheidsinstanties, op hun website en op hun Facebook-pagina's, Instagram-accounts en YouTube-kanalen. Het verbergt duidelijke overtredingen automatisch, laat legitieme kritiek zichtbaar en stuurt twijfelgevallen naar menselijke beoordeling in één console. Het team van Logora, sinds 2019 in Parijs, richt het samen met jou in volgens je regels en je use cases.</p>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">OpenWeb en OpenModeration, punt voor punt</h2>
+      <p class="mt-4 text-surface-500">Informatie over OpenWeb afkomstig van de website openweb.com, geraadpleegd op 30 oktober 2026.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Criterium</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">OpenWeb</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.them}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto grid max-w-5xl gap-6 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-brand-700">Kies OpenModeration als…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>je je eigen reactiesysteem wilt houden en er moderatie aan wilt toevoegen;</li>
+          <li>je een abonnement met een publieke prijs verkiest boven een model dat aan advertenties is gekoppeld;</li>
+          <li>je data in de Europese Unie moeten blijven;</li>
+          <li>je ook reacties op Facebook, Instagram of YouTube modereert.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h2 class="text-lg font-semibold text-surface-900">OpenWeb past misschien beter als…</h2>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>je een compleet product voor reacties en fora op je website wilt;</li>
+          <li>je liever hebt dat de tool advertentie-inkomsten oplevert dan dat hij een abonnement kost;</li>
+          <li>je een leverancier zoekt met grote Amerikaanse uitgevers als referentie.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h2 class="text-xl font-bold text-surface-900">Een AI die de vooruitgang van de modellen volgt</h2>
+          <p class="mt-3 text-sm text-surface-600">OpenModeration werkt met een eigen moderatie-AI, en bij gevoelige gevallen controleren andere AI-modellen de beslissing. Komt er een beter of goedkoper model uit, dan sluit het team het snel aan, zonder dat jij iets hoeft te veranderen. Je moderatie gaat mee met de vooruitgang van de AI-markt, in plaats van vast te zitten aan één algoritme. OpenWeb presenteert zijn moderatie „Aida” als gebaseerd op AI, zonder het model te noemen.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h2 class="text-xl font-bold text-surface-900">Prijzen: OpenWeb tegenover OpenModeration</h2>
+          <p class="mt-3 text-sm text-surface-600">OpenWeb publiceert geen prijzen en vraagt uitgevers contact op te nemen, omdat het met „een beperkt aantal partners” werkt. OpenModeration publiceert zijn prijzen wel: gratis tot 1.000 verzoeken per maand, Pro voor € 99 per maand voor 10.000 verzoeken en Enterprise op aanvraag. Een on-premise installatie is mogelijk op aanvraag. <a href={localizePath('/book-a-call', locale)} class="font-medium text-brand-600 hover:text-brand-500">Plan een gesprek</a> om jouw situatie door te rekenen.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Overstappen van OpenWeb naar OpenModeration in 3 stappen</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">1. Test in sandboxmodus</h3>
+          <p class="mt-2 text-sm text-surface-600">Koppel je website, WordPress of je pagina's op Facebook, Instagram en YouTube. OpenModeration analyseert echte reacties zonder iets te verbergen, terwijl OpenWeb gewoon blijft draaien.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">2. Stem af met het team van Logora</h3>
+          <p class="mt-2 text-sm text-surface-600">We vergelijken de beslissingen met die van je huidige tool en stemmen de moderatie af op je regels en je use cases, met de geschreven uitleg van elke beslissing erbij.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+          <h3 class="font-semibold text-surface-900">3. Zet het kanaal voor kanaal aan</h3>
+          <p class="mt-2 text-sm text-surface-600">Je zet de moderatie aan op één kanaal, daarna op de andere. Twijfelgevallen worden door ons team afgehandeld en elke beslissing blijft in het activiteitenlogboek staan.</p>
+        </div>
+      </div>
+      <p class="mt-8 text-center text-surface-600">Wil je het zien op je eigen reacties? <a href={localizePath('/book-a-call', locale)} class="font-medium text-brand-600 hover:text-brand-500">Plan een gesprek met het team</a>.</p>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Veelgestelde vragen" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        OpenWeb is een merk van de eigenaar ervan. Bronnen: <a href="https://www.openweb.com" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">www.openweb.com</a>, <a href="https://axios.com/2026/09/30/openweb-forums-publishers-reddit" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">axios.com/2026/09/30/openweb-forums-publishers-reddit</a> (geraadpleegd op 30 oktober 2026). Zie je een fout? Schrijf ons op <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Meer weten</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/use-cases/news-publishers', locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderatie van reacties voor media &rarr;</a></li>
+        <li><a href={localizePath('/dsa-compliance/statement-of-reasons', locale)} class="font-medium text-brand-600 hover:text-brand-500">De motivering die de DSA vereist &rarr;</a></li>
+        <li><a href={localizePath('/blog/comment-moderation-guide', locale)} class="font-medium text-brand-600 hover:text-brand-500">Gids voor het modereren van reacties &rarr;</a></li>
+        <li><a href={localizePath('/moderation-software', locale)} class="font-medium text-brand-600 hover:text-brand-500">De moderatiesoftware van OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/pricing', locale)} class="font-medium text-brand-600 hover:text-brand-500">De prijzen van OpenModeration &rarr;</a></li>
+        <li><a href={localizePath('/alternatives', locale)} class="font-medium text-brand-600 hover:text-brand-500">Alle vergelijkingen &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Vergelijk je huidige moderatie met OpenModeration." subtitle="Test OpenModeration in sandboxmodus op je eigen reacties, zonder iets te verbergen. Gratis tot 1.000 verzoeken per maand." buttonText="Plan een gesprek" buttonHref={localizePath('/book-a-call', locale)} />
+</BaseLayout>

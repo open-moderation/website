@@ -1,0 +1,204 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CharterSupport from '../../../components/CharterSupport.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import FAQ from '../../../components/FAQ.astro';
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/de/alternativen/digitaller",
+  "name": "Digitaller Alternative: Kommentare aus der eigenen Redaktion moderieren",
+  "description": "Digitaller oder OpenModeration? Ein Moderationsdienstleister im Vergleich zu einer Software, die Ihre Redaktion steuert: Preise, Konnektoren, KI.",
+  "inLanguage": "de",
+  "about": { "@id": "https://www.openmoderation.com/#software" }
+};
+
+const rows = [
+  { feature: "Art des Angebots", competitor: "Moderationsdienstleistung und Community Management (Agentur von Grupo Raíz Digital)", openmod: "Automatisierte Moderation, eingerichtet auf Ihre Regeln und Anwendungsfälle; Zweifelsfälle übernimmt unser Team, Sie sehen alles in Echtzeit" },
+  { feature: "Wer entscheidet", competitor: "Semantischer KI-Filter, danach bei Bedarf das menschliche Team von Digitaller", openmod: "Die KI wendet Ihre Regeln an; Zweifelsfälle entscheidet unser Team. Sie können in der Konsole jederzeit eingreifen" },
+  { feature: "Regeln", competitor: "Pro Kunde angepasst, in Vor- oder Nachmoderation", openmod: "Ihre Regeln und Anwendungsfälle, jederzeit anpassbar" },
+  { feature: "Wo moderiert wird", competitor: "Nachrichtenseiten, Blogs, Unternehmenswebsites, Kleinanzeigen und soziale Netzwerke (nicht namentlich genannt)", openmod: "Facebook, Instagram, YouTube und WordPress; API für alles andere" },
+  { feature: "KI-Modelle", competitor: "Semantischer KI-Filter, Modell nicht angegeben", openmod: "Eigene Moderations-KI, von anderen KI-Modellen gegengeprüft; neue Modelle werden eingebunden, sobald sie erscheinen" },
+  { feature: "Preise", competitor: "Nicht veröffentlicht", openmod: "Kostenlos bis 1.000 Anfragen pro Monat, Pro für 99 € pro Monat mit 10.000 Anfragen, Enterprise auf Anfrage" },
+  { feature: "Begründung jeder Entscheidung", competitor: "Auf der Website nicht angegeben", openmod: "Schriftliche Begründung für jede Entscheidung, in der Konsole und über die API" },
+  { feature: "DSA", competitor: "Auf der Website nicht angegeben", openmod: "Bausteine für Meldeverfahren, Begründung, menschliche Prüfung angefochtener Entscheidungen und exportierbare Kennzahlen; vollständiges Aktivitätsprotokoll" },
+  { feature: "Datenhosting", competitor: "Nicht angegeben (der Cookie-Hinweis nennt DSGVO und das spanische Datenschutzgesetz)", openmod: "In der EU gehostet, DSGVO" },
+  { feature: "Referenzen", competitor: "Regionalzeitungen von Prensa Ibérica (La Nueva España, Levante, Faro de Vigo, Diario de Mallorca u. a.), El Español, Kleinanzeigen von Schibsted", openmod: "L'Équipe, Challenges, Sud Ouest, actu.fr, Estadão, Südkurier, Egora" },
+];
+
+const faqItems = [
+  {
+    question: "Was ist die beste Alternative zu Digitaller?",
+    answer: "Das hängt davon ab, wer moderieren soll. Suchen Sie einen Dienstleister mit externen Moderatoren und Community Management, bietet Digitaller das. Soll Ihre Redaktion die Regeln steuern, die Begründung jeder Entscheidung sehen und einen veröffentlichten Preis zahlen, ist OpenModeration dafür gebaut.",
+  },
+  {
+    question: "Was kostet Digitaller?",
+    answer: "Digitaller veröffentlicht keine Preise auf seiner Website. OpenModeration nennt seine Preise offen: kostenlos bis 1.000 Anfragen pro Monat, Pro für 99 € pro Monat mit 10.000 Anfragen, Enterprise auf Anfrage.",
+  },
+  {
+    question: "Digitaller oder OpenModeration: Was ist der Unterschied?",
+    answer: "Digitaller ist eine Dienstleistung: KI-Filter plus menschliches Team des Anbieters. OpenModeration ist Software: eine eigene Moderations-KI, bei heiklen Fällen von anderen KI-Modellen gegengeprüft, wendet Ihre Regeln an, und unser Team entscheidet die Zweifelsfälle, mit einer schriftlichen Begründung für jede Entscheidung. Sie sehen alles in Echtzeit.",
+  },
+  {
+    question: "Kann ich OpenModeration testen, ohne Digitaller zu verlassen?",
+    answer: "Ja. Im Sandbox-Modus analysiert OpenModeration echte Kommentare Ihrer Website oder Ihrer Seiten in sozialen Netzwerken und zeigt, was es entschieden hätte, ohne etwas auszublenden. Sie vergleichen mit Ihrem aktuellen Dienstleister und entscheiden danach.",
+  },
+  {
+    question: "Stellt OpenModeration menschliche Moderatoren?",
+    answer: "Ja, für die Zweifelsfälle. Unser Team richtet die Moderation mit Ihnen auf Ihre Regeln und Anwendungsfälle ein und verfeinert sie in den ersten Wochen. Danach übernimmt es Zweifelsfälle, Meldungen und angefochtene Entscheidungen. Sie müssen nichts tun und können jederzeit eingreifen.",
+  },
+  {
+    question: "Was passiert mit zweifelhaften Kommentaren?",
+    answer: "Eindeutige Verstöße blendet OpenModeration automatisch aus, berechtigte Kritik bleibt sichtbar. Alles dazwischen entscheidet unser Team. Sie sehen jede Entscheidung in Echtzeit in der Konsole und können jederzeit eingreifen. Das Aktivitätsprotokoll hält fest, wer was entschieden hat.",
+  },
+];
+---
+
+<BaseLayout title="Digitaller Alternative: Vergleich mit OpenModeration" description="Digitaller oder OpenModeration? Ein Moderationsdienstleister im Vergleich zu einer Software, die Ihre Redaktion steuert: Preise, Konnektoren, KI." jsonLd={pageJsonLd}>
+  <Breadcrumb items={[{ label: "Startseite", href: "/de" }, { label: "Alternativen", href: "/de/alternativen" }, { label: "Digitaller" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
+        Vergleich
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Digitaller Alternative: Kommentare aus der eigenen Redaktion moderieren</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        Wenn Ihre Redaktion die Regeln selbst festlegen, jede Entscheidung begründet sehen und einen veröffentlichten Preis zahlen will, ist OpenModeration die passende Digitaller-Alternative. Wollen Sie die Moderation dagegen an ein externes Team mit Community Management abgeben, passt ein Dienstleister wie Digitaller besser.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold tracking-tight text-surface-900 sm:text-3xl">Für wen ist Digitaller gedacht?</h2>
+      <p class="mt-4 text-surface-600">Digitaller ist der Moderationsdienst von Grupo Raíz Digital in Spanien und arbeitet laut Website seit rund 20 Jahren. Jeder Kommentar durchläuft zuerst einen semantischen KI-Filter, was dieser nicht klärt, prüft ein menschliches Team, in Vor- oder Nachmoderation. Als Kunden nennt Digitaller die Regionalzeitungen von Prensa Ibérica, El Español und die Kleinanzeigen von Schibsted.</p>
+      <div class="mt-8 grid gap-6 md:grid-cols-2">
+      <div class="rounded-xl border border-brand-200 bg-brand-50 p-6 shadow-sm">
+        <h3 class="text-lg font-semibold text-brand-700">Wählen Sie OpenModeration, wenn …</h3>
+        <ul class="mt-4 space-y-2 text-sm text-surface-700">
+          <li>Ihre Redaktion die Regeln steuern und ohne Umweg über einen Dienstleister ändern will;</li>
+          <li>Sie den Preis kennen möchten, bevor Sie ein Angebot anfragen;</li>
+          <li>Sie jede Löschung begründen müssen, wie es der DSA verlangt;</li>
+          <li>Sie wissen wollen, welche Netzwerke angebunden sind: Facebook, Instagram, YouTube und WordPress;</li>
+          <li>Ihre Daten in der Europäischen Union bleiben sollen.</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+        <h3 class="text-lg font-semibold text-surface-900">Digitaller passt womöglich besser, wenn …</h3>
+        <ul class="mt-4 space-y-2 text-sm text-surface-600">
+          <li>Sie ein externes Team suchen, das Kommentare für Sie liest;</li>
+          <li>Sie zusätzlich Community Management auslagern wollen;</li>
+          <li>Sie einen Dienstleister mit vielen Referenzen bei spanischen Regionalzeitungen bevorzugen.</li>
+        </ul>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Digitaller und OpenModeration im Detail</h2>
+      <p class="mt-4 text-surface-500">Angaben zu Digitaller aus den unten genannten Quellen, abgerufen im Oktober 2026.</p>
+      <div class="mt-8 overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-100">
+              <th class="px-6 py-4 font-semibold text-surface-900">Kriterium</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Digitaller</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200 bg-white">
+            {rows.map((r) => (
+              <tr>
+                <td class="px-6 py-4 font-medium text-surface-900">{r.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{r.competitor}</td>
+                <td class="px-6 py-4 text-surface-700">{r.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Eine Moderations-KI, die mit dem Markt Schritt hält</h2>
+      <p class="mt-4 text-surface-600">OpenModeration arbeitet mit einer eigenen Moderations-KI. Bei heiklen Fällen wird ihre Entscheidung von weiteren KI-Modellen gegengeprüft. Kommt ein besseres oder günstigeres Modell auf den Markt, bindet unser Team es zügig ein, ohne dass Sie auf Ihrer Seite etwas ändern müssen. So profitiert Ihre Moderation vom Fortschritt der KI-Modelle, statt auf einem einzigen hauseigenen Algorithmus stehen zu bleiben.</p>
+      <p class="mt-4 text-surface-600">Digitaller beschreibt eine „interfaz tecnológica de inteligencia artificial semántica“, nennt aber weder Modell noch Anbieter.</p>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Preise im Vergleich</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <h3 class="font-semibold text-surface-900">Digitaller</h3>
+          <p class="mt-2 text-sm text-surface-600">Digitaller veröffentlicht auf seiner Website keine Preise. Ein Angebot erhalten Sie über den Kontakt mit Grupo Raíz Digital.</p>
+        </div>
+        <div class="rounded-xl border border-brand-200 bg-brand-50 p-6">
+          <h3 class="font-semibold text-brand-700">OpenModeration</h3>
+          <p class="mt-2 text-sm text-surface-700">Kostenlos bis 1.000 Anfragen pro Monat. Pro: 99 € pro Monat für 10.000 Anfragen. Enterprise: auf Anfrage, ebenso eine On-Premise-Installation. Alle Preise stehen auf der <a href="/de/preise" class="text-brand-600 hover:text-brand-500">Preisseite</a>.</p>
+        </div>
+      </div>
+      <p class="mt-6 text-sm text-surface-500">Ein Dienstleister rechnet die Arbeit seiner Moderatoren mit ab. Bei OpenModeration erledigt die Automatisierung den Großteil, und die Zweifelsfälle übernimmt unser Team. Für große Volumen: <a href="/de/termin-vereinbaren" class="text-brand-600 hover:text-brand-500">Termin vereinbaren</a>.</p>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Wechsel in drei Schritten</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="flex h-9 w-9 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white">1</div>
+          <h3 class="mt-4 font-semibold text-surface-900">Regeln und Anwendungsfälle klären</h3>
+          <p class="mt-2 text-sm text-surface-600">In einem ersten Gespräch erfassen wir mit Ihnen Ihre Moderationsregeln und Anwendungsfälle. Unser Team richtet die Moderation darauf ein. <a href="/de/termin-vereinbaren" class="text-brand-600 hover:text-brand-500">Termin vereinbaren</a>.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="flex h-9 w-9 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white">2</div>
+          <h3 class="mt-4 font-semibold text-surface-900">Parallel im Sandbox-Modus testen</h3>
+          <p class="mt-2 text-sm text-surface-600">OpenModeration analysiert Ihre echten Kommentare, ohne etwas auszublenden, während Digitaller weiterläuft. Sie vergleichen beide Ergebnisse Kommentar für Kommentar, jeweils mit unserer Begründung.</p>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-6">
+          <div class="flex h-9 w-9 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white">3</div>
+          <h3 class="mt-4 font-semibold text-surface-900">Schrittweise umstellen</h3>
+          <p class="mt-2 text-sm text-surface-600">Sie schalten das automatische Ausblenden Seite für Seite ein. Eindeutige Verstöße verschwinden sofort, berechtigte Kritik bleibt sichtbar, Zweifelsfälle übernimmt unser Team, und Sie sehen jede Entscheidung in Echtzeit. Den Vertrag mit Digitaller kündigen Sie erst, wenn Sie mit dem Ergebnis zufrieden sind.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Häufige Fragen" items={faqItems} />
+      <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-surface-400">
+        Digitaller ist eine Marke ihres Inhabers. Quellen: <a href="https://raiz.es/es/servicios/moderacion-de-los-contenidos/" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">raiz.es</a> (abgerufen im Oktober 2026). Ein Fehler? Schreiben Sie uns an <a href="mailto:contact@openmoderation.com" class="text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Weiterlesen</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/de/moderation-auslagern" class="font-medium text-brand-600 hover:text-brand-500">Moderation auslagern oder selbst steuern? &rarr;</a></li>
+        <li><a href="/de/anwendungsfaelle/medien" class="font-medium text-brand-600 hover:text-brand-500">Kommentarmoderation für Medien und Verlage &rarr;</a></li>
+        <li><a href="/de/alternativen/interactora" class="font-medium text-brand-600 hover:text-brand-500">OpenModeration oder Interactora: der Vergleich &rarr;</a></li>
+        <li><a href="/de/moderationssoftware" class="font-medium text-brand-600 hover:text-brand-500">Die Moderationssoftware OpenModeration &rarr;</a></li>
+        <li><a href="/de/termin-vereinbaren" class="font-medium text-brand-600 hover:text-brand-500">Ein Gespräch mit unserem Team vereinbaren &rarr;</a></li>
+        <li><a href="/de/alternativen" class="font-medium text-brand-600 hover:text-brand-500">Alle Vergleiche &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection title="Holen Sie die Kommentarmoderation in Ihre Redaktion zurück." subtitle="Testen Sie OpenModeration im Sandbox-Modus neben Ihrem Dienstleister und lesen Sie die Begründung jeder Entscheidung. Kostenlos starten." />
+</BaseLayout>

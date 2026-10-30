@@ -1,0 +1,114 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+import { bookingUrl } from '../../../i18n/ui';
+
+const locale = getLocale(Astro.url.pathname);
+const BOOKING_URL = bookingUrl(locale);
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Apresentando o OpenModeration: a plataforma de moderação unificada",
+  "description": "Estamos construindo uma plataforma de moderação: a nossa própria IA, com verificação por outros modelos, e um motivo por escrito e uma trilha de auditoria para cada decisão.",
+  "inLanguage": "pt",
+  "datePublished": "2026-06-01",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/pt/blog/apresentando-openmoderation" },
+  "dateModified": "2026-06-01"
+};
+---
+
+<BaseLayout title="Apresentando o OpenModeration, a plataforma de moderação" description="Construímos uma plataforma de moderação: a nossa própria IA, com verificação por outros modelos, motivo por escrito e trilha de auditoria para cada decisão." jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Início", href: localizePath("/", locale) }, { label: "Blog", href: localizePath("/blog", locale) }, { label: "Apresentando o OpenModeration" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-06-01">1º de junho de 2026</time>
+        <span>&middot;</span>
+        <span>5 min de leitura</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Apresentando o OpenModeration: a plataforma de moderação unificada</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Hoje anunciamos o OpenModeration, uma plataforma de moderação de conteúdo construída sobre a sua própria
+        IA de moderação, com os casos delicados verificados por outros modelos de IA.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">O problema que estamos resolvendo</h2>
+      <p>
+        Muitas ferramentas de moderação dependem de um único algoritmo próprio, congelado entre duas atualizações.
+        Enquanto isso, os modelos de IA ficam melhores e mais baratos a cada ano, e as plataformas presas ao modelo
+        de ontem perdem esse avanço.
+      </p>
+      <p>
+        Enquanto isso, o volume de conteúdo gerado por usuários cresce 30-40% ao ano. O DSA
+        obriga legalmente as plataformas a moderar. E a UE fiscaliza:
+        as multas podem chegar a 6% do faturamento global.
+      </p>
+      <p>
+        O mercado precisa de uma camada padrão, assim como os pagamentos têm a Stripe e as comunicações têm a Twilio.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">O que estamos construindo</h2>
+      <p>
+        O OpenModeration é uma plataforma de moderação completa. Além da API, ela inclui:
+      </p>
+      <ul>
+        <li><strong>A nossa própria IA de moderação.</strong> POST /v1/moderation devolve scores padronizados por categoria, e outros modelos de IA verificam os casos delicados.</li>
+        <li><strong>Motor independente de modelo.</strong> Quando sai um modelo de IA melhor ou mais barato, nós o conectamos rapidamente. Nada muda do seu lado.</li>
+        <li><strong>Action Engine.</strong> Defina regras com três ferramentas: palavras proibidas, limites por categoria e as suas próprias regras escritas em linguagem natural.</li>
+        <li><strong>Conectores nativos.</strong> Integração com Facebook, Instagram, YouTube e WordPress: basta conectar as suas páginas, nós cuidamos do resto.</li>
+        <li><strong>Painel de administração.</strong> Uma interface React Admin para gerenciar chaves, consultar logs e analisar o uso.</li>
+        <li><strong>Trilha de auditoria em conformidade com o DSA.</strong> Cada moderação é registrada na íntegra e pode ser exportada para fins de conformidade.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Por que a transparência</h2>
+      <p>
+        A moderação depende de confiança. Uma ferramenta de moderação que só devolve "removido" ou "mantido" é uma caixa-preta:
+        você não consegue verificar o que ela faz, como toma as decisões nem para onde vão os seus dados.
+      </p>
+      <p>
+        Com o OpenModeration, cada decisão é explicada por escrito e registrada em uma trilha de auditoria completa.
+        Os dados ficam hospedados na UE, e você pode exportá-los sempre que precisar.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Próximos passos</h2>
+      <p>
+        Estamos lançando com o Bloco 1 (a API de moderação principal e o painel) e vamos entregar
+        os Blocos 2 e 3 (ingestão, Action Engine, conectores) nos próximos meses.
+        O nosso SaaS hospedado chega ainda este ano.
+      </p>
+      <p>
+        Se você está construindo uma plataforma que precisa de moderação, adoraríamos ouvir a sua opinião.
+        <a href={BOOKING_URL} class="text-brand-600 hover:text-brand-500">Agende uma conversa</a> e conte para nós o que achou.
+      </p>
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Continue explorando</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath("/how-it-works", locale)} class="font-medium text-brand-600 hover:text-brand-500">Como funciona o pipeline de moderação &rarr;</a></li>
+        <li><a href={localizePath("/features", locale)} class="font-medium text-brand-600 hover:text-brand-500">Tudo o que a plataforma faz por você &rarr;</a></li>
+        <li><a href={localizePath("/pricing", locale)} class="font-medium text-brand-600 hover:text-brand-500">Comece grátis e evolua conforme crescer &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

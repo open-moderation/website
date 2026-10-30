@@ -1,0 +1,161 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CTASection from '../../components/CTASection.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import { getLocale, localizePath } from '../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/pl/funkcje",
+  "url": "https://www.openmoderation.com/pl/funkcje",
+  "name": "Funkcje moderacji treści: jedno API i silnik reguł",
+  "description": "Wszystkie funkcje OpenModeration: API do moderacji, panel administracyjny, silnik akcji, natywne konektory, przetwarzanie wsadowe i dziennik audytowy zgodny z DSA.",
+  "inLanguage": "pl",
+  "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
+};
+
+const curlExample = `# Jedno wywołanie, ujednolicone wyniki
+curl -X POST https://api.openmoderation.com/v1/moderation \\
+  -H "Authorization: Bearer om_key_..." \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "input": "Your text to moderate here",
+    "language": "en"
+  }'
+
+# Odpowiedź (zawsze w tym samym formacie)
+{
+  "id": "modr_01JXK...",
+  "results": [{
+    "category": "hate",
+    "score": 0.02,
+    "flagged": false
+  }],
+  "flagged": false,
+  "usage": {
+    "latency_ms": 243
+  }
+}`;
+
+const featureCategories = [
+  {
+    title: 'Jedna integracja',
+    description: 'Jeden endpoint API, jeden format odpowiedzi. Gdy podłączamy lepszy model AI, w Twoim kodzie nic się nie zmienia.',
+    items: [
+      { title: 'Nasza własna AI do moderacji', desc: 'Wyślij treść raz i otrzymaj jasny werdykt (dopuszczona/odrzucona) oraz wyniki dla kategorii, z konfiguracją według Twoich zasad i przypadków użycia.' },
+      { title: 'Gotowe kategorie treści', desc: 'Gotowe kategorie obejmujące mowę nienawiści, nękanie, treści seksualne, przemoc, samookaleczenia, spam, dezinformację, dane osobowe i nie tylko.' },
+      { title: 'Weryfikacja przez inne modele AI', desc: 'W trudnych przypadkach inne modele AI rozstrzygają decyzję, zanim zostanie zastosowana. Mniej błędów, mniej niesłusznie ukrytych komentarzy.' },
+      { title: 'Trafniejsze decyzje moderacyjne', desc: 'Decyzje uwzględniają rozmowę, historię autora, kanał i Twoje własne zasady.' },
+      { title: 'Masowa weryfikacja treści', desc: 'Wyślij do 10 000 elementów naraz do przetwarzania asynchronicznego. Wyniki trafiają do Twojego systemu, gdy tylko są gotowe.' },
+      { title: 'Własne zasady moderacji', desc: 'Zdefiniuj własne kategorie. Podaj przykłady, a AI sklasyfikuje treści według Twoich kryteriów.' },
+    ],
+  },
+  {
+    title: 'Konsola moderacji',
+    description: 'Interfejs webowy, w którym widzisz każdą decyzję w czasie rzeczywistym i możesz interweniować w dowolnym momencie.',
+    items: [
+      { title: 'Zarządzanie dostępem', desc: 'Twórz klucze dostępu i zarządzaj nimi. Ustawiaj limity użycia dla każdego klucza.' },
+      { title: 'Zespół i role', desc: 'Daj dostęp do konsoli swoim współpracownikom, przypisuj role i ustawiaj uprawnienia bez angażowania działu IT.' },
+      { title: 'Obsługa zgłoszeń', desc: 'Zgłoszenia użytkowników rozpatruje nasz zespół, a Ty śledzisz ich status, więc żaden zgłoszony komentarz nie zostaje pominięty.' },
+      { title: 'Historia aktywności', desc: 'Każde zapytanie moderacyjne jest zapisywane wraz z werdyktem, czasem odpowiedzi i wynikami dla kategorii.' },
+      { title: 'Monitorowanie usługi', desc: 'Status usługi w czasie rzeczywistym: dostępność, czasy odpowiedzi i odsetek błędów.' },
+      { title: 'Raporty wydajności', desc: 'Śledź wolumen moderacji i odsetek oznaczeń oraz obserwuj zmiany kosztów.' },
+      { title: 'Zarządzanie konektorami', desc: 'Łącz konta w mediach społecznościowych za pomocą własnych danych logowania.' },
+      { title: 'Konfiguracja zasad', desc: 'Określ zakazane słowa, ustaw progi dla kategorii i zapisz swoje zasady zwykłym językiem. Żadne z tych trzech narzędzi nie wymaga kodu.' },
+    ],
+  },
+  {
+    title: 'Automatyczna moderacja',
+    description: 'Zasady moderacji definiuje się trzema narzędziami: zakazanymi słowami, progami dla kategorii i własnymi zasadami zapisanymi zwykłym językiem.',
+    items: [
+      { title: 'Reguły AI uwzględniające kontekst', desc: 'Łącz wyniki pewności AI z własnymi zasadami zamiast polegać wyłącznie na listach słów kluczowych.' },
+      { title: 'Akcje automatyczne', desc: 'Po przekroczeniu progu silnik akcji może ukryć, usunąć, oznaczyć, wysłać powiadomienie lub oznaczyć jako spam.' },
+      { title: 'Człowiek w pętli decyzyjnej', desc: 'Przypadkami granicznymi zajmuje się nasz zespół, a Ty możesz w każdej chwili zmienić decyzję.' },
+      { title: 'Weryfikacja przez człowieka', desc: 'Oznaczone treści weryfikuje nasz zespół, a Ty widzisz każdą decyzję i jej uzasadnienie na bieżąco.' },
+      { title: 'Powiadomienia przez webhooki', desc: 'Alerty w czasie rzeczywistym o oznaczonych treściach, zakończonych partiach, błędach i nie tylko.' },
+      { title: 'Pełny dziennik audytowy', desc: 'Każde działanie jest zapisywane wraz z regułą, która je wywołała, podjętą akcją i jej wynikiem.' },
+    ],
+  },
+  {
+    title: 'Integracje z platformami',
+    description: 'Połącz się bezpośrednio z mediami społecznościowymi i blogiem, aby automatycznie pobierać i moderować treści.',
+    items: [
+      { title: 'Facebook', desc: 'Odbieraj komentarze i posty. Automatycznie ukrywaj lub usuwaj treści, które łamią Twoje zasady.' },
+      { title: 'Instagram', desc: 'Moderuj komentarze i wiadomości na Instagramie. Chroń profil przed toksycznymi treściami i spamem.' },
+      { title: 'YouTube', desc: 'Pobieraj komentarze pod filmami. Oznaczaj je jako spam lub przekazuj do weryfikacji.' },
+      { title: 'WordPress', desc: 'Moderuj komentarze na blogu. Automatycznie zatwierdzaj, wstrzymuj do weryfikacji lub oznaczaj jako spam.' },
+      { title: 'Własny dostęp do platform', desc: 'Używaj własnych tokenów platform. Nigdy nie przechowujemy ich otwartym tekstem.' },
+      { title: 'Uniwersalny odbiornik webhooków', desc: 'Pobieraj treści z każdej platformy obsługującej wychodzące webhooki.' },
+      { title: 'Uniwersalny webhook zwrotny', desc: 'Wysyłaj wyniki moderacji do własnego webhooka na potrzeby niestandardowych integracji.' },
+    ],
+  },
+];
+---
+
+<BaseLayout title="Funkcje moderacji treści: jedno API i silnik reguł" description="Funkcje OpenModeration: API do moderacji, panel administracyjny, silnik akcji, natywne konektory, przetwarzanie wsadowe i dziennik audytowy zgodny z DSA." jsonLd={pageJsonLd}>
+<Breadcrumb items={[{ label: "Strona główna", href: localizePath('/', locale) }, { label: "Funkcje" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Funkcje</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        OpenModeration obejmuje cały proces: od odebrania komentarza po podjęcie działania.
+      </p>
+    </div>
+  </section>
+
+  {featureCategories.map((cat) => (
+    <section class="scroll-mt-16 border-t border-surface-100 bg-white py-20">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="mx-auto mb-12 max-w-2xl text-center">
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">{cat.title}</h2>
+          <p class="mt-4 text-lg text-surface-500">{cat.description}</p>
+        </div>
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {cat.items.map((item) => (
+            <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+              <h3 class="font-semibold text-surface-900">{item.title}</h3>
+              <p class="mt-2 text-sm text-surface-500">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <!-- API Reference Snippet -->
+  <section class="border-t border-surface-100 bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Jeden format, niezależnie od modelu</h2>
+          <p class="mt-4 text-lg text-surface-500">
+            Wyniki zawsze wyglądają tak samo, więc integrację wykonuje się tylko raz, nawet gdy AI się poprawia.
+          </p>
+          <div class="mt-6 space-y-4">
+            <div class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600"><strong>Ten sam format</strong> za każdym razem, bez dodatkowego kodu, gdy AI się poprawia.</p>
+            </div>
+            <div class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600"><strong>Bezpieczne klucze dostępu</strong> z ograniczonym zakresem uprawnień i limitami użycia dla każdego klucza.</p>
+            </div>
+            <div class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600"><strong>Interaktywna dokumentacja API</strong> generowana automatycznie, z możliwością testowania zapytań w przeglądarce.</p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <CodeBlock code={curlExample} lang="bash" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

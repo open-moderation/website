@@ -1,0 +1,260 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { bookingUrl } from '../../../i18n/ui';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+const BOOKING_URL = bookingUrl(locale);
+const title = "Moderacja komentarzy na TikToku: filtry, zasady i porady";
+const description = "Jak moderować komentarze na TikToku: filtry, filtrowane słowa kluczowe, ręczne zatwierdzanie, moderatorzy LIVE, ich ograniczenia dla marek i plan kryzysowy.";
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Moderacja komentarzy na TikToku: jak moderować komentarze jako marka lub redakcja",
+  "description": description,
+  "inLanguage": "pl",
+  "datePublished": "2026-10-30",
+  "dateModified": "2026-10-30",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/pl/blog/moderacja-komentarzy-tiktok" }
+};
+
+const tools = [
+  { tool: "Kto może komentować", does: "Pozwala komentować wszystkim, tylko znajomym albo nikomu, dla całego konta lub dla pojedynczego filmu", limit: "Wyłączenie komentarzy zabija zaangażowanie; to ostateczność, a nie strategia" },
+  { tool: "Filtrowanie spamu i obraźliwych komentarzy", does: "TikTok ukrywa komentarze, które jego własne systemy uznają za spam lub obraźliwe", limit: "Nie widać ani nie da się dostroić tego, co TikTok uważa za obraźliwe, a filtr nie zna Twoich zasad" },
+  { tool: "Filtrowanie słów kluczowych", does: "Komentarze zawierające słowa z Twojej listy są wstrzymywane do czasu zatwierdzenia", limit: "Tylko dokładne ciągi znaków: literówki, emoji, slang i inne języki przechodzą" },
+  { tool: "Filtrowanie wszystkich komentarzy", does: "Każdy komentarz czeka na ręczne zatwierdzenie, zanim się pojawi", limit: "Bezpieczne, ale ktoś musi zatwierdzać każdy komentarz, co przy viralu się nie skaluje" },
+  { tool: "Masowe usuwanie, zgłaszanie, blokowanie", does: "Zaznaczenie kilku komentarzy lub autorów i działanie na wszystkich naraz", limit: "Ręcznie, po fakcie i bez zapisu, dlaczego podjęto każde działanie" },
+  { tool: "Ograniczanie i blokowanie", does: "Ogranicza lub wstrzymuje to, co konto może robić przy Twoich treściach", limit: "Działa konto po koncie; nowe konta pojawiają się szybciej, niż da się je blokować" },
+  { tool: "Przypinanie komentarza", does: "Utrzymuje wybrany komentarz na górze wątku", limit: "Przydatne do wyjaśnień, ale niczego nie usuwa" },
+  { tool: "Moderatorzy LIVE i filtr słów na LIVE", does: "Zaufane osoby mogą wyciszać lub usuwać widzów i komentarze podczas transmisji LIVE", limit: "Wymaga ludzi śledzących transmisję na bieżąco przez cały czas jej trwania" },
+];
+
+const faqItems = [
+  {
+    question: "Jak filtrować komentarze na TikToku?",
+    answer: "W ustawieniach prywatności aplikacji, w sekcji komentarzy, można włączyć filtr spamu i obraźliwych komentarzy, dodać własne filtrowane słowa kluczowe albo filtrować wszystkie komentarze, tak aby każdy czekał na zatwierdzenie. Można też wybrać, kto może komentować na koncie i pod każdym filmem.",
+  },
+  {
+    question: "Co dzieje się z komentarzem zatrzymanym przez filtr słów kluczowych TikToka?",
+    answer: "Nie pojawia się publicznie. Trafia do filtrowanych komentarzy, gdzie można go zatwierdzić, aby stał się widoczny, albo usunąć. Autor zazwyczaj nie dostaje informacji, że jego komentarz został odfiltrowany.",
+  },
+  {
+    question: "Czy ktoś może pomóc w moderowaniu komentarzy na TikToku?",
+    answer: "Przy transmisjach LIVE tak: można wyznaczyć zaufane osoby jako moderatorów, którzy wyciszają widzów i usuwają komentarze w trakcie transmisji. Przy zwykłych filmach marka zwykle dzieli się pracą przez konto firmowe z odpowiednio skonfigurowanym dostępem zespołu oraz jasnymi wewnętrznymi zasadami, kto za co odpowiada.",
+  },
+  {
+    question: "Czy usuwać negatywne komentarze na TikToku?",
+    answer: "Nie, nie domyślnie. Krytyka, reklamacje i odmienne zdanie powinny zostać widoczne i dostać odpowiedź. Usuwać lub filtrować należy to, co łamie Twoje zasady: obelgi, nękanie, oszustwa, spam, dane osobowe i treści nielegalne. Usunięcie uczciwej krytyki często tylko zwiększa jej zasięg.",
+  },
+  {
+    question: "Co zrobić, gdy film na TikToku staje się viralem z niewłaściwych powodów?",
+    answer: "Na jakiś czas zaostrz ustawienia filmu (filtruj wszystkie komentarze lub ogranicz, kto może komentować), dodaj słowa związane z kryzysem do filtra, przypnij krótką rzeczową odpowiedź i przekaż sprawę do działu komunikacji lub prawnego. Potem przeglądaj wstrzymane komentarze partiami, zamiast odpowiadać w pośpiechu.",
+  },
+  {
+    question: "Czy OpenModeration moderuje komentarze na TikToku?",
+    answer: "Nie. OpenModeration nie łączy się z TikTokiem. Moderuje strony na Facebooku, profesjonalne konta na Instagramie, kanały YouTube i strony internetowe z jednej konsoli. Jeśli potrzebny jest też TikTok, umów rozmowę, a omówimy, jak zorganizować moderację w Twoim przypadku.",
+  },
+  {
+    question: "Czy moderacja komentarzy na TikToku podlega DSA?",
+    answer: "Sam TikTok jako platforma ma obowiązki wynikające z aktu o usługach cyfrowych (DSA). Ukrywając lub usuwając komentarze pod własnymi filmami, działasz jako właściciel konta korzystający z narzędzi TikToka. Prowadzenie pisemnego zapisu zasad i decyzji pozostaje jednak dobrą praktyką, zwłaszcza w mediach i instytucjach publicznych.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} ogType="article" jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Strona główna", href: localizePath('/', locale) }, { label: "Blog", href: localizePath('/blog', locale) }, { label: "Moderacja komentarzy na TikToku" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-30">30 października 2026</time>
+        <span>&middot;</span>
+        <span>9 min czytania</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Moderacja komentarzy na TikToku: jak moderować komentarze jako marka lub redakcja</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Na TikToku film może z dnia na dzień przejść od kilkuset wyświetleń do kilku milionów, a komentarze
+        idą za nim. Dla marki czy redakcji oznacza to, że obelgi, spam, oszustwa i kłótnie nie na temat mogą
+        mnożyć się pod Twoim logo, gdy zespół śpi. Ten poradnik omawia wbudowane narzędzia TikToka do
+        moderacji komentarzy, ich ograniczenia oraz sposób zorganizowania pracy tak, by wytrzymała moment,
+        w którym film nagle zyskuje zasięg.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Odpowiedź w skrócie</h2>
+      <ul>
+        <li><strong>TikTok daje realne narzędzia:</strong> filtr spamu i obraźliwych komentarzy, filtrowane słowa kluczowe, ręczne zatwierdzanie wszystkich komentarzy, ustawienia „kto może komentować”, działania masowe i moderatorów LIVE.</li>
+        <li><strong>Dopasowują słowa, nie znaczenie.</strong> Literówki, emoji, slang i sarkazm przechodzą, a uczciwe komentarze bywają zatrzymywane.</li>
+        <li><strong>Przy dużej skali praca jest ludzka:</strong> spisz zasady, przygotuj szablony odpowiedzi, określ, kto co eskaluje, i miej plan kryzysowy na wypadek viralowych filmów.</li>
+        <li><strong>OpenModeration nie łączy się z TikTokiem.</strong> Moderuje Facebooka, Instagrama, YouTube i strony internetowe z jednej konsoli; jeśli potrzebny jest też TikTok, <a href={BOOKING_URL} target="_blank" rel="noopener" class="text-brand-600 hover:text-brand-500">umów rozmowę</a>, aby omówić Twój przypadek.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Jakie narzędzia do moderacji komentarzy oferuje TikTok?</h2>
+      <p>
+        Ustawienia komentarzy TikToka znajdują się w ustawieniach prywatności aplikacji oraz przy każdym filmie.
+        Nazwy w menu zmieniają się między wersjami aplikacji, ale poniższe funkcje są dostępne od kilku lat.
+      </p>
+      <ul>
+        <li><strong>Kto może komentować.</strong> Decydujesz, czy komentować mogą wszyscy, tylko znajomi, czy nikt, dla całego konta lub pojedynczego filmu. Można też wyłączyć komentarze pod jednym wpisem.</li>
+        <li><strong>Filtrowanie spamu i obraźliwych komentarzy.</strong> TikTok ukrywa komentarze, które jego własne systemy uznają za spam lub obraźliwe. To szybka korzyść, ale nie widać listy ani nie da się dostosować progu.</li>
+        <li><strong>Filtrowanie słów kluczowych.</strong> Dodajesz słowa lub frazy. Komentarze, które je zawierają, nie pojawiają się publicznie i czekają w filtrowanych komentarzach na zatwierdzenie lub usunięcie.</li>
+        <li><strong>Filtrowanie wszystkich komentarzy.</strong> Każdy nowy komentarz jest wstrzymywany do przeglądu. Widoczne stają się tylko te, które zatwierdzisz.</li>
+        <li><strong>Usuwanie, zgłaszanie i działania masowe.</strong> W sekcji komentarzy można usunąć lub zgłosić komentarz albo zaznaczyć kilka komentarzy lub kont i za jednym razem je usunąć, zgłosić lub zablokować.</li>
+        <li><strong>Przypinanie komentarza.</strong> Jeden komentarz zostaje na górze wątku, na przykład wyjaśnienie lub odpowiedź na powtarzające się pytanie.</li>
+        <li><strong>Ograniczanie i blokowanie kont.</strong> Ograniczenie zawęża to, co konto może robić przy Twoich treściach, bez całkowitego odcinania go; zablokowanie uniemożliwia mu interakcję z Tobą.</li>
+        <li><strong>Moderatorzy LIVE.</strong> Podczas transmisji LIVE można wyznaczyć zaufane osoby, które wyciszają widzów i usuwają komentarze, oraz ustawić filtry słów kluczowych specyficzne dla danej transmisji.</li>
+      </ul>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">Narzędzie TikToka</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Co robi</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Ograniczenie dla marki lub mediów</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {tools.map((row) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{row.tool}</td>
+              <td class="px-4 py-3 text-surface-600">{row.does}</td>
+              <td class="px-4 py-3 text-surface-600">{row.limit}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">Jak skonfigurować filtry komentarzy na TikToku?</h2>
+      <p>Rozsądny punkt wyjścia dla konta marki lub mediów wygląda tak.</p>
+      <ol>
+        <li><strong>Włącz filtr spamu i obraźliwych komentarzy.</strong> Nic nie kosztuje i usuwa najbardziej oczywisty szum.</li>
+        <li><strong>Buduj listę słów kluczowych warstwami.</strong> Zacznij od obelg i wyzwisk, potem dodaj schematy oszustw („napisz na priv, żeby zarobić”, frazy z fałszywych konkursów), nazwy kont konkurencji, jeśli nie chcesz ich promować, oraz nazwiska osób, które trzeba chronić, np. pracowników lub nieletnich.</li>
+        <li><strong>Dodaj warianty.</strong> Typowe literówki, litery rozdzielone spacjami i emoji używane w Twojej społeczności jako obelgi. Przeglądaj listę co miesiąc.</li>
+        <li><strong>Zostaw „kto może komentować” otwarte.</strong> Otwarte komentarze to część tego, jak działa TikTok. Ograniczaj je tylko pod drażliwymi filmami.</li>
+        <li><strong>Korzystaj z „filtrowania wszystkich komentarzy” wybiórczo.</strong> Pod filmem o drażliwym temacie, wycofaniu produktu lub wydarzeniu z udziałem ofiar ręczne zatwierdzanie jest często najbezpieczniejsze.</li>
+        <li><strong>Sprawdzaj filtrowane komentarze codziennie.</strong> Filtry słów zatrzymują też niewinne komentarze. Szybkie ich zatwierdzanie pokazuje odbiorcom, że nie odbierasz im głosu.</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Dlaczego narzędzia TikToka nie wystarczają przy dużej skali</h2>
+      <p>Wbudowane narzędzia są projektowane dla twórców zarządzających własnym kontem. Marki i media prędzej czy później trafiają na te same ograniczenia.</p>
+      <ul>
+        <li><strong>Słowa, nie znaczenie.</strong> Lista słów nie odróżni obelgi od cytatu ani żartu od groźby. „Jak zwykle świetna robota” pod informacją o wycofaniu produktu nie zawiera żadnego zakazanego słowa.</li>
+        <li><strong>Ciągłe obchodzenie filtrów.</strong> Użytkownicy TikToka są pomysłowi: litery zamieniane na cyfry, emoji, wymyślony slang. Lista zawsze jest o krok w tyle.</li>
+        <li><strong>Wiele języków.</strong> Konta międzynarodowe dostają komentarze w wielu językach, a każdą listę trzeba budować osobno dla każdego języka.</li>
+        <li><strong>Twoich zasad nie ma w narzędziu.</strong> Filtr TikToka zna jego Wytyczne dla społeczności, a nie Twoją politykę wobec linków konkurencji, debaty politycznej czy klientów publikujących publicznie numery zamówień.</li>
+        <li><strong>Brak pisemnego uzasadnienia i historii.</strong> Gdy komentarz zostaje odfiltrowany lub usunięty, nigdzie nie zapisuje się, która zasada miała zastosowanie ani kto zdecydował. To utrudnia wewnętrzne przeglądy i obsługę skarg.</li>
+        <li><strong>Ręczne zatwierdzanie się nie skaluje.</strong> Filtrowanie wszystkich komentarzy jest bezpieczne, ale pod filmem z tysiącami komentarzy ktoś musi przeczytać każdy z nich.</li>
+        <li><strong>Kolejna skrzynka.</strong> TikTok ma własny interfejs, oddzielny od narzędzi do Facebooka, Instagrama czy YouTube.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Jakie zasady komentowania na TikToku powinna ustalić marka?</h2>
+      <p>
+        Zanim wybierzesz ustawienia, zapisz, co akceptujesz, a co usuwasz. Wystarczy jedna strona, a te same
+        zasady powinny obowiązywać w każdej sieci. Dla każdego przypadku ustal działanie.
+      </p>
+      <ul>
+        <li><strong>Zostaw i odpowiedz:</strong> krytyka, reklamacje, pytania, odmienne zdanie, nawet gdy ton jest ostry.</li>
+        <li><strong>Odfiltruj lub usuń:</strong> obelgi i nękanie, mowa nienawiści, groźby, spam i linki do oszustw, podszywanie się pod Twoją markę, dane osobowe (numery telefonów, adresy, numery zamówień).</li>
+        <li><strong>Eskaluj:</strong> groźby wobec osób, możliwe treści nielegalne, komentarze dotyczące nieletnich, roszczenia prawne, wszystko, co mógłby zacytować dziennikarz.</li>
+        <li><strong>Ogranicz lub zablokuj konto:</strong> recydywiści, boty i konta założone wyłącznie po to, by Cię atakować.</li>
+      </ul>
+      <p>
+        Nasz <a href={localizePath('/blog/comment-moderation-guide', locale)} class="text-brand-600 hover:text-brand-500">poradnik moderacji komentarzy</a> wyjaśnia,
+        jak spisać takie zasady, a poradnik o <a href={localizePath('/blog/handle-negative-comments-trolls', locale)} class="text-brand-600 hover:text-brand-500">radzeniu sobie z negatywnymi komentarzami i trollami</a> omawia
+        przypadki graniczne.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Jakie szablony odpowiedzi sprawdzają się na TikToku?</h2>
+      <p>
+        Odpowiedzi na TikToku są krótkie i swobodne, a odpowiedzią na komentarz może być nawet film. Szablony
+        oszczędzają czas, ale dopasuj każdy z nich, żeby nie brzmiał automatycznie.
+      </p>
+      <ul>
+        <li><strong>Reklamacja klienta:</strong> „Przepraszamy! Napisz do nas w wiadomości prywatnej z numerem zamówienia, a załatwimy to jeszcze dziś”.</li>
+        <li><strong>Powtarzające się pytanie:</strong> odpowiedz raz, potem przypnij komentarz albo odpowiedz krótkim filmem.</li>
+        <li><strong>Dezinformacja:</strong> „Gwoli wyjaśnienia: [fakt], tu nasze oświadczenie [gdzie je znaleźć]”. Przypnij, jeśli pytanie wraca.</li>
+        <li><strong>Gorąca dyskusja między użytkownikami:</strong> „Cieszy nas ta dyskusja, ale prosimy o szacunek. Obelgi będą usuwane”.</li>
+      </ul>
+      <p>Nigdy nie proś o dane osobowe w publicznej odpowiedzi. Przenieś rozmowę do wiadomości prywatnych lub do obsługi klienta.</p>
+
+      <h2 class="text-xl font-bold text-surface-900">Jak opanować kryzys pod viralowym filmem na TikToku?</h2>
+      <p>To przy viralowych filmach moderacja zawodzi najczęściej. Przygotuj procedurę, zanim będzie potrzebna.</p>
+      <ol>
+        <li><strong>Wykryj.</strong> Ustaw alerty na nietypową liczbę komentarzy i wzmianki o marce. W czasie kampanii ktoś powinien dyżurować wieczorami i w weekendy.</li>
+        <li><strong>Zaostrz ustawienia tego filmu.</strong> Na kilka godzin przełącz na filtrowanie wszystkich komentarzy lub ogranicz, kto może komentować. Dodaj słowa związane z kryzysem do filtra słów kluczowych.</li>
+        <li><strong>Przypnij rzeczową odpowiedź.</strong> Jedna jasna wiadomość zatwierdzona przez dział komunikacji jest lepsza niż dziesiątki pojedynczych odpowiedzi.</li>
+        <li><strong>Eskaluj.</strong> Groźby, doxxing i możliwe treści nielegalne trafiają do osób zajmujących się sprawami prawnymi i bezpieczeństwem, razem ze zrzutami ekranu.</li>
+        <li><strong>Przeglądaj partiami.</strong> Zatwierdzaj uczciwe komentarze, także krytyczne, i usuwaj to, co łamie zasady. Przy falach spamu korzystaj z działań masowych.</li>
+        <li><strong>Podsumuj.</strong> Zaktualizuj listę słów kluczowych i szablony o wyciągnięte wnioski.</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Jak zorganizować moderację TikToka obok innych sieci?</h2>
+      <p>
+        Większość marek i mediów jest jednocześnie na TikToku, Instagramie, Facebooku i YouTube, często także
+        z własną stroną internetową. Ryzyko: cztery zestawy zasad i cztery osoby improwizujące.
+      </p>
+      <ul>
+        <li><strong>Jeden zestaw zasad dla wszystkich sieci,</strong> z adnotacjami tam, gdzie dana platforma wymaga innego działania.</li>
+        <li><strong>Jasne role:</strong> kto moderuje, kto odpowiada, kto zatwierdza drażliwe odpowiedzi, kto zajmuje się eskalacjami.</li>
+        <li><strong>Wspólne szablony odpowiedzi</strong> dopasowane do tonu każdej platformy.</li>
+        <li><strong>Jeden rejestr drażliwych decyzji,</strong> nawet jeśli dla TikToka jest to wspólny dokument.</li>
+        <li><strong>Automatyzuj, gdzie się da,</strong> aby zespół mógł poświęcić czas sieci, która wciąż wymaga ręcznej pracy.</li>
+      </ul>
+      <p>
+        Tu pomaga narzędzie do moderacji. OpenModeration moderuje
+        <a href={localizePath('/integrations/facebook', locale)} class="text-brand-600 hover:text-brand-500">strony na Facebooku</a>,
+        <a href={localizePath('/integrations/instagram', locale)} class="text-brand-600 hover:text-brand-500">profesjonalne konta na Instagramie</a>,
+        kanały YouTube i strony internetowe z jednej konsoli. Stosuje Twoje zasady i Twoje przypadki użycia, ukrywa lub odrzuca
+        komentarze, przekazuje wątpliwe przypadki do weryfikacji naszemu zespołowi, podaje pisemne uzasadnienie każdej decyzji i prowadzi
+        ścieżkę audytu. To zwalnia czas, którego zespół potrzebuje na ręczną moderację TikToka. Zobacz też nasz
+        <a href={localizePath('/blog/social-media-moderation-guide', locale)} class="text-brand-600 hover:text-brand-500">poradnik moderacji mediów społecznościowych</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Czy OpenModeration może moderować komentarze na TikToku?</h2>
+      <p>
+        Nie. OpenModeration nie łączy się dziś z TikTokiem i wolimy powiedzieć to wprost. Obsługuje
+        Facebooka, Instagrama, YouTube i strony internetowe. Jeśli TikTok jest ważną częścią Twojej publiczności,
+        na przykład jako <a href={localizePath('/use-cases/news-publishers', locale)} class="text-brand-600 hover:text-brand-500">wydawcy mediów</a> lub
+        marki konsumenckiej, <a href={BOOKING_URL} target="_blank" rel="noopener" class="text-brand-600 hover:text-brand-500">umów rozmowę</a>:
+        przyjrzymy się Twoim wolumenom i sieciom i omówimy, jak zorganizować moderację, łącznie z TikTokiem.
+      </p>
+    </div>
+
+    <div class="mt-12">
+      <FAQ title="Najczęstsze pytania" items={faqItems} />
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Czytaj dalej</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/blog/instagram-comment-moderation', locale)} class="font-medium text-brand-600 hover:text-brand-500">Jak moderować komentarze na Instagramie &rarr;</a></li>
+        <li><a href={localizePath('/blog/youtube-comment-moderation', locale)} class="font-medium text-brand-600 hover:text-brand-500">Jak moderować komentarze na YouTube &rarr;</a></li>
+        <li><a href={localizePath('/blog/social-media-moderation-guide', locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderacja mediów społecznościowych: kompletny poradnik &rarr;</a></li>
+        <li><a href={localizePath('/demo', locale)} class="font-medium text-brand-600 hover:text-brand-500">Przetestuj OpenModeration na własnych komentarzach &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

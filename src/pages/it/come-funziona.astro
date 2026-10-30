@@ -11,7 +11,7 @@ const pageJsonLd = {
   "@id": "https://www.openmoderation.com/it/come-funziona",
   "url": "https://www.openmoderation.com/it/come-funziona",
   "name": "Come funziona la moderazione dei contenuti con IA: la pipeline completa",
-  "description": "Scopri la pipeline di moderazione completa: acquisizione, moderazione con IA su più fornitori, regole e azioni automatiche, revisione manuale.",
+  "description": "Scopri la pipeline di moderazione completa: acquisizione, moderazione con IA verificata da altri modelli, regole e azioni automatiche, revisione manuale.",
   "inLanguage": "it",
   "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
 };
@@ -26,7 +26,6 @@ const facebookWebhookExample = `// Facebook invia il commento tramite webhook
 }`;
 
 const moderationResponseExample = `{
-  "model": "openai/omni-moderation-latest",
   "results": [{
     "category": "hate",
     "score": 0.02,
@@ -34,8 +33,7 @@ const moderationResponseExample = `{
   }],
   "flagged": false,
   "usage": {
-    "latency_ms": 243,
-    "provider": "openai"
+    "latency_ms": 243
   }
 }`;
 
@@ -63,7 +61,6 @@ const auditTrailExample = `// Registro di audit completo per ogni contenuto
   "platform": "facebook",
   "status": "actioned",
   "moderation": {
-    "provider": "openai",
     "flagged": true,
     "results": [...]
   },
@@ -75,7 +72,7 @@ const auditTrailExample = `// Registro di audit completo per ogni contenuto
 }`;
 ---
 
-<BaseLayout title="Come funziona la moderazione con IA: la pipeline completa" description="Scopri la pipeline di moderazione completa: acquisizione dei contenuti, moderazione con IA su più fornitori, regole e azioni automatiche, revisione manuale." jsonLd={pageJsonLd}>
+<BaseLayout title="Come funziona la moderazione con IA: la pipeline completa" description="Scopri la pipeline di moderazione completa: acquisizione, IA verificata da altri modelli, regole e azioni automatiche, casi dubbi gestiti dal nostro team." jsonLd={pageJsonLd}>
 <Breadcrumb items={[{ label: "Home", href: "/it" }, { label: "Come funziona" }]} />
   <section class="bg-gradient-to-b from-brand-50 to-white py-20">
     <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
@@ -114,12 +111,10 @@ const auditTrailExample = `// Registro di audit completo per ogni contenuto
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
               </div>
               <h3 class="text-lg font-semibold text-surface-900">2. Moderazione con IA</h3>
-              <p class="mt-2 text-sm text-surface-500">L'instradamento intelligente invia il contenuto al fornitore più adatto e restituisce un risultato standardizzato.</p>
+              <p class="mt-2 text-sm text-surface-500">La nostra IA di moderazione analizza il contenuto, altre IA verificano i casi delicati e ricevi un risultato standardizzato.</p>
               <div class="mt-4 flex flex-wrap justify-center gap-2">
-                <span class="rounded-full bg-brand-100 px-2.5 py-0.5 text-xs text-brand-700">OpenAI</span>
-                <span class="rounded-full bg-brand-100 px-2.5 py-0.5 text-xs text-brand-700">Azure</span>
-                <span class="rounded-full bg-brand-100 px-2.5 py-0.5 text-xs text-brand-700">HuggingFace</span>
-                <span class="rounded-full bg-brand-100 px-2.5 py-0.5 text-xs text-brand-700">LLM</span>
+                <span class="rounded-full bg-brand-100 px-2.5 py-0.5 text-xs text-brand-700">IA OpenModeration</span>
+                <span class="rounded-full bg-brand-100 px-2.5 py-0.5 text-xs text-brand-700">Arbitraggio di altre IA</span>
               </div>
             </div>
             <div class="hidden lg:flex lg:items-center lg:justify-center">
@@ -145,10 +140,10 @@ const auditTrailExample = `// Registro di audit completo per ogni contenuto
               <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-100 text-brand-600">
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
               </div>
-              <h3 class="text-lg font-semibold text-surface-900">4. Revisione manuale</h3>
-              <p class="mt-2 text-sm text-surface-500">I casi limite vengono segnalati ai moderatori, che li approvano o li respingono.</p>
+              <h3 class="text-lg font-semibold text-surface-900">4. Casi dubbi</h3>
+              <p class="mt-2 text-sm text-surface-500">I casi limite li gestisce il nostro team. Tu vedi tutto in tempo reale e puoi intervenire quando vuoi.</p>
               <div class="mt-4 flex flex-wrap justify-center gap-2">
-                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Coda di revisione</span>
+                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Revisione umana</span>
                 <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Approva</span>
                 <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Respingi</span>
               </div>
@@ -185,14 +180,14 @@ const auditTrailExample = `// Registro di audit completo per ogni contenuto
             <span class="mb-2 inline-flex items-center rounded-full bg-brand-100 px-3 py-0.5 text-sm font-medium text-brand-700">Passo 2</span>
             <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">L'IA modera il contenuto</h2>
             <p class="mt-4 text-surface-500">
-              Il contenuto viene indirizzato al miglior fornitore disponibile in base a lingua, tipo di contenuto,
-              categorie richieste e costo. Ogni fornitore restituisce risultati standardizzati con
-               punteggi da 0,0 a 1,0 su 10 categorie di contenuto.
+              La nostra IA di moderazione, configurata sulle tue regole e sui tuoi casi d'uso, analizza ogni contenuto.
+              Sui casi delicati, altri modelli di IA arbitrano la decisione prima che venga applicata. I risultati sono
+               standardizzati, con punteggi da 0,0 a 1,0 su 10 categorie di contenuto.
             </p>
             <ul class="mt-6 space-y-2 text-sm text-surface-600">
-              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Instradamento intelligente:</strong> sceglie il fornitore migliore se non ne indichi uno</li>
-              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>BYOK:</strong> usi le tue chiavi API dei fornitori (oppure quelle della piattaforma)</li>
-              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Output standardizzato:</strong> lo stesso formato, qualunque fornitore lavori dietro le quinte</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>IA verificata:</strong> altri modelli di IA arbitrano i casi delicati</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Indipendente dai modelli:</strong> i modelli migliori o più economici vengono collegati appena escono</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Output standardizzato:</strong> lo stesso formato, qualunque modello lavori dietro le quinte</li>
             </ul>
           </div>
           <div class="rounded-xl border border-surface-200 bg-surface-50 p-8 lg:order-1">
@@ -206,7 +201,7 @@ const auditTrailExample = `// Registro di audit completo per ogni contenuto
             <span class="mb-2 inline-flex items-center rounded-full bg-brand-100 px-3 py-0.5 text-sm font-medium text-brand-700">Passo 3</span>
             <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">Regole adattate ai tuoi casi d'uso</h2>
             <p class="mt-4 text-surface-500">
-              Definisci le regole di moderazione con tre strumenti semplici: le <strong>parole vietate</strong> per il blocco immediato, le <strong>soglie per categoria</strong> per le decisioni automatiche e la <strong>carta della community</strong>, scritta in linguaggio naturale, per una moderazione con IA che tiene conto del contesto.
+              Definisci le regole di moderazione con tre strumenti semplici: le <strong>parole vietate</strong> per il blocco immediato, le <strong>soglie per categoria</strong> per le decisioni automatiche e <strong>le tue regole</strong>, scritte in linguaggio naturale, per una moderazione con IA che tiene conto del contesto.
             </p>
             <div class="mt-6 space-y-3">
               <div class="rounded-lg border border-surface-200 bg-white p-4">
@@ -216,7 +211,7 @@ const auditTrailExample = `// Registro di audit completo per ogni contenuto
                 <p class="text-sm text-surface-700">Le <strong>soglie per categoria</strong> fanno scattare azioni automatiche quando i punteggi superano i tuoi limiti</p>
               </div>
               <div class="rounded-lg border border-surface-200 bg-white p-4">
-                <p class="text-sm text-surface-700">La <strong>carta della community</strong> orienta le decisioni dell'IA in base al contesto e definisce il tono della tua piattaforma</p>
+                <p class="text-sm text-surface-700"><strong>Le tue regole in linguaggio naturale</strong> orientano le decisioni dell'IA in base al contesto e definisce il tono della tua piattaforma</p>
               </div>
             </div>
           </div>
@@ -224,7 +219,7 @@ const auditTrailExample = `// Registro di audit completo per ogni contenuto
             <BrowserFrame
               src="/images/rules.png"
               video="om-rules"
-              alt="Impostazioni delle regole di OpenModeration con parole vietate, soglie per categoria e carta della community in linguaggio naturale"
+              alt="Impostazioni delle regole di OpenModeration con parole vietate, soglie per categoria e regole in linguaggio naturale"
               caption="Le tue soglie, impostate una volta e applicate ovunque."
               eager={false}
             />
@@ -240,15 +235,15 @@ const auditTrailExample = `// Registro di audit completo per ogni contenuto
         <div class="grid items-center gap-8 lg:grid-cols-2">
           <div class="lg:order-2">
             <span class="mb-2 inline-flex items-center rounded-full bg-brand-100 px-3 py-0.5 text-sm font-medium text-brand-700">Passo 4</span>
-            <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">Esamina a mano i casi limite</h2>
+            <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">I casi limite li gestisce il nostro team</h2>
             <p class="mt-4 text-surface-500">
-              I tuoi team Trust & Safety hanno uno spazio di lavoro dedicato. Lì esaminano i contenuti segnalati,
-              gestiscono le segnalazioni degli utenti e ribaltano le decisioni dell'IA, e ogni intervento resta tracciato.
+              Non devi fare nulla: il nostro team esamina i contenuti dubbi, gestisce le segnalazioni degli utenti
+              e le decisioni contestate, e ogni intervento resta tracciato. Tu vedi ogni decisione in tempo reale e puoi intervenire quando vuoi.
             </p>
             <ul class="mt-6 space-y-2 text-sm text-surface-600">
-              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Approva o respingi in un clic:</strong> ogni modifica viene registrata con chi ha deciso e perché</li>
-              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Usa la console di moderazione per approvare o respingere i contenuti segnalati</li>
-              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Notifiche via webhook per i nuovi elementi da esaminare</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Trasparenza totale:</strong> ogni modifica viene registrata con chi ha deciso e perché</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Dalla console puoi annullare o modificare qualsiasi decisione, quando vuoi</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Notifiche via webhook per ogni decisione, se vuoi</li>
             </ul>
           </div>
           <div class="rounded-xl border border-surface-200 bg-surface-50 p-8 lg:order-1">
@@ -280,14 +275,14 @@ const auditTrailExample = `// Registro di audit completo per ogni contenuto
             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
           </div>
           <h3 class="font-semibold text-surface-900">Trattieni per la revisione</h3>
-          <p class="mt-1 text-sm text-surface-500">I contenuti al limite vengono trattenuti e attendono nella coda di revisione: niente viene pubblicato, niente va perso.</p>
+          <p class="mt-1 text-sm text-surface-500">I contenuti al limite vengono trattenuti finché il nostro team non li esamina: niente viene pubblicato, niente va perso.</p>
         </div>
         <div class="rounded-xl border border-surface-200 bg-white p-6">
           <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-green-100 text-green-600">
             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
           </div>
           <h3 class="font-semibold text-surface-900">Pubblica e ripristina</h3>
-          <p class="mt-1 text-sm text-surface-500">I contenuti puliti vengono pubblicati normalmente. Quando un moderatore approva un commento trattenuto, questo viene pubblicato.</p>
+          <p class="mt-1 text-sm text-surface-500">I contenuti puliti vengono pubblicati normalmente. Quando un commento trattenuto viene approvato, dal nostro team o da te, viene pubblicato.</p>
         </div>
         <div class="rounded-xl border border-surface-200 bg-white p-6">
           <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 text-blue-600">

@@ -1,0 +1,259 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CTASection from '../../../components/CTASection.astro';
+import GuideComparisons from '../../../components/GuideComparisons.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { bookingUrl } from '../../../i18n/ui';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+const BOOKING_URL = bookingUrl(locale);
+const title = "TikTok-reacties modereren: filters, regels en tips";
+const description = "Zo modereer je TikTok-reacties: reactiefilters, gefilterde trefwoorden, handmatige goedkeuring, LIVE-moderators, hun grenzen en een crisisplan voor merken.";
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "TikTok-reacties modereren: zo pak je het aan als merk of medium",
+  "description": description,
+  "inLanguage": "nl",
+  "datePublished": "2026-10-30",
+  "dateModified": "2026-10-30",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "image": "https://www.openmoderation.com/og-image.jpg",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/nl/blog/tiktok-reacties-modereren" }
+};
+
+const tools = [
+  { tool: "Wie mag reageren", does: "Laat iedereen, alleen vrienden of niemand reageren, voor het hele account of per video", limit: "Reacties uitzetten doodt de betrokkenheid; het is een laatste redmiddel, geen strategie" },
+  { tool: "Spam en beledigende reacties filteren", does: "TikTok verbergt reacties die zijn eigen systemen als spam of beledigend markeren", limit: "Je kunt niet zien of bijstellen wat TikTok beledigend vindt, en het kent jouw regels niet" },
+  { tool: "Trefwoorden filteren", does: "Reacties met woorden van je lijst worden vastgehouden tot je ze goedkeurt", limit: "Alleen exacte tekenreeksen: spelfouten, emoji's, straattaal en andere talen glippen erdoor" },
+  { tool: "Alle reacties filteren", does: "Elke reactie wacht op handmatige goedkeuring voordat ze verschijnt", limit: "Veilig, maar iemand moet elke reactie goedkeuren, en dat schaalt niet op een virale video" },
+  { tool: "In bulk verwijderen, rapporteren, blokkeren", does: "Selecteer meerdere reacties of reageerders en pak ze in één keer aan", limit: "Handmatig, achteraf en zonder vastlegging van de reden achter elke actie" },
+  { tool: "Beperken en blokkeren", does: "Beperkt of stopt wat een account met je content kan doen", limit: "Werkt account per account; nieuwe accounts verschijnen sneller dan je ze blokkeert" },
+  { tool: "Een reactie vastzetten", does: "Houdt een gekozen reactie bovenaan de thread", limit: "Handig voor verduidelijkingen, maar haalt niets weg" },
+  { tool: "LIVE-moderators en LIVE-trefwoordfilter", does: "Vertrouwde personen kunnen kijkers dempen of verwijderen en reacties weghalen tijdens een LIVE", limit: "Vraagt om mensen die de hele stream realtime meekijken" },
+];
+
+const faqItems = [
+  {
+    question: "Hoe filter ik reacties op TikTok?",
+    answer: "In de privacy-instellingen van de app kun je onder reacties het filter voor spam en beledigende reacties aanzetten, je eigen gefilterde trefwoorden toevoegen of alle reacties filteren, zodat elke reactie op je goedkeuring wacht. Je kunt ook kiezen wie er op je account en op elke video mag reageren.",
+  },
+  {
+    question: "Wat gebeurt er met een reactie die het trefwoordfilter van TikTok opvangt?",
+    answer: "Ze verschijnt niet openbaar. Ze wordt bewaard bij je gefilterde reacties, waar je haar kunt goedkeuren zodat ze zichtbaar wordt, of kunt verwijderen. De auteur krijgt doorgaans niet te horen dat zijn reactie is gefilterd.",
+  },
+  {
+    question: "Kan iemand me helpen TikTok-reacties te modereren?",
+    answer: "Bij LIVE-video's wel: je kunt vertrouwde personen als moderator aanwijzen, die tijdens de stream kijkers kunnen dempen en reacties kunnen verwijderen. Bij gewone video's verdeelt een merk het werk meestal via een zakelijk account met de juiste teamtoegang, plus duidelijke interne afspraken over wie wat doet.",
+  },
+  {
+    question: "Moet ik negatieve reacties op TikTok verwijderen?",
+    answer: "Nee, niet standaard. Kritiek, klachten en meningsverschillen horen online te blijven en een antwoord te krijgen. Verwijder of filter wat je regels overtreedt: beledigingen, intimidatie, oplichting, spam, persoonsgegevens en illegale content. Terechte kritiek verwijderen trekt er vaak juist meer aandacht naartoe.",
+  },
+  {
+    question: "Hoe ga ik om met een TikTok-video die om de verkeerde redenen viraal gaat?",
+    answer: "Zet de video een tijdje op strengere instellingen (alle reacties filteren, of beperken wie mag reageren), voeg de trefwoorden van de crisis toe aan je filter, zet een kort, feitelijk antwoord vast en schaal op naar communicatie of juridische zaken. Beoordeel daarna de vastgehouden reacties in batches in plaats van overhaast te antwoorden.",
+  },
+  {
+    question: "Modereert OpenModeration TikTok-reacties?",
+    answer: "Nee. OpenModeration koppelt niet met TikTok. Het modereert Facebook-pagina's, professionele Instagram-accounts, YouTube-kanalen en websites vanuit één console. Heb je ook TikTok nodig, plan dan een gesprek en we bespreken hoe je jouw situatie organiseert.",
+  },
+  {
+    question: "Valt het modereren van TikTok-reacties onder de DSA?",
+    answer: "TikTok heeft als platform zelf verplichtingen onder de Digital Services Act. Als je reacties onder je eigen video's verbergt of verwijdert, handel je als accounthouder die de tools van TikTok gebruikt. Je regels en beslissingen schriftelijk vastleggen blijft goede praktijk, zeker voor media en publieke organisaties.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} ogType="article" jsonLd={articleJsonLd}>
+<Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: "Blog", href: localizePath('/blog', locale) }, { label: "TikTok-reacties modereren" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-30">30 oktober 2026</time>
+        <span>&middot;</span>
+        <span>9 min lezen</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">TikTok-reacties modereren: zo pak je het aan als merk of als medium</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Op TikTok kan een video van een paar honderd weergaven in één nacht naar enkele miljoenen gaan, en de reacties
+        volgen. Voor een merk of een redactie betekent dat: beledigingen, spam, oplichting en ruzies die niets met het onderwerp te maken hebben, stapelen zich
+        op onder je logo terwijl het team slaapt. Deze gids behandelt de ingebouwde moderatietools van TikTok,
+        waar ze ophouden en hoe je het werk zo organiseert dat het standhoudt als een video ontploft.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Het korte antwoord</h2>
+      <ul>
+        <li><strong>TikTok geeft je echte tools:</strong> een filter voor spam en beledigende reacties, gefilterde trefwoorden, handmatige goedkeuring van alle reacties, instellingen voor wie mag reageren, bulkacties en LIVE-moderators.</li>
+        <li><strong>Ze vergelijken woorden, geen betekenis.</strong> Spelfouten, emoji's, straattaal en sarcasme komen erdoor, en terechte reacties kunnen worden tegengehouden.</li>
+        <li><strong>Bij grote volumes is het mensenwerk:</strong> schrijf je regels uit, bereid antwoordsjablonen voor, leg vast wie wat opschaalt en zorg voor een crisisplan voor virale video's.</li>
+        <li><strong>OpenModeration koppelt niet met TikTok.</strong> Het modereert Facebook, Instagram, YouTube en websites vanuit één console; heb je ook TikTok nodig, <a href={BOOKING_URL} target="_blank" rel="noopener" class="text-brand-600 hover:text-brand-500">plan dan een gesprek</a> om je situatie te bespreken.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Welke moderatietools voor reacties biedt TikTok?</h2>
+      <p>
+        De reactie-instellingen van TikTok staan in de privacy-instellingen van de app en bij elke video. De namen in de menu's veranderen
+        tussen app-versies, maar de volgende functies zijn al meerdere jaren beschikbaar.
+      </p>
+      <ul>
+        <li><strong>Wie mag reageren.</strong> Je bepaalt of iedereen, alleen vrienden of niemand mag reageren, voor het hele account of voor één video. Je kunt reacties ook op één post uitzetten.</li>
+        <li><strong>Spam en beledigende reacties filteren.</strong> TikTok verbergt reacties die zijn eigen systemen als spam of beledigend beschouwen. Een snelle winst, maar je kunt de lijst niet inzien en de drempel niet aanpassen.</li>
+        <li><strong>Trefwoorden filteren.</strong> Je voegt woorden of zinnen toe. Reacties waarin die voorkomen, verschijnen niet openbaar en wachten bij je gefilterde reacties tot je ze goedkeurt of verwijdert.</li>
+        <li><strong>Alle reacties filteren.</strong> Elke nieuwe reactie wordt vastgehouden voor beoordeling. Alleen wat je goedkeurt, wordt zichtbaar.</li>
+        <li><strong>Verwijderen, rapporteren en in bulk handelen.</strong> Vanuit de reactiesectie kun je een reactie verwijderen of rapporteren, of meerdere reacties of accounts selecteren en ze in één keer verwijderen, rapporteren of blokkeren.</li>
+        <li><strong>Een reactie vastzetten.</strong> Je houdt één reactie bovenaan de thread, bijvoorbeeld een verduidelijking of een antwoord op een terugkerende vraag.</li>
+        <li><strong>Accounts beperken en blokkeren.</strong> Beperken begrenst wat een account met je content kan doen zonder het helemaal af te sluiten; blokkeren stopt elke interactie met jou.</li>
+        <li><strong>LIVE-moderators.</strong> Tijdens een LIVE kun je vertrouwde personen aanwijzen die kijkers kunnen dempen en reacties kunnen verwijderen, en je kunt trefwoordfilters instellen die alleen voor die stream gelden.</li>
+      </ul>
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-surface-200">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-surface-100">
+            <th class="px-4 py-3 font-semibold text-surface-900">TikTok-tool</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Wat het doet</th>
+            <th class="px-4 py-3 font-semibold text-surface-900">Grens voor een merk of medium</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-200 bg-white">
+          {tools.map((row) => (
+            <tr>
+              <td class="px-4 py-3 font-medium text-surface-900">{row.tool}</td>
+              <td class="px-4 py-3 text-surface-600">{row.does}</td>
+              <td class="px-4 py-3 text-surface-600">{row.limit}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">Hoe stel je de reactiefilters van TikTok in?</h2>
+      <p>Een verstandig vertrekpunt voor het account van een merk of medium ziet er zo uit.</p>
+      <ol>
+        <li><strong>Zet het filter voor spam en beledigende reacties aan.</strong> Het kost niets en haalt de duidelijkste ruis weg.</li>
+        <li><strong>Bouw je trefwoordenlijst in lagen op.</strong> Begin met beledigingen en scheldwoorden, voeg dan patronen van oplichting toe ("DM me om te verdienen", zinnen van nepwinacties), handles van concurrenten als je die niet gepromoot wilt zien, en de namen van mensen die je moet beschermen, zoals medewerkers of minderjarigen.</li>
+        <li><strong>Voeg de varianten toe.</strong> Veelvoorkomende spelfouten, uit elkaar getrokken letters en de emoji's die in je community als belediging worden gebruikt. Loop de lijst elke maand na.</li>
+        <li><strong>Houd "wie mag reageren" open.</strong> Open reacties horen bij hoe TikTok werkt. Beperk ze alleen bij gevoelige video's.</li>
+        <li><strong>Gebruik "alle reacties filteren" selectief.</strong> Bij een video over een gevoelig onderwerp, een terugroepactie of een nieuwsbericht met slachtoffers is handmatige goedkeuring vaak de veiligste keuze.</li>
+        <li><strong>Controleer gefilterde reacties elke dag.</strong> Trefwoordfilters houden ook onschuldige reacties tegen. Die snel goedkeuren laat je publiek zien dat je het niet de mond snoert.</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Waarom de tools van TikTok bij grote volumes tekortschieten</h2>
+      <p>De ingebouwde tools zijn gemaakt voor creators die hun eigen account beheren. Merken en media lopen vroeg of laat tegen dezelfde grenzen aan.</p>
+      <ul>
+        <li><strong>Woorden, geen betekenis.</strong> Een trefwoordenlijst ziet het verschil niet tussen een belediging en een citaat, of tussen een grap en een bedreiging. "Goed gedaan, zoals altijd" onder een terugroepactie bevat geen verboden woord.</li>
+        <li><strong>Voortdurende omwegen.</strong> TikTok-gebruikers zijn inventief: letters vervangen door cijfers, emoji's, verzonnen straattaal. Een lijst loopt altijd een stap achter.</li>
+        <li><strong>Meerdere talen.</strong> Internationale accounts krijgen reacties in veel talen, en elke lijst moet per taal opnieuw worden opgebouwd.</li>
+        <li><strong>Je eigen regels zitten niet in de tool.</strong> Het filter van TikTok kent de eigen Communityrichtlijnen, niet jouw beleid over links naar concurrenten, politieke discussies of klanten die ordernummers openbaar plaatsen.</li>
+        <li><strong>Geen schriftelijke reden en geen geschiedenis.</strong> Als een reactie wordt gefilterd of verwijderd, legt niets vast welke regel gold of wie besliste. Dat maakt interne evaluaties en klachten lastig.</li>
+        <li><strong>Handmatige goedkeuring schaalt niet.</strong> Alle reacties filteren is veilig, maar bij een video met duizenden reacties moet iemand ze allemaal lezen.</li>
+        <li><strong>Nog een inbox.</strong> TikTok heeft een eigen interface, los van de tools die je voor Facebook, Instagram of YouTube gebruikt.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Welke regels stelt een merk op voor TikTok-reacties?</h2>
+      <p>
+        Schrijf op wat je accepteert en wat je weghaalt, voordat je instellingen kiest. Eén pagina is genoeg, en
+        dezelfde regels horen op elk netwerk te gelden. Bepaal per geval de actie.
+      </p>
+      <ul>
+        <li><strong>Online laten en antwoorden:</strong> kritiek, klachten, vragen, meningsverschillen, ook als de toon ruw is.</li>
+        <li><strong>Filteren of verwijderen:</strong> beledigingen en intimidatie, haatzaaiende taal, bedreigingen, spam en oplichterslinks, mensen die zich voordoen als je merk, persoonsgegevens (telefoonnummers, adressen, ordernummers).</li>
+        <li><strong>Opschalen:</strong> bedreigingen tegen personen, mogelijk illegale content, reacties waarbij minderjarigen betrokken zijn, juridische claims, alles wat een journalist zou kunnen citeren.</li>
+        <li><strong>Het account beperken of blokkeren:</strong> notoire overtreders, bots en accounts die alleen zijn aangemaakt om je aan te vallen.</li>
+      </ul>
+      <p>
+        Onze <a href={localizePath('/blog/comment-moderation-guide', locale)} class="text-brand-600 hover:text-brand-500">gids over reactiemoderatie</a> legt uit
+        hoe je deze regels opstelt, en de gids over <a href={localizePath('/blog/handle-negative-comments-trolls', locale)} class="text-brand-600 hover:text-brand-500">omgaan met negatieve reacties en trolls</a> behandelt
+        de grijze zones.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Welke antwoordsjablonen werken op TikTok?</h2>
+      <p>
+        Antwoorden op TikTok zijn kort en informeel, en een antwoord op een reactie kan zelfs een video zijn. Sjablonen besparen
+        tijd, maar pas ze telkens aan zodat ze niet automatisch klinken.
+      </p>
+      <ul>
+        <li><strong>Klacht van een klant:</strong> "Wat vervelend! Stuur ons een DM met je ordernummer, dan lossen we het vandaag op."</li>
+        <li><strong>Terugkerende vraag:</strong> beantwoord haar één keer en zet de reactie vast, of antwoord met een korte video.</li>
+        <li><strong>Desinformatie:</strong> "Ter verduidelijking: [feit], hier vind je onze verklaring [waar]." Zet het vast als de vraag blijft terugkomen.</li>
+        <li><strong>Verhitte discussie tussen gebruikers:</strong> "Fijn dat jullie in gesprek gaan, houd het wel respectvol. Beledigingen halen we weg."</li>
+      </ul>
+      <p>Vraag nooit om persoonsgegevens in een openbaar antwoord. Verplaats het gesprek naar privéberichten of naar je klantenservice.</p>
+
+      <h2 class="text-xl font-bold text-surface-900">Hoe ga je om met een crisis op een virale TikTok-video?</h2>
+      <p>Bij virale video's gaat moderatie het vaakst mis. Bereid het draaiboek voor voordat je het nodig hebt.</p>
+      <ol>
+        <li><strong>Signaleren.</strong> Stel alerts in op ongebruikelijke aantallen reacties en op vermeldingen van je merk. Tijdens campagnes hoort iemand 's avonds en in het weekend bereikbaar te zijn.</li>
+        <li><strong>De instellingen van die video aanscherpen.</strong> Filter een paar uur alle reacties, of beperk wie mag reageren. Voeg de woorden van de crisis toe aan je trefwoordfilter.</li>
+        <li><strong>Een feitelijk antwoord vastzetten.</strong> Eén helder bericht, goedgekeurd door communicatie, werkt beter dan tientallen losse antwoorden.</li>
+        <li><strong>Opschalen.</strong> Bedreigingen, doxing en mogelijk illegale content gaan met screenshots naar de mensen die juridische en veiligheidskwesties behandelen.</li>
+        <li><strong>In batches beoordelen.</strong> Keur de terechte reacties goed, ook de kritische, en verwijder wat je regels overtreedt. Gebruik bulkacties voor spamgolven.</li>
+        <li><strong>Nabespreken.</strong> Werk de trefwoordenlijst en de sjablonen bij met wat je hebt geleerd.</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-surface-900">Hoe organiseer je TikTok-moderatie naast andere netwerken?</h2>
+      <p>
+        De meeste merken en media zitten tegelijk op TikTok, Instagram, Facebook en YouTube, vaak nog met een
+        website erbij. Het risico: vier sets regels en vier mensen die improviseren.
+      </p>
+      <ul>
+        <li><strong>Eén set regels voor elk netwerk,</strong> met notities waar een platform een andere actie vraagt.</li>
+        <li><strong>Duidelijke rollen:</strong> wie modereert, wie antwoordt, wie gevoelige antwoorden goedkeurt, wie opgeschaalde zaken afhandelt.</li>
+        <li><strong>Gedeelde antwoordsjablonen</strong> afgestemd op de toon van elk platform.</li>
+        <li><strong>Eén log van gevoelige beslissingen,</strong> ook als dat voor TikTok een gedeeld document is.</li>
+        <li><strong>Automatiseer waar het kan,</strong> zodat het team zijn tijd besteedt aan het netwerk dat nog handwerk vraagt.</li>
+      </ul>
+      <p>
+        Hier helpt een moderatietool. OpenModeration modereert
+        <a href={localizePath('/integrations/facebook', locale)} class="text-brand-600 hover:text-brand-500">Facebook-pagina's</a>,
+        <a href={localizePath('/integrations/instagram', locale)} class="text-brand-600 hover:text-brand-500">professionele Instagram-accounts</a>,
+        YouTube-kanalen en websites vanuit één console. Het past je regels en je use cases toe, verbergt of weigert
+        reacties, laat twijfelgevallen door ons team behandelen, geeft bij elke beslissing een schriftelijke reden en houdt
+        een audittrail bij. Zo komt er tijd vrij die je team nodig heeft om TikTok met de hand te modereren. Zie ook onze
+        <a href={localizePath('/blog/social-media-moderation-guide', locale)} class="text-brand-600 hover:text-brand-500">gids over social media modereren</a>.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Kan OpenModeration TikTok-reacties modereren?</h2>
+      <p>
+        Nee. OpenModeration koppelt vandaag niet met TikTok, en dat zeggen we liever duidelijk. Het dekt
+        Facebook, Instagram, YouTube en websites. Is TikTok een belangrijk deel van je publiek, bijvoorbeeld
+        als <a href={localizePath('/use-cases/news-publishers', locale)} class="text-brand-600 hover:text-brand-500">nieuwsuitgever</a> of
+        als consumentenmerk, <a href={BOOKING_URL} target="_blank" rel="noopener" class="text-brand-600 hover:text-brand-500">plan dan een gesprek</a>:
+        we kijken naar je volumes en je netwerken en bespreken hoe je je moderatie organiseert, TikTok inbegrepen.
+      </p>
+    </div>
+
+    <div class="mt-12">
+      <FAQ title="Veelgestelde vragen" items={faqItems} />
+    </div>
+  </article>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Lees verder</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/blog/instagram-comment-moderation', locale)} class="font-medium text-brand-600 hover:text-brand-500">Zo modereer je Instagram-reacties &rarr;</a></li>
+        <li><a href={localizePath('/blog/youtube-comment-moderation', locale)} class="font-medium text-brand-600 hover:text-brand-500">Zo modereer je YouTube-reacties &rarr;</a></li>
+        <li><a href={localizePath('/blog/social-media-moderation-guide', locale)} class="font-medium text-brand-600 hover:text-brand-500">Social media modereren: de complete gids &rarr;</a></li>
+        <li><a href={localizePath('/demo', locale)} class="font-medium text-brand-600 hover:text-brand-500">Test OpenModeration op je eigen reacties &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <GuideComparisons />
+
+  <CTASection />
+</BaseLayout>

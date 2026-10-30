@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CTASection from '../../components/CTASection.astro';
+import GuideComparisons from '../../components/GuideComparisons.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 
 const articleJsonLd = {
@@ -88,7 +89,7 @@ const articleJsonLd = {
       </p>
       <ul>
         <li><strong>Category coverage:</strong> Perspective detects toxicity, severe toxicity, identity attack, insult, profanity, threat, and sexually explicit. Your replacement should cover these categories and more.</li>
-        <li><strong>Multi-provider support:</strong> Relying on a single provider means you repeat this migration next time they change strategy. With a unified API, you switch without changing code.</li>
+        <li><strong>No frozen model:</strong> Relying on a single vendor's model means you repeat this migration next time they change strategy. Look for a service that upgrades its AI without asking you to change code.</li>
         <li><strong>Latency:</strong> Forum moderation needs to happen before content appears. Aim for sub-second response times.</li>
         <li><strong>Data control:</strong> If you process EU user content, GDPR matters. Look for EU hosting and the ability to export your data.</li>
       </ul>
@@ -97,7 +98,7 @@ const articleJsonLd = {
       <p>Follow these steps to migrate off Perspective API:</p>
       <ol>
         <li><strong>Audit your current usage.</strong> Count daily API calls, identify which categories you use, and measure your latency requirements. This gives you a baseline for the new setup.</li>
-        <li><strong>Choose a replacement architecture.</strong> A unified moderation platform like OpenModeration lets you keep your integration stable even if you change providers later.</li>
+        <li><strong>Choose a replacement architecture.</strong> A moderation platform like OpenModeration keeps your integration stable while the AI behind it improves.</li>
         <li><strong>Map categories.</strong> Map your existing Perspective categories to the equivalent in your new provider. For example, Perspective's TOXICITY maps to categories like hate and harassment in most modern systems.</li>
         <li><strong>Retune thresholds.</strong> Different providers score differently. Run both systems in parallel for a week to calibrate your thresholds.</li>
         <li><strong>Update your integration.</strong> Replace your Perspective API call with the new API endpoint. With OpenModeration, this is a single POST /v1/moderation call.</li>
@@ -107,8 +108,8 @@ const articleJsonLd = {
       <h2 class="text-xl font-bold text-surface-900">Migrating to OpenModeration</h2>
       <p>
         OpenModeration is the most straightforward Perspective API migration path. It provides
-        a single API that routes to the best provider for each request. You can start with
-        one provider and switch without changing code.
+        a single API backed by its own moderation AI, with delicate cases cross-checked by other
+        AI models. When a better model comes out, we plug it in without any code change on your side.
       </p>
       <p>
         Here's what a migration looks like with OpenModeration:
@@ -116,13 +117,13 @@ const articleJsonLd = {
       <p>
         <strong>Before (Perspective API):</strong> Your code makes a direct call to
         commentanalyzer.googleapis.com with a specific API key. You get back attribute scores.
-        You hard-code thresholds. Changing providers means rewriting this integration.
+        You hard-code thresholds. Changing vendors means rewriting this integration.
       </p>
       <p>
         <strong>After (OpenModeration):</strong> Your code calls POST /v1/moderation with
-        the content text. OpenModeration routes to the configured provider, normalizes the
-        response, and returns a consistent format. To change providers, you update a config
-        file. No code changes needed.
+        the content text. OpenModeration analyses it with its own moderation AI, cross-checks
+        delicate cases, and returns a consistent format. When we upgrade the AI, no code
+        changes are needed.
       </p>
 
       <h2 class="text-xl font-bold text-surface-900">What you gain beyond the migration</h2>
@@ -133,7 +134,7 @@ const articleJsonLd = {
       <ul>
         <li><strong>Action Engine:</strong> Define rules with three tools (forbidden words, thresholds and your own rules in plain language) without writing custom code.</li>
         <li><strong>Audit trail:</strong> Every moderation decision is logged with full context. Exportable for compliance reporting.</li>
-        <li><strong>Analytics:</strong> Dashboard showing moderation volume, flagged rates, provider performance, and category breakdowns.</li>
+        <li><strong>Analytics:</strong> Dashboard showing moderation volume, flagged rates, actions taken, and category breakdowns.</li>
         <li><strong>DSA readiness:</strong> The audit logs and transparency data you need for EU Digital Services Act compliance.</li>
       </ul>
 
@@ -146,7 +147,7 @@ const articleJsonLd = {
       </p>
       <p>
         For a complete guide to setting up OpenModeration, visit our documentation. Your
-        first provider integration takes about 30 minutes.
+        first integration takes about 30 minutes.
       </p>
     </div>
   </article>
@@ -162,6 +163,8 @@ const articleJsonLd = {
       </ul>
     </div>
   </section>
+
+  <GuideComparisons />
 
   <CTASection />
 </BaseLayout>

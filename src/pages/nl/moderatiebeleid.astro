@@ -1,0 +1,172 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CharterSupport from '../../components/CharterSupport.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import CTASection from '../../components/CTASection.astro';
+import FAQ from '../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Moderatiebeleid: zo schrijf je het, wat de DSA vereist en een voorbeeld",
+  "description": "Een gids voor het schrijven van het moderatiebeleid of de communityrichtlijnen van een website, nieuwsmedium of socialmediapagina: belangrijkste onderdelen, DSA-verplichtingen, regels die een AI kan toepassen en een voorbeeld.",
+  "inLanguage": "nl",
+  "datePublished": "2026-10-20",
+  "dateModified": "2026-10-20",
+  "author": { "@type": "Organization", "name": "OpenModeration", "url": "https://www.openmoderation.com" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OpenModeration",
+    "logo": { "@type": "ImageObject", "url": "https://www.openmoderation.com/logo.svg" }
+  },
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.openmoderation.com/nl/moderatiebeleid" }
+};
+
+const sections = [
+  { title: "De geest van het gesprek", text: "Waarom de reactieruimte bestaat en welke toon je verwacht. Twee of drie zinnen zijn genoeg, maar ze sturen elke moeilijke beslissing." },
+  { title: "Wat niet mag", text: "Beledigingen en persoonlijke aanvallen, haatdragende of discriminerende uitingen, bedreigingen, intimidatie, spam en reclame, oplichting, het delen van persoonsgegevens, illegale content. Elke regel werkt beter met een voorbeeld." },
+  { title: "Wat wel mag", text: "Het oneens zijn, scherpe kritiek op een idee, een artikel of een publiek figuur, ironie die niemand persoonlijk raakt. Door uit te schrijven wat mag, voorkom je dat je het debat uit overdreven voorzichtigheid smoort." },
+  { title: "Hoe de moderatie werkt", text: "Wie modereert, met welke tools, en hoe de verhouding is tussen automatische en menselijke beslissingen. De DSA verplicht je precies dit aan je gebruikers te vertellen." },
+  { title: "Sancties", text: "Verwijdering van de reactie, tijdelijke schorsing, permanente uitsluiting: een oplopende schaal die iedereen kent, maakt elke beslissing makkelijker te accepteren." },
+  { title: "Bezwaar maken", text: "Waar en hoe een gebruiker kan vragen om een beslissing opnieuw te bekijken, en hoe snel er een antwoord komt." },
+];
+
+const faqItems = [
+  {
+    question: "Wat is een moderatiebeleid?",
+    answer: "Het is de tekst die vastlegt wat wel en niet wordt geaccepteerd in een reactieruimte, op een forum of onder de posts van een pagina, en hoe beslissingen worden genomen. Het wordt ook communityrichtlijnen, huisregels of reactiebeleid genoemd.",
+  },
+  {
+    question: "Is een moderatiebeleid verplicht?",
+    answer: "De DSA verplicht elke aanbieder van tussenhandelsdiensten om in zijn algemene voorwaarden de beperkingen te vermelden die hij oplegt aan content, samen met het beleid, de procedures en de instrumenten voor contentmoderatie, waaronder algoritmische besluitvorming en menselijke toetsing (artikel 14). Duidelijke communityrichtlijnen zijn de eenvoudigste manier om aan die eis te voldoen.",
+  },
+  {
+    question: "Kan een AI een moderatiebeleid toepassen?",
+    answer: "Ja, als het in gewone taal is geschreven, met voorbeelden en een duidelijke grens tussen evidente gevallen en gevallen die een menselijke beoordeling nodig hebben. In OpenModeration wordt het beleid bij elke reactie naar de AI gestuurd, samen met de titel van de post en de discussiedraad.",
+  },
+  {
+    question: "Hebben verschillende rubrieken verschillende richtlijnen nodig?",
+    answer: "Vaak wel. Een sportrubriek en een politieke rubriek vragen niet om dezelfde waakzaamheid, zeker niet tijdens verkiezingen. De eenvoudigste aanpak is één gedeeld beleid te houden en specifieke instructies toe te voegen voor bepaalde bronnen of rubrieken.",
+  },
+  {
+    question: "Hoe vaak moet het beleid worden bijgewerkt?",
+    answer: "Telkens wanneer de actualiteit nieuwe vormen van misbruik oplevert of dezelfde beslissingen steeds opnieuw worden gecorrigeerd. De DSA verplicht je gebruikers te informeren over elke significante wijziging van de algemene voorwaarden.",
+  },
+];
+---
+
+<BaseLayout title="Moderatiebeleid opstellen: gids, DSA-regels en voorbeeld" description="Zo schrijf je het moderatiebeleid of de huisregels voor je site, medium of pagina: de onderdelen, wat de DSA vereist, regels voor AI en een voorbeeld." ogType="article" jsonLd={articleJsonLd}>
+  <Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: "Moderatiebeleid" }]} />
+  <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 text-sm text-surface-400">
+        <time datetime="2026-10-20">20 oktober 2026</time>
+        <span>&middot;</span>
+        <span>8 min leestijd</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Moderatiebeleid: zo schrijf je het, wat de DSA vereist en een voorbeeld</h1>
+    </div>
+
+    <div class="prose prose-surface max-w-none text-surface-600">
+      <p class="text-lg leading-relaxed">
+        Goede moderatie begint met een goede tekst. Je moderatiebeleid vertelt lezers wat ze mogen plaatsen, helpt je
+        moderatoren bij de lastige gevallen en dient nu ook als instructie voor de AI die je reacties sorteert. Zo
+        stel je het op, dit vereist de wet, en hier is een voorbeeld om mee te beginnen.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">Wat de DSA vereist</h2>
+      <p>
+        De Europese digitaledienstenverordening (Digital Services Act, DSA) verplicht alle aanbieders van tussenhandelsdiensten om in hun
+        algemene voorwaarden informatie op te nemen over de beperkingen die zij opleggen aan door hun
+        gebruikers verstrekte content (artikel 14). Die informatie moet het volgende omvatten:
+      </p>
+      <ul>
+        <li>het beleid, de procedures, de maatregelen en de instrumenten die voor contentmoderatie worden gebruikt;</li>
+        <li>algoritmische besluitvorming en menselijke toetsing;</li>
+        <li>het reglement van orde van het interne klachtenafhandelingssysteem.</li>
+      </ul>
+      <p>
+        De tekst moet in duidelijke, eenvoudige en ondubbelzinnige taal zijn opgesteld en openbaar beschikbaar zijn, en gebruikers moeten worden geïnformeerd over
+        elke significante wijziging. Ten slotte moet de moderatie op een zorgvuldige, objectieve en evenredige wijze worden toegepast, met inachtneming
+        van de vrijheid van meningsuiting en de vrijheid en pluriformiteit van de media.
+      </p>
+
+      <h2 class="text-xl font-bold text-surface-900">De onderdelen van een moderatiebeleid</h2>
+    </div>
+
+    <div class="mt-6 grid gap-3 sm:grid-cols-2">
+      {sections.map((s) => (
+        <div class="rounded-lg border border-surface-200 bg-surface-50 p-4">
+          <p class="text-sm font-medium text-surface-900">{s.title}</p>
+          <p class="mt-1 text-sm text-surface-500">{s.text}</p>
+        </div>
+      ))}
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">Regels schrijven die een AI kan toepassen</h2>
+      <p>
+        Een AI leest je beleid zoals een nieuwe moderator: hij past toe wat er staat, meer niet. Een paar
+        principes helpen enorm.
+      </p>
+      <ul>
+        <li><strong>Zinnen, geen woordenlijsten.</strong> "Geen beledigingen aan het adres van een andere lezer, ook niet verhuld" dekt veel meer gevallen dan een lijst met verboden woorden, waar ironie en opzettelijke spelfouten doorheen glippen.</li>
+        <li><strong>Voorbeelden aan beide kanten.</strong> Geef bij elke regel één geweigerd voorbeeld en één vergelijkbaar geaccepteerd voorbeeld. Zo trek je de grens het best.</li>
+        <li><strong>Context telt.</strong> Hetzelfde woord weegt anders onder een artikel over een inzamelingsactie dan onder een polariserend verhaal. Zeg dat, en gebruik een tool die het onderwerp van de post aan de AI doorgeeft.</li>
+        <li><strong>Een erkend grijs gebied.</strong> Schrijf op welke gevallen door een mens moeten worden beoordeeld in plaats van automatisch beslist: harde kritiek op een journalist, een lopende rechtszaak, politieke uitspraken op het randje.</li>
+        <li><strong>Instructies voor de actualiteit.</strong> Voeg tijdens verkiezingen of na een groot incident een gerichte tijdelijke instructie toe in plaats van het hele beleid aan te scherpen.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-surface-900">Voorbeeld van een moderatiebeleid</h2>
+      <p>Een voorbeeld om aan te passen, hier voor de reactieruimte van een nieuwswebsite:</p>
+    </div>
+
+    <div class="mt-6 rounded-xl border border-surface-200 bg-white p-6 text-sm leading-relaxed text-surface-700 shadow-sm">
+      <p class="font-semibold text-surface-900">Communityrichtlijnen</p>
+      <p class="mt-3">De reacties zijn een plek voor debat over onze artikelen. Je mag het gerust oneens zijn, ook met onze redactie, zolang je de andere deelnemers respecteert.</p>
+      <p class="mt-3"><strong>Niet toegestaan:</strong> beledigingen en persoonlijke aanvallen, ook verhulde; haatdragende of discriminerende uitingen; bedreigingen en oproepen tot geweld; intimidatie van een deelnemer; reclame, spam en misleidende links; het publiceren van persoonsgegevens van anderen; alle content die in strijd is met de wet.</p>
+      <p class="mt-3"><strong>Toegestaan:</strong> kritiek, ook scherpe, op een idee, een artikel of een publiek figuur; ironie die niet op een specifiek persoon is gericht; minderheidsstandpunten die zonder aanvallen worden geuit.</p>
+      <p class="mt-3"><strong>Hoe we modereren:</strong> reacties worden geanalyseerd door een geautomatiseerde tool die deze richtlijnen toepast. Twijfelgevallen worden door ons team beoordeeld. Bij elke verwijderde reactie hoort een uitleg.</p>
+      <p class="mt-3"><strong>Sancties:</strong> verwijdering van de reactie, bij herhaling een tijdelijke schorsing van het account, daarna een permanente uitsluiting.</p>
+      <p class="mt-3"><strong>Bezwaar tegen een beslissing:</strong> je kunt vragen om een beslissing opnieuw te bekijken door te antwoorden op het bericht waarin we je erover informeerden. We reageren zo snel mogelijk.</p>
+    </div>
+
+    <div class="prose prose-surface mt-10 max-w-none text-surface-600">
+      <h2 class="text-xl font-bold text-surface-900">Het beleid actueel houden</h2>
+      <p>
+        Een beleid is nooit af. De beslissingen van moderatoren laten zien waar het onduidelijk is: als ze de AI steeds
+        corrigeren bij hetzelfde soort reactie, ontbreekt er een regel of is een voorbeeld slecht gekozen. In OpenModeration
+        leert het systeem van die beslissingen en stelt het aanpassingen van je regels voor, die je met één klik doorvoert. Elke
+        wijziging maakt een nieuwe versie aan, zodat je altijd weet welke regel bij elke beslissing gold.
+      </p>
+      <p class="text-sm text-surface-400">
+        Bron: <a href="https://eur-lex.europa.eu/legal-content/NL/TXT/?uri=CELEX:32022R2065" class="text-brand-600 hover:text-brand-500" rel="noopener noreferrer" target="_blank">Verordening (EU) 2022/2065 betreffende een eengemaakte markt voor digitale diensten</a>, artikel 14. Deze pagina is uitsluitend informatief en vormt geen juridisch advies.
+      </p>
+    </div>
+  </article>
+
+  <CharterSupport />
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ title="Moderatiebeleid: veelgestelde vragen" items={faqItems} />
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-lg font-bold text-surface-900">Verder lezen</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href={localizePath('/dsa-compliance/statement-of-reasons', locale)} class="font-medium text-brand-600 hover:text-brand-500">De motivering die de DSA vereist &rarr;</a></li>
+        <li><a href={localizePath('/use-cases/news-publishers', locale)} class="font-medium text-brand-600 hover:text-brand-500">Moderatie van reacties voor nieuwsuitgevers &rarr;</a></li>
+        <li><a href={localizePath('/social-media-moderation', locale)} class="font-medium text-brand-600 hover:text-brand-500">Social media moderatie &rarr;</a></li>
+        <li><a href={localizePath('/dsa-compliance', locale)} class="font-medium text-brand-600 hover:text-brand-500">DSA-naleving met OpenModeration &rarr;</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <CTASection title="Zet je moderatiebeleid aan het werk." subtitle="Plak je beleid in OpenModeration: het geldt voor elke reactie, en ons team helpt je het aan te scherpen. Gratis om te beginnen." />
+</BaseLayout>

@@ -1,0 +1,237 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import CTASection from '../../../components/CTASection.astro';
+import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import CodeBlock from '../../../components/CodeBlock.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { getLocale, localizePath } from '../../../i18n/routes';
+
+const locale = getLocale(Astro.url.pathname);
+const L = (p: string) => localizePath(p, locale);
+
+const migrationCode = `# Voor: Mistral Moderation (direct)
+import { Mistral } from '@mistralai/mistralai';
+const mistral = new Mistral({ apiKey: '...' });
+const result = await mistral.moderations.create({ input: text });
+
+# Na: OpenModeration
+const result = await fetch('https://api.openmoderation.com/v1/moderation', {
+  method: 'POST',
+  headers: { 'Authorization': 'Bearer om_key_...' },
+  body: JSON.stringify({ input: text })
+});
+// Plus: voorfilter, dubbele drempel, automatische acties, auditlog, gecontroleerde AI`;
+
+const title = "Mistral Moderation alternatief: prijs en vergelijking";
+const description = "Mistral Moderation is één model. OpenModeration draait een eigen AI, gecontroleerd door andere modellen, met regels, menselijke beoordeling en DSA-auditlog.";
+
+const comparisonJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/nl/alternatieven/mistral-moderation",
+  "url": "https://www.openmoderation.com/nl/alternatieven/mistral-moderation",
+  "name": title,
+  "description": description,
+  "inLanguage": "nl",
+  "about": {
+    "@id": "https://www.openmoderation.com/#software"
+  }
+};
+
+const comparisonPoints = [
+  { feature: "AI-engine", mistral: "Alleen het moderatiemodel van Mistral", openmod: "Onze eigen moderatie-AI, bij gevoelige gevallen gecontroleerd door andere AI-modellen" },
+  { feature: "AI-modellen", mistral: "Eén model van Mistral", openmod: "Eigen moderatie-AI, gecontroleerd door andere AI-modellen; nieuwe modellen worden toegevoegd zodra ze uitkomen" },
+  { feature: "Categorieën", mistral: "11 vaste categorieën in het huidige model, waaronder persoonsgegevens en jailbreaking", openmod: "10 gestandaardiseerde categorieën, plus je eigen categorieën beschreven in gewone taal" },
+  { feature: "Talen", mistral: "Sterk meertalig (Frans, Duits, Spaans, Italiaans, Portugees enz.)", openmod: "De belangrijkste EU-talen en Engels, met gevoelige gevallen gecontroleerd door andere AI-modellen" },
+  { feature: "Voorfilter", mistral: "Niet beschikbaar", openmod: "Ingebouwd woordfilter houdt duidelijke content tegen vóór elke API-call" },
+  { feature: "Beslisengine", mistral: "Alleen ruwe scores", openmod: "Dubbele drempel: automatisch goedkeuren / grijze zone → beoordeeld door ons team / automatisch afwijzen" },
+  { feature: "Maximale invoer", mistral: "32.000 tekens", openmod: "Tot 32.000 tekens + batchverwerking voor grotere volumes" },
+  { feature: "Dashboard", mistral: "Alleen een API. Geen beoordelingsinterface", openmod: "Console waarin je elke beslissing realtime ziet, analytics, teamrollen" },
+  { feature: "Afhankelijkheid van de leverancier", mistral: "Vast aan Mistral", openmod: "Laag. Engine niet gebonden aan één model: betere modellen toegevoegd zodra ze uitkomen" },
+  { feature: "Hosting", mistral: "Alleen een cloud-API", openmod: "Beheerde cloud in de EU; on-premise installatie mogelijk op aanvraag" },
+  { feature: "Naleving", mistral: "Eenvoudige API-logs", openmod: "Volledig DSA-auditlog met exporteerbare rapporten" },
+  { feature: "Prijs", mistral: "Vastgesteld door Mistral op zijn API", openmod: "Gratis tot 1.000 verzoeken per maand. Beheerde cloud vanaf € 99 per maand (10.000 verzoeken inbegrepen)" },
+];
+
+const reasons = [
+  {
+    title: "Eén model, bevroren tussen twee updates",
+    description: "De moderatie-API van Mistral blinkt uit in Franse, Duitse, Spaanse en Italiaanse content. Maar één model blijft tussen twee updates hetzelfde. OpenModeration draait een eigen moderatie-AI, laat gevoelige gevallen controleren door andere AI-modellen en voegt betere modellen toe zodra ze uitkomen."
+  },
+  {
+    title: "Vaste categorieën tegenover instelbare categorieën",
+    description: "Mistral dekt een vaste set categorieën. Je community moet misschien ook desinformatie, grooming of overtredingen van de eigen regels opvangen. OpenModeration voegt instelbare categorieën toe: je beschrijft ze in gewone taal en onze AI doet de classificatie."
+  },
+  {
+    title: "Een API heeft een werklaag nodig",
+    description: "Mistral geeft je scores. Een moderatiedienst heeft daarnaast menselijke beoordeling nodig, een actie-engine (verbergen/verwijderen/markeren), toegang per rol, DSA-auditlogs en analytics. OpenModeration levert dat allemaal, en ons team handelt de twijfelgevallen af."
+  },
+  {
+    title: "Zonder voorfilter betaal je voor duidelijke spam",
+    description: "Elke reactie die je naar het moderatie-endpoint van Mistral stuurt, telt mee voor je API-gebruik. Met het voorfilter van OpenModeration worden duidelijke spam, verboden woorden en regex-patronen tegengehouden voordat een AI-model ze ziet."
+  },
+];
+
+const faqItems = [
+  {
+    question: "Wat is het beste alternatief voor Mistral Moderation?",
+    answer: "Wil je meer dan één model en ruwe scores, dan is OpenModeration een alternatief: een eigen moderatie-AI gecontroleerd door andere AI-modellen, een voorfilter, automatische regels, menselijke beoordeling door ons team en een DSA-auditlog, gehost in de EU."
+  },
+  {
+    question: "Wat kost Mistral Moderation vergeleken met OpenModeration?",
+    answer: "Mistral bepaalt de prijs van zijn moderatiemodel op de eigen API. OpenModeration is gratis tot 1.000 verzoeken per maand; de beheerde cloud begint bij € 99 per maand voor 10.000 verzoeken."
+  },
+  {
+    question: "Welke AI gebruikt OpenModeration?",
+    answer: "Een eigen moderatie-AI, ingericht op je regels en je use cases, waarbij andere AI-modellen de gevoelige gevallen controleren. Komt er een beter of goedkoper model uit, dan voegen we het snel toe, zonder dat je code hoeft te herschrijven."
+  },
+  {
+    question: "Hoe lang duurt de overstap?",
+    answer: "Minder dan een uur voor de API-wissel: één POST /v1/moderation-call vervangt de Mistral-client. Dashboard, regels en auditlogs werken direct daarna."
+  },
+  {
+    question: "Werkt het in het Frans en andere EU-talen?",
+    answer: "Ja. Onze moderatie-AI verwerkt Frans, Duits, Spaans, Italiaans en de andere belangrijke EU-talen, en gevoelige gevallen worden gecontroleerd door andere AI-modellen."
+  },
+  {
+    question: "Wordt elke beslissing vastgelegd voor DSA-audits?",
+    answer: "Ja. Bij elke beslissing van AI of mens blijven scores, drempels, beoordelaar en tijdstip bewaard. Exporteer het volledige auditlog met één klik voor je DSA-transparantieverslagen."
+  },
+];
+---
+
+<BaseLayout title={title} description={description} jsonLd={comparisonJsonLd}>
+  <Breadcrumb items={[{ label: "Home", href: L('/') }, { label: "Alternatieven", href: L('/alternatives') }, { label: "Mistral Moderation" }]} />
+  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-sm font-medium text-blue-700">
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        Mistral Moderation alternatief
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">
+        Mistral is uitstekend voor Europese moderatie.<br/>Een moderatiedienst vraagt meer dan een model.
+      </h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
+        De moderatie-API van Mistral gaat heel goed om met Europese talen, maar het blijft één model.
+        OpenModeration draait een eigen moderatie-AI, <strong>gecontroleerd</strong> door andere AI-modellen, via één
+        API-call, met automatische regels, menselijke beoordeling door ons team en DSA-conforme auditlogs.
+      </p>
+      <div class="mt-8 flex items-center justify-center gap-4">
+        <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm">Probeer OpenModeration gratis</a>
+        <a href="#comparison" class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700">Bekijk de vergelijking</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-surface-100 bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Waarom verder gaan dan alleen Mistral</h2>
+        <p class="mt-4 text-lg text-surface-500">Mistral is een van de beste moderatie-API's met een Europese focus. Moderatie is echter een workflow, en de API is daar maar één onderdeel van.</p>
+      </div>
+      <div class="grid gap-8 md:grid-cols-2">
+        {reasons.map((r) => (
+          <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+            <h3 class="font-semibold text-surface-900">{r.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-surface-500">{r.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700">
+            <span class="flex h-1.5 w-1.5 animate-pulse-dot rounded-full bg-brand-500" />
+            Eén call, het hele platform
+          </div>
+          <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Vervang de Mistral-client. Krijg het hele platform.</h2>
+          <p class="mt-4 text-lg text-surface-500">
+            Eén POST /v1/moderation-call vervangt de Mistral-client. OpenModeration voegt een voorfilter,
+            dubbele drempels, automatische acties en een volledig auditlog toe, allemaal via dezelfde API-call.
+          </p>
+          <div class="mt-6 space-y-3">
+            <div class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600"><strong>Gecontroleerde AI:</strong> andere AI-modellen beoordelen gevoelige gevallen voordat een beslissing wordt toegepast.</p>
+            </div>
+            <div class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600"><strong>Niet gebonden aan één model:</strong> komt er een beter of goedkoper model uit, dan voegen wij het toe. Aan jouw kant verandert er niets.</p>
+            </div>
+            <div class="flex items-start gap-3">
+              <svg class="mt-1 h-5 w-5 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <p class="text-sm text-surface-600"><strong>Gemaakt in Europa:</strong> zowel Mistral als OpenModeration worden door Europese teams gebouwd, met developers in gedachten.</p>
+            </div>
+          </div>
+        </div>
+        <div class="rounded-xl border border-surface-200 bg-white p-4 shadow-sm">
+          <CodeBlock code={migrationCode} lang="javascript" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="comparison" class="bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Mistral Moderation vs OpenModeration</h2>
+        <p class="mt-4 text-lg text-surface-500">De API van Mistral is uitstekend. OpenModeration is een compleet platform.</p>
+      </div>
+      <div class="overflow-x-auto rounded-xl border border-surface-200">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-surface-50">
+              <th class="px-6 py-4 font-semibold text-surface-900">Criterium</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">Mistral Moderation</th>
+              <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-200">
+            {comparisonPoints.map((row) => (
+              <tr class="even:bg-surface-50">
+                <td class="px-6 py-4 font-medium text-surface-900">{row.feature}</td>
+                <td class="px-6 py-4 text-surface-500">{row.mistral}</td>
+                <td class="px-6 py-4 text-surface-900">{row.openmod}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="mt-8 text-center text-surface-600">Prijzen: Mistral bepaalt de prijs van zijn moderatiemodel op de eigen API; OpenModeration is gratis tot 1.000 verzoeken per maand en Pro kost € 99 per maand. <a href={L('/pricing')} class="font-medium text-brand-600 hover:text-brand-500">Bekijk de prijzen</a> of <a href={L('/book-a-call')} class="font-medium text-brand-600 hover:text-brand-500">plan een gesprek</a>.</p>
+    </div>
+  </section>
+
+  <section class="border-t border-surface-100 bg-surface-50 py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FAQ items={faqItems} title="Mistral Moderation alternatief: veelgestelde vragen" />
+    </div>
+  </section>
+
+  <section class="border-t border-surface-100 bg-white py-16">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold text-surface-900">Vergelijk andere alternatieven</h2>
+      <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+        <a href={L('/alternatives/openai-moderation')} class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">OpenAI Moderation</a>
+        <a href={L('/alternatives/azure-content-safety')} class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Azure Content Safety</a>
+        <a href={L('/alternatives/perspective-api')} class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Perspective API</a>
+        <a href={L('/alternatives/hive-moderation')} class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Hive Moderation</a>
+        <a href={L('/alternatives/checkstep')} class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Checkstep</a>
+        <a href={L('/alternatives')} class="rounded-full border border-surface-200 bg-white px-4 py-2 text-sm text-surface-600 transition hover:border-brand-300 hover:text-brand-600">Alle vergelijkingen</a>
+      </div>
+    </div>
+  </section>
+
+  <RelatedComparisons />
+
+  <CTASection
+    title="Meer dan een moderatiemodel."
+    subtitle="Onze eigen gecontroleerde AI, automatische regels en menselijke beoordeling door ons team, gehost in de EU. Jij ziet elke beslissing realtime."
+    buttonText="Probeer OpenModeration gratis"
+    buttonHref="https://app.openmoderation.com/signup"
+  />
+</BaseLayout>

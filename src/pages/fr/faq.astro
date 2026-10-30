@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import FAQ from '../../components/FAQ.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
+import { bookingUrl } from '../../i18n/ui';
 
 const faqItems = [
   {
@@ -10,7 +11,7 @@ const faqItems = [
   },
   {
     question: "Puis-je corriger manuellement une décision de l'IA ?",
-    answer: "Oui. La console de modération offre une file de modération dédiée à votre équipe Trust & Safety. Vos modérateurs examinent les contenus signalés, consultent le raisonnement de l'IA, puis approuvent, rejettent ou corrigent les décisions, avec une traçabilité complète.",
+    answer: "Oui, mais vous n'y êtes pas obligé : les cas douteux et les signalements sont traités par notre équipe. Dans la console, vous voyez chaque décision et son explication en temps réel, et vous pouvez approuver, rejeter ou corriger quand vous voulez, avec une traçabilité complète.",
   },
   {
     question: "OpenModeration est-il vraiment gratuit ?",
@@ -18,11 +19,11 @@ const faqItems = [
   },
   {
     question: "Quelle différence avec l'API OpenAI Moderation ?",
-    answer: "L'API OpenAI Moderation vous enferme chez un seul fournisseur, sans aucune visibilité sur le fonctionnement de la modération. OpenModeration est multi-fournisseurs (OpenAI, Azure, HuggingFace, Mistral, LLM sur mesure), accepte vos propres clés (BYOK), explique chaque décision par écrit, fournit une console de revue et intègre un moteur d'actions pour automatiser vos workflows.",
+    answer: "L'API OpenAI Moderation vous enferme dans un seul modèle, sans aucune visibilité sur le fonctionnement de la modération. OpenModeration fait tourner sa propre IA de modération, arbitrée par d'autres modèles d'IA sur les cas délicats, branche rapidement les nouveaux modèles plus performants, explique chaque décision par écrit, fournit une console de revue et intègre un moteur d'actions pour automatiser vos workflows.",
   },
   {
     question: "Quelle différence avec Nima (Tremau) ?",
-    answer: "Nima (Tremau) est une plateforme qui impose de partager vos contenus avec son infrastructure. OpenModeration vous permet d'utiliser vos propres clés d'API, explique chaque décision par écrit et héberge vos données dans l'Union européenne.",
+    answer: "Nima (Tremau) est une plateforme qui impose de partager vos contenus avec son infrastructure. OpenModeration se paramètre selon vos règles et vos cas d'usage, explique chaque décision par écrit et héberge vos données dans l'Union européenne.",
   },
   {
     question: "Quelle différence avec Checkstep ?",
@@ -33,8 +34,8 @@ const faqItems = [
     answer: "OpenModeration fournit un journal d'audit complet de toutes les décisions de modération, des politiques de conservation des données configurables et des rapports exportables. De quoi aider les plateformes à respecter les exigences de transparence et de responsabilité du règlement européen sur les services numériques (DSA).",
   },
   {
-    question: "Puis-je utiliser mes propres clés d'API ?",
-    answer: "Oui, l'utilisation de vos propres clés (BYOK) est une fonctionnalité centrale. Vous pouvez configurer des clés d'API à trois niveaux : global (partagé entre tous les espaces de travail), par espace de travail (défini par l'administrateur de l'organisation) et par clé d'API (prioritaire sur tous les autres réglages).",
+    question: "Sur quelle IA repose OpenModeration ?",
+    answer: "Sur notre propre IA de modération, entraînée pour la modération des commentaires et paramétrée selon vos règles et vos cas d'usage. Sur les cas délicats, d'autres modèles d'IA arbitrent la décision avant qu'elle soit appliquée : moins d'erreurs, moins de commentaires masqués à tort.",
   },
   {
     question: "Puis-je déployer la plateforme sur mes propres serveurs ?",
@@ -42,15 +43,15 @@ const faqItems = [
   },
   {
     question: "Proposez-vous un cloud géré ?",
-    answer: "Oui, notre SaaS en cloud géré démarre à 99 €/mois. Il comprend 10 000 requêtes par mois, aucune infrastructure à gérer, des clés fournisseurs gérées par la plateforme, une infrastructure hébergée dans l'UE, un support prioritaire et un SLA. Consultez la page Tarifs pour tous les détails.",
+    answer: "Oui, notre SaaS en cloud géré démarre à 99 €/mois. Il comprend 10 000 requêtes par mois, aucune infrastructure à gérer, une infrastructure hébergée dans l'UE, un support prioritaire et un SLA. Consultez la page Tarifs pour tous les détails.",
   },
   {
     question: "En combien de temps la plateforme devient-elle utile ?",
-    answer: "Quelques minutes si vous utilisez l'API REST pour une modération de base. Quelques heures pour mettre en place la plateforme complète, avec la console, le moteur d'actions et les connecteurs : notre équipe vous accompagne. Votre équipe opérationnelle peut commencer à examiner les contenus immédiatement.",
+    answer: "Quelques minutes si vous utilisez l'API REST pour une modération de base. Quelques heures pour mettre en place la plateforme complète, avec la console, le moteur d'actions et les connecteurs : notre équipe vous accompagne. Ensuite, vous n'avez rien à faire : notre équipe traite les cas douteux, et vous suivez tout en temps réel.",
   },
   {
-    question: "Quels fournisseurs sont pris en charge ?",
-    answer: "Nous prenons en charge OpenAI (y compris GPT-4o), Azure OpenAI Service, les points d'accès d'inférence HuggingFace, Mistral AI et tout fournisseur de LLM compatible avec l'API OpenAI (y compris Claude via l'API d'Anthropic). Chaque fournisseur peut être configuré avec ses propres modèles et paramètres.",
+    question: "Que se passe-t-il quand un meilleur modèle d'IA sort ?",
+    answer: "Notre architecture ne dépend d'aucun modèle en particulier. Quand un modèle d'IA plus performant ou moins cher sort, notre équipe le branche rapidement, et rien ne change de votre côté. Les modèles d'IA progressent chaque année : vous en profitez, au lieu de rester bloqué sur un algorithme maison figé.",
   },
   {
     question: "Puis-je ajouter des catégories sur mesure ?",
@@ -58,7 +59,7 @@ const faqItems = [
   },
   {
     question: "Et les images ou la vidéo ?",
-    answer: "La version actuelle se concentre sur la modération de texte. La modération des images et des vidéos figure sur la feuille de route et s'appuiera sur des fournisseurs de LLM multimodaux à mesure qu'ils deviendront disponibles.",
+    answer: "La version actuelle se concentre sur la modération de texte. La modération des images et des vidéos figure sur la feuille de route et profitera des modèles d'IA multimodaux à mesure qu'ils progressent.",
   },
 ];
 
@@ -92,7 +93,7 @@ const faqJsonLd = {
 
 <BaseLayout
   title="FAQ modération de contenu : tarifs, hébergement et DSA"
-  description="Les réponses aux questions fréquentes sur OpenModeration : tarifs, hébergement, BYOK, conformité DSA, fournisseurs pris en charge et intégration."
+  description="Les réponses aux questions fréquentes sur OpenModeration : tarifs, hébergement, conformité DSA, moteur d'IA et intégration."
   jsonLd={faqJsonLd}
 >
 <Breadcrumb items={[{ label: "Accueil", href: "/fr" }, { label: "FAQ" }]} />
@@ -100,7 +101,7 @@ const faqJsonLd = {
     <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
       <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Questions fréquentes</h1>
       <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
-        Tout ce qu'il faut savoir sur OpenModeration. Vous ne trouvez pas votre réponse ? <a href="https://calendly.com/pierre-logora/60min" class="text-brand-600 hover:text-brand-500" target="_blank" rel="noopener noreferrer">Parlons-en</a>.
+        Tout ce qu'il faut savoir sur OpenModeration. Vous ne trouvez pas votre réponse ? <a href={bookingUrl('fr')} class="text-brand-600 hover:text-brand-500" target="_blank" rel="noopener noreferrer">Parlons-en</a>.
       </p>
       <div class="mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row">
         <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">

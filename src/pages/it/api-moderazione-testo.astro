@@ -13,7 +13,7 @@ const pageJsonLd = {
       "@id": "https://www.openmoderation.com/it/api-moderazione-testo",
       "url": "https://www.openmoderation.com/it/api-moderazione-testo",
       "name": "API di moderazione del testo: modera commenti, chat e messaggi",
-      "description": "Un'API di moderazione del testo che filtra commenti tossici, messaggi in chat e recensioni degli utenti: 10 fornitori dietro un unico endpoint, regole personalizzate, doppia soglia e registri di audit DSA.",
+      "description": "Un'API di moderazione del testo che filtra commenti tossici, messaggi in chat e recensioni degli utenti: la nostra IA verificata da altri modelli dietro un unico endpoint, regole personalizzate, doppia soglia e registri di audit DSA.",
       "inLanguage": "it",
       "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
     },
@@ -23,7 +23,7 @@ const pageJsonLd = {
       "name": "OpenModeration Text Moderation API",
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "Qualsiasi (API REST)",
-      "description": "API di moderazione del testo: un endpoint, 10 fornitori, regole personalizzate, doppia soglia, endpoint batch e registri di audit DSA.",
+      "description": "API di moderazione del testo: un endpoint, un'IA verificata da altri modelli, regole personalizzate, doppia soglia, endpoint batch e registri di audit DSA.",
       "inLanguage": "it",
       "url": "https://www.openmoderation.com/it/api-moderazione-testo",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR", "availability": "https://schema.org/InStock" }
@@ -37,56 +37,55 @@ curl -X POST https://api.openmoderation.com/v1/moderation \\
   -H "Content-Type: application/json" \\
   -d '{
     "input": "user comment here",
-    "model": "openai/omni-moderation-latest",
     "categories": ["hate", "harassment", "sexual", "violence", "self-harm", "spam"],
     "threshold": 0.5
   }'
 
-# Risposta (standardizzata per tutti i fornitori)
+# Risposta (formato standardizzato)
 {
   "flagged": false,
   "results": [{ "category": "harassment", "score": 0.03, "flagged": false }],
-  "usage": { "provider": "openai", "latency_ms": 212 }
+  "usage": { "latency_ms": 212 }
 }`;
 
 const useCases = [
   { name: "Commenti e recensioni", desc: "Nascondi in automatico incitamento all'odio, spam e fughe di dati personali in commenti, recensioni e post dei forum prima che vengano pubblicati." },
   { name: "Chat e messaggistica", desc: "Moderazione del testo in tempo reale in più lingue, con latenza inferiore a 250 ms e azioni automatiche." },
-  { name: "Prompt delle app di IA", desc: "Filtra sia gli input degli utenti sia gli output degli LLM. Usa la moderazione basata su LLM per categorie personalizzate e in evoluzione." },
+  { name: "Prompt delle app di IA", desc: "Filtra sia gli input degli utenti sia gli output dei modelli di IA, anche su categorie personalizzate e in evoluzione." },
   { name: "Annunci dei marketplace", desc: "Segnala annunci spam, truffe e contenuti vietati in titoli e descrizioni già al momento dell'acquisizione." },
 ];
 
 const faqItems = [
   {
     question: "Che cos'è un'API di moderazione del testo?",
-    answer: "Un'API di moderazione del testo assegna un punteggio ai testi generati dagli utenti (odio, molestie, contenuti sessuali, violenza, spam, dati personali…) così la tua app può approvarli, segnalarli o respingerli in automatico. OpenModeration riunisce 10 fornitori dietro un unico endpoint, con un formato di risposta standardizzato, regole personalizzate e un registro di audit."
+    answer: "Un'API di moderazione del testo assegna un punteggio ai testi generati dagli utenti (odio, molestie, contenuti sessuali, violenza, spam, dati personali…) così la tua app può approvarli, segnalarli o respingerli in automatico. OpenModeration fa funzionare la propria IA di moderazione dietro un unico endpoint, verificata da altri modelli sui casi delicati, con un formato di risposta standardizzato, regole personalizzate e un registro di audit."
   },
   {
     question: "Quale API di moderazione del testo scegliere?",
-    answer: "Le API di un solo fornitore (OpenAI, Azure, Mistral) si avviano in fretta ma ti vincolano a un unico profilo di precisione e a un unico prezzo. OpenModeration indirizza ogni richiesta al fornitore più adatto (OpenAI per la tossicità in inglese, Mistral per le lingue europee, gli LLM per le categorie personalizzate) e aggiunge prefiltraggio, regole e una console di revisione."
+    answer: "Le API basate su un solo modello (OpenAI, Azure, Mistral) si avviano in fretta ma ti vincolano a un unico modello, fermo tra un aggiornamento e l'altro. OpenModeration usa la propria IA di moderazione, fa arbitrare i casi delicati da altri modelli e collega rapidamente i modelli migliori appena escono. In più: prefiltraggio, regole, casi dubbi gestiti dal nostro team e una console in tempo reale."
   },
   {
     question: "Quanto costa un'API di moderazione del testo?",
-    answer: "L'endpoint di moderazione di OpenAI è gratuito, Mistral fissa il prezzo del proprio modello di moderazione e Azure AI Content Safety fattura per 1.000 record di testo oltre una soglia gratuita di 5.000 record al mese. OpenModeration ha un piano gratuito fino a 1.000 richieste al mese; il piano Pro parte da 99 € al mese per 10.000 richieste e il prefiltraggio elimina dal 10 al 30% delle chiamate a pagamento."
+    answer: "L'endpoint di moderazione di OpenAI è gratuito, Mistral fissa il prezzo del proprio modello di moderazione e Azure AI Content Safety fattura per 1.000 record di testo oltre una soglia gratuita di 5.000 record al mese. OpenModeration ha un piano gratuito fino a 1.000 richieste al mese; il piano Pro parte da 99 € al mese per 10.000 richieste."
   },
   {
     question: "Posso definire regole di moderazione personalizzate?",
-    answer: "Sì, con tre strumenti e senza codice: parole vietate (blocco immediato), soglie per categoria (approvazione automatica, revisione umana o rifiuto automatico) e una carta della community in linguaggio naturale, applicata dagli LLM per categorie personalizzate come la disinformazione o l'adescamento di minori (grooming)."
+    answer: "Sì, con tre strumenti e senza codice: parole vietate (blocco immediato), soglie per categoria (approvazione automatica, revisione da parte del nostro team o rifiuto automatico) e le tue regole in linguaggio naturale, applicate dalla nostra IA per categorie personalizzate come la disinformazione o l'adescamento di minori (grooming)."
   },
   {
     question: "Posso migrare da openai text-moderation-latest?",
-    answer: "Sì. Sostituisci openai.moderations.create con una sola chiamata POST /v1/moderation con il modello openai/omni-moderation-latest. Mantieni la tua chiave OpenAI (BYOK) e aggiungi fornitori di riserva senza riscrivere il codice."
+    answer: "Sì. Sostituisci openai.moderations.create con una sola chiamata POST /v1/moderation. Ottieni punteggi standardizzati, motivazioni scritte e un registro di audit, e quando colleghiamo un modello di IA migliore, nel tuo codice non cambia nulla."
   },
   {
     question: "Ogni decisione di moderazione del testo viene registrata?",
-    answer: "Sì. Ogni decisione, dell'IA o umana, conserva i punteggi del fornitore, le soglie, il revisore e la data e ora. Esporti il registro di audit completo in un clic per i report di trasparenza DSA."
+    answer: "Sì. Ogni decisione, dell'IA o umana, conserva i punteggi, le soglie, il revisore e la data e ora. Esporti il registro di audit completo in un clic per i report di trasparenza DSA."
   },
 ];
 ---
 
 <BaseLayout
   title="API di moderazione del testo: commenti, chat e messaggi"
-  description="Un'API di moderazione del testo per OpenAI, Mistral, Azure e altri 7 fornitori. Nascondi commenti tossici, spam e dati personali con regole su misura. Gratis."
+  description="API di moderazione del testo basata sulla nostra IA, verificata da altri modelli. Nascondi commenti tossici, spam e dati personali con regole su misura."
   jsonLd={pageJsonLd}
 >
   <Breadcrumb items={[{ label: "Home", href: "/it" }, { label: "API di moderazione del testo" }]} />
@@ -100,8 +99,8 @@ const faqItems = [
         Un'API di moderazione del testo che non si limita a dare un punteggio.
       </h1>
       <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
-        Un solo endpoint instrada ogni testo (commenti, chat, messaggi, recensioni) verso OpenAI,
-        Mistral, Azure, Llama Guard e altri. Prefiltraggio, regole personalizzate, doppia soglia
+        Un solo endpoint modera ogni testo (commenti, chat, messaggi, recensioni) con la nostra IA,
+        verificata da altri modelli sui casi delicati. Prefiltraggio, regole personalizzate, doppia soglia
         e registro di audit pronto per il DSA inclusi.
       </p>
       <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -122,13 +121,13 @@ const faqItems = [
         <div>
           <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Modera qualsiasi testo con una sola richiesta</h2>
           <p class="mt-4 text-lg text-surface-500">
-            Invii il testo a un unico endpoint. Scegli il fornitore per ogni richiesta o lascia decidere l'instradamento intelligente.
+            Invii il testo a un unico endpoint. Quando esce un modello di IA migliore, lo colleghiamo: la tua richiesta non cambia.
             I punteggi tornano standardizzati, con soglie che controlli tu.
           </p>
           <ul class="mt-6 space-y-3 text-sm text-surface-600">
-            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span><span><strong>10 categorie, oltre 120 lingue:</strong> odio, molestie, contenuti sessuali, violenza, autolesionismo, spam, dati personali e categorie LLM personalizzate.</span></li>
-            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span><span><strong>Prefiltraggio:</strong> blocca lo spam evidente e le parole vietate prima di qualsiasi chiamata a pagamento ai fornitori.</span></li>
-            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span><span><strong>Doppia soglia:</strong> approvazione automatica, zona grigia → revisione umana, rifiuto automatico.</span></li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span><span><strong>10 categorie, oltre 120 lingue:</strong> odio, molestie, contenuti sessuali, violenza, autolesionismo, spam, dati personali e categorie personalizzate.</span></li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span><span><strong>Prefiltraggio:</strong> blocca lo spam evidente e le parole vietate prima di qualsiasi chiamata all'IA.</span></li>
+            <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span><span><strong>Doppia soglia:</strong> i casi chiari vengono approvati o respinti in automatico, la zona grigia la rivede il nostro team.</span></li>
             <li class="flex items-start gap-2"><span class="mt-0.5 text-accent-500">✓</span><span><strong>Batch fino a 10.000 testi:</strong> stesso schema delle chiamate su testo singolo.</span></li>
           </ul>
           <div class="mt-6 flex flex-wrap gap-3 text-sm">
@@ -164,7 +163,7 @@ const faqItems = [
   <section class="bg-white py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="mx-auto mb-12 max-w-2xl text-center">
-        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">API di un solo fornitore o OpenModeration</h2>
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">API di un solo modello o OpenModeration</h2>
         <p class="mt-4 text-lg text-surface-500">Un punteggio di tossicità grezzo non è un sistema di moderazione.</p>
       </div>
       <div class="overflow-x-auto rounded-xl border border-surface-200">
@@ -172,16 +171,16 @@ const faqItems = [
           <thead>
             <tr class="bg-surface-50">
               <th class="px-6 py-4 font-semibold text-surface-900">Funzionalità</th>
-              <th class="px-6 py-4 font-semibold text-surface-500">API di testo di un solo fornitore</th>
+              <th class="px-6 py-4 font-semibold text-surface-500">API di testo di un solo modello</th>
               <th class="px-6 py-4 font-semibold text-brand-600">OpenModeration</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-surface-200 bg-white">
-            <tr><td class="px-6 py-4 font-medium text-surface-900">Fornitori</td><td class="px-6 py-4 text-surface-500">1 (lock-in)</td><td class="px-6 py-4">10: OpenAI, Mistral, Azure, Llama Guard, Perspective, Hive…</td></tr>
-            <tr><td class="px-6 py-4 font-medium text-surface-900">Regole personalizzate</td><td class="px-6 py-4 text-surface-500">Fai da te</td><td class="px-6 py-4">Parole vietate, soglie, carta applicata da LLM, senza codice</td></tr>
-            <tr><td class="px-6 py-4 font-medium text-surface-900">Revisione umana</td><td class="px-6 py-4 text-surface-500">Fai da te</td><td class="px-6 py-4">Coda di revisione integrata, con contesto e assegnazione</td></tr>
+            <tr><td class="px-6 py-4 font-medium text-surface-900">Motore di IA</td><td class="px-6 py-4 text-surface-500">Un solo modello (lock-in)</td><td class="px-6 py-4">La nostra IA, verificata da altri modelli; i modelli migliori collegati appena escono</td></tr>
+            <tr><td class="px-6 py-4 font-medium text-surface-900">Regole personalizzate</td><td class="px-6 py-4 text-surface-500">Fai da te</td><td class="px-6 py-4">Parole vietate, soglie, regole in linguaggio naturale applicate dall'IA, senza codice</td></tr>
+            <tr><td class="px-6 py-4 font-medium text-surface-900">Revisione umana</td><td class="px-6 py-4 text-surface-500">Fai da te</td><td class="px-6 py-4">Casi dubbi gestiti dal nostro team; vedi tutto in tempo reale e intervieni quando vuoi</td></tr>
             <tr><td class="px-6 py-4 font-medium text-surface-900">Registro di audit</td><td class="px-6 py-4 text-surface-500">Solo i log dell'API</td><td class="px-6 py-4">Esportazione DSA completa, decisioni dell'IA e umane</td></tr>
-            <tr><td class="px-6 py-4 font-medium text-surface-900">Prezzo</td><td class="px-6 py-4 text-surface-500">Fissato da ciascun fornitore, da gratuito (OpenAI) a fatturato per chiamata</td><td class="px-6 py-4">Piano gratuito · Pro da 99 €/mese · il prefiltraggio fa risparmiare dal 10 al 30%</td></tr>
+            <tr><td class="px-6 py-4 font-medium text-surface-900">Prezzo</td><td class="px-6 py-4 text-surface-500">Fissato da ciascun editore, da gratuito (OpenAI) a fatturato per chiamata</td><td class="px-6 py-4">Piano gratuito · Pro da 99 €/mese</td></tr>
           </tbody>
         </table>
       </div>
@@ -196,7 +195,7 @@ const faqItems = [
 
   <CTASection
     title="Inizia a moderare testi in pochi minuti."
-    subtitle="Ottieni una chiave API, copia l'esempio curl e modera il tuo primo testo oggi stesso, con regole, coda di revisione e registri di audit fin dal primo giorno."
+    subtitle="Ottieni una chiave API, copia l'esempio curl e modera il tuo primo testo oggi stesso, con regole, casi dubbi gestiti dal nostro team e registri di audit fin dal primo giorno."
     buttonText="Prova l'API gratis"
     buttonHref="https://app.openmoderation.com/signup"
   />
