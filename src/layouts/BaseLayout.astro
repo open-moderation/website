@@ -36,23 +36,38 @@ const onBookPage = Astro.url.pathname.replace(/\/$/, '') === bookPath;
     </main>
     <Footer />
     {!onBookPage && (
-      <a href={bookPath} class="om-sticky-book fixed bottom-4 left-4 right-4 z-40 flex items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-brand-600 via-violet-600 to-rose-500 px-5 py-3 text-white shadow-[0_18px_40px_-12px_rgba(124,58,237,0.6)] transition sm:left-auto sm:right-6 sm:bottom-6 sm:rounded-full" aria-label={t('cta.book')}>
+      <a href={bookPath} class="om-sticky-book fixed left-4 right-4 z-40 flex items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-brand-600 via-violet-600 to-rose-500 px-5 py-3 text-white shadow-[0_18px_40px_-12px_rgba(124,58,237,0.6)] transition sm:left-auto sm:right-6 sm:bottom-6 sm:rounded-full" aria-label={t('cta.book')}>
         <span class="text-lg" aria-hidden="true">📅</span>
         <span class="flex flex-col leading-tight">
           <span class="text-sm font-bold">{t('cta.book')}</span>
-          <span class="text-[11px] font-medium text-white/85">{t('cta.bookHint')}</span>
+          <span class="text-xs font-medium text-white/85">{t('cta.bookHint')}</span>
         </span>
       </a>
     )}
     <script>
-      // Le bouton de rendez-vous flottant apparaît après un peu de lecture et s'efface au-dessus du pied de page.
+      // Le bouton de rendez-vous flottant apparaît après un peu de lecture. Il s'efface dès qu'un autre appel à
+      // prendre rendez-vous, le résultat de la démo, un formulaire ou le pied de page est à l'écran, et pendant la saisie.
       const sticky = document.querySelector<HTMLElement>('.om-sticky-book');
       if (sticky) {
-        const footer = document.querySelector('footer');
-        const update = () => {
-          const nearFooter = footer ? footer.getBoundingClientRect().top < innerHeight : false;
-          sticky.classList.toggle('is-shown', scrollY > 700 && !nearFooter);
-        };
+        const bookHref = sticky.getAttribute('href') || '';
+        const visible = new Set<Element>();
+        let typing = false;
+        const update = () => sticky.classList.toggle('is-shown', scrollY > 700 && visible.size === 0 && !typing);
+        const watched = Array.from(document.querySelectorAll<HTMLElement>(
+          'footer, form, .om-demo-result, [data-cta-section], a[href*="calendly.com"], iframe[src*="calendly.com"]'
+        )).concat(Array.from(document.querySelectorAll<HTMLAnchorElement>('main a[href]')).filter((a) => {
+          const href = (a.getAttribute('href') || '').replace(/\/$/, '');
+          return href !== '' && href === bookHref.replace(/\/$/, '');
+        }));
+        if ('IntersectionObserver' in window) {
+          const io = new IntersectionObserver((entries) => {
+            entries.forEach((e) => (e.isIntersecting ? visible.add(e.target) : visible.delete(e.target)));
+            update();
+          });
+          watched.filter((el) => !el.closest('nav, header') && el !== sticky).forEach((el) => io.observe(el));
+        }
+        document.addEventListener('focusin', (e) => { typing = (e.target as HTMLElement).matches('input, textarea, select'); update(); });
+        document.addEventListener('focusout', () => { typing = false; update(); });
         addEventListener('scroll', update, { passive: true });
         update();
       }

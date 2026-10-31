@@ -1,45 +1,69 @@
 ---
 import SectorPage from '../../components/SectorPage.astro';
-import { getLocale, localizePath } from '../../i18n/routes';
-
-const locale = getLocale(Astro.url.pathname);
 ---
 
 <SectorPage
-  title="Automatische moderatie van reacties met AI"
-  description="Automatische moderatie van reacties op je site en social media, afgestemd op je regels en use cases, dag en nacht, met een schriftelijke reden per beslissing."
+  title="Automatische reactiemoderatie: zo beslist de AI"
+  description="Zo werkt automatische moderatie van reacties: context, ironie, drempels en wat menselijk blijft. Voorbeelden van beslissingen, elk met een motivering."
   crumb="Automatische moderatie"
   parent={null}
-  eyebrow="AI-moderatie van reacties"
-  h1="Automatische moderatie van reacties, op jouw voorwaarden"
-  intro="Reacties komen de klok rond binnen, en vooral als je team offline is. OpenModeration modereert ze automatisch met AI die je regels binnen enkele seconden toepast, en ons team neemt de gevallen voor zijn rekening waarvoor menselijk oordeel nodig is."
-  problem="Handmatige moderatie houdt het niet bij: pieken komen 's avonds, in het weekend of wanneer er groot nieuws is. Traditionele geautomatiseerde tools werken met woordenlijsten en verbergen uiteindelijk te veel of te weinig."
-  approach="De AI leest elke reactie in context en toetst die aan je regels. Twee drempels per categorie bepalen wat automatisch wordt verborgen, wat wordt gepubliceerd en wat door ons team wordt beoordeeld. Elke beslissing krijgt een schriftelijke uitleg."
-  result="Beledigingen, haat, spam en oplichting verdwijnen binnen enkele seconden, zonder te wachten tot een moderator inlogt. De echte grensgevallen handelt ons team af, en jij ziet elke beslissing in realtime."
-  featuresTitle="Automatische moderatie die onder controle blijft"
-  featuresIntro="Automatisch betekent geen black box. Jij ziet elke beslissing en kunt op elk moment ingrijpen."
+  eyebrow="Automatische reactiemoderatie"
+  h1="Automatische reactiemoderatie: zo beslist de AI"
+  intro="Automatisch betekent niet blind. Dit gebeurt er in de seconden nadat een reactie is geplaatst: wat de AI leest, hoe hij context en ironie weegt, waar de drempels liggen en welke gevallen hij bewust aan een mens overlaat."
+  problem="Woordenlijsten oordelen over de letter van een reactie, niet over de betekenis. Ze blokkeren ‘onze verdediging werd vanavond afgeslacht’ en laten ‘ga terug naar je eigen land’ door. En een filter dat reacties verbergt zonder uitleg, kun je tegenover niemand verdedigen."
+  approach="Onze AI leest de reactie met wat eromheen staat: het artikel of de post, het bericht waarop ze antwoordt, de taal. Hij scoort elke categorie van je regels en vergelijkt die score met twee drempels: eronder wordt gepubliceerd, erboven verborgen, ertussen beslist een mens."
+  result="Duidelijke gevallen zijn binnen seconden afgehandeld, dag en nacht. Onzekere gaan naar onze moderatoren in plaats van gegokt te worden. Elke beslissing, automatisch of menselijk, krijgt een zin die haar uitlegt."
+  featuresTitle="Wat de AI leest voordat hij beslist"
+  featuresIntro="Vier signalen, samen gelezen. Geen daarvan is een lijst met verboden woorden."
   features={[
-    { title: "Jij bepaalt de mate van automatisering", text: "Strenger, soepeler, meer of minder gevallen naar beoordeling: je stelt de drempels per categorie in." },
-    { title: "Een reden bij elke beslissing", text: "Elke verborgen reactie heeft een schriftelijke reden die je aan de schrijver of aan een toezichthouder kunt laten zien." },
-    { title: "Elke taal", text: "Eén beleid, toegepast op reacties in welke taal ze ook geschreven zijn." },
-    { title: "Op al je platforms", text: "Je website via de API of WordPress, plus je Facebook-, Instagram- en YouTube-pagina's, met dezelfde regels." },
+    { title: "De pagina", text: "Dezelfde zin betekent iets anders onder een wedstrijdverslag dan onder een artikel over een misdrijf. De AI leest het onderwerp vóór de reactie." },
+    { title: "Het gesprek", text: "Een antwoord wordt gelezen samen met het bericht waarop het reageert. Spot over een argument is geen aanval op een persoon." },
+    { title: "Ironie en codetaal", text: "Verhaspelde spelling, emoji's als belediging, verborgen verwijzingen: de AI kijkt naar wat bedoeld wordt, niet alleen naar wat er staat." },
+    { title: "Jouw regels", text: "Elke categorie wordt getoetst aan de regels die we samen met jou in gewone taal hebben vastgelegd: wat je accepteert, wat niet en waar je voorzichtig wilt zijn." },
   ]}
+  examples={{
+    title: "Zes reacties, zes beslissingen",
+    intro: "Voorbeelden ter illustratie: dezelfde AI komt tot een andere uitkomst afhankelijk van de context en van jouw regels.",
+    items: [
+      { comment: "Onze verdediging werd vanavond gewoon afgeslacht, wat een drama.", context: "Onder een verslag van een Eredivisie-wedstrijd", decision: "Gepubliceerd", tone: "ok", reason: "Gewelddadig woord, sportieve betekenis. Kritiek op een teamprestatie, geen persoon geviseerd." },
+      { comment: "Geweldig, weer een genie aan het roer. Ik kan niet wachten.", context: "Onder een artikel over een nieuwe minister", decision: "Gepubliceerd", tone: "ok", reason: "Ironisch, maar gericht op de rol van een publiek figuur. Politieke kritiek is toegestaan volgens je regels." },
+      { comment: "Zulke mensen als zij moeten gewoon terug naar hun eigen land.", context: "Antwoord op een andere lezer", decision: "Verborgen", tone: "hide", reason: "Uitsluiting op basis van afkomst, gericht op een persoon. In strijd met de regel over haatdragende inhoud." },
+      { comment: "Verdien €500 per dag vanuit huis, stuur me een DM 💰", context: "Onder een Instagram-post", decision: "Verborgen", tone: "hide", reason: "Commerciële spam met verzoek om contact. In strijd met de regel over oplichting en reclame." },
+      { comment: "We weten allemaal wat er 's nachts in die wijk gebeurt…", context: "Onder een lokaal nieuwsbericht", decision: "Naar ons team", tone: "review", reason: "Mogelijke insinuatie over een groep, zonder expliciet doelwit. De score valt tussen de twee drempels: een moderator beslist." },
+      { comment: "De burgemeester heeft gelogen over de begroting en moet aftreden.", context: "Onder een artikel over de gemeenteraad", decision: "Gepubliceerd", tone: "ok", reason: "Harde beschuldiging aan een bestuurder in een politiek debat. Geen belediging en geen bedreiging." },
+    ],
+  }}
+  table={{
+    title: "Drempels: waar automatisch ophoudt",
+    intro: "Voor elke categorie van je regels verdelen twee drempels de reacties over drie uitkomsten. We stellen ze samen met je in en verfijnen ze na de test op je reacties.",
+    head: ["Categorie", "Automatisch gepubliceerd", "Naar ons team", "Automatisch verborgen"],
+    rows: [
+      ["Beledigingen", "Ruwe toon zonder doelwit", "Belediging die een citaat of grap kan zijn", "Belediging gericht op een persoon"],
+      ["Haat", "Debat over een gevoelig onderwerp", "Dubbelzinnige veralgemening over een groep", "Aanval op afkomst, geloof, gender…"],
+      ["Bedreigingen", "Beeldspraak (‘dat examen ga ik slopen’)", "Onduidelijke bedoeling", "Expliciete bedreiging aan iemand"],
+      ["Spam en oplichting", "Link die bij de discussie past", "Herhaald promotiebericht", "Frauduleus aanbod, phishing"],
+      ["Off-topic", "Zijopmerking die beleefd blijft", "Lang bericht zonder verband", "Flooding, copy-pastecampagnes"],
+    ],
+    note: "Strenger of soepeler? Je kiest per categorie: een drukbezochte nieuwssite en een merkpagina zetten zelden dezelfde drempels.",
+  }}
   why={[
-    { title: "Jouw regels, geen standaardraster", text: "De moderatie volgt je regels en je use cases. We stemmen haar samen met jou af." },
-    { title: "Test het live", text: "Plak een reactie in de demo en zie de beslissing en de uitleg, zonder je aan te melden." },
-    { title: "DSA-proof", text: "Motiveringen, meldingen van gebruikers, menselijke beoordeling en een volledige geschiedenis zijn inbegrepen." },
+    { title: "Hij gokt niet", text: "Twijfelt de AI, dan gaat de reactie naar onze moderatoren, die beslissen volgens jouw regels." },
+    { title: "Meldingen en bezwaren blijven menselijk", text: "Meldingen van gebruikers en betwiste beslissingen worden beoordeeld door iemand van ons team, zoals de DSA vereist." },
+    { title: "Jij hebt het laatste woord", text: "Je ziet elke automatische beslissing in realtime met de motivering en kunt ze allemaal terugdraaien." },
   ]}
   faq={[
-    { question: "Maakt automatische moderatie fouten?", answer: "Geen enkel systeem is perfect. Daarom beslist de AI niet alleen over twijfelgevallen: die worden afgehandeld door ons team, en jij kunt elke beslissing met één klik terugdraaien." },
-    { question: "Hoe snel wordt een reactie gemodereerd?", answer: "Binnen enkele seconden nadat ze is geplaatst of ontvangen." },
-    { question: "Kunnen Facebook-reacties automatisch worden gemodereerd?", answer: "Ja. Koppel je Facebook-pagina's en Instagram-accounts: reacties die je regels overtreden, worden automatisch verborgen." },
-    { question: "Wat kost het?", answer: "Er is een gratis abonnement om te beginnen en een Pro-abonnement. Voor grote volumes plan je een gesprek en bepalen we samen het juiste abonnement." },
+    { question: "Hoe werkt automatische moderatie van reacties?", answer: "Elke reactie wordt met haar context gelezen, per categorie van je regels gescoord en vergeleken met twee drempels: publiceren, verbergen of doorsturen naar een mens. Het hele proces duurt een paar seconden." },
+    { question: "Begrijpt de AI ironie?", answer: "Veel beter dan een woordenlijst, omdat hij de reactie samen met de pagina en het gesprek leest. Maakt ironie een reactie echt dubbelzinnig, dan valt de score tussen de drempels en beslist ons team." },
+    { question: "Wat gebeurt er als de AI zich vergist?", answer: "Je kunt elke beslissing in de console terugdraaien en schrijvers kunnen bezwaar maken. Terugkerende fouten gebruiken we om je regels en drempels samen bij te stellen." },
+    { question: "In welke talen werkt het?", answer: "Reacties worden in hun eigen taal geanalyseerd, ook in de talen van je publiek, zonder vertaalstap waarbij nuance verloren gaat." },
+    { question: "Kan ik de beslissingen controleren voordat ik het aanzet?", answer: "Ja. Een gratis sandboxtest op je echte reacties laat elke beslissing en de motivering zien voordat er iets live gaat." },
   ]}
   related={[
-    { eyebrow: "Demo", title: "Probeer de moderatie", text: "Plak een reactie en zie binnen enkele seconden de beslissing.", href: localizePath('/demo', locale) },
-    { eyebrow: "Integratie", title: "Facebook-reacties modereren", text: "Verberg automatisch reacties onder je Facebook-posts.", href: localizePath('/integrations/facebook', locale) },
-    { eyebrow: "Gids", title: "Een moderatiebeleid opstellen", text: "De regels die je vastlegt voordat je automatiseert.", href: localizePath('/content-moderation-policy', locale) },
+    { eyebrow: "Demo", title: "Test een reactie", text: "Plak een reactie en zie de beslissing en de motivering.", href: "/demo" },
+    { eyebrow: "Woordenlijst", title: "Wat is een moderatiedrempel?", text: "De instelling die automatisch en menselijk scheidt.", href: "/glossary/threshold" },
+    { eyebrow: "Het complete systeem", title: "Moderatiesoftware", text: "AI, console, team en DSA-registratie in één systeem.", href: "/moderation-software" },
   ]}
-  ctaTitle="Automatiseer je moderatie deze week nog."
-  ctaSubtitle="Plan een gesprek: we zetten samen je regels op en testen ze op je echte reacties."
+  blocks={[]}
+  ctaTitle="Kijk hoe de AI beslist over je eigen reacties."
+  ctaSubtitle="Plan een gesprek: we halen je recente reacties door de AI en lopen elke beslissing en de motivering met je door."
 />

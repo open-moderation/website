@@ -1,120 +1,146 @@
 ---
-import { bookingUrl } from '../i18n/ui';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FAQ from '../components/FAQ.astro';
+import CTASection from '../components/CTASection.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
+import { localizePath, type Locale } from '../i18n/routes';
+import { useTranslations } from '../i18n/ui';
 
-const faqItems = [
-  {
-    question: "Do I need to know how to code to set up moderation rules?",
-    answer: "No. OpenModeration uses three simple tools: forbidden words for instant blocking, category thresholds for automated decisions, and your own rules written in plain language. The Action Engine then applies them automatically, with no code required.",
-  },
-  {
-    question: "Can I manually override an AI decision?",
-    answer: "Yes. Doubtful cases are handled by our team, so you have nothing to do. But you see every decision in real time in the console, with the AI's reasoning, and you can approve, reject or override it at any moment. Every action is logged for audit.",
-  },
-  {
-    question: "Is there a free plan?",
-    answer: "OpenModeration has a free plan, up to 1,000 requests a month, with no credit card required. The Pro plan costs €99 a month for 10K requests. See the pricing page for full details.",
-  },
-  {
-    question: "How is this different from OpenAI Moderation API?",
-    answer: "OpenAI Moderation API is a single classifier that shows little of how moderation works. OpenModeration runs its own moderation AI, set up on your rules and your use cases, and has delicate cases cross-checked by other AI models. Every decision comes with a written reason, doubtful cases are handled by our team, and you get a real-time dashboard and an action engine for automated workflows.",
-  },
-  {
-    question: "How is this different from Nima (Tremau)?",
-    answer: "OpenModeration explains every decision in writing, keeps a full audit trail, has delicate cases cross-checked by other AI models and hosts your data in the European Union. On-premise deployment is possible on request.",
-  },
-  {
-    question: "How is this different from Checkstep?",
-    answer: "OpenModeration is API-first and runs its own moderation AI, cross-checked by other AI models on delicate cases. Every decision comes with a written reason, the data is hosted in the EU, and our team sets the moderation up with you, around your own rules.",
-  },
-  {
-    question: "What does DSA-compliant mean?",
-    answer: "OpenModeration keeps a complete audit trail of every moderation decision, with configurable data retention and exportable reports. This helps platforms meet the transparency and accountability requirements of the EU Digital Services Act (DSA).",
-  },
-  {
-    question: "Which AI does OpenModeration use?",
-    answer: "OpenModeration runs its own moderation AI, trained for comment moderation and set up on your rules and your use cases. On delicate cases, other AI models arbitrate the decision before it is applied, which means fewer mistakes and fewer wrongly hidden comments.",
-  },
-  {
-    question: "Can I deploy OpenModeration on my own infrastructure?",
-    answer: "On-premise deployment is possible on request. Book a call with us to discuss your needs. By default, OpenModeration runs in our managed cloud, hosted in the European Union.",
-  },
-  {
-    question: "Do you offer a managed cloud?",
-    answer: "Yes, our managed cloud SaaS starts at €99/month. It includes 10K requests/month, no infrastructure to manage, AI models included, EU-hosted infrastructure, priority support, and SLA. See the pricing page for full details.",
-  },
-  {
-    question: "How long does it take to get operational value?",
-    answer: "Minutes if you are using the REST API for basic moderation. A few hours to deploy the full platform with the dashboard, action engine, and connectors if you follow the quick-start guide. Moderation then runs on its own, and you see every decision in real time.",
-  },
-  {
-    question: "What happens when a better AI model comes out?",
-    answer: "Our engine is model-agnostic. When a better or cheaper AI model comes out, our team plugs it in quickly, and nothing changes on your side. AI models get better every year, and you benefit from that progress instead of staying stuck on yesterday's model.",
-  },
-  {
-    question: "Can I add custom categories?",
-    answer: "Yes. Unlike traditional category-based classifiers, you can define arbitrary moderation categories through natural language prompts, letting you tailor moderation to your specific content policies.",
-  },
-  {
-    question: "What about images/video?",
-    answer: "The current release focuses on text moderation. Image and video moderation is on the roadmap and will use multi-modal AI models as they become available.",
-  },
-];
+const locale: Locale = 'en';
+const t = useTranslations(locale);
+const booking = localizePath('/book-a-call', locale);
+const signup = 'https://app.openmoderation.com/signup';
 
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@graph": [
+const c = {
+  "title": "Comment moderation FAQ: AI, our team, DSA and pricing",
+  "description": "Who moderates, how the AI follows your rules, testing on your own comments, DSA, platforms, data and pricing: answers for media, brands and public bodies.",
+  "crumb": "FAQ",
+  "h1": "Your questions about comment moderation, answered",
+  "intro": "The questions media, brands and public bodies ask us most often before choosing. Can’t find yours? Book a call and ask us directly.",
+  "buyerTitle": "Before you choose",
+  "techTitle": "For technical teams",
+  "techIntro": "More technical details for your developers and IT team.",
+  "ctaTitle": "Still have a question?",
+  "ctaSubtitle": "Book a call: we answer your questions and show you what our moderation would do on your own comments.",
+  "buyer": [
     {
-      "@type": "WebPage",
-      "@id": "https://www.openmoderation.com/faq",
-      "url": "https://www.openmoderation.com/faq",
-      "name": "Content Moderation FAQ: Pricing, Hosting & DSA",
-      "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
+      "question": "Does the AI moderate on its own?",
+      "answer": "No. Our AI is set up with your rules and decides alone only when it is sure. Delicate cases are cross-checked by other AI models, and doubtful ones go to our team, who decide according to your rules and report back to you. You have nothing to do, unless you want to step in."
     },
     {
-      "@type": "FAQPage",
-      "@id": "https://www.openmoderation.com/faq#faq",
-      "mainEntity": faqItems.map(item => ({
-        "@type": "Question",
-        "name": item.question,
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": item.answer.replace(/&mdash;/g, '—')
-        }
-      }))
+      "question": "How does the AI learn our editorial line?",
+      "answer": "We start from your charter and use cases: what you accept, what you refuse, the borderline cases. When you correct a decision, we adjust the rules with you. It is not a list of banned words: the AI reads each comment in its context."
+    },
+    {
+      "question": "Can we test before committing?",
+      "answer": "Yes. In sandbox mode, OpenModeration analyses your real comments without publishing or hiding anything. You see what we would have accepted or refused, with the reason, and compare it with your current moderation. Nothing is hidden from you."
+    },
+    {
+      "question": "Can we test without leaving our current provider?",
+      "answer": "Yes. The test runs silently alongside your current moderation, without touching your production. You compare decision by decision, then choose with full knowledge, when it suits you."
+    },
+    {
+      "question": "What do we see on our side?",
+      "answer": "Everything, in real time: each comment, the decision taken, its written reason and the history. You can override any decision at any moment from the console."
+    },
+    {
+      "question": "Why was a comment refused?",
+      "answer": "Every decision carries a written reason (insult, personal attack, spam…), which you can pass on to the author. It is clearer for your readers and easier to justify if a decision is contested."
+    },
+    {
+      "question": "Does OpenModeration help with the DSA?",
+      "answer": "It is built for the DSA: a written reason for every decision, a traceable history, user reports and appeals followed up, and exportable figures. You remain the responsible publisher, and you have what you need to justify each decision."
+    },
+    {
+      "question": "What happens when the AI hesitates?",
+      "answer": "The comment is held aside and our team handles it according to your rules. You get a report on the cases handled and on the points of your charter worth clarifying."
+    },
+    {
+      "question": "What about nights, weekends and traffic peaks?",
+      "answer": "The AI moderates around the clock with the same rules, whatever the volume, including during a match or an election night. Doubtful comments are held aside rather than published until our team has handled them."
+    },
+    {
+      "question": "Which platforms does OpenModeration work on?",
+      "answer": "Your website (through our API or WordPress), Facebook, Instagram and YouTube, with ready-made connectors. TikTok, X, LinkedIn and other networks are added on request, quickly. Our team connects your pages with you."
+    },
+    {
+      "question": "Which languages are moderated?",
+      "answer": "OpenModeration is multilingual: each comment is analysed in its own language, including the languages of your audiences. Tell us which ones matter to you and we will show you the results on your own comments."
+    },
+    {
+      "question": "Where is our data hosted?",
+      "answer": "In the European Union, in line with the GDPR. Your comments are used only to moderate your spaces."
+    },
+    {
+      "question": "Do we need to involve our technical team?",
+      "answer": "Very little. For social networks and WordPress, you just connect your accounts. For a website or an in-house tool, an API sends us your comments and returns each decision with its reason. Our team handles the setup with you."
+    },
+    {
+      "question": "How much does it cost?",
+      "answer": "The price depends on the volume of comments to moderate. A free plan lets you try it out; we then offer a predictable package sized to your volumes, after a test on your own comments, so you can judge the quality before talking budget."
+    }
+  ],
+  "tech": [
+    {
+      "question": "Is there an API?",
+      "answer": "Yes. A REST API receives each comment and returns the decision, the category and the written reason. Webhooks notify your tools of each decision, and access keys are managed from the console."
+    },
+    {
+      "question": "Which AI does OpenModeration use?",
+      "answer": "Our own moderation AI, built in-house and trained on millions of messages over seven years. On delicate cases, other AI models cross-check the decision before it is applied. When a better model comes out, we plug it in, and nothing changes on your side."
+    },
+    {
+      "question": "Can we add custom categories?",
+      "answer": "Yes. Beyond the standard categories (hate, harassment, spam…), your rules are written in plain language, so any category specific to your policy can be added. The AI applies them in context."
+    },
+    {
+      "question": "What about images and video?",
+      "answer": "The current version focuses on text. Image and video moderation is on the roadmap and will benefit from multimodal AI models as they improve."
+    },
+    {
+      "question": "Can it run on our own servers?",
+      "answer": "By default, OpenModeration is hosted in the European Union and your data stays exportable. On-premise deployment is possible on request: let’s talk about it."
     }
   ]
 };
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/faq",
+  "url": "https://www.openmoderation.com/faq",
+  "name": "Comment moderation FAQ: AI, our team, DSA and pricing",
+  "description": "Who moderates, how the AI follows your rules, testing on your own comments, DSA, platforms, data and pricing: answers for media, brands and public bodies.",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@id": "https://www.openmoderation.com/#website"
+  }
+};
 ---
 
-<BaseLayout
-  title="Content Moderation FAQ: Pricing, Hosting & DSA"
-  description="Find answers to common questions about OpenModeration: pricing, hosting, DSA compliance, our AI engine, and integration."
-  jsonLd={faqJsonLd}
->
-<Breadcrumb items={[{ label: "Home", href: "/" }, { label: "FAQ" }]} />
+<BaseLayout title={c.title} description={c.description} jsonLd={pageJsonLd}>
+<Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: c.crumb }]} />
   <section class="bg-gradient-to-b from-brand-50 to-white py-20">
     <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Frequently Asked Questions</h1>
-      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
-        Answers to the questions we hear most about OpenModeration. If yours isn't here, <a href={bookingUrl('en')} class="text-brand-600 hover:text-brand-500" target="_blank" rel="noopener">let's talk</a>.
-      </p>
-      <div class="mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row">
-        <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">
-          Try it for free
-        </a>
-        <a href="/pricing" class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">
-          See pricing
-        </a>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">{c.h1}</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">{c.intro}</p>
+      <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a href={booking} class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">📅 {t('cta.book')}</a>
+        <a href={signup} class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">{t('cta.button')}</a>
       </div>
-      <p class="mt-4 text-sm text-surface-400">No credit card required</p>
     </div>
   </section>
   <section class="bg-white py-12">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <FAQ items={faqItems} disableJsonLd />
+      <FAQ items={c.buyer} title={c.buyerTitle} />
     </div>
   </section>
+  <section class="bg-surface-50 py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <p class="mx-auto mb-6 max-w-3xl text-center text-sm text-surface-500">{c.techIntro}</p>
+      <FAQ items={c.tech} title={c.techTitle} disableJsonLd />
+    </div>
+  </section>
+
+  <CTASection title={c.ctaTitle} subtitle={c.ctaSubtitle} />
 </BaseLayout>

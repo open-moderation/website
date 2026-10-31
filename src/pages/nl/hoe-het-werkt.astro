@@ -4,22 +4,180 @@ import CTASection from '../../components/CTASection.astro';
 import CodeBlock from '../../components/CodeBlock.astro';
 import BrowserFrame from '../../components/BrowserFrame.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
-import { getLocale, localizePath } from '../../i18n/routes';
+import { localizePath, type Locale } from '../../i18n/routes';
+import { useTranslations } from '../../i18n/ui';
 
-const locale = getLocale(Astro.url.pathname);
+const locale: Locale = 'nl';
+const t = useTranslations(locale);
+const booking = localizePath('/book-a-call', locale);
+const signup = 'https://app.openmoderation.com/signup';
+
+const c = {
+  "title": "Hoe het werkt: wij modereren je reacties, jij ziet alles",
+  "description": "Je koppelt je pagina’s, onze AI en ons team modereren met jouw regels en je ziet elke beslissing en de reden in realtime. Technische details verderop.",
+  "crumb": "Hoe het werkt",
+  "h1": "Jij koppelt je pagina’s. Wij modereren. Jij ziet alles.",
+  "lead": "Geen moderatietool die je zelf moet bedienen: onze AI en ons team passen je regels dag en nacht toe, en jij houdt het volledige overzicht en het laatste woord.",
+  "stepsTitle": "Drie stappen, en niets te bedienen",
+  "steps": [
+    {
+      "title": "Jij koppelt je pagina’s",
+      "text": "Website, Facebook, Instagram, YouTube of WordPress: ons team koppelt ze samen met jou en stelt je regels in op basis van je huisregels en use cases."
+    },
+    {
+      "title": "Onze AI en ons team modereren met jouw regels",
+      "text": "Onze AI leest elke reactie in haar context en handelt de duidelijke gevallen af. Lastige gevallen worden gecontroleerd door andere AI-modellen; twijfelgevallen, meldingen en bezwaren behandelt ons team."
+    },
+    {
+      "title": "Je ziet alles in realtime",
+      "text": "Elke beslissing komt met een schriftelijke reden. Je volgt alles in de console en kunt ingrijpen of corrigeren wanneer je wilt."
+    }
+  ],
+  "stepsNote": "Je team hoeft niets te doen, tenzij het dat wil. De geschiedenis van elke beslissing blijft beschikbaar voor je DSA-verplichtingen.",
+  "outcomesTitle": "Wat er met elke reactie gebeurt",
+  "outcomesLead": "Beslissingen worden direct op je website en pagina’s toegepast, en elke beslissing wordt met haar reden vastgelegd.",
+  "outcomes": [
+    {
+      "label": "Gepubliceerd",
+      "title": "Gezonde reacties gaan online",
+      "text": "Constructieve reacties, ook kritische, worden gewoon gepubliceerd. Het gesprek gaat door."
+    },
+    {
+      "label": "Verborgen",
+      "title": "Misbruik bereikt je lezers niet",
+      "text": "Beledigingen, bedreigingen en spam worden verborgen op Facebook en Instagram en geweigerd op YouTube en je website, met de reden op schrift."
+    },
+    {
+      "label": "Apart gezet",
+      "title": "Twijfelgevallen gaan naar ons team",
+      "text": "Als de AI twijfelt, wordt de reactie apart gezet en beslist ons team volgens jouw regels. Er wordt niets per ongeluk gepubliceerd en niets gaat verloren."
+    },
+    {
+      "label": "Gemeld",
+      "title": "Je tools blijven op de hoogte",
+      "text": "Als je wilt, wordt elke beslissing naar je eigen tools gestuurd: je teams zijn op de hoogte zonder hun gewoontes te veranderen."
+    }
+  ],
+  "testTitle": "Bekijk het eerst op je eigen reacties",
+  "testText": "We testen OpenModeration op je echte reacties, stil en naast je huidige leverancier als je die hebt. Je vergelijkt beslissing per beslissing voordat je kiest.",
+  "devEyebrow": "Voor developers",
+  "devTitle": "Onder de motorkap: de pipeline in vier fasen",
+  "devLead": "Achter de drie stappen doorloopt elke reactie vier technische fasen. Dit moet je technische team weten.",
+  "pipeline": [
+    {
+      "title": "Verzamelen",
+      "text": "Reacties komen binnen via de API, een webhook of een connector voor sociale media.",
+      "tags": [
+        "POST /v1/moderation",
+        "Webhooks",
+        "Facebook",
+        "Instagram",
+        "YouTube"
+      ]
+    },
+    {
+      "title": "AI-moderatie",
+      "text": "Onze AI analyseert de reactie; andere modellen controleren lastige gevallen.",
+      "tags": [
+        "OpenModeration-AI",
+        "Controle"
+      ]
+    },
+    {
+      "title": "Regels en acties",
+      "text": "Je regels worden geëvalueerd, daarna lopen de acties automatisch.",
+      "tags": [
+        "Verbergen",
+        "Apart zetten",
+        "Publiceren",
+        "Webhook"
+      ]
+    },
+    {
+      "title": "Menselijke beoordeling",
+      "text": "Ons team behandelt twijfelgevallen; jij kunt altijd ingrijpen.",
+      "tags": [
+        "Ons team",
+        "Correctie"
+      ]
+    }
+  ],
+  "stepLabel": "Fase",
+  "details": [
+    {
+      "title": "Reacties komen overal vandaan",
+      "text": "Stuur reacties via de REST-API, een generieke webhook of de native connectoren, die reacties automatisch ophalen.",
+      "points": [
+        "API: POST /v1/moderation, per stuk of in batches",
+        "Webhooks: een generiek endpoint ontvangt en normaliseert externe data",
+        "Connectoren: Facebook, Instagram, YouTube en WordPress"
+      ],
+      "codeTitle": "Voorbeeld: een Facebook-reactie"
+    },
+    {
+      "title": "De AI modereert de reactie",
+      "text": "Elke reactie wordt geanalyseerd door onze intern ontwikkelde moderatie-AI, ingesteld op jouw regels. Lastige gevallen worden gecontroleerd door andere AI-modellen. De resultaten komen terug in een standaardformaat, met scores van 0,0 tot 1,0 per categorie.",
+      "points": [
+        "Het antwoordformaat verandert nooit",
+        "Komt er een beter model uit, dan koppelen we het: voor jou verandert er niets"
+      ],
+      "codeTitle": "Standaardantwoord"
+    },
+    {
+      "title": "Je regels worden automatisch toegepast",
+      "text": "Regels combineren verboden woorden voor een directe blokkade, drempels per categorie en regels in gewone taal die de AI in context toepast. Ons team stelt ze samen met je in; je developers kunnen ze ook via de API beheren.",
+      "points": [
+        "Verboden woorden blokkeren een reactie direct, vóór elke AI-aanroep",
+        "Drempels per categorie starten acties automatisch",
+        "Regels in gewone taal bepalen de toon van je kanalen"
+      ],
+      "codeTitle": "Configuratie via de API"
+    },
+    {
+      "title": "Alles wordt vastgelegd",
+      "text": "Elke beslissing, van de AI of van ons team, wordt vastgelegd met de reden, de auteur en de uitgevoerde acties. Webhooks kunnen je tools over elke beslissing informeren.",
+      "points": [
+        "Elke correctie wordt opgeslagen met auteur en motivering",
+        "Volledige geschiedenis voor audits en DSA-rapportage"
+      ],
+      "codeTitle": "Audittrail van elke reactie"
+    }
+  ],
+  "rulesAlt": "Regelinstellingen van OpenModeration: verboden woorden, drempels per categorie en regels in gewone taal",
+  "rulesCaption": "Je regels, één keer ingesteld, toegepast op elk gekoppeld platform.",
+  "code": {
+    "webhook": "Facebook stuurt de reactie via een webhook",
+    "rules": "Stel je moderatiedrempels in",
+    "audit": "Volledige audittrail voor elke reactie"
+  }
+};
+
+const stepIcons = [
+  "M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1",
+  "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
+  "M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+];
+const outcomeStyles = [
+  "bg-green-100 text-green-600",
+  "bg-red-100 text-red-600",
+  "bg-amber-100 text-amber-600",
+  "bg-blue-100 text-blue-600"
+];
 
 const pageJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
   "@id": "https://www.openmoderation.com/nl/hoe-het-werkt",
   "url": "https://www.openmoderation.com/nl/hoe-het-werkt",
-  "name": "Zo werkt AI-contentmoderatie: de volledige keten",
-  "description": "Begrijp de volledige moderatieketen: content binnenhalen, AI-moderatie met dubbele AI-controle, automatische regels en acties, en menselijke beoordeling.",
+  "name": "Hoe het werkt: wij modereren je reacties, jij ziet alles",
+  "description": "Je koppelt je pagina’s, onze AI en ons team modereren met jouw regels en je ziet elke beslissing en de reden in realtime. Technische details verderop.",
   "inLanguage": "nl",
-  "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
+  "isPartOf": {
+    "@id": "https://www.openmoderation.com/#website"
+  }
 };
 
-const facebookWebhookExample = `// Facebook stuurt een reactie via webhook
+const facebookWebhookExample = `// Facebook stuurt de reactie via een webhook
 {
   "source": "facebook",
   "content_id": "comment_123",
@@ -57,7 +215,7 @@ PUT /v1/settings
   }
 }`;
 
-const auditTrailExample = `// Volledig audittraject voor elk content-item
+const auditTrailExample = `// Volledige audittrail voor elke reactie
 {
   "content_id": "...",
   "source": "webhook",
@@ -73,233 +231,114 @@ const auditTrailExample = `// Volledig audittraject voor elk content-item
     "status": "executed"
   }]
 }`;
+const codes = [facebookWebhookExample, moderationResponseExample, ruleConfigExample, auditTrailExample];
 ---
 
-<BaseLayout title="Zo werkt AI-contentmoderatie: de volledige keten" description="Begrijp de volledige moderatieketen: content binnenhalen, AI-moderatie met dubbele AI-controle, automatische regels en acties, en menselijke beoordeling." jsonLd={pageJsonLd}>
-<Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: "Hoe het werkt" }]} />
+<BaseLayout title={c.title} description={c.description} jsonLd={pageJsonLd}>
+<Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: c.crumb }]} />
   <section class="bg-gradient-to-b from-brand-50 to-white py-20">
     <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Hoe het werkt</h1>
-      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
-        Eén keten brengt elke reactie van binnenkomst tot automatische actie.
-      </p>
+      <h1 class="mx-auto max-w-4xl text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">{c.h1}</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">{c.lead}</p>
+      <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a href={booking} class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">📅 {t('cta.book')}</a>
+        <a href={signup} class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">{t('cta.button')}</a>
+      </div>
     </div>
   </section>
 
+  <!-- The promise in three steps -->
   <section class="bg-white py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <!-- Pipeline Overview -->
-      <div class="mb-20">
-        <div class="relative rounded-2xl border border-surface-200 bg-surface-50 p-8">
-          <div class="grid gap-6 grid-cols-2 lg:grid-cols-4">
-            <div class="rounded-xl border border-brand-200 bg-white p-6 text-center">
-              <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-100 text-brand-600">
-                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-              </div>
-              <h3 class="text-lg font-semibold text-surface-900">1. Binnenkomst</h3>
-              <p class="mt-2 text-sm text-surface-500">Content komt binnen via de API, een webhook of een connector voor sociale platforms.</p>
-              <div class="mt-4 flex flex-wrap justify-center gap-2">
-                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">POST /v1/moderation</span>
-                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Webhooks</span>
-                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Facebook</span>
-                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Instagram</span>
-                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">YouTube</span>
-              </div>
+      <h2 class="mx-auto max-w-2xl text-center text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">{c.stepsTitle}</h2>
+      <ol class="mt-12 grid gap-6 md:grid-cols-3">
+        {c.steps.map((s, i) => (
+          <li class="relative rounded-2xl border border-surface-200 bg-surface-50 p-8">
+            <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-600 text-white">
+              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={stepIcons[i]}/></svg>
             </div>
-            <div class="rounded-xl border border-brand-400 bg-white p-6 text-center shadow-md">
-              <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-600 text-white">
-                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-              </div>
-              <h3 class="text-lg font-semibold text-surface-900">2. AI-moderatie</h3>
-              <p class="mt-2 text-sm text-surface-500">Onze eigen AI analyseert de content, andere AI-modellen controleren lastige gevallen, en je krijgt een gestandaardiseerd resultaat terug.</p>
-              <div class="mt-4 flex flex-wrap justify-center gap-2">
-                <span class="rounded-full bg-brand-100 px-2.5 py-0.5 text-xs text-brand-700">Eigen AI</span>
-                <span class="rounded-full bg-brand-100 px-2.5 py-0.5 text-xs text-brand-700">Controle door andere AI’s</span>
-                <span class="rounded-full bg-brand-100 px-2.5 py-0.5 text-xs text-brand-700">Schriftelijke motivering</span>
-              </div>
-            </div>
-            <div class="rounded-xl border border-surface-200 bg-white p-6 text-center">
-              <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-100 text-brand-600">
-                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-              </div>
-              <h3 class="text-lg font-semibold text-surface-900">3. Regels en acties</h3>
-              <p class="mt-2 text-sm text-surface-500">De regel-engine beoordeelt de resultaten en acties worden automatisch uitgevoerd.</p>
-              <div class="mt-4 flex flex-wrap justify-center gap-2">
-                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Verbergen</span>
-                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Vasthouden</span>
-                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Publiceren</span>
-                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Webhook</span>
-              </div>
-            </div>
-            <div class="rounded-xl border border-surface-200 bg-white p-6 text-center">
-              <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-100 text-brand-600">
-                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-              </div>
-              <h3 class="text-lg font-semibold text-surface-900">4. Menselijke beoordeling</h3>
-              <p class="mt-2 text-sm text-surface-500">Grensgevallen worden afgehandeld door ons team. Jij ziet alles in realtime en kunt ingrijpen.</p>
-              <div class="mt-4 flex flex-wrap justify-center gap-2">
-                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Ons team</span>
-                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Goedkeuren</span>
-                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">Afwijzen</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Detailed Steps -->
-      <div class="space-y-16">
-        <div class="grid items-center gap-8 lg:grid-cols-2">
-          <div>
-            <span class="mb-2 inline-flex items-center rounded-full bg-brand-100 px-3 py-0.5 text-sm font-medium text-brand-700">Stap 1</span>
-            <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">Content komt overal vandaan</h2>
-            <p class="mt-4 text-surface-500">
-              Content kan via verschillende kanalen binnenkomen. Roep de API direct aan,
-              stel webhooks in om content van externe platforms te ontvangen, of zet de kant-en-klare
-              connectoren voor social media op, die reacties en posts automatisch binnenhalen.
-            </p>
-            <ul class="mt-6 space-y-2 text-sm text-surface-600">
-              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>API:</strong> POST /v1/moderation voor losse of batchmoderatie</li>
-              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Webhooks:</strong> een generiek endpoint ontvangt en normaliseert externe payloads</li>
-              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Connectoren:</strong> kant-en-klare integratie met Facebook, Instagram, YouTube en WordPress</li>
-            </ul>
-          </div>
-          <div class="rounded-xl border border-surface-200 bg-surface-50 p-8">
-            <h4 class="mb-3 text-sm font-semibold text-surface-900">Voorbeeld: Facebook-reactie</h4>
-            <CodeBlock code={facebookWebhookExample} lang="json" />
-          </div>
-        </div>
-
-        <div class="grid items-center gap-8 lg:grid-cols-2">
-          <div class="lg:order-2">
-            <span class="mb-2 inline-flex items-center rounded-full bg-brand-100 px-3 py-0.5 text-sm font-medium text-brand-700">Stap 2</span>
-            <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">AI modereert de content</h2>
-            <p class="mt-4 text-surface-500">
-              Onze eigen moderatie-AI leest elke reactie in context en past je regels toe. Bij lastige gevallen
-              beoordelen andere AI-modellen de beslissing voordat die wordt toegepast. Je krijgt gestandaardiseerde resultaten terug met
-               scores van 0,0 tot 1,0 over 10 contentcategorieën.
-            </p>
-            <ul class="mt-6 space-y-2 text-sm text-surface-600">
-              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Gecontroleerde AI:</strong> minder fouten, minder reacties die onterecht verborgen worden</li>
-              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Model-agnostisch:</strong> komt er een beter of goedkoper AI-model uit, dan sluiten we het snel aan</li>
-              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Gestandaardiseerde output:</strong> hetzelfde formaat, welk model er ook achter zit</li>
-            </ul>
-          </div>
-          <div class="rounded-xl border border-surface-200 bg-surface-50 p-8 lg:order-1">
-            <h4 class="mb-3 text-sm font-semibold text-surface-900">Gestandaardiseerde response</h4>
-            <CodeBlock code={moderationResponseExample} lang="json" />
-          </div>
-        </div>
-
-        <div class="grid items-center gap-8 lg:grid-cols-2">
-          <div>
-            <span class="mb-2 inline-flex items-center rounded-full bg-brand-100 px-3 py-0.5 text-sm font-medium text-brand-700">Stap 3</span>
-            <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">Moderatie afgestemd op je regels</h2>
-            <p class="mt-4 text-surface-500">
-              Leg je moderatieregels vast met drie eenvoudige hulpmiddelen: <strong>verboden woorden</strong> om direct te blokkeren, <strong>drempels per categorie</strong> voor automatische beslissingen, en <strong>je eigen regels</strong> in gewone taal voor AI-moderatie die de context begrijpt.
-            </p>
-            <div class="mt-6 space-y-3">
-              <div class="rounded-lg border border-surface-200 bg-white p-4">
-                <p class="text-sm text-surface-700"><strong>Verboden woorden</strong> blokkeren content direct, nog vóór een AI-aanroep, dus ze kosten niets</p>
-              </div>
-              <div class="rounded-lg border border-surface-200 bg-white p-4">
-                <p class="text-sm text-surface-700"><strong>Drempels per categorie</strong> zetten automatische acties in gang zodra scores je grenzen overschrijden</p>
-              </div>
-              <div class="rounded-lg border border-surface-200 bg-white p-4">
-                <p class="text-sm text-surface-700"><strong>Je regels in gewone taal</strong> sturen de AI-beslissingen in context en bepalen de toon op je platform</p>
-              </div>
-            </div>
-          </div>
-          <div>
-            <BrowserFrame
-              src="/images/rules.png"
-              video="om-rules"
-              alt="Regelinstellingen van OpenModeration met verboden woorden, drempels per categorie en regels in gewone taal"
-              caption="Stel je drempels één keer in en ze gelden overal."
-              eager={false}
-            />
-            <details class="mt-4 rounded-xl border border-surface-200 bg-surface-50 p-4">
-              <summary class="cursor-pointer text-sm font-semibold text-surface-700">Voor ontwikkelaars: configuratie via de API</summary>
-              <div class="mt-3">
-                <CodeBlock code={ruleConfigExample} lang="json" />
-              </div>
-            </details>
-          </div>
-        </div>
-
-        <div class="grid items-center gap-8 lg:grid-cols-2">
-          <div class="lg:order-2">
-            <span class="mb-2 inline-flex items-center rounded-full bg-brand-100 px-3 py-0.5 text-sm font-medium text-brand-700">Stap 4</span>
-            <h2 class="text-2xl font-bold text-surface-900 sm:text-3xl">Grensgevallen: ons team neemt ze voor zijn rekening</h2>
-            <p class="mt-4 text-surface-500">
-              Twijfelgevallen, meldingen van gebruikers en betwiste beslissingen worden afgehandeld door ons team. Jij hoeft niets te doen,
-              maar ziet elke beslissing in realtime en kunt op elk moment ingrijpen of overrulen. Elke stap blijft controleerbaar.
-            </p>
-            <ul class="mt-6 space-y-2 text-sm text-surface-600">
-              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <strong>Goedkeuren of afwijzen met één klik.</strong> Elke correctie wordt vastgelegd met wie besliste en waarom.</li>
-              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Keur zelf items goed of af in de moderatieconsole, wanneer je wilt</li>
-              <li class="flex items-center gap-2"><svg class="h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Webhookmeldingen bij nieuwe beslissingen</li>
-            </ul>
-          </div>
-          <div class="rounded-xl border border-surface-200 bg-surface-50 p-8 lg:order-1">
-            <h4 class="mb-3 text-sm font-semibold text-surface-900">Alles wordt vastgelegd</h4>
-            <CodeBlock code={auditTrailExample} lang="json" />
-          </div>
-        </div>
-      </div>
+            <p class="text-sm font-semibold text-brand-600">{i + 1}</p>
+            <h3 class="mt-1 text-xl font-semibold text-surface-900">{s.title}</h3>
+            <p class="mt-3 text-surface-500">{s.text}</p>
+          </li>
+        ))}
+      </ol>
+      <p class="mx-auto mt-10 max-w-2xl text-center text-surface-600">{c.stepsNote}</p>
     </div>
   </section>
 
-  <!-- Action Engine -->
+  <!-- What happens to each comment -->
   <section id="action-engine" class="scroll-mt-24 bg-surface-50 py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="mx-auto mb-12 max-w-2xl text-center">
-        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Action Engine</h2>
-        <p class="mt-4 text-lg text-surface-500">Wanneer je regels worden geraakt, voert de Action Engine je beslissing automatisch uit op het platform zelf. Elke actie wordt vastgelegd.</p>
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">{c.outcomesTitle}</h2>
+        <p class="mt-4 text-lg text-surface-500">{c.outcomesLead}</p>
       </div>
       <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        <div class="rounded-xl border border-surface-200 bg-white p-6">
-          <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-red-100 text-red-600">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>
+        {c.outcomes.map((o, i) => (
+          <div class="rounded-xl border border-surface-200 bg-white p-6">
+            <span class={`mb-3 inline-flex rounded-full px-3 py-1 text-xs font-semibold ${outcomeStyles[i]}`}>{o.label}</span>
+            <h3 class="font-semibold text-surface-900">{o.title}</h3>
+            <p class="mt-1 text-sm text-surface-500">{o.text}</p>
           </div>
-          <h3 class="font-semibold text-surface-900">Automatisch verbergen</h3>
-          <p class="mt-1 text-sm text-surface-500">Afgewezen content wordt verborgen op Facebook en Instagram en afgewezen op YouTube. Je community ziet hem nooit.</p>
-        </div>
-        <div class="rounded-xl border border-surface-200 bg-white p-6">
-          <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-amber-100 text-amber-600">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          </div>
-          <h3 class="font-semibold text-surface-900">Vasthouden voor beoordeling</h3>
-          <p class="mt-1 text-sm text-surface-500">Twijfelachtige content wordt tegengehouden en door ons team beoordeeld. Er wordt niets gepubliceerd en niets raakt kwijt.</p>
-        </div>
-        <div class="rounded-xl border border-surface-200 bg-white p-6">
-          <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-green-100 text-green-600">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          </div>
-          <h3 class="font-semibold text-surface-900">Publiceren en herstellen</h3>
-          <p class="mt-1 text-sm text-surface-500">Nette content gaat gewoon online. Keurt een moderator een vastgehouden reactie goed, dan wordt die gepubliceerd.</p>
-        </div>
-        <div class="rounded-xl border border-surface-200 bg-white p-6">
-          <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-          </div>
-          <h3 class="font-semibold text-surface-900">Je eigen tools informeren</h3>
-          <p class="mt-1 text-sm text-surface-500">Elke beslissing kan via een webhook je eigen tools bereiken, voor eigen workflows en integraties.</p>
-        </div>
+        ))}
       </div>
-      <div class="mx-auto mt-12 max-w-xl">
-        <BrowserFrame
-          src="/images/rules.png"
-          video="om-rules"
-          alt="Dashboard van OpenModeration: regelconfiguratie met drempels per categorie en automatische acties"
-          caption="Stel je drempels één keer in en ze gelden op elk gekoppeld platform."
-        />
+      <div class="mx-auto mt-12 max-w-2xl rounded-2xl border border-brand-200 bg-white p-8 text-center">
+        <h3 class="text-xl font-semibold text-surface-900">{c.testTitle}</h3>
+        <p class="mt-2 text-surface-500">{c.testText}</p>
+      <div class="mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a href={booking} class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">📅 {t('cta.book')}</a>
+        <a href={signup} class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">{t('cta.button')}</a>
       </div>
-      <div class="mt-10 text-center">
-        <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">
-          Probeer het gratis
-        </a>
-        <p class="mt-3 text-sm text-surface-400">Geen creditcard nodig</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- For technical teams -->
+  <section id="developers" class="scroll-mt-24 bg-white py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <p class="text-sm font-semibold uppercase tracking-wider text-brand-600">{c.devEyebrow}</p>
+        <h2 class="mt-2 text-3xl font-bold tracking-tight text-surface-900">{c.devTitle}</h2>
+        <p class="mt-4 text-surface-500">{c.devLead}</p>
+      </div>
+      <div class="mb-16 grid grid-cols-2 gap-4 rounded-2xl border border-surface-200 bg-surface-50 p-6 lg:grid-cols-4">
+        {c.pipeline.map((p, i) => (
+          <div class="rounded-xl border border-surface-200 bg-white p-5 text-center">
+            <p class="font-semibold text-surface-900">{i + 1}. {p.title}</p>
+            <p class="mt-2 text-sm text-surface-500">{p.text}</p>
+            <div class="mt-3 flex flex-wrap justify-center gap-2">
+              {p.tags.map((tag) => <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-xs text-surface-600">{tag}</span>)}
+            </div>
+          </div>
+        ))}
+      </div>
+      <div class="space-y-16">
+        {c.details.map((d, i) => (
+          <div class="grid items-center gap-8 lg:grid-cols-2">
+            <div class={i % 2 ? 'lg:order-2' : ''}>
+              <span class="mb-2 inline-flex items-center rounded-full bg-brand-100 px-3 py-0.5 text-sm font-medium text-brand-700">{c.stepLabel} {i + 1}</span>
+              <h3 class="text-2xl font-bold text-surface-900">{d.title}</h3>
+              <p class="mt-4 text-surface-500">{d.text}</p>
+              <ul class="mt-6 space-y-2 text-sm text-surface-600">
+                {d.points.map((pt) => (
+                  <li class="flex items-start gap-2"><svg class="mt-0.5 h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>{pt}</span></li>
+                ))}
+              </ul>
+            </div>
+            <div class={i % 2 ? 'lg:order-1' : ''}>
+              {i === 2 && (
+                <div class="mb-4">
+                  <BrowserFrame src="/images/rules.png" video="om-rules" alt={c.rulesAlt} caption={c.rulesCaption} eager={false} />
+                </div>
+              )}
+              <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+                <p class="mb-3 text-sm font-semibold text-surface-900">{d.codeTitle}</p>
+                <CodeBlock code={codes[i]} lang="json" />
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   </section>

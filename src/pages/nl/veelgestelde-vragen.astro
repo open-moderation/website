@@ -1,126 +1,146 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import FAQ from '../../components/FAQ.astro';
+import CTASection from '../../components/CTASection.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
-import { getLocale, localizePath } from '../../i18n/routes';
-import { bookingUrl } from '../../i18n/ui';
+import { localizePath, type Locale } from '../../i18n/routes';
+import { useTranslations } from '../../i18n/ui';
 
-const locale = getLocale(Astro.url.pathname);
-const BOOKING_URL = bookingUrl(locale);
+const locale: Locale = 'nl';
+const t = useTranslations(locale);
+const booking = localizePath('/book-a-call', locale);
+const signup = 'https://app.openmoderation.com/signup';
 
-const faqItems = [
-  {
-    question: "Moet ik kunnen programmeren om moderatieregels in te stellen?",
-    answer: "Nee. OpenModeration werkt met drie eenvoudige hulpmiddelen: verboden woorden om direct te blokkeren, drempels per categorie voor automatische beslissingen, en je eigen regels in gewone taal. De Action Engine past ze daarna automatisch toe, zonder code.",
-  },
-  {
-    question: "Kan ik een beslissing van de AI handmatig terugdraaien?",
-    answer: "Ja. Twijfelgevallen worden afgehandeld door ons team, dus jij hoeft niets te doen. Maar je ziet elke beslissing in realtime in de console, met de redenering van de AI, en je kunt op elk moment goedkeuren, afwijzen of overrulen. Elke actie wordt vastgelegd voor audits.",
-  },
-  {
-    question: "Is er een gratis abonnement?",
-    answer: "OpenModeration heeft een gratis abonnement tot 1.000 verzoeken per maand, zonder creditcard. Het Pro-abonnement kost € 99 per maand voor 10.000 verzoeken. Bekijk de prijzenpagina voor alle details.",
-  },
-  {
-    question: "Wat is het verschil met de OpenAI Moderation API?",
-    answer: "De OpenAI Moderation API is één enkele classifier die weinig laat zien van hoe de moderatie werkt. OpenModeration draait zijn eigen moderatie-AI, ingericht op jouw regels en jouw use cases, en laat lastige gevallen controleren door andere AI-modellen. Elke beslissing krijgt een schriftelijke reden, twijfelgevallen worden afgehandeld door ons team, en je krijgt een realtime dashboard en een action engine voor geautomatiseerde workflows.",
-  },
-  {
-    question: "Wat is het verschil met Nima (Tremau)?",
-    answer: "OpenModeration licht elke beslissing schriftelijk toe, houdt een volledig audittraject bij, laat lastige gevallen controleren door andere AI-modellen en host je gegevens in de Europese Unie. Een on-premise installatie is op aanvraag mogelijk.",
-  },
-  {
-    question: "Wat is het verschil met Checkstep?",
-    answer: "OpenModeration is API-first en draait zijn eigen moderatie-AI, bij lastige gevallen gecontroleerd door andere AI-modellen. Elke beslissing krijgt een schriftelijke reden, de gegevens worden in de EU gehost, en ons team zet de moderatie samen met jou op, rond je eigen regels.",
-  },
-  {
-    question: "Wat betekent DSA-proof?",
-    answer: "OpenModeration houdt een volledig audittraject bij van elke moderatiebeslissing, met instelbare bewaartermijnen en exporteerbare rapporten. Zo kunnen platforms voldoen aan de eisen voor transparantie en verantwoording van de Europese Digital Services Act (DSA).",
-  },
-  {
-    question: "Welke AI gebruikt OpenModeration?",
-    answer: "OpenModeration draait zijn eigen moderatie-AI, getraind op het modereren van reacties en ingericht op jouw regels en jouw use cases. Bij lastige gevallen beoordelen andere AI-modellen de beslissing voordat die wordt toegepast: minder fouten en minder reacties die onterecht verborgen worden.",
-  },
-  {
-    question: "Kan ik OpenModeration op mijn eigen infrastructuur draaien?",
-    answer: "Een on-premise installatie is op aanvraag mogelijk. Laten we het bespreken: plan een gesprek met ons. Standaard draait OpenModeration in onze beheerde cloud, gehost in de Europese Unie.",
-  },
-  {
-    question: "Bieden jullie een beheerde cloud aan?",
-    answer: "Ja, onze beheerde cloud-SaaS begint bij € 99 per maand. Daarin zitten 10.000 verzoeken per maand, geen infrastructuur om te beheren, AI-modellen inbegrepen, infrastructuur gehost in de EU, prioriteitssupport en een SLA. Bekijk de prijzenpagina voor alle details.",
-  },
-  {
-    question: "Hoe snel levert het iets op?",
-    answer: "Binnen enkele minuten als je de REST API voor basismoderatie gebruikt. Een paar uur om het volledige platform met dashboard, action engine en connectoren uit te rollen als je de snelstartgids volgt. Daarna draait de moderatie vanzelf, en jij ziet elke beslissing in realtime.",
-  },
-  {
-    question: "Wat gebeurt er als er een beter AI-model uitkomt?",
-    answer: "Onze engine is model-agnostisch. Komt er een beter of goedkoper AI-model uit, dan sluit ons team het snel aan, en voor jou verandert er niets. AI-modellen worden elk jaar beter, en jij profiteert van die vooruitgang in plaats van vast te zitten aan het model van gisteren.",
-  },
-  {
-    question: "Kan ik eigen categorieën toevoegen?",
-    answer: "Ja. Anders dan bij traditionele classifiers met vaste categorieën kun je willekeurige moderatiecategorieën definiëren via prompts in gewone taal, zodat de moderatie precies aansluit op je eigen contentbeleid.",
-  },
-  {
-    question: "En afbeeldingen en video?",
-    answer: "De huidige versie richt zich op tekstmoderatie. Moderatie van afbeeldingen en video staat op de roadmap en zal multimodale AI-modellen gebruiken zodra die beschikbaar zijn.",
-  },
-];
-
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@graph": [
+const c = {
+  "title": "FAQ reactiemoderatie: AI, ons team, DSA en prijs",
+  "description": "Wie modereert, hoe de AI je regels volgt, testen op je eigen reacties, DSA, platforms, data en prijs: antwoorden voor media, merken en overheden.",
+  "crumb": "Veelgestelde vragen",
+  "h1": "Je vragen over reactiemoderatie, beantwoord",
+  "intro": "De vragen die media, merken en overheidsinstellingen ons het vaakst stellen voordat ze kiezen. Staat de jouwe er niet bij? Plan een gesprek en vraag het ons.",
+  "buyerTitle": "Voordat je kiest",
+  "techTitle": "Voor technische teams",
+  "techIntro": "Meer technische details voor je developers en IT-afdeling.",
+  "ctaTitle": "Nog een vraag?",
+  "ctaSubtitle": "Plan een gesprek: we beantwoorden je vragen en laten zien wat onze moderatie met je eigen reacties zou doen.",
+  "buyer": [
     {
-      "@type": "WebPage",
-      "@id": "https://www.openmoderation.com/nl/veelgestelde-vragen",
-      "url": "https://www.openmoderation.com/nl/veelgestelde-vragen",
-      "name": "Veelgestelde vragen over moderatie: prijs, hosting, DSA",
-      "inLanguage": "nl",
-      "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
+      "question": "Modereert de AI zelfstandig?",
+      "answer": "Nee. Onze AI wordt ingesteld op jouw regels en beslist alleen zelf als ze zeker is. Lastige gevallen worden gecontroleerd door andere AI-modellen, twijfelgevallen gaan naar ons team, dat beslist volgens jouw regels en je op de hoogte houdt. Je hoeft niets te doen, tenzij je zelf wilt ingrijpen."
     },
     {
-      "@type": "FAQPage",
-      "@id": "https://www.openmoderation.com/nl/veelgestelde-vragen#faq",
-      "inLanguage": "nl",
-      "mainEntity": faqItems.map(item => ({
-        "@type": "Question",
-        "name": item.question,
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": item.answer.replace(/&mdash;/g, '—')
-        }
-      }))
+      "question": "Hoe kent de AI onze redactionele lijn?",
+      "answer": "We vertrekken vanuit je huisregels en use cases: wat je accepteert, wat je weigert, de grensgevallen. Als je een beslissing corrigeert, passen we de regels samen met je aan. Het is geen lijst met verboden woorden: de AI leest elke reactie in haar context."
+    },
+    {
+      "question": "Kunnen we testen voordat we tekenen?",
+      "answer": "Ja. In de sandbox analyseert OpenModeration je echte reacties zonder iets te publiceren of te verbergen. Je ziet wat we zouden hebben geaccepteerd of geweigerd, met de reden, en vergelijkt het met je huidige moderatie. Er wordt niets voor je verborgen."
+    },
+    {
+      "question": "Kunnen we testen zonder onze huidige leverancier te verlaten?",
+      "answer": "Ja. De test draait stil naast je huidige moderatie, zonder je productie aan te raken. Je vergelijkt beslissing per beslissing en kiest daarna met kennis van zaken, wanneer het jou uitkomt."
+    },
+    {
+      "question": "Wat zien we aan onze kant?",
+      "answer": "Alles, in realtime: elke reactie, de genomen beslissing, de schriftelijke reden en de geschiedenis. Je kunt elke beslissing op elk moment terugdraaien in de console."
+    },
+    {
+      "question": "Waarom is een reactie geweigerd?",
+      "answer": "Elke beslissing heeft een schriftelijke reden (belediging, persoonlijke aanval, spam…), die je kunt doorgeven aan de schrijver. Dat is duidelijker voor je lezers en makkelijker te verantwoorden bij bezwaar."
+    },
+    {
+      "question": "Helpt OpenModeration bij de DSA?",
+      "answer": "Het is gebouwd voor de DSA: een schriftelijke reden voor elke beslissing, een traceerbare geschiedenis, opvolging van meldingen en bezwaren, en exporteerbare cijfers. Jij blijft de verantwoordelijke uitgever, en je hebt alles om elke beslissing te verantwoorden."
+    },
+    {
+      "question": "Wat gebeurt er als de AI twijfelt?",
+      "answer": "De reactie wordt apart gezet en ons team behandelt haar volgens jouw regels. Je krijgt een verslag van de behandelde gevallen en van de punten in je huisregels die verduidelijking verdienen."
+    },
+    {
+      "question": "En ’s nachts, in het weekend of bij pieken?",
+      "answer": "De AI modereert dag en nacht met dezelfde regels, ongeacht het volume, ook tijdens een wedstrijd of een verkiezingsavond. Twijfelachtige reacties worden apart gezet in plaats van gepubliceerd, tot ons team ze heeft behandeld."
+    },
+    {
+      "question": "Op welke platforms werkt OpenModeration?",
+      "answer": "Je website (via onze API of WordPress), Facebook, Instagram en YouTube, met kant-en-klare connectoren. TikTok, X, LinkedIn en andere netwerken voegen we op aanvraag snel toe. Ons team koppelt je pagina’s samen met jou."
+    },
+    {
+      "question": "Welke talen worden gemodereerd?",
+      "answer": "OpenModeration is meertalig: elke reactie wordt in haar eigen taal geanalyseerd, ook in de talen van je publiek. Vertel ons welke voor jou tellen, dan laten we je de resultaten zien op je eigen reacties."
+    },
+    {
+      "question": "Waar worden onze gegevens gehost?",
+      "answer": "In de Europese Unie, conform de AVG. Je reacties worden alleen gebruikt om je eigen kanalen te modereren."
+    },
+    {
+      "question": "Moeten we ons technische team inschakelen?",
+      "answer": "Nauwelijks. Voor sociale netwerken en WordPress koppel je gewoon je accounts. Voor een website of eigen tool stuurt een API ons je reacties en krijg je elke beslissing met reden terug. Ons team regelt de inrichting samen met jou."
+    },
+    {
+      "question": "Wat kost het?",
+      "answer": "De prijs hangt af van het aantal reacties dat gemodereerd moet worden. Met een gratis plan kun je het uitproberen; daarna bieden we een voorspelbaar pakket op maat van je volumes, na een test op je eigen reacties: zo beoordeel je de kwaliteit voordat we over budget praten."
+    }
+  ],
+  "tech": [
+    {
+      "question": "Is er een API?",
+      "answer": "Ja. Een REST-API ontvangt elke reactie en geeft de beslissing, de categorie en de schriftelijke reden terug. Webhooks informeren je tools over elke beslissing, en toegangssleutels beheer je in de console."
+    },
+    {
+      "question": "Op welke AI draait OpenModeration?",
+      "answer": "Op onze eigen moderatie-AI, intern ontwikkeld en in zeven jaar getraind op miljoenen berichten. Bij lastige gevallen controleren andere AI-modellen de beslissing voordat ze wordt toegepast. Komt er een beter model uit, dan koppelen we het, zonder wijziging aan jouw kant."
+    },
+    {
+      "question": "Kunnen we eigen categorieën toevoegen?",
+      "answer": "Ja. Naast de standaardcategorieën (haat, intimidatie, spam…) schrijf je je regels in gewone taal, dus elke categorie uit je eigen beleid kan worden toegevoegd. De AI past ze toe met oog voor de context."
+    },
+    {
+      "question": "En afbeeldingen of video?",
+      "answer": "De huidige versie richt zich op tekst. Moderatie van afbeeldingen en video staat op de roadmap en profiteert van multimodale AI-modellen naarmate die beter worden."
+    },
+    {
+      "question": "Kan het op onze eigen servers draaien?",
+      "answer": "Standaard wordt OpenModeration gehost in de Europese Unie en blijven je gegevens exporteerbaar. Een on-premise installatie is mogelijk op aanvraag: laten we het erover hebben."
     }
   ]
 };
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/nl/veelgestelde-vragen",
+  "url": "https://www.openmoderation.com/nl/veelgestelde-vragen",
+  "name": "FAQ reactiemoderatie: AI, ons team, DSA en prijs",
+  "description": "Wie modereert, hoe de AI je regels volgt, testen op je eigen reacties, DSA, platforms, data en prijs: antwoorden voor media, merken en overheden.",
+  "inLanguage": "nl",
+  "isPartOf": {
+    "@id": "https://www.openmoderation.com/#website"
+  }
+};
 ---
 
-<BaseLayout
-  title="Veelgestelde vragen over moderatie: prijs, hosting, DSA"
-  description="Antwoorden op veelgestelde vragen over OpenModeration: prijzen, hosting, DSA-naleving, onze AI-engine en integratie."
-  jsonLd={faqJsonLd}
->
-<Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: "Veelgestelde vragen" }]} />
+<BaseLayout title={c.title} description={c.description} jsonLd={pageJsonLd}>
+<Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: c.crumb }]} />
   <section class="bg-gradient-to-b from-brand-50 to-white py-20">
     <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Veelgestelde vragen</h1>
-      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
-        Antwoorden op de vragen die we het vaakst krijgen over OpenModeration. Staat jouw vraag er niet bij? <a href={BOOKING_URL} class="text-brand-600 hover:text-brand-500" target="_blank" rel="noopener">Laten we praten</a>.
-      </p>
-      <div class="mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row">
-        <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">
-          Probeer het gratis
-        </a>
-        <a href={localizePath('/pricing', locale)} class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">
-          Bekijk de prijzen
-        </a>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">{c.h1}</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">{c.intro}</p>
+      <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a href={booking} class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">📅 {t('cta.book')}</a>
+        <a href={signup} class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">{t('cta.button')}</a>
       </div>
-      <p class="mt-4 text-sm text-surface-400">Geen creditcard nodig</p>
     </div>
   </section>
   <section class="bg-white py-12">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <FAQ items={faqItems} disableJsonLd />
+      <FAQ items={c.buyer} title={c.buyerTitle} />
     </div>
   </section>
+  <section class="bg-surface-50 py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <p class="mx-auto mb-6 max-w-3xl text-center text-sm text-surface-500">{c.techIntro}</p>
+      <FAQ items={c.tech} title={c.techTitle} disableJsonLd />
+    </div>
+  </section>
+
+  <CTASection title={c.ctaTitle} subtitle={c.ctaSubtitle} />
 </BaseLayout>

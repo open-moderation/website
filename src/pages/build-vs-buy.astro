@@ -1,231 +1,59 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import CTASection from '../components/CTASection.astro';
-import Breadcrumb from '../components/Breadcrumb.astro';
-
-const pageJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  "@id": "https://www.openmoderation.com/build-vs-buy",
-  "url": "https://www.openmoderation.com/build-vs-buy",
-  "name": "Build vs Buy Content Moderation: Real Cost Comparison",
-  "description": "Compare the true cost of building in-house moderation infrastructure versus using OpenModeration. Engineering time, maintenance, and feature parity analysis.",
-  "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
-};
-
-const costs = [
-  { item: 'Time to operational value', build: '6-12 months', buy: 'Minutes' },
-  { item: 'Development effort', build: 'Multiple engineers building internal tools', buy: 'Zero (ready-to-use platform)' },
-  { item: 'Ongoing maintenance & updates', build: 'Dedicated team required', buy: 'Handled by the platform' },
-  { item: 'Infrastructure (servers, DB, Redis)', build: '€500 to €5K/mo', buy: 'Your existing infra' },
-  { item: 'Compliance & audit trail setup', build: '€30k to €100k in custom dev', buy: '€0 (built-in)' },
-  { item: 'Team management & review UI', build: 'Months of internal UX/UI dev', buy: 'Included out of the box' },
-];
+import BuildVsBuyDecision from '../components/BuildVsBuyDecision.astro';
 ---
 
-<BaseLayout
-  title="Build vs Buy Content Moderation: Real Cost Comparison"
-  description="Compare the true cost of building in-house moderation infrastructure versus using OpenModeration. Engineering time, maintenance, and feature parity analysis."
-  jsonLd={pageJsonLd}
->
-<Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Build vs Buy" }]} />
-  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
-    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
-        Build vs Buy
-      </div>
-      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Build vs Buy: The true cost of moderation infrastructure</h1>
-      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
-        Before you decide to build your own moderation pipeline, understand what it really costs.
-      </p>
-    </div>
-  </section>
-
-  <section class="bg-white py-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="grid gap-8 lg:grid-cols-2">
-        <div class="rounded-xl border-2 border-surface-200 bg-surface-50 p-8">
-          <h2 class="text-xl font-bold text-surface-900">Build internal tools</h2>
-          <div class="mt-6 space-y-4">
-            <div class="border-b border-surface-200 pb-4">
-              <p class="text-sm text-surface-500">Time to operational value</p>
-              <p class="text-2xl font-bold text-surface-900">6-12 months</p>
-            </div>
-            <div class="border-b border-surface-200 pb-4">
-              <p class="text-sm text-surface-500">Development effort</p>
-              <p class="text-2xl font-bold text-surface-900">High</p>
-              <p class="text-xs text-surface-400">Multiple engineers building dashboards, rules, and integrations</p>
-            </div>
-            <div class="border-b border-surface-200 pb-4">
-              <p class="text-sm text-surface-500">Maintenance</p>
-              <p class="text-2xl font-bold text-surface-900">Ongoing forever</p>
-              <p class="text-xs text-surface-400">Continuous updates for AI model changes and compliance</p>
-            </div>
-            <div>
-              <p class="text-sm text-surface-500">Team review UI</p>
-              <p class="text-2xl font-bold text-surface-900">Custom build required</p>
-            </div>
-          </div>
-        </div>
-        <div class="rounded-xl border-2 border-brand-500 bg-brand-50 p-8">
-          <div class="mb-2 inline-flex items-center gap-2 rounded-full bg-brand-100 px-3 py-1 text-xs font-semibold text-brand-700">Recommended</div>
-          <h2 class="text-xl font-bold text-surface-900">OpenModeration</h2>
-          <div class="mt-6 space-y-4">
-            <div class="border-b border-brand-200 pb-4">
-              <p class="text-sm text-surface-500">Time to operational value</p>
-              <p class="text-2xl font-bold text-surface-900">Minutes</p>
-              <p class="text-xs text-surface-400">Ready-to-use platform</p>
-            </div>
-            <div class="border-b border-brand-200 pb-4">
-              <p class="text-sm text-surface-500">Development effort</p>
-              <p class="text-2xl font-bold text-accent-600">Zero</p>
-              <p class="text-xs text-surface-400">Focus your engineers on your core product</p>
-            </div>
-            <div class="border-b border-brand-200 pb-4">
-              <p class="text-sm text-surface-500">Maintenance</p>
-              <p class="text-2xl font-bold text-surface-900">Minimal</p>
-              <p class="text-xs text-surface-400">Platform handles AI model updates and compliance</p>
-            </div>
-            <div>
-              <p class="text-sm text-surface-500">Team review UI</p>
-              <p class="text-2xl font-bold text-surface-900">Included out of the box</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="bg-surface-50 py-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="mb-8 text-2xl font-bold text-surface-900 sm:text-3xl">Year 1 cost breakdown</h2>
-      <div class="overflow-x-auto rounded-xl border border-surface-200">
-        <table class="w-full text-left text-sm">
-          <thead>
-            <tr class="bg-surface-100">
-              <th class="px-6 py-4 font-semibold text-surface-900">Cost item</th>
-              <th class="px-6 py-4 font-semibold text-red-600">Build</th>
-              <th class="px-6 py-4 font-semibold text-accent-600">OpenModeration</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-surface-200 bg-white">
-            {costs.map((c) => (
-              <tr>
-                <td class="px-6 py-4 text-surface-600">{c.item}</td>
-                <td class="px-6 py-4 text-surface-900">{c.build}</td>
-                <td class="px-6 py-4 font-medium text-accent-600">{c.buy}</td>
-              </tr>
-            ))}
-            <tr><td class="px-6 py-4 text-surface-600">Year 1 total effort</td>
-              <td class="px-6 py-4 font-bold text-red-600">High (multiple FTEs)</td>
-              <td class="px-6 py-4 font-bold text-accent-600">Minimal (ready-to-use)</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="mt-4 text-xs text-surface-400">Estimates based on typical internal tool development cycles. Your mileage may vary.</p>
-    </div>
-  </section>
-
-  <section class="bg-white py-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="mb-8 text-2xl font-bold text-surface-900 sm:text-3xl">What you get vs what you build</h2>
-      <div class="overflow-x-auto rounded-xl border border-surface-200">
-        <table class="w-full text-left text-sm">
-          <thead>
-            <tr class="bg-surface-100">
-              <th class="px-6 py-4 font-semibold text-surface-900">Feature</th>
-              <th class="px-6 py-4 font-semibold text-red-600">Building in-house</th>
-              <th class="px-6 py-4 font-semibold text-accent-600">OpenModeration</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-surface-200 bg-white">
-            <tr><td class="px-6 py-4 text-surface-600">Moderation AI</td><td class="px-6 py-4 text-surface-500">Train, evaluate and maintain your own models</td><td class="px-6 py-4 text-accent-600">Our own moderation AI, cross-checked by other AI models on delicate cases</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Unified response format</td><td class="px-6 py-4 text-surface-500">Custom normalization per model</td><td class="px-6 py-4 text-accent-600">Standardized out of the box</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Keeping up with new AI models</td><td class="px-6 py-4 text-surface-500">Re-integrate and re-test at each release</td><td class="px-6 py-4 text-accent-600">We plug in better models as they come out, nothing changes on your side</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Admin dashboard</td><td class="px-6 py-4 text-surface-500">Build React/Vue dashboard</td><td class="px-6 py-4 text-accent-600">Included, ready to use</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Human review UI & team management</td><td class="px-6 py-4 text-surface-500">Months of internal tool development</td><td class="px-6 py-4 text-accent-600">Doubtful cases handled by our team; a real-time dashboard for yours</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Smart, context-aware AI rules</td><td class="px-6 py-4 text-surface-500">Complex, fragile custom logic</td><td class="px-6 py-4 text-accent-600">Three simple tools: word filters, thresholds, your rules in plain language</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Action engine</td><td class="px-6 py-4 text-surface-500">Build rules engine + webhooks</td><td class="px-6 py-4 text-accent-600">Built-in Action Engine</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Social connectors</td><td class="px-6 py-4 text-surface-500">Integrate each platform individually</td><td class="px-6 py-4 text-accent-600">Facebook, Instagram, YouTube, WordPress included</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Audit trail</td><td class="px-6 py-4 text-surface-500">Design logging system from scratch</td><td class="px-6 py-4 text-accent-600">DSA-compliant audit logs</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Batch moderation</td><td class="px-6 py-4 text-surface-500">Build async processing + webhooks</td><td class="px-6 py-4 text-accent-600">Native batch API</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">API key management</td><td class="px-6 py-4 text-surface-500">Implement auth + rate limiting</td><td class="px-6 py-4 text-accent-600">Built-in key management</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-
-  <section class="bg-ink-900 py-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="mx-auto max-w-3xl text-center">
-        <h2 class="text-2xl font-bold text-white sm:text-3xl">The hidden costs of building in-house</h2>
-      </div>
-      <div class="mt-8 grid gap-6 md:grid-cols-2">
-        <div class="rounded-xl border border-ink-700 bg-ink-800 p-6">
-          <h3 class="font-semibold text-white">AI model changes</h3>
-          <p class="mt-2 text-sm text-surface-400">AI vendors change schemas, deprecate models, and update taxonomies without warning. For an in-house system, every one of those changes is an emergency. OpenModeration takes care of these updates for you.</p>
-        </div>
-        <div class="rounded-xl border border-ink-700 bg-ink-800 p-6">
-          <h3 class="font-semibold text-white">Compliance drift</h3>
-          <p class="mt-2 text-sm text-surface-400">DSA and other regulations evolve. In-house teams must track legislation and implement audit trail changes. OpenModeration is built DSA-compliant from day one.</p>
-        </div>
-        <div class="rounded-xl border border-ink-700 bg-ink-800 p-6">
-          <h3 class="font-semibold text-white">Operational overhead</h3>
-          <p class="mt-2 text-sm text-surface-400">Building the API is only 20% of the work. The other 80% goes into the dashboard, rule engine, team management and review UI that moderation needs to run day to day. With OpenModeration, our team also handles the doubtful cases.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="bg-surface-50 py-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="mb-8 text-2xl font-bold text-surface-900 sm:text-3xl">When to build vs when to buy</h2>
-      <div class="grid gap-8 md:grid-cols-2">
-        <div class="rounded-xl border border-surface-200 bg-white p-6">
-          <h3 class="flex items-center gap-2 text-lg font-semibold text-red-600">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-            Build when...
-          </h3>
-          <ul class="mt-4 space-y-2 text-sm text-surface-600">
-            <li>Moderation tooling is your core product differentiator</li>
-            <li>You have a dedicated engineering team to build and maintain it</li>
-            <li>You need highly proprietary, custom moderation algorithms</li>
-          </ul>
-        </div>
-        <div class="rounded-xl border border-brand-200 bg-brand-50 p-6">
-          <h3 class="flex items-center gap-2 text-lg font-semibold text-accent-600">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-            Choose OpenModeration when...
-          </h3>
-          <ul class="mt-4 space-y-2 text-sm text-surface-600">
-            <li>You want a complete moderation platform working today, not in 6 months</li>
-            <li>Your engineering team should focus on your core product, not internal tools</li>
-            <li>You want doubtful cases handled for you, while you see every decision in real time</li>
-            <li>You want to benefit from AI progress without being stuck on one frozen model</li>
-            <li>You need DSA compliance without hiring dedicated compliance experts</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="border-t border-surface-100 bg-white py-12">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="text-lg font-bold text-surface-900">Further reading</h2>
-      <ul class="mt-4 space-y-2 text-sm">
-        <li><a href="/blog/build-vs-buy-moderation" class="font-medium text-brand-600 hover:text-brand-500">Deep dive: moderation infrastructure costs in 2026 &rarr;</a></li>
-        <li><a href="/pricing" class="font-medium text-brand-600 hover:text-brand-500">Simple, transparent pricing &rarr;</a></li>
-        <li><a href="/dsa-compliance" class="font-medium text-brand-600 hover:text-brand-500">DSA compliance without the compliance team &rarr;</a></li>
-      </ul>
-    </div>
-  </section>
-
-  <CTASection
-    title="Stop building internal tools. Start protecting your community."
-    subtitle="Connect your Pages, write your rules in plain language and get a reason for every hidden comment. You can be live in 5 minutes."
-    buttonText="Try it for free"
-    buttonHref="https://app.openmoderation.com/signup"
-  />
-</BaseLayout>
+<BuildVsBuyDecision copy={{
+  title: "Build or Buy Comment Moderation? A Decision Guide",
+  description: "Should you build your own comment moderation or buy a managed service? A decision table, clear cases for each option, and a call to check your situation.",
+  home: "Home",
+  crumb: "Build or buy",
+  eyebrow: "Decision guide",
+  h1: "Build or buy your moderation: how to decide",
+  intro: "Building in-house makes sense for a few organisations. For most, buying is faster and safer. This page helps you place yourself on six criteria, then check your case with us in a 60-minute call.",
+  secondaryCta: "See the detailed cost breakdown",
+  tableTitle: "The decision table",
+  tableIntro: "Read each line and note which column describes you best. Three or more lines on the right usually settle the question.",
+  tableHead: ["Criterion", "Building fits if…", "Buying fits if…"],
+  tableRows: [
+    ["Role of moderation", "Moderation is part of the product you sell", "Moderation protects your product but is not the product"],
+    ["Team", "You can staff engineers, data scientists and moderators for years", "Your engineers are needed on your core product"],
+    ["Deadline", "You can wait months before the first useful decision", "Comments, reports or a DSA question need an answer now"],
+    ["Doubtful cases", "You have people to review reports and appeals every day", "You want a team that handles them for you"],
+    ["AI models", "You want to train, evaluate and replace models yourself", "You want new models plugged in without work on your side"],
+    ["Compliance", "You have legal and engineering capacity to follow the DSA", "You want written reasons, history and appeals built in"],
+  ],
+  buildTitle: "When building makes sense",
+  buildItems: [
+    "Moderation is a differentiating feature of what you sell, not a support function.",
+    "Your content or rules are so specific that no existing service can be adapted to them.",
+    "You already run an ML team and a moderation team, and can fund both over several years.",
+  ],
+  buyTitle: "When buying makes sense",
+  buyItems: [
+    "You host comments on a website or social accounts and want them moderated well, quickly.",
+    "You do not want to recruit moderators or build a review interface.",
+    "You need the DSA basics (written reasons, reports, appeals, history) without a project.",
+    "You want to compare before committing: a free test on your real comments shows every decision.",
+  ],
+  hybridTitle: "A middle path: build on top of a service",
+  hybridText: "If you have your own platform and want to keep control of the interface, you can call our moderation API from your system and still rely on our AI and our team for doubtful cases. You build what makes you different and buy the rest.",
+  includedTitle: "What buying OpenModeration includes",
+  included: [
+    { title: "Our own moderation AI", text: "Built in-house, trained on millions of messages over seven years, cross-checked by other AI models on delicate cases." },
+    { title: "Our team on doubtful cases", text: "Doubtful cases, user reports and contested decisions are handled by our moderators. You see every decision and can override it." },
+    { title: "Setup with you", text: "We turn your rules into instructions and test them on your real comments before switching anything on." },
+    { title: "DSA records and EU hosting", text: "A written reason for every decision, traceable history, exportable figures. Hosted in the EU, GDPR-compliant." },
+  ],
+  costTitle: "Need the numbers behind the decision?",
+  costText: "Our blog article breaks down, line by line, what an in-house moderation system costs over three years: engineering, maintenance, AI models, infrastructure and compliance.",
+  costLink: "Read the cost breakdown of building moderation",
+  faqTitle: "Questions before deciding",
+  faq: [
+    { question: "Is it cheaper to build moderation in-house?", answer: "Rarely. The first version is the visible part; maintenance, model changes, human review and compliance keep costing every year. The detailed breakdown is in our blog article on moderation infrastructure costs." },
+    { question: "Can we start with a service and build later?", answer: "Yes. Nothing locks you in: your rules are written in plain language and your decision history can be exported." },
+    { question: "Do we keep control if we buy?", answer: "Yes. You see every decision and its written reason in real time, and you can step in or override whenever you want." },
+    { question: "How do we check that buying fits our case?", answer: "Book a call. We look at your volumes, platforms and rules together, then you can run a free sandbox test on your real comments." },
+  ],
+  ctaTitle: "Check your case in 60 minutes.",
+  ctaSubtitle: "Book a call: we go through the decision table with your volumes and your rules, and tell you honestly if building makes more sense.",
+}} />

@@ -1,168 +1,224 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CTASection from '../../components/CTASection.astro';
+import BrowserFrame from '../../components/BrowserFrame.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
-import { getLocale, localizePath } from '../../i18n/routes';
+import { localizePath, type Locale } from '../../i18n/routes';
+import { useTranslations } from '../../i18n/ui';
 
-const locale = getLocale(Astro.url.pathname);
+const locale: Locale = 'pl';
+const t = useTranslations(locale);
+const booking = localizePath('/book-a-call', locale);
+const signup = 'https://app.openmoderation.com/signup';
+
+const c = {
+  "title": "Konsola moderacji: każda decyzja z uzasadnieniem, na żywo",
+  "description": "Zobacz każdy komentarz, decyzję i jej pisemne uzasadnienie na żywo, na stronie i w mediach społecznościowych. Wątpliwe przypadki obsługuje nasz zespół.",
+  "crumb": "Konsola moderacji",
+  "badge": "Co widzisz w czasie rzeczywistym",
+  "h1": "Każda decyzja i jej uzasadnienie, w czasie rzeczywistym",
+  "lead": "Konsola to nie narzędzie, które musisz obsługiwać. Moderują nasza AI i nasz zespół; ty widzisz każdy komentarz, decyzję, jej pisemne uzasadnienie i to, kto ją podjął, a w każdej chwili możesz ją zmienić.",
+  "feedTitle": "Twoja moderacja na bieżąco",
+  "feedLead": "Komentarze z twojej strony i profili obok siebie, każdy z decyzją i uzasadnieniem.",
+  "quote": [
+    "„",
+    "”"
+  ],
+  "reasonLabel": "Uzasadnienie:",
+  "overrideLabel": "Zmień",
+  "feed": [
+    {
+      "platform": "Strona",
+      "kind": "published",
+      "decision": "Opublikowany",
+      "by": "Nasza AI",
+      "text": "Dobry tekst, ale dane w drugim akapicie wyglądają na nieaktualne.",
+      "reason": "Konstruktywna krytyka, żadna zasada nie została złamana."
+    },
+    {
+      "platform": "Facebook",
+      "kind": "refused",
+      "decision": "Ukryty",
+      "by": "Nasza AI, zweryfikowana",
+      "text": "Wszyscy jesteście skorumpowani, trzeba was uciszyć na dobre.",
+      "reason": "Groźba i atak osobisty."
+    },
+    {
+      "platform": "Instagram",
+      "kind": "refused",
+      "decision": "Ukryty",
+      "by": "Nasza AI",
+      "text": "Tani obserwujący tutaj, zajrzyjcie na mój profil!!!",
+      "reason": "Spam."
+    },
+    {
+      "platform": "YouTube",
+      "kind": "team",
+      "decision": "Odrzucony po weryfikacji",
+      "by": "Nasz zespół",
+      "text": "Typowe dla tych ludzi, nigdy się nie zmienią.",
+      "reason": "Uogólnienie wymierzone w grupę, sprzeczne z twoim regulaminem."
+    }
+  ],
+  "shotAlt": "Konsola OpenModeration: komentarze, decyzje i pisemne uzasadnienia, platforma po platformie",
+  "shotCaption": "Konsola: komentarze, decyzje i uzasadnienia, platforma po platformie.",
+  "illustrative": "Przykłady i liczby poglądowe, z przestrzeni demonstracyjnej.",
+  "kpis": [
+    {
+      "label": "Komentarze przeanalizowane dziś",
+      "value": "84,2 tys."
+    },
+    {
+      "label": "Ukryte, każdy z pisemnym uzasadnieniem",
+      "value": "4,7%"
+    },
+    {
+      "label": "Wątpliwe przypadki obsłużone przez nasz zespół",
+      "value": "2%"
+    }
+  ],
+  "cardsTitle": "Co widzisz i co możesz zrobić",
+  "cardsLead": "Pełna przejrzystość, nic do obsługi. Reagujesz tylko wtedy, gdy chcesz.",
+  "cards": [
+    {
+      "title": "Każda decyzja z uzasadnieniem",
+      "text": "Każdy komentarz, podjęta decyzja i jej pisemne uzasadnienie, na twojej stronie i każdym podłączonym profilu."
+    },
+    {
+      "title": "Wątpliwe przypadki obsługuje nasz zespół",
+      "text": "Gdy AI ma wątpliwości, nasz zespół rozstrzyga według twoich zasad. Widzisz, czym się zajął i dlaczego."
+    },
+    {
+      "title": "Zmiana decyzji w każdej chwili",
+      "text": "Opublikuj, ukryj lub przywróć komentarz jednym kliknięciem. Każda zmiana jest zapisywana z autorem."
+    },
+    {
+      "title": "Zgłoszenia i odwołania pod kontrolą",
+      "text": "Zgłoszenia użytkowników i zakwestionowane decyzje są śledzone aż do odpowiedzi, zgodnie z wymogami DSA."
+    },
+    {
+      "title": "Dane do eksportu",
+      "text": "Liczby i decyzje według kategorii, platforma po platformie. Eksportuj je do raportów DSA i wewnętrznych podsumowań."
+    },
+    {
+      "title": "Twoje zasady na widoku",
+      "text": "Zobacz zasady stosowane w twoich przestrzeniach. Aby je zmienić, powiedz nam albo dostosuj je sam: nasz zespół pomoże."
+    }
+  ],
+  "devTitle": "Dla zespołów technicznych",
+  "devLead": "Konsola daje też programistom wszystko, czego potrzebują do integracji i monitorowania OpenModeration.",
+  "devPoints": [
+    "Klucze dostępu z limitami zapytań i uprawnieniami dla każdego klucza",
+    "Dziennik aktywności z wyszukiwaniem po komentarzu: oceny, zastosowana reguła i wynik",
+    "Status usług z opóźnieniami i wskaźnikiem błędów",
+    "Przechowywanie danych, dozwolone źródła i webhooki"
+  ]
+};
+
+const decisionStyles: Record<string, string> = {
+  published: 'bg-green-100 text-green-700',
+  refused: 'bg-red-100 text-red-700',
+  team: 'bg-amber-100 text-amber-700',
+};
 
 const pageJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
   "@id": "https://www.openmoderation.com/pl/konsola-moderacji",
   "url": "https://www.openmoderation.com/pl/konsola-moderacji",
-  "name": "Konsola moderacji treści | OpenModeration",
-  "description": "Przeglądaj oznaczone komentarze, zatwierdzaj lub odrzucaj przypadki graniczne i śledź każdą decyzję wraz z pisemnym uzasadnieniem.",
+  "name": "Konsola moderacji: każda decyzja z uzasadnieniem, na żywo",
+  "description": "Zobacz każdy komentarz, decyzję i jej pisemne uzasadnienie na żywo, na stronie i w mediach społecznościowych. Wątpliwe przypadki obsługuje nasz zespół.",
   "inLanguage": "pl",
-  "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
+  "isPartOf": {
+    "@id": "https://www.openmoderation.com/#website"
+  }
 };
 ---
 
-<BaseLayout title="Konsola moderacji: jedna kolejka dla wszystkich platform" description="Konsola moderacji treści: oznaczone komentarze ze strony, Facebooka, Instagrama i YouTube, a przy każdej decyzji pisemne uzasadnienie i wpis w dzienniku." jsonLd={pageJsonLd}>
-<Breadcrumb items={[{ label: "Strona główna", href: localizePath('/', locale) }, { label: "Konsola moderacji" }]} />
+<BaseLayout title={c.title} description={c.description} jsonLd={pageJsonLd}>
+<Breadcrumb items={[{ label: "Strona główna", href: localizePath('/', locale) }, { label: c.crumb }]} />
   <section class="bg-gradient-to-b from-brand-50 to-white py-20">
     <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
       <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600 shadow-sm">
-        Demonstracyjna przestrzeń robocza
+        <span class="h-2 w-2 rounded-full bg-accent-500"></span> {c.badge}
       </div>
-      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Konsola moderacji treści dla całego zespołu</h1>
-      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
-        Widzisz każdą decyzję w czasie rzeczywistym i możesz ją zmienić jednym kliknięciem, choć nie musisz: wątpliwymi przypadkami zajmuje się nasz zespół. Każda decyzja ma pisemne uzasadnienie, które można pokazać każdemu, kto o nie zapyta.
-      </p>
-      <p class="mx-auto mt-3 max-w-2xl text-sm text-surface-400">
-        Przykładowe dane z demonstracyjnej przestrzeni roboczej.
-      </p>
+      <h1 class="mx-auto max-w-4xl text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">{c.h1}</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">{c.lead}</p>
+      <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a href={booking} class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">📅 {t('cta.book')}</a>
+        <a href={signup} class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">{t('cta.button')}</a>
+      </div>
     </div>
   </section>
 
-  <!-- Dashboard Preview -->
+  <!-- What you see: live feed -->
   <section class="bg-white py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="mb-16 grid gap-4 grid-cols-2 md:grid-cols-4">
-        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-          <p class="text-sm text-surface-500">Zapytania dzisiaj</p>
-          <p class="mt-1 text-3xl font-bold text-surface-900">84,2 tys.</p>
-          <p class="mt-1 text-xs text-accent-600">+12% względem wczoraj</p>
-        </div>
-        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-          <p class="text-sm text-surface-500">Odsetek oznaczonych</p>
-          <p class="mt-1 text-3xl font-bold text-surface-900">4,7%</p>
-          <p class="mt-1 text-xs text-surface-500">3957 oznaczonych elementów</p>
-        </div>
-        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-          <p class="text-sm text-surface-500">Średnie opóźnienie</p>
-          <p class="mt-1 text-3xl font-bold text-surface-900">267 ms</p>
-          <p class="mt-1 text-xs text-accent-600">P99: 890 ms</p>
-        </div>
-        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-          <p class="text-sm text-surface-500">Status usługi</p>
-          <p class="mt-1 text-3xl font-bold text-surface-900">Działa</p>
-          <p class="mt-1 text-xs text-surface-500">Wszystko sprawne</p>
+      <div class="mx-auto mb-10 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">{c.feedTitle}</h2>
+        <p class="mt-4 text-lg text-surface-500">{c.feedLead}</p>
+      </div>
+      <div class="grid items-start gap-10 lg:grid-cols-2">
+        <ul class="divide-y divide-surface-100 overflow-hidden rounded-2xl border border-surface-200 bg-white shadow-sm">
+          {c.feed.map((f) => (
+            <li class="p-5">
+              <div class="flex flex-wrap items-center gap-2 text-xs">
+                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-surface-600">{f.platform}</span>
+                <span class={`rounded-full px-2.5 py-0.5 font-semibold ${decisionStyles[f.kind]}`}>{f.decision}</span>
+                <span class="text-surface-400">{f.by}</span>
+              </div>
+              <p class="mt-3 text-surface-800">{c.quote[0]}{f.text}{c.quote[1]}</p>
+              <div class="mt-3 flex flex-wrap items-center justify-between gap-3 text-sm">
+                <p class="text-surface-500"><span class="font-medium text-surface-700">{c.reasonLabel}</span> {f.reason}</p>
+                <span class="rounded-md border border-surface-300 px-3 py-1 text-xs font-semibold text-surface-700">{c.overrideLabel}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <div>
+          <BrowserFrame src="/images/dashboard.png" video="om-triage" alt={c.shotAlt} caption={c.shotCaption} eager={false} />
+          <p class="mt-6 text-center text-xs text-surface-400">{c.illustrative}</p>
         </div>
       </div>
-
-      <div class="grid gap-8 lg:grid-cols-2">
-        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-          <h3 class="mb-4 font-semibold text-surface-900">Użycie w czasie</h3>
-          <div class="flex items-end gap-2" style="height: 160px;">
-            <div class="flex-1 rounded-t bg-brand-200" style="height: 60%"></div>
-            <div class="flex-1 rounded-t bg-brand-200" style="height: 45%"></div>
-            <div class="flex-1 rounded-t bg-brand-200" style="height: 75%"></div>
-            <div class="flex-1 rounded-t bg-brand-200" style="height: 55%"></div>
-            <div class="flex-1 rounded-t bg-brand-200" style="height: 80%"></div>
-            <div class="flex-1 rounded-t bg-brand-300" style="height: 70%"></div>
-            <div class="flex-1 rounded-t bg-brand-400" style="height: 90%"></div>
-            <div class="flex-1 rounded-t bg-brand-300" style="height: 65%"></div>
-            <div class="flex-1 rounded-t bg-brand-200" style="height: 85%"></div>
-            <div class="flex-1 rounded-t bg-brand-300" style="height: 95%"></div>
-            <div class="flex-1 rounded-t bg-brand-400" style="height: 78%"></div>
-            <div class="flex-1 rounded-t bg-brand-500" style="height: 88%"></div>
-            <div class="flex-1 rounded-t bg-brand-400" style="height: 72%"></div>
-            <div class="flex-1 rounded-t bg-brand-300" style="height: 82%"></div>
+      <dl class="mt-16 grid grid-cols-1 gap-4 sm:grid-cols-3">
+        {c.kpis.map((k) => (
+          <div class="flex flex-col-reverse rounded-xl border border-surface-200 bg-surface-50 p-6">
+            <dt class="mt-1 text-sm text-surface-500">{k.label}</dt>
+            <dd class="text-3xl font-bold text-surface-900">{k.value}</dd>
           </div>
-          <div class="mt-2 flex justify-between text-xs text-surface-400">
-            <span>1 cze</span>
-            <span>15 cze</span>
-            <span>30 cze</span>
-          </div>
-        </div>
-
-        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-          <h3 class="mb-4 font-semibold text-surface-900">Wolumen według kanału</h3>
-          <div class="space-y-4">
-            <div>
-              <div class="mb-1 flex justify-between text-sm"><span class="text-surface-600">Strona</span><span class="text-surface-500">12,4 tys. &middot; 3,1% oznaczonych</span></div>
-              <div class="h-2 rounded-full bg-surface-200"><div class="h-2 w-4/5 rounded-full bg-brand-500"></div></div>
-            </div>
-            <div>
-              <div class="mb-1 flex justify-between text-sm"><span class="text-surface-600">Facebook</span><span class="text-surface-500">8,7 tys. &middot; 5,4% oznaczonych</span></div>
-              <div class="h-2 rounded-full bg-surface-200"><div class="h-2 w-3/5 rounded-full bg-brand-400"></div></div>
-            </div>
-            <div>
-              <div class="mb-1 flex justify-between text-sm"><span class="text-surface-600">Instagram</span><span class="text-surface-500">5,2 tys. &middot; 4,2% oznaczonych</span></div>
-              <div class="h-2 rounded-full bg-surface-200"><div class="h-2 w-2/5 rounded-full bg-brand-300"></div></div>
-            </div>
-            <div>
-              <div class="mb-1 flex justify-between text-sm"><span class="text-surface-600">YouTube</span><span class="text-surface-500">2,9 tys. &middot; 6,8% oznaczonych</span></div>
-              <div class="h-2 rounded-full bg-surface-200"><div class="h-2 w-1/3 rounded-full bg-brand-300"></div></div>
-            </div>
-          </div>
-        </div>
-      </div>
+        ))}
+      </dl>
     </div>
   </section>
 
-  <!-- Dashboard Features -->
+  <!-- What you see and what you can do -->
   <section class="bg-surface-50 py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="mx-auto mb-12 max-w-2xl text-center">
-        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Cała moderacja w jednej konsoli</h2>
-        <p class="mt-4 text-lg text-surface-500">Prowadź moderację z jednej konsoli hostowanej w UE.</p>
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">{c.cardsTitle}</h2>
+        <p class="mt-4 text-lg text-surface-500">{c.cardsLead}</p>
       </div>
       <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <div class="rounded-xl border border-surface-200 bg-white p-6">
-          <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7h3a2 2 0 012 2v10a2 2 0 01-2 2H6a2 2 0 01-2-2V9a2 2 0 012-2h3m0-4h6v4H9V3z"/></svg>
+        {c.cards.map((card) => (
+          <div class="rounded-xl border border-surface-200 bg-white p-6">
+            <h3 class="font-semibold text-surface-900">{card.title}</h3>
+            <p class="mt-1 text-sm text-surface-500">{card.text}</p>
           </div>
-          <h3 class="font-semibold text-surface-900">Zarządzanie dostępem</h3>
-          <p class="mt-1 text-sm text-surface-500">Decyduj, kto może co robić. Twórz i unieważniaj klucze dostępu i ustawiaj limity zapytań.</p>
-        </div>
-        <div class="rounded-xl border border-surface-200 bg-white p-6">
-          <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-          </div>
-          <h3 class="font-semibold text-surface-900">Historia aktywności</h3>
-          <p class="mt-1 text-sm text-surface-500">Śledź każdą decyzję moderacyjną. Wyszukuj i analizuj wszystkie zapytania wraz z wynikami i rezultatem.</p>
-        </div>
-        <div class="rounded-xl border border-surface-200 bg-white p-6">
-          <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/></svg>
-          </div>
-          <h3 class="font-semibold text-surface-900">Stan usług</h3>
-          <p class="mt-1 text-sm text-surface-500">Sprawdzaj, które usługi działają, z bieżącym opóźnieniem i odsetkiem błędów.</p>
-        </div>
-        <div class="rounded-xl border border-surface-200 bg-white p-6">
-          <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-          </div>
-          <h3 class="font-semibold text-surface-900">Raporty wydajności</h3>
-          <p class="mt-1 text-sm text-surface-500">Poznaj wolumen i trendy moderacji. Śledź odsetek oznaczeń, podjęte działania i koszty. Raporty można eksportować na potrzeby audytów.</p>
-        </div>
-        <div class="rounded-xl border border-surface-200 bg-white p-6">
-          <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-          </div>
-          <h3 class="font-semibold text-surface-900">Zasady i integracje</h3>
-          <p class="mt-1 text-sm text-surface-500">Zarządzaj ustawieniami moderacji i połączeniami z platformami. Konfiguruj akcje automatyczne i progi bezpośrednio z konsoli.</p>
-        </div>
-        <div class="rounded-xl border border-surface-200 bg-white p-6">
-          <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-          </div>
-          <h3 class="font-semibold text-surface-900">Konfiguracja</h3>
-          <p class="mt-1 text-sm text-surface-500">Ustawienia instancji: limity zapytań, okres przechowywania danych, i dozwolone źródła (origins).</p>
-        </div>
+        ))}
       </div>
+    </div>
+  </section>
+
+  <!-- For technical teams -->
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold text-surface-900">{c.devTitle}</h2>
+      <p class="mt-3 text-surface-500">{c.devLead}</p>
+      <ul class="mt-6 space-y-2 text-sm text-surface-600">
+        {c.devPoints.map((p) => (
+          <li class="flex items-start gap-2"><svg class="mt-0.5 h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>{p}</span></li>
+        ))}
+      </ul>
     </div>
   </section>
 

@@ -3,40 +3,67 @@ import SectorPage from '../components/SectorPage.astro';
 ---
 
 <SectorPage
-  title="Automatic Comment Moderation with AI"
-  description="Automatic comment moderation for your site and social media, adapted to your rules and use cases, day and night, with a written reason for each decision."
+  title="Automatic Comment Moderation: How the AI Decides"
+  description="How automatic comment moderation works: context, irony, thresholds and what stays human. Real examples of decisions, each with a written reason."
   crumb="Automatic moderation"
   parent={null}
-  eyebrow="AI comment moderation"
-  h1="Automatic comment moderation, on your terms"
-  intro="Comments arrive around the clock, and mostly when your team is offline. OpenModeration moderates them automatically with AI that applies your rules within seconds, and our team handles the cases that need human judgment."
-  problem="Manual moderation cannot keep up: spikes come in the evening, at weekends or when a story breaks. Traditional automated tools rely on word lists and end up hiding too much or too little."
-  approach="The AI reads each comment in context and checks it against your rules. Two thresholds per category separate what is hidden automatically, what is published and what our team reviews. Every decision comes with a written explanation."
-  result="Insults, hate, spam and scams disappear within seconds, without waiting for a moderator to log in. Your team has nothing to do: you see every decision in real time and can step in whenever you want."
-  featuresTitle="Automatic moderation that stays under control"
-  featuresIntro="Automatic does not mean black box. You stay in charge of the rules and of the doubtful cases."
+  eyebrow="Automatic comment moderation"
+  h1="Automatic comment moderation: how the AI decides"
+  intro="Automatic does not mean blind. Here is what happens in the seconds after a comment is posted: what the AI reads, how it weighs context and irony, where the thresholds sit, and which cases it deliberately leaves to a human."
+  problem="Word lists judge the letter of a comment, not its meaning. They hide “our defence was murdered tonight” and let “go back where you came from” through. And a filter that hides comments without saying why cannot be defended to anyone."
+  approach="Our AI reads the comment with what surrounds it: the article or post, the message it replies to, its language. It scores each category of your rules, then compares each score with two thresholds: below the first it publishes, above the second it hides, in between a person decides."
+  result="Clear cases are settled within seconds, day and night. Uncertain ones go to our moderators instead of being guessed. Every decision, automatic or human, comes with a sentence that explains it."
+  featuresTitle="What the AI reads before deciding"
+  featuresIntro="Four signals, read together. None of them is a list of forbidden words."
   features={[
-    { title: "You set the level of automation", text: "Stricter, looser, more or fewer cases sent to review: you adjust the thresholds category by category." },
-    { title: "A reason for every decision", text: "Every hidden comment has a written reason you can show to its author or to a regulator." },
-    { title: "Every language", text: "One policy, applied to comments whatever language they are written in." },
-    { title: "Across all your platforms", text: "Your site through the API or WordPress, plus your Facebook, Instagram and YouTube pages, with the same rules." },
+    { title: "The page", text: "The same sentence does not mean the same thing under a match report and under an article about a crime. The AI reads the topic before the comment." },
+    { title: "The conversation", text: "A reply is read with the message it answers. Sarcasm aimed at an argument is not treated like an attack on a person." },
+    { title: "Irony and coded language", text: "Disguised spellings, emojis used as insults, dog whistles: the AI looks at what is meant, not only at what is written." },
+    { title: "Your rules", text: "Each category is judged against the rules set with you in plain language: what you accept, what you refuse, where you want caution." },
   ]}
+  examples={{
+    title: "Six comments, six decisions",
+    intro: "Illustrative examples: the same AI reaches different outcomes depending on the context and on your rules.",
+    items: [
+      { comment: "Our defence was murdered tonight, what a disaster.", context: "Under a football match report", decision: "Published", tone: "ok", reason: "Violent word, sporting meaning. Criticism of a team's performance, no person targeted." },
+      { comment: "Great, another genius in charge. Can't wait.", context: "Under an article about a new minister", decision: "Published", tone: "ok", reason: "Ironic, but aimed at a public figure's role. Political criticism is allowed under your rules." },
+      { comment: "People like her should be sent back where they came from.", context: "Reply to another reader", decision: "Hidden", tone: "hide", reason: "Exclusion based on origin, aimed at a person. Breaks the rule on hateful content." },
+      { comment: "Earn €500 a day from home, DM me 💰", context: "Under an Instagram post", decision: "Hidden", tone: "hide", reason: "Commercial spam asking for contact. Breaks the rule on scams and advertising." },
+      { comment: "We all know what goes on in that neighbourhood at night…", context: "Under a local news story", decision: "Sent to our team", tone: "review", reason: "Possible insinuation about a group, with no explicit target. The score falls between the two thresholds: a moderator decides." },
+      { comment: "The mayor lied about the budget and should resign.", context: "Under a city council article", decision: "Published", tone: "ok", reason: "A harsh accusation against an elected official, in a political debate. Neither an insult nor a threat." },
+    ],
+  }}
+  table={{
+    title: "Thresholds: where automatic stops",
+    intro: "For each category of your rules, two thresholds split comments into three outcomes. We set them with you and adjust them after the test on your comments.",
+    head: ["Category", "Published automatically", "Sent to our team", "Hidden automatically"],
+    rows: [
+      ["Insults", "Rough tone, no target", "Insult that may be a quote or a joke", "Insult aimed at a person"],
+      ["Hate", "Debate on a sensitive topic", "Ambiguous generalisation about a group", "Attack based on origin, religion, gender…"],
+      ["Threats", "Figurative violence (“I'll kill this exam”)", "Unclear intent", "Explicit threat against someone"],
+      ["Spam and scams", "Link relevant to the discussion", "Repeated promotional message", "Fraudulent offer, phishing"],
+      ["Off-topic", "Side remark that stays civil", "Long unrelated message", "Flooding, copy-paste campaigns"],
+    ],
+    note: "Stricter or looser? You choose per category: a busy news site and a brand page rarely set the same thresholds.",
+  }}
   why={[
-    { title: "Your rules, not a generic grid", text: "Moderation follows your rules and your use cases. We fine-tune it with you." },
-    { title: "Test it live", text: "Paste a comment into the demo and see the decision and its explanation, no sign-up needed." },
-    { title: "DSA-compliant", text: "Statements of reasons, user reports, human review and a full history are included." },
+    { title: "It does not guess", text: "When the AI is unsure, the comment goes to our moderators, who decide according to your rules." },
+    { title: "Reports and appeals stay human", text: "User reports and contested decisions are reviewed by a person on our team, as the DSA requires." },
+    { title: "You keep the last word", text: "You see every automatic decision in real time with its reason, and you can override any of them." },
   ]}
   faq={[
-    { question: "Does automatic moderation make mistakes?", answer: "No system is perfect. That is why doubtful cases are not decided by the AI but sent to your team, and every decision can be reversed in one click." },
-    { question: "How fast is a comment moderated?", answer: "Within seconds of being posted or received." },
-    { question: "Can Facebook comments be moderated automatically?", answer: "Yes. Connect your Facebook Pages and Instagram accounts: comments that break your rules are hidden automatically." },
-    { question: "How much does it cost?", answer: "There is a free plan to get started and a Pro plan. For large volumes, book a call and we will size the plan with you." },
+    { question: "How does automatic comment moderation work?", answer: "Each comment is read with its context, scored against each category of your rules, then compared with two thresholds: publish, hide, or send to a person. The whole process takes a few seconds." },
+    { question: "Does the AI understand irony?", answer: "Much better than a word list, because it reads the comment together with the page and the conversation. When irony makes a comment truly ambiguous, its score falls between the thresholds and our team decides." },
+    { question: "What happens when the AI gets it wrong?", answer: "You can reverse any decision from the console, and authors can appeal. Recurring errors are used to adjust your rules and thresholds with you." },
+    { question: "In which languages does it work?", answer: "Comments are analysed in their own language, including the languages of your audiences, without a translation step that would lose nuance." },
+    { question: "Can I check the decisions before switching it on?", answer: "Yes. A free sandbox test on your real comments shows every decision and its reason before anything goes live." },
   ]}
   related={[
-    { eyebrow: "Demo", title: "Try the moderation", text: "Paste a comment and see the decision in seconds.", href: "/demo" },
-    { eyebrow: "Integration", title: "Facebook comment moderation", text: "Automatically hide comments under your Facebook posts.", href: "/integrations/facebook" },
-    { eyebrow: "Guide", title: "Writing a moderation policy", text: "The rules to set before you automate.", href: "/content-moderation-policy" },
+    { eyebrow: "Demo", title: "Test a comment", text: "Paste a comment and see the decision and its reason.", href: "/demo" },
+    { eyebrow: "Glossary", title: "What is a moderation threshold?", text: "The setting that separates automatic from human.", href: "/glossary/threshold" },
+    { eyebrow: "The complete system", title: "Content moderation software", text: "AI, console, team and DSA records in one system.", href: "/moderation-software" },
   ]}
-  ctaTitle="Automate your moderation this week."
-  ctaSubtitle="Book a call: we set up your rules with you and test them on your real comments."
+  blocks={[]}
+  ctaTitle="Watch the AI decide on your own comments."
+  ctaSubtitle="Book a call: we run your recent comments through the AI and walk you through each decision and its reason."
 />

@@ -1,122 +1,146 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import FAQ from '../../components/FAQ.astro';
+import CTASection from '../../components/CTASection.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
-import { bookingUrl } from '../../i18n/ui';
+import { localizePath, type Locale } from '../../i18n/routes';
+import { useTranslations } from '../../i18n/ui';
 
-const faqItems = [
-  {
-    question: "Faut-il savoir coder pour définir des règles de modération ?",
-    answer: "Non. OpenModeration repose sur trois outils simples : les mots interdits pour un blocage immédiat, les seuils par catégorie pour des décisions automatiques, et des règles que vous rédigez en langage courant. Le moteur d'actions se charge de les appliquer automatiquement, sans aucun code.",
-  },
-  {
-    question: "Puis-je corriger manuellement une décision de l'IA ?",
-    answer: "Oui, mais vous n'y êtes pas obligé : les cas douteux et les signalements sont traités par notre équipe. Dans la console, vous voyez chaque décision et son explication en temps réel, et vous pouvez approuver, rejeter ou corriger quand vous voulez, avec une traçabilité complète.",
-  },
-  {
-    question: "OpenModeration est-il vraiment gratuit ?",
-    answer: "Oui, pour démarrer : l'offre gratuite du cloud géré couvre jusqu'à 1 000 requêtes par mois, sans frais cachés. L'offre Pro coûte 99 € par mois pour 10 000 requêtes.",
-  },
-  {
-    question: "Quelle différence avec l'API OpenAI Moderation ?",
-    answer: "L'API OpenAI Moderation vous enferme dans un seul modèle, sans aucune visibilité sur le fonctionnement de la modération. OpenModeration fait tourner sa propre IA de modération, arbitrée par d'autres modèles d'IA sur les cas délicats, branche rapidement les nouveaux modèles plus performants, explique chaque décision par écrit, fournit une console de revue et intègre un moteur d'actions pour automatiser vos workflows.",
-  },
-  {
-    question: "Quelle différence avec Nima (Tremau) ?",
-    answer: "Nima (Tremau) est une plateforme qui impose de partager vos contenus avec son infrastructure. OpenModeration se paramètre selon vos règles et vos cas d'usage, explique chaque décision par écrit et héberge vos données dans l'Union européenne.",
-  },
-  {
-    question: "Quelle différence avec Checkstep ?",
-    answer: "Checkstep facture à la requête. OpenModeration est pensé dès le départ autour de son API, et conçu pour les développeurs qui veulent intégrer la modération directement dans leur stack, sans dépendance à un éditeur ni coûts indexés sur l'usage.",
-  },
-  {
-    question: "Que signifie « conforme au DSA » ?",
-    answer: "OpenModeration fournit un journal d'audit complet de toutes les décisions de modération, des politiques de conservation des données configurables et des rapports exportables. De quoi aider les plateformes à respecter les exigences de transparence et de responsabilité du règlement européen sur les services numériques (DSA).",
-  },
-  {
-    question: "Sur quelle IA repose OpenModeration ?",
-    answer: "Sur notre propre IA de modération, entraînée pour la modération des commentaires et paramétrée selon vos règles et vos cas d'usage. Sur les cas délicats, d'autres modèles d'IA arbitrent la décision avant qu'elle soit appliquée : moins d'erreurs, moins de commentaires masqués à tort.",
-  },
-  {
-    question: "Puis-je déployer la plateforme sur mes propres serveurs ?",
-    answer: "Un déploiement sur site est possible sur demande : parlons-en. Par défaut, OpenModeration est hébergé dans l'Union européenne et vos données restent exportables.",
-  },
-  {
-    question: "Proposez-vous un cloud géré ?",
-    answer: "Oui, notre SaaS en cloud géré démarre à 99 €/mois. Il comprend 10 000 requêtes par mois, aucune infrastructure à gérer, une infrastructure hébergée dans l'UE, un support prioritaire et un SLA. Consultez la page Tarifs pour tous les détails.",
-  },
-  {
-    question: "En combien de temps la plateforme devient-elle utile ?",
-    answer: "Quelques minutes si vous utilisez l'API REST pour une modération de base. Quelques heures pour mettre en place la plateforme complète, avec la console, le moteur d'actions et les connecteurs : notre équipe vous accompagne. Ensuite, vous n'avez rien à faire : notre équipe traite les cas douteux, et vous suivez tout en temps réel.",
-  },
-  {
-    question: "Que se passe-t-il quand un meilleur modèle d'IA sort ?",
-    answer: "Notre architecture ne dépend d'aucun modèle en particulier. Quand un modèle d'IA plus performant ou moins cher sort, notre équipe le branche rapidement, et rien ne change de votre côté. Les modèles d'IA progressent chaque année : vous en profitez, au lieu de rester bloqué sur un algorithme maison figé.",
-  },
-  {
-    question: "Puis-je ajouter des catégories sur mesure ?",
-    answer: "Oui, grâce à la modération par LLM avec des prompts personnalisés. Contrairement aux classificateurs traditionnels fondés sur des catégories fixes, vous pouvez définir n'importe quelle catégorie de modération à l'aide de prompts en langage naturel, et adapter ainsi la modération à vos propres politiques de contenu.",
-  },
-  {
-    question: "Et les images ou la vidéo ?",
-    answer: "La version actuelle se concentre sur la modération de texte. La modération des images et des vidéos figure sur la feuille de route et profitera des modèles d'IA multimodaux à mesure qu'ils progressent.",
-  },
-];
+const locale: Locale = 'fr';
+const t = useTranslations(locale);
+const booking = localizePath('/book-a-call', locale);
+const signup = 'https://app.openmoderation.com/signup';
 
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@graph": [
+const c = {
+  "title": "FAQ modération des commentaires : IA, équipe, DSA, prix",
+  "description": "Qui modère, comment l’IA suit vos règles, test sur vos commentaires, DSA, plateformes, données et prix : nos réponses aux médias, marques et institutions.",
+  "crumb": "FAQ",
+  "h1": "Vos questions sur la modération des commentaires",
+  "intro": "Les questions que nous posent le plus souvent les médias, les marques et les institutions avant de choisir. Vous ne trouvez pas la vôtre ? Prenez rendez-vous et posez-la-nous.",
+  "buyerTitle": "Avant de choisir",
+  "techTitle": "Pour les équipes techniques",
+  "techIntro": "Des précisions plus techniques pour vos développeurs et votre DSI.",
+  "ctaTitle": "Une question encore ?",
+  "ctaSubtitle": "Prenez rendez-vous : nous répondons à vos questions et vous montrons ce que notre modération ferait sur vos propres commentaires.",
+  "buyer": [
     {
-      "@type": "WebPage",
-      "@id": "https://www.openmoderation.com/fr/faq",
-      "url": "https://www.openmoderation.com/fr/faq",
-      "name": "FAQ modération de contenu : tarifs, hébergement et DSA",
-      "inLanguage": "fr",
-      "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
+      "question": "L’IA modère-t-elle seule ?",
+      "answer": "Non. Notre IA est paramétrée sur vos règles et ne décide seule que lorsqu’elle est sûre. Les cas délicats sont recoupés par d’autres modèles d’IA, et les cas douteux partent à notre équipe, qui tranche selon vos règles et vous rend compte. Vous n’avez rien à faire, sauf si vous voulez intervenir."
     },
     {
-      "@type": "FAQPage",
-      "@id": "https://www.openmoderation.com/fr/faq#faq",
-      "inLanguage": "fr",
-      "mainEntity": faqItems.map(item => ({
-        "@type": "Question",
-        "name": item.question,
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": item.answer.replace(/&mdash;/g, '—')
-        }
-      }))
+      "question": "Comment l’IA connaît-elle notre ligne éditoriale ?",
+      "answer": "Nous partons de votre charte et de vos cas d’usage : ce que vous acceptez, ce que vous refusez, les cas limites. Quand vous corrigez une décision, nous ajustons les règles avec vous. Ce n’est pas une liste de mots interdits : l’IA lit chaque commentaire dans son contexte."
+    },
+    {
+      "question": "Peut-on tester avant de s’engager ?",
+      "answer": "Oui. En bac à sable, OpenModeration analyse vos vrais commentaires sans rien publier ni masquer. Vous voyez ce que nous aurions accepté ou refusé, avec la raison, et vous comparez avec votre modération actuelle. Rien ne vous est caché."
+    },
+    {
+      "question": "Peut-on tester sans quitter notre prestataire actuel ?",
+      "answer": "Oui. Le test tourne en silence, en parallèle de votre modération actuelle, sans toucher à votre production. Vous comparez décision par décision, puis vous choisissez en connaissance de cause, au moment qui vous convient."
+    },
+    {
+      "question": "Que voit-on de notre côté ?",
+      "answer": "Tout, en temps réel : chaque commentaire, la décision prise, sa raison écrite et l’historique. Vous pouvez corriger une décision à tout moment depuis la console."
+    },
+    {
+      "question": "Pourquoi un commentaire a-t-il été refusé ?",
+      "answer": "Chaque décision porte une raison écrite (insulte, attaque personnelle, spam…), que vous pouvez transmettre à l’auteur. C’est plus clair pour vos lecteurs et plus simple à justifier en cas de contestation."
+    },
+    {
+      "question": "OpenModeration aide-t-il à respecter le DSA ?",
+      "answer": "Il est conçu pour le DSA : une raison écrite pour chaque décision, un historique traçable, le suivi des signalements et des contestations, des chiffres exportables. Vous restez l’éditeur responsable, et vous avez de quoi justifier chaque décision."
+    },
+    {
+      "question": "Que se passe-t-il quand l’IA hésite ?",
+      "answer": "Le commentaire est mis de côté et notre équipe le traite selon vos règles. Vous recevez un compte rendu des cas traités et des points à clarifier dans votre charte."
+    },
+    {
+      "question": "Et la nuit, le week-end ou pendant les pics ?",
+      "answer": "L’IA modère jour et nuit avec les mêmes règles, quel que soit le volume, y compris pendant un match ou une soirée électorale. Les commentaires douteux sont mis de côté plutôt que publiés, jusqu’à ce que notre équipe les ait traités."
+    },
+    {
+      "question": "Sur quelles plateformes fonctionne OpenModeration ?",
+      "answer": "Votre site (par notre API ou WordPress), Facebook, Instagram et YouTube, grâce à des connecteurs prêts à l’emploi. TikTok, X, LinkedIn et les autres réseaux sont ajoutés sur demande, rapidement. Notre équipe connecte vos pages avec vous."
+    },
+    {
+      "question": "Quelles langues sont modérées ?",
+      "answer": "OpenModeration est multilingue : chaque commentaire est analysé dans sa langue, y compris les langues de vos publics. Dites-nous lesquelles comptent pour vous, nous vous montrerons les résultats sur vos propres commentaires."
+    },
+    {
+      "question": "Où sont hébergées nos données ?",
+      "answer": "Dans l’Union européenne, dans le respect du RGPD. Vos commentaires ne servent qu’à la modération de vos espaces."
+    },
+    {
+      "question": "Faut-il mobiliser notre équipe technique ?",
+      "answer": "Très peu. Pour les réseaux sociaux et WordPress, il suffit de connecter vos comptes. Pour un site ou un outil maison, une API nous envoie vos commentaires et renvoie chaque décision avec sa raison. Notre équipe s’occupe de la mise en place avec vous."
+    },
+    {
+      "question": "Combien ça coûte ?",
+      "answer": "Le prix dépend du volume de commentaires à modérer. Une offre gratuite permet d’essayer ; nous vous proposons ensuite un forfait prévisible, dimensionné à vos volumes, après un test sur vos propres commentaires : vous jugez la qualité avant de parler budget."
+    }
+  ],
+  "tech": [
+    {
+      "question": "Existe-t-il une API ?",
+      "answer": "Oui. Une API REST reçoit chaque commentaire et renvoie la décision, la catégorie et la raison écrite. Des webhooks préviennent vos outils à chaque décision, et les clés d’accès se gèrent depuis la console."
+    },
+    {
+      "question": "Sur quelle IA repose OpenModeration ?",
+      "answer": "Sur notre propre IA de modération, développée en interne et entraînée sur des millions de messages depuis sept ans. Sur les cas délicats, d’autres modèles d’IA recoupent la décision avant qu’elle soit appliquée. Quand un meilleur modèle sort, nous le branchons, sans changement de votre côté."
+    },
+    {
+      "question": "Peut-on ajouter des catégories sur mesure ?",
+      "answer": "Oui. Au-delà des catégories standard (haine, harcèlement, spam…), vos règles sont rédigées en langage courant : toute catégorie propre à votre politique peut être ajoutée. L’IA les applique en tenant compte du contexte."
+    },
+    {
+      "question": "Et les images ou la vidéo ?",
+      "answer": "La version actuelle se concentre sur le texte. La modération des images et des vidéos figure sur la feuille de route et profitera des modèles d’IA multimodaux à mesure qu’ils progressent."
+    },
+    {
+      "question": "Peut-on l’installer sur nos propres serveurs ?",
+      "answer": "Par défaut, OpenModeration est hébergé dans l’Union européenne et vos données restent exportables. Un déploiement sur site est possible sur demande : parlons-en."
     }
   ]
 };
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/fr/faq",
+  "url": "https://www.openmoderation.com/fr/faq",
+  "name": "FAQ modération des commentaires : IA, équipe, DSA, prix",
+  "description": "Qui modère, comment l’IA suit vos règles, test sur vos commentaires, DSA, plateformes, données et prix : nos réponses aux médias, marques et institutions.",
+  "inLanguage": "fr",
+  "isPartOf": {
+    "@id": "https://www.openmoderation.com/#website"
+  }
+};
 ---
 
-<BaseLayout
-  title="FAQ modération de contenu : tarifs, hébergement et DSA"
-  description="Les réponses aux questions fréquentes sur OpenModeration : tarifs, hébergement, conformité DSA, moteur d'IA et intégration."
-  jsonLd={faqJsonLd}
->
-<Breadcrumb items={[{ label: "Accueil", href: "/fr" }, { label: "FAQ" }]} />
+<BaseLayout title={c.title} description={c.description} jsonLd={pageJsonLd}>
+<Breadcrumb items={[{ label: "Accueil", href: localizePath('/', locale) }, { label: c.crumb }]} />
   <section class="bg-gradient-to-b from-brand-50 to-white py-20">
     <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Questions fréquentes</h1>
-      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
-        Tout ce qu'il faut savoir sur OpenModeration. Vous ne trouvez pas votre réponse ? <a href={bookingUrl('fr')} class="text-brand-600 hover:text-brand-500" target="_blank" rel="noopener noreferrer">Parlons-en</a>.
-      </p>
-      <div class="mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row">
-        <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">
-          Essayer gratuitement
-        </a>
-        <a href="/fr/tarifs" class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">
-          Voir les tarifs
-        </a>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">{c.h1}</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">{c.intro}</p>
+      <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a href={booking} class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">📅 {t('cta.book')}</a>
+        <a href={signup} class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">{t('cta.button')}</a>
       </div>
-      <p class="mt-4 text-sm text-surface-400">Sans carte bancaire</p>
     </div>
   </section>
   <section class="bg-white py-12">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <FAQ items={faqItems} disableJsonLd />
+      <FAQ items={c.buyer} title={c.buyerTitle} />
     </div>
   </section>
+  <section class="bg-surface-50 py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <p class="mx-auto mb-6 max-w-3xl text-center text-sm text-surface-500">{c.techIntro}</p>
+      <FAQ items={c.tech} title={c.techTitle} disableJsonLd />
+    </div>
+  </section>
+
+  <CTASection title={c.ctaTitle} subtitle={c.ctaSubtitle} />
 </BaseLayout>
