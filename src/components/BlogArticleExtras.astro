@@ -1,0 +1,14 @@
+---
+// Fin d'article : démo (secondaire), articles proches de la même famille, cas d'usage liés.
+import { getAlternates } from '../i18n/routes';
+import { articleUseCases, relatedArticles } from '../data/maillage';
+import DemoCallout from './DemoCallout.astro';
+import RelatedArticles from './RelatedArticles.astro';
+import UseCaseLinks from './UseCaseLinks.astro';
+
+const slug = (getAlternates(Astro.url.pathname).en ?? '').replace('/blog/', '');
+---
+
+<DemoCallout />
+<RelatedArticles slugs={relatedArticles(slug)} />
+<UseCaseLinks keys={articleUseCases[slug] ?? []} />

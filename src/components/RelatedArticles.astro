@@ -1,0 +1,37 @@
+---
+// « Articles proches » : 3 ou 4 articles du blog de la même langue (titre + résumé), en cartes-liens.
+import { getLocale, localizePath } from '../i18n/routes';
+import { articleEntry } from '../data/maillage';
+
+export interface Props { slugs: string[]; title?: string; bare?: boolean; cols?: 1 | 2 | 3 }
+const { slugs, bare = false } = Astro.props;
+const cols = Astro.props.cols ?? (bare ? 3 : 2);
+const locale = getLocale(Astro.url.pathname);
+const items = slugs.map((s) => ({ s, e: articleEntry(locale, s), href: localizePath(`/blog/${s}`, locale) })).filter((i) => i.e);
+
+const t = {
+  en: ['Related articles', 'Guides on this topic'], fr: ['Articles proches', 'Nos guides sur le sujet'], es: ['Artículos relacionados', 'Guías sobre el tema'],
+  de: ['Ähnliche Artikel', 'Leitfäden zum Thema'], it: ['Articoli correlati', "Guide sull'argomento"], pt: ['Artigos relacionados', 'Guias sobre o tema'],
+  pl: ['Podobne artykuły', 'Poradniki na ten temat'], nl: ['Gerelateerde artikelen', 'Gidsen over dit onderwerp'],
+}[locale] ?? ['Related articles', 'Guides on this topic'];
+const title = Astro.props.title ?? (bare ? t[1] : t[0]);
+---
+
+{items.length > 0 && (
+  <div class:list={['om-related-articles', bare ? 'mt-10' : 'mx-auto max-w-3xl px-4 pb-10 sm:px-6 lg:px-8']}>
+    <h2 class="text-lg font-bold text-surface-900">{title}</h2>
+    <ul class:list={['mt-4 grid gap-3', cols === 3 && 'md:grid-cols-3', cols === 2 && 'sm:grid-cols-2']}>
+      {items.map(({ e, href }) => (
+        <li class="h-full">
+          <a href={href} class="om-link-card h-full items-start">
+            <span class="flex flex-col gap-1">
+              <span class="text-sm font-semibold text-surface-900">{e!.title}</span>
+              <span class="text-xs font-normal leading-relaxed text-surface-500">{e!.description}</span>
+            </span>
+            <span class="text-violet-600" aria-hidden="true">&rarr;</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
