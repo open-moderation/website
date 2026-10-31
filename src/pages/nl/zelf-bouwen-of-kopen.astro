@@ -1,236 +1,59 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import CTASection from '../../components/CTASection.astro';
-import Breadcrumb from '../../components/Breadcrumb.astro';
-import { getLocale, localizePath } from '../../i18n/routes';
-
-const locale = getLocale(Astro.url.pathname);
-
-const pageJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  "@id": "https://www.openmoderation.com/nl/zelf-bouwen-of-kopen",
-  "url": "https://www.openmoderation.com/nl/zelf-bouwen-of-kopen",
-  "name": "Moderatie zelf bouwen of kopen: de echte kosten vergeleken",
-  "description": "Vergelijk de echte kosten van zelf moderatie-infrastructuur bouwen met OpenModeration gebruiken: ontwikkeltijd, onderhoud en functies naast elkaar gezet.",
-  "inLanguage": "nl",
-  "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
-};
-
-const costs = [
-  { item: 'Tijd tot het operationeel is', build: '6-12 maanden', buy: 'Minuten' },
-  { item: 'Ontwikkelinspanning', build: 'Meerdere engineers die interne tools bouwen', buy: 'Nul (kant-en-klaar platform)' },
-  { item: 'Doorlopend onderhoud en updates', build: 'Eigen team nodig', buy: 'Geregeld door het platform' },
-  { item: 'Infrastructuur (servers, database, Redis)', build: '€ 500 tot € 5.000 per maand', buy: 'Je bestaande infrastructuur' },
-  { item: 'Compliance en audittraject opzetten', build: '€ 30.000 tot € 100.000 aan maatwerk', buy: '€ 0 (ingebouwd)' },
-  { item: 'Teambeheer en beoordelingsinterface', build: 'Maanden interne UX/UI-ontwikkeling', buy: 'Standaard inbegrepen' },
-];
+import BuildVsBuyDecision from '../../components/BuildVsBuyDecision.astro';
 ---
 
-<BaseLayout
-  title="Moderatie zelf bouwen of kopen: de echte kosten"
-  description="Vergelijk de echte kosten van zelf moderatie-infrastructuur bouwen met OpenModeration gebruiken: ontwikkeltijd, onderhoud en functies naast elkaar gezet."
-  jsonLd={pageJsonLd}
->
-<Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: "Zelf bouwen of kopen" }]} />
-  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
-    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
-        Zelf bouwen of kopen
-      </div>
-      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Zelf bouwen of kopen: de echte kosten van moderatie-infrastructuur</h1>
-      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
-        Weet wat het echt kost voordat je besluit je eigen moderatieketen te bouwen.
-      </p>
-    </div>
-  </section>
-
-  <section class="bg-white py-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="grid gap-8 lg:grid-cols-2">
-        <div class="rounded-xl border-2 border-surface-200 bg-surface-50 p-8">
-          <h2 class="text-xl font-bold text-surface-900">Interne tools bouwen</h2>
-          <div class="mt-6 space-y-4">
-            <div class="border-b border-surface-200 pb-4">
-              <p class="text-sm text-surface-500">Tijd tot het operationeel is</p>
-              <p class="text-2xl font-bold text-surface-900">6-12 maanden</p>
-            </div>
-            <div class="border-b border-surface-200 pb-4">
-              <p class="text-sm text-surface-500">Ontwikkelinspanning</p>
-              <p class="text-2xl font-bold text-surface-900">Hoog</p>
-              <p class="text-xs text-surface-400">Meerdere engineers die dashboards, regels en integraties bouwen</p>
-            </div>
-            <div class="border-b border-surface-200 pb-4">
-              <p class="text-sm text-surface-500">Onderhoud</p>
-              <p class="text-2xl font-bold text-surface-900">Altijd doorlopend</p>
-              <p class="text-xs text-surface-400">Voortdurend updates voor wijzigingen in AI-modellen en compliance</p>
-            </div>
-            <div>
-              <p class="text-sm text-surface-500">Beoordelingsinterface voor het team</p>
-              <p class="text-2xl font-bold text-surface-900">Maatwerk nodig</p>
-            </div>
-          </div>
-        </div>
-        <div class="rounded-xl border-2 border-brand-500 bg-brand-50 p-8">
-          <div class="mb-2 inline-flex items-center gap-2 rounded-full bg-brand-100 px-3 py-1 text-xs font-semibold text-brand-700">Aanbevolen</div>
-          <h2 class="text-xl font-bold text-surface-900">OpenModeration</h2>
-          <div class="mt-6 space-y-4">
-            <div class="border-b border-brand-200 pb-4">
-              <p class="text-sm text-surface-500">Tijd tot het operationeel is</p>
-              <p class="text-2xl font-bold text-surface-900">Minuten</p>
-              <p class="text-xs text-surface-400">Kant-en-klaar platform</p>
-            </div>
-            <div class="border-b border-brand-200 pb-4">
-              <p class="text-sm text-surface-500">Ontwikkelinspanning</p>
-              <p class="text-2xl font-bold text-accent-600">Nul</p>
-              <p class="text-xs text-surface-400">Je engineers richten zich op je kernproduct</p>
-            </div>
-            <div class="border-b border-brand-200 pb-4">
-              <p class="text-sm text-surface-500">Onderhoud</p>
-              <p class="text-2xl font-bold text-surface-900">Minimaal</p>
-              <p class="text-xs text-surface-400">Het platform regelt updates van AI-modellen en compliance</p>
-            </div>
-            <div>
-              <p class="text-sm text-surface-500">Beoordelingsinterface voor het team</p>
-              <p class="text-2xl font-bold text-surface-900">Standaard inbegrepen</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="bg-surface-50 py-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="mb-8 text-2xl font-bold text-surface-900 sm:text-3xl">Kostenoverzicht jaar 1</h2>
-      <div class="overflow-x-auto rounded-xl border border-surface-200">
-        <table class="w-full text-left text-sm">
-          <thead>
-            <tr class="bg-surface-100">
-              <th class="px-6 py-4 font-semibold text-surface-900">Kostenpost</th>
-              <th class="px-6 py-4 font-semibold text-red-600">Zelf bouwen</th>
-              <th class="px-6 py-4 font-semibold text-accent-600">OpenModeration</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-surface-200 bg-white">
-            {costs.map((c) => (
-              <tr>
-                <td class="px-6 py-4 text-surface-600">{c.item}</td>
-                <td class="px-6 py-4 text-surface-900">{c.build}</td>
-                <td class="px-6 py-4 font-medium text-accent-600">{c.buy}</td>
-              </tr>
-            ))}
-            <tr><td class="px-6 py-4 text-surface-600">Totale inspanning jaar 1</td>
-              <td class="px-6 py-4 font-bold text-red-600">Hoog (meerdere fte's)</td>
-              <td class="px-6 py-4 font-bold text-accent-600">Minimaal (kant-en-klaar)</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="mt-4 text-xs text-surface-400">Schattingen op basis van gangbare ontwikkelcycli voor interne tools. Je eigen situatie kan afwijken.</p>
-    </div>
-  </section>
-
-  <section class="bg-white py-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="mb-8 text-2xl font-bold text-surface-900 sm:text-3xl">Wat je krijgt vs wat je moet bouwen</h2>
-      <div class="overflow-x-auto rounded-xl border border-surface-200">
-        <table class="w-full text-left text-sm">
-          <thead>
-            <tr class="bg-surface-100">
-              <th class="px-6 py-4 font-semibold text-surface-900">Functie</th>
-              <th class="px-6 py-4 font-semibold text-red-600">Zelf bouwen</th>
-              <th class="px-6 py-4 font-semibold text-accent-600">OpenModeration</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-surface-200 bg-white">
-            <tr><td class="px-6 py-4 text-surface-600">Moderatie-AI</td><td class="px-6 py-4 text-surface-500">Eigen modellen trainen, evalueren en onderhouden</td><td class="px-6 py-4 text-accent-600">Onze eigen moderatie-AI, bij lastige gevallen gecontroleerd door andere AI-modellen</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Nieuwe AI-modellen bijhouden</td><td class="px-6 py-4 text-surface-500">Bij elke release opnieuw integreren en testen</td><td class="px-6 py-4 text-accent-600">We sluiten betere modellen aan zodra ze uitkomen, voor jou verandert er niets</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Eén responseformaat</td><td class="px-6 py-4 text-surface-500">Eigen normalisatie per model</td><td class="px-6 py-4 text-accent-600">Standaard gestandaardiseerd</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Slimme routing</td><td class="px-6 py-4 text-surface-500">Routinglogica vanaf nul bouwen</td><td class="px-6 py-4 text-accent-600">Routing via configuratie</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Beheerdashboard</td><td class="px-6 py-4 text-surface-500">Een React/Vue-dashboard bouwen</td><td class="px-6 py-4 text-accent-600">Inbegrepen, klaar voor gebruik</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Interface voor menselijke beoordeling en teambeheer</td><td class="px-6 py-4 text-surface-500">Maanden ontwikkeling van interne tools</td><td class="px-6 py-4 text-accent-600">Twijfelgevallen afgehandeld door ons team; een realtime dashboard voor het jouwe</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Slimme AI-regels die context begrijpen</td><td class="px-6 py-4 text-surface-500">Complexe, kwetsbare maatwerklogica</td><td class="px-6 py-4 text-accent-600">Drie eenvoudige hulpmiddelen: woordfilters, drempels, je regels in gewone taal</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Action engine</td><td class="px-6 py-4 text-surface-500">Regel-engine + webhooks bouwen</td><td class="px-6 py-4 text-accent-600">Ingebouwde Action Engine</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Connectoren voor social media</td><td class="px-6 py-4 text-surface-500">Elk platform afzonderlijk integreren</td><td class="px-6 py-4 text-accent-600">Facebook, Instagram, YouTube, WordPress inbegrepen</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Audittraject</td><td class="px-6 py-4 text-surface-500">Een logsysteem vanaf nul ontwerpen</td><td class="px-6 py-4 text-accent-600">DSA-proof auditlogs</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Batchmoderatie</td><td class="px-6 py-4 text-surface-500">Asynchrone verwerking + webhooks bouwen</td><td class="px-6 py-4 text-accent-600">Ingebouwde batch-API</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Beheer van API-sleutels</td><td class="px-6 py-4 text-surface-500">Authenticatie + rate limiting implementeren</td><td class="px-6 py-4 text-accent-600">Ingebouwd sleutelbeheer</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-
-  <section class="bg-ink-900 py-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="mx-auto max-w-3xl text-center">
-        <h2 class="text-2xl font-bold text-white sm:text-3xl">De verborgen kosten van zelf bouwen</h2>
-      </div>
-      <div class="mt-8 grid gap-6 md:grid-cols-2">
-        <div class="rounded-xl border border-ink-700 bg-ink-800 p-6">
-          <h3 class="font-semibold text-white">Wijzigingen in AI-modellen</h3>
-          <p class="mt-2 text-sm text-surface-400">AI-leveranciers wijzigen schema's, faseren modellen uit en passen taxonomieën aan zonder waarschuwing. Voor een eigen systeem is elke wijziging een noodgeval. OpenModeration regelt die updates voor je.</p>
-        </div>
-        <div class="rounded-xl border border-ink-700 bg-ink-800 p-6">
-          <h3 class="font-semibold text-white">Compliance die achterloopt</h3>
-          <p class="mt-2 text-sm text-surface-400">De DSA en andere regelgeving veranderen. Interne teams moeten de wetgeving bijhouden en het audittraject aanpassen. OpenModeration is vanaf dag één DSA-proof gebouwd.</p>
-        </div>
-        <div class="rounded-xl border border-ink-700 bg-ink-800 p-6">
-          <h3 class="font-semibold text-white">Operationele overhead</h3>
-          <p class="mt-2 text-sm text-surface-400">De API bouwen is maar 20% van het werk. De overige 80% gaat zitten in het dashboard, de regel-engine, het teambeheer en de beoordelingsinterface die nodig zijn om de moderatie dagelijks te laten draaien. Bij OpenModeration handelt ons team ook de twijfelgevallen af.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="bg-surface-50 py-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="mb-8 text-2xl font-bold text-surface-900 sm:text-3xl">Wanneer zelf bouwen, wanneer kopen</h2>
-      <div class="grid gap-8 md:grid-cols-2">
-        <div class="rounded-xl border border-surface-200 bg-white p-6">
-          <h3 class="flex items-center gap-2 text-lg font-semibold text-red-600">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-            Bouw zelf als...
-          </h3>
-          <ul class="mt-4 space-y-2 text-sm text-surface-600">
-            <li>Moderatietools je belangrijkste onderscheidende product zijn</li>
-            <li>Je een eigen engineeringteam hebt om ze te bouwen en te onderhouden</li>
-            <li>Je zeer eigen, op maat gemaakte moderatie-algoritmen nodig hebt</li>
-          </ul>
-        </div>
-        <div class="rounded-xl border border-brand-200 bg-brand-50 p-6">
-          <h3 class="flex items-center gap-2 text-lg font-semibold text-accent-600">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-            Kies OpenModeration als...
-          </h3>
-          <ul class="mt-4 space-y-2 text-sm text-surface-600">
-            <li>Je vandaag een compleet moderatieplatform wilt dat werkt, niet over 6 maanden</li>
-            <li>Je engineeringteam zich moet richten op je kernproduct, niet op interne tools</li>
-            <li>Je twijfelgevallen voor je wilt laten afhandelen, terwijl je elke beslissing in realtime ziet</li>
-            <li>Je wilt profiteren van de vooruitgang in AI zonder vast te zitten aan één verouderd model</li>
-            <li>Je DSA-naleving nodig hebt zonder eigen compliance-experts aan te nemen</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="border-t border-surface-100 bg-white py-12">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="text-lg font-bold text-surface-900">Verder lezen</h2>
-      <ul class="mt-4 space-y-2 text-sm">
-        <li><a href={localizePath('/blog/build-vs-buy-moderation', locale)} class="font-medium text-brand-600 hover:text-brand-500">Verdieping: de kosten van moderatie-infrastructuur in 2026 &rarr;</a></li>
-        <li><a href={localizePath('/pricing', locale)} class="font-medium text-brand-600 hover:text-brand-500">Eenvoudige, transparante prijzen &rarr;</a></li>
-        <li><a href={localizePath('/dsa-compliance', locale)} class="font-medium text-brand-600 hover:text-brand-500">DSA-naleving zonder compliance-team &rarr;</a></li>
-      </ul>
-    </div>
-  </section>
-
-  <CTASection
-    title="Stop met interne tools bouwen. Begin je community te beschermen."
-    subtitle="Koppel je pagina's, schrijf je regels in gewone taal en krijg een reden bij elke verborgen reactie. Binnen 5 minuten ben je live."
-    buttonText="Probeer het gratis"
-    buttonHref="https://app.openmoderation.com/signup"
-  />
-</BaseLayout>
+<BuildVsBuyDecision copy={{
+  title: "Moderatie zelf bouwen of kopen? Een keuzehulp",
+  description: "Zelf reactiemoderatie bouwen of een beheerde dienst kopen? Een beslistabel, duidelijke gevallen voor beide opties en een gesprek over jouw situatie.",
+  home: "Home",
+  crumb: "Zelf bouwen of kopen",
+  eyebrow: "Keuzehulp",
+  h1: "Moderatie zelf bouwen of kopen: zo maak je de keuze",
+  intro: "Zelf bouwen is zinvol voor een handvol organisaties. Voor de meeste is kopen sneller en veiliger. Deze pagina helpt je jezelf te plaatsen op zes criteria en je situatie daarna met ons te toetsen in een gesprek van 60 minuten.",
+  secondaryCta: "Bekijk de gedetailleerde kostenberekening",
+  tableTitle: "De beslistabel",
+  tableIntro: "Loop elke regel langs en noteer welke kolom het best bij je past. Drie of meer regels rechts beantwoorden de vraag meestal al.",
+  tableHead: ["Criterium", "Zelf bouwen past als…", "Kopen past als…"],
+  tableRows: [
+    ["Rol van moderatie", "Moderatie is onderdeel van het product dat je verkoopt", "Moderatie beschermt je product, maar is niet het product"],
+    ["Team", "Je kunt jarenlang developers, data scientists en moderatoren inzetten", "Je developers zijn nodig voor je kernproduct"],
+    ["Termijn", "Je kunt maanden wachten op de eerste bruikbare beslissing", "Reacties, meldingen of een DSA-vraag vragen nu om een antwoord"],
+    ["Twijfelgevallen", "Je hebt mensen die dagelijks meldingen en bezwaren beoordelen", "Je wilt een team dat ze voor je afhandelt"],
+    ["AI-modellen", "Je wilt modellen zelf trainen, evalueren en vervangen", "Je wilt nieuwe modellen ingeplugd zien zonder werk aan jouw kant"],
+    ["Compliance", "Je hebt juridische en technische capaciteit om de DSA te volgen", "Je wilt motiveringen, historie en bezwaarprocedure ingebouwd"],
+  ],
+  buildTitle: "Wanneer zelf bouwen zinvol is",
+  buildItems: [
+    "Moderatie is een onderscheidende functie van wat je verkoopt, geen ondersteunende taak.",
+    "Je content of regels zijn zo specifiek dat geen bestaande dienst erop aan te passen is.",
+    "Je hebt al een ML-team en een moderatieteam en kunt beide jarenlang financieren.",
+  ],
+  buyTitle: "Wanneer kopen zinvol is",
+  buyItems: [
+    "Je hebt reacties op een website of sociale accounts en wilt ze snel goed gemodereerd hebben.",
+    "Je wilt geen moderatoren werven en geen beoordelingsinterface bouwen.",
+    "Je hebt de DSA-basis nodig (motiveringen, meldingen, bezwaren, historie) zonder er een project van te maken.",
+    "Je wilt eerst vergelijken: een gratis test op je echte reacties laat elke beslissing zien.",
+  ],
+  hybridTitle: "De middenweg: bouwen op een dienst",
+  hybridText: "Heb je een eigen platform en wil je de interface zelf in de hand houden? Roep dan onze moderatie-API aan vanuit je systeem en blijf voor twijfelgevallen leunen op onze AI en ons team. Je bouwt wat je onderscheidt en koopt de rest.",
+  includedTitle: "Wat je krijgt als je OpenModeration koopt",
+  included: [
+    { title: "Onze eigen moderatie-AI", text: "Zelf ontwikkeld, in zeven jaar getraind op miljoenen berichten en bij gevoelige gevallen gecontroleerd door andere AI-modellen." },
+    { title: "Ons team voor twijfelgevallen", text: "Twijfelgevallen, meldingen van gebruikers en betwiste beslissingen worden afgehandeld door onze moderatoren. Jij ziet elke beslissing en kunt die terugdraaien." },
+    { title: "Inrichting samen met jou", text: "We vertalen je regels naar instructies en testen ze op je echte reacties voordat er iets live gaat." },
+    { title: "DSA-registratie en hosting in de EU", text: "Een schriftelijke motivering bij elke beslissing, traceerbare historie, exporteerbare cijfers. Gehost in de EU, AVG-conform." },
+  ],
+  costTitle: "Wil je de cijfers achter de keuze?",
+  costText: "In ons blogartikel rekenen we post voor post door wat een zelfgebouwd moderatiesysteem over drie jaar kost: ontwikkeling, onderhoud, AI-modellen, infrastructuur en compliance.",
+  costLink: "Lees de kostenberekening van zelf bouwen",
+  faqTitle: "Vragen voordat je kiest",
+  faq: [
+    { question: "Is zelf moderatie bouwen goedkoper?", answer: "Zelden. De eerste versie is alleen het zichtbare deel; onderhoud, modelwissels, menselijke beoordeling en compliance blijven elk jaar geld kosten. De uitgebreide berekening staat in ons blogartikel over de kosten van moderatie-infrastructuur." },
+    { question: "Kunnen we met een dienst beginnen en later zelf bouwen?", answer: "Ja. Niets houdt je vast: je regels staan in gewone taal en je beslissingshistorie is te exporteren." },
+    { question: "Houden we de controle als we kopen?", answer: "Ja. Je ziet elke beslissing en de schriftelijke motivering in realtime en kunt ingrijpen of terugdraaien wanneer je wilt." },
+    { question: "Hoe toetsen we of kopen bij ons past?", answer: "Plan een gesprek. We bekijken samen je volumes, platforms en regels, daarna kun je een gratis sandboxtest op je echte reacties draaien." },
+  ],
+  ctaTitle: "Toets je situatie in 60 minuten.",
+  ctaSubtitle: "Plan een gesprek: we lopen de beslistabel door met jouw volumes en regels, en zeggen het eerlijk als zelf bouwen beter past.",
+}} />

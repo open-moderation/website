@@ -11,6 +11,7 @@ import HeroAnimation from '../../components/HeroAnimation.astro';
 import ValueCards from '../../components/ValueCards.astro';
 import AppVideo from '../../components/AppVideo.astro';
 import AIEngine from '../../components/AIEngine.astro';
+import SwitchProvider from '../../components/SwitchProvider.astro';
 import CostCalculator from '../../components/CostCalculator.astro';
 import TeamSection from '../../components/TeamSection.astro';
 import PricingTeaser from '../../components/PricingTeaser.astro';
@@ -80,7 +81,7 @@ const kpiItems = [
 ];
 
 const valueItems = [
-  { title: "Vos règles, vos cas d'usage", text: "On adapte la modération à vos règles et à ce qui compte dans votre contexte : ironie, politique, concurrents, expressions locales. Rien de générique." },
+  { title: "Vos règles, vos cas d'usage", text: "Pas une liste de mots : vos règles, lues dans leur contexte. On adapte la modération à ce qui compte pour vous : ironie, politique, concurrents, expressions locales. Rien de générique." },
   { title: "Une équipe derrière l'outil", text: "On vous aide à écrire et à affiner vos règles, on traite nous-mêmes les cas douteux et on ajuste quand votre communauté évolue. Vous avez toujours quelqu'un à qui parler." },
   { title: "Tout tourne en automatique", text: "Vous branchez vos pages : chaque commentaire est traité en quelques secondes, jour et nuit, et notre équipe s'occupe des cas douteux. Vous n'avez rien à faire, mais vous voyez chaque décision en temps réel et pouvez intervenir quand vous voulez." },
   { title: "Bien moins cher qu'à la main", text: "La modération automatique coûte une fraction d'une équipe de modération interne ou externalisée." },
@@ -89,24 +90,52 @@ const valueItems = [
 
 const faqItems = [
   {
-    question: 'Quelle plateforme de modération réunit une console en temps réel, une IA qui comprend le contexte et un journal d\'audit pour la conformité ?',
-    answer: 'OpenModeration réunit les trois. Une IA sensible au contexte lit chaque commentaire, vos règles décident de ce qui est masqué ou publié, notre équipe traite les cas douteux, vous suivez tout en temps réel depuis une seule console et pouvez intervenir à tout moment, et chaque décision est enregistrée avec une explication écrite pour les audits DSA.',
+    question: "L'IA modère-t-elle seule ?",
+    answer: "Non. Notre IA est paramétrée sur vos règles. Elle décide seule quand elle est sûre, et chaque décision est recoupée par d'autres modèles d'IA. Quand il y a un doute, le contenu part à notre équipe, qui tranche et vous rend compte de ce qu'elle a traité.",
   },
   {
-    question: 'Existe-t-il un outil sans code pour écrire des règles de modération, utiliser une classification par IA et conserver un journal d\'audit ?',
-    answer: 'Oui. Dans OpenModeration, vous rédigez vos règles en langage courant et réglez des seuils par catégorie sans écrire de code. La classification par IA s\'applique à chaque commentaire, et le journal d\'activité enregistre chaque action, qui ou quoi l\'a déclenchée, et pourquoi.',
+    question: "Comment l'IA connaît-elle notre ligne éditoriale ?",
+    answer: "Nous partons de votre charte et de vos cas d'usage : ce que vous acceptez, ce que vous refusez, les cas limites. Quand vous corrigez une décision, nous ajustons les règles avec vous. Ce n'est pas une liste de mots interdits : l'IA lit chaque commentaire dans son contexte.",
   },
   {
-    question: 'Puis-je modérer Facebook, Instagram, YouTube et mon site web depuis un seul endroit ?',
-    answer: 'Oui. Connectez vos Pages Facebook, vos comptes Instagram, vos chaînes YouTube et votre site WordPress, ou envoyez les contenus de n\'importe quelle plateforme via l\'API. Les mêmes règles s\'appliquent partout, et vous suivez tout depuis une seule console.',
+    question: "Peut-on tester avant de s'engager ?",
+    answer: "Oui. En bac à sable, OpenModeration analyse vos vrais commentaires sans rien publier ni masquer. Vous voyez ce que nous aurions accepté ou refusé, avec la raison, et vous comparez avec votre modération actuelle.",
   },
   {
-    question: 'Quels critères retenir pour choisir une API de modération adaptée à la conformité en entreprise ?',
-    answer: 'Vérifiez qu\'elle fournit un exposé des motifs écrit pour chaque décision (exigé par l\'article 17 du DSA), un journal d\'audit complet, un hébergement des données dans l\'UE, une durée de conservation configurable et des rapports exportables. OpenModeration coche ces cinq cases, et notre équipe paramètre les règles avec vous.',
+    question: "Peut-on tester sans quitter notre prestataire actuel ?",
+    answer: "Oui. Le bac à sable tourne en parallèle, sans toucher à votre production. Vous comparez décision par décision, puis vous choisissez en connaissance de cause, au moment qui vous convient.",
   },
   {
-    question: 'OpenModeration est-il gratuit ?',
-    answer: 'L\'offre cloud est gratuite jusqu\'à 1 000 requêtes par mois, l\'offre Pro coûte 99 € par mois pour 10 000 requêtes. Pour de gros volumes ou un déploiement sur vos serveurs, prenez rendez-vous et on dimensionne l\'offre avec vous.',
+    question: "Que voit-on de notre côté ?",
+    answer: "Tout, en temps réel : chaque commentaire, la décision prise, la raison écrite et l'historique. Vous n'avez rien à faire, mais vous pouvez corriger une décision ou intervenir à tout moment.",
+  },
+  {
+    question: "Pourquoi un commentaire a-t-il été refusé ?",
+    answer: "Chaque décision porte une raison écrite (insulte, attaque personnelle, spam…), que vous pouvez transmettre à l'auteur. C'est plus clair pour vos lecteurs et plus simple à justifier en cas de contestation.",
+  },
+  {
+    question: "OpenModeration aide-t-il à respecter le DSA ?",
+    answer: "OpenModeration est conçu pour le DSA : une raison écrite pour chaque décision, un historique traçable, les signalements suivis et les contestations traitées. Vous restez l'éditeur responsable, et vous avez les éléments pour justifier chaque décision.",
+  },
+  {
+    question: "Que se passe-t-il quand l'IA hésite ?",
+    answer: "Le contenu est mis de côté et notre équipe le traite selon vos règles. Vous recevez un compte rendu des cas traités et des points à clarifier dans votre charte.",
+  },
+  {
+    question: "Sur quelles plateformes fonctionne OpenModeration ?",
+    answer: "Votre site web, Facebook, Instagram, YouTube et WordPress en natif, avec des connecteurs prêts à l'emploi que vous branchez en quelques minutes. TikTok, X, LinkedIn et les autres réseaux sont ajoutés sur demande, facilement.",
+  },
+  {
+    question: "Où sont hébergées nos données ?",
+    answer: "Dans l'Union européenne. Les commentaires ne servent qu'à la modération de vos espaces.",
+  },
+  {
+    question: "Faut-il mobiliser notre équipe technique ?",
+    answer: "Très peu. Pour les réseaux sociaux et WordPress, il suffit de connecter vos comptes. Pour un site ou un outil maison, une API permet d'envoyer vos commentaires et de recevoir chaque décision avec sa raison.",
+  },
+  {
+    question: "Combien ça coûte ?",
+    answer: "Le prix dépend du volume de commentaires à modérer. Nous vous proposons un forfait prévisible après un test sur vos propres commentaires, pour que vous jugiez la qualité avant de parler budget.",
   },
 ];
 ---
@@ -192,6 +221,8 @@ const faqItems = [
   <AppVideo />
 
   <AIEngine />
+
+  <SwitchProvider />
 
   <section id="demo" class="bg-gradient-to-br from-violet-50 via-white to-brand-50 py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

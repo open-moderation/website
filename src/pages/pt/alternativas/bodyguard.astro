@@ -4,6 +4,7 @@ import CharterSupport from '../../../components/CharterSupport.astro';
 import Breadcrumb from '../../../components/Breadcrumb.astro';
 import CTASection from '../../../components/CTASection.astro';
 import RelatedComparisons from '../../../components/RelatedComparisons.astro';
+import SwitchProvider from '../../../components/SwitchProvider.astro';
 import FAQ from '../../../components/FAQ.astro';
 import { getLocale, localizePath } from '../../../i18n/routes';
 import { bookingUrl } from '../../../i18n/ui';
@@ -23,24 +24,24 @@ const pageJsonLd = {
 
 const rows = [
   { feature: "Ofertas", bodyguard: "Uma API de moderação para plataformas e uma oferta de moderação de redes sociais para marcas, agências e órgãos públicos", openmod: "Uma única plataforma: conectores para redes sociais e WordPress, API REST e webhooks para todo o resto" },
-  { feature: "Redes sociais cobertas", bodyguard: "Facebook, Instagram, TikTok, X, LinkedIn, YouTube, Twitch, Discord", openmod: "Facebook, Instagram, YouTube e WordPress de forma nativa; os sites, via API" },
-  { feature: "Preço", bodyguard: "Guardian a partir de 1.000 €/mês, Sentinel a partir de 3.000 €/mês, Commander sob orçamento; preço conforme o tamanho da audiência", openmod: "Públicos: grátis até 1.000 requisições/mês, Pro a 99 €/mês para 10 mil requisições, Enterprise sob consulta" },
+  { feature: "Redes sociais cobertas", bodyguard: "Facebook, Instagram, TikTok, X, LinkedIn, YouTube, Twitch, Discord", openmod: "Site, Facebook, Instagram, YouTube e WordPress de forma nativa; TikTok, X, LinkedIn e outras redes adicionadas sob demanda, rapidamente" },
+  { feature: "Preço", bodyguard: "Guardian a partir de 1.000 €/mês, Sentinel a partir de 3.000 €/mês, Commander sob orçamento; preço conforme o tamanho da audiência", openmod: "Públicos: grátis até 1.000 comentários analisados/mês, Pro a 99 €/mês para 10 mil comentários analisados, Enterprise sob consulta" },
   { feature: "Hospedagem dos dados", bodyguard: "Não especificado na página inicial", openmod: "Desenvolvido e hospedado na União Europeia" },
   { feature: "Modelos de IA", bodyguard: "Tecnologia desenvolvida pela Bodyguard", openmod: "IA de moderação própria, verificada por outros modelos de IA; novos modelos integrados assim que são lançados" },
   { feature: "Explicação por escrito de cada decisão", bodyguard: "Não mencionado", openmod: "Sim, para cada decisão, no idioma que você escolher" },
   { feature: "DSA", bodyguard: "Não mencionado na página inicial", openmod: "Registro de auditoria de todas as decisões, automáticas ou humanas" },
   { feature: "Conformidade declarada", bodyguard: "RGPD, SOC 2 Type 2", openmod: "RGPD; registro de auditoria completo de cada decisão" },
-  { feature: "Idiomas", bodyguard: "46 idiomas, segundo a empresa", openmod: "Explicações no idioma que você escolher" },
+  { feature: "Idiomas", bodyguard: "46 idiomas, segundo a empresa", openmod: "Multilíngue, incluindo os idiomas do seu público: cada comentário é analisado no próprio idioma" },
 ];
 
 const faqItems = [
   {
     question: "Qual é a melhor alternativa ao Bodyguard?",
-    answer: "Depende do que você procura. Se você quer um plano gratuito para começar, dados hospedados na UE e uma explicação por escrito para cada comentário ocultado, o OpenModeration atende a esses critérios. Se você precisa moderar TikTok, X, LinkedIn, Twitch ou Discord de forma nativa, o Bodyguard cobre essas redes e o OpenModeration não.",
+    answer: "Depende do que você procura. Se você quer um plano gratuito para começar, dados hospedados na UE e uma explicação por escrito para cada comentário ocultado, o OpenModeration atende a esses critérios. Se o seu departamento de compras exige SOC 2 Type 2, o Bodyguard tem essa certificação.",
   },
   {
     question: "Quanto custa o Bodyguard em comparação com o OpenModeration?",
-    answer: "Segundo a sua página de preços, o Bodyguard oferece um plano Guardian a partir de 1.000 € por mês e um plano Sentinel a partir de 3.000 € por mês, com preço que depende do tamanho da audiência. O OpenModeration oferece um plano gratuito de até 1.000 requisições por mês e um plano Pro a 99 € por mês para 10 mil requisições.",
+    answer: "Segundo a sua página de preços, o Bodyguard oferece um plano Guardian a partir de 1.000 € por mês e um plano Sentinel a partir de 3.000 € por mês, com preço que depende do tamanho da audiência. O OpenModeration oferece um plano gratuito de até 1.000 comentários analisados por mês e um plano Pro a 99 € por mês para 10 mil comentários analisados.",
   },
   {
     question: "Bodyguard vs OpenModeration: qual é a diferença?",
@@ -68,6 +69,10 @@ const faqItems = [
       <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
         O Bodyguard é uma empresa francesa reconhecida na moderação com IA. O OpenModeration faz outras escolhas: um plano gratuito e depois o Pro a 99 € por mês, dados hospedados na UE e uma explicação por escrito para cada decisão. Veja as diferenças, com fontes, para escolher com conhecimento de causa.
       </p>
+      <div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <a href="/pt/agendar-reuniao" class="inline-flex items-center justify-center rounded-lg bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-500">Agende uma reunião</a>
+        <a href="https://app.openmoderation.com/signup" class="inline-flex items-center justify-center rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">Teste grátis</a>
+      </div>
     </div>
   </section>
 
@@ -86,9 +91,7 @@ const faqItems = [
       <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
         <h2 class="text-lg font-semibold text-surface-900">O Bodyguard pode ser mais indicado se…</h2>
         <ul class="mt-4 space-y-2 text-sm text-surface-600">
-          <li>você precisa moderar TikTok, X, LinkedIn, Twitch ou Discord de forma nativa;</li>
-          <li>o seu departamento de compras exige uma certificação SOC 2 Type 2;</li>
-          <li>você prefere uma solução totalmente gerenciada por um único fornecedor.</li>
+          <li>o seu departamento de compras exige uma certificação SOC 2 Type 2.</li>
         </ul>
       </div>
     </div>
@@ -135,7 +138,7 @@ const faqItems = [
         </div>
         <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
           <h3 class="font-semibold text-surface-900">Um preço de entrada muito mais baixo</h3>
-          <p class="mt-2 text-sm text-surface-600">O Bodyguard começa em 1.000 € por mês. O OpenModeration é grátis até 1.000 requisições por mês e o plano Pro custa 99 € por mês para 10 mil requisições; o Enterprise é sob consulta. Se você precisar de uma implantação on-premise, ela é possível sob consulta: <a href={bookingUrl(locale)} target="_blank" rel="noopener" class="font-medium text-brand-600 hover:text-brand-500">vamos conversar</a>.</p>
+          <p class="mt-2 text-sm text-surface-600">O Bodyguard começa em 1.000 € por mês. O OpenModeration é grátis até 1.000 comentários analisados por mês e o plano Pro custa 99 € por mês para 10 mil comentários analisados; o Enterprise é sob consulta. Se você precisar de uma implantação on-premise, ela é possível sob consulta: <a href={bookingUrl(locale)} target="_blank" rel="noopener" class="font-medium text-brand-600 hover:text-brand-500">vamos conversar</a>.</p>
         </div>
         <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
           <h3 class="font-semibold text-surface-900">Um motor de IA que acompanha o progresso dos modelos</h3>
@@ -169,6 +172,8 @@ const faqItems = [
       </ul>
     </div>
   </section>
+
+  <SwitchProvider />
 
   <RelatedComparisons />
 

@@ -1,121 +1,146 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import FAQ from '../../components/FAQ.astro';
+import CTASection from '../../components/CTASection.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
+import { localizePath, type Locale } from '../../i18n/routes';
+import { useTranslations } from '../../i18n/ui';
 
-const faqItems = [
-  {
-    question: "Muss ich programmieren können, um Moderationsregeln einzurichten?",
-    answer: "Nein. OpenModeration arbeitet mit drei einfachen Werkzeugen: verbotene Wörter für sofortiges Blockieren, Schwellenwerte pro Kategorie für automatische Entscheidungen und Regeln, die Sie in natürlicher Sprache formulieren. Die Action Engine übernimmt die Durchsetzung automatisch, ganz ohne Code.",
-  },
-  {
-    question: "Kann ich eine KI-Entscheidung manuell korrigieren?",
-    answer: "Ja. Zweifelsfälle übernimmt unser Team, Sie müssen also nichts tun. In der Konsole sehen Sie aber jede Entscheidung in Echtzeit, mit der Begründung der KI, und können sie jederzeit freigeben, ablehnen oder korrigieren. Jede Aktion wird für Prüfzwecke protokolliert.",
-  },
-  {
-    question: "Gibt es einen kostenlosen Tarif?",
-    answer: "Ja. Der Free-Tarif umfasst bis zu 1.000 Anfragen pro Monat, ohne Kreditkarte. Der Pro-Tarif kostet 99 €/Monat mit 10.000 Anfragen, und für große Volumen stimmen wir ein individuelles Angebot mit Ihnen ab.",
-  },
-  {
-    question: "Worin unterscheidet sich das von der OpenAI Moderation API?",
-    answer: "Die OpenAI Moderation API ist ein einzelner Klassifikator und gibt wenig Einblick, wie die Moderation funktioniert. OpenModeration nutzt eine eigene Moderations-KI, eingerichtet nach Ihren Regeln und Anwendungsfällen, und lässt heikle Fälle von weiteren KI-Modellen prüfen. Jede Entscheidung wird schriftlich begründet, und dazu kommen eine Konsole und eine Action Engine für automatisierte Workflows.",
-  },
-  {
-    question: "Worin unterscheidet sich das von Nima (Tremau)?",
-    answer: "Nima (Tremau) ist eine Plattform, bei der Sie Ihre Inhaltsdaten mit deren Infrastruktur teilen müssen. OpenModeration begründet jede Entscheidung schriftlich, führt einen vollständigen Audit-Trail, lässt heikle Fälle von weiteren KI-Modellen prüfen und hostet Ihre Daten in der EU. Eine On-Premise-Bereitstellung ist auf Anfrage möglich.",
-  },
-  {
-    question: "Worin unterscheidet sich das von Checkstep?",
-    answer: "Checkstep ist ein SaaS mit Abrechnung pro Anfrage. OpenModeration ist konsequent API-first und für Teams gebaut, die Moderation direkt in ihren Stack integrieren wollen, mit schriftlich begründeten Entscheidungen, vollständigem Audit-Trail, Hosting in der EU und öffentlichen Preisen.",
-  },
-  {
-    question: "Was bedeutet DSA-konform?",
-    answer: "OpenModeration bietet einen vollständigen Audit-Trail aller Moderationsentscheidungen, konfigurierbare Richtlinien zur Datenaufbewahrung und exportierbare Berichte. So unterstützt die Plattform Sie dabei, die Transparenz- und Rechenschaftspflichten des EU Digital Services Act (DSA) zu erfüllen.",
-  },
-  {
-    question: "Welche KI nutzt OpenModeration?",
-    answer: "OpenModeration nutzt eine eigene Moderations-KI, trainiert für die Kommentarmoderation und eingerichtet nach Ihren Regeln und Anwendungsfällen. Bei heiklen Fällen prüfen weitere KI-Modelle die Entscheidung, bevor sie angewendet wird. Das bedeutet weniger Fehler und weniger zu Unrecht ausgeblendete Kommentare.",
-  },
-  {
-    question: "Ist eine On-Premise-Bereitstellung möglich?",
-    answer: "Auf Anfrage, ja. Sprechen Sie uns an, und wir besprechen gemeinsam Ihre Anforderungen. Standardmäßig wird OpenModeration in der EU gehostet, und Sie können Ihre Daten jederzeit exportieren.",
-  },
-  {
-    question: "Bieten Sie eine verwaltete Cloud an?",
-    answer: "Ja, unser verwaltetes Cloud-SaaS beginnt bei 99 €/Monat. Enthalten sind 10.000 Anfragen pro Monat, keinerlei Infrastrukturverwaltung, KI-Modelle inklusive, in der EU gehostete Infrastruktur, priorisierter Support und ein SLA. Alle Details finden Sie auf der Preisseite.",
-  },
-  {
-    question: "Wie schnell bringt die Plattform im Betrieb einen Nutzen?",
-    answer: "Innerhalb von Minuten, wenn Sie die REST-API für die grundlegende Moderation nutzen. Wenige Stunden, um Konsole, Action Engine und Konnektoren einzurichten, gemeinsam mit unserem Team. Danach läuft die Moderation von selbst, und Sie sehen jede Entscheidung in Echtzeit.",
-  },
-  {
-    question: "Was passiert, wenn ein besseres KI-Modell erscheint?",
-    answer: "Unsere Engine ist modellunabhängig. Kommt ein besseres oder günstigeres KI-Modell heraus, bindet unser Team es schnell an, und für Sie ändert sich nichts. KI-Modelle werden jedes Jahr besser, und Sie profitieren von diesem Fortschritt, statt auf dem Modell von gestern stehen zu bleiben.",
-  },
-  {
-    question: "Kann ich eigene Kategorien hinzufügen?",
-    answer: "Ja, über LLM-basierte Moderation mit eigenen Prompts. Anders als bei klassischen kategoriebasierten Klassifikatoren können Sie beliebige Moderationskategorien in natürlicher Sprache definieren und die Moderation so genau auf Ihre eigenen Regeln und Anwendungsfälle zuschneiden.",
-  },
-  {
-    question: "Und Bilder oder Videos?",
-    answer: "Die aktuelle Version konzentriert sich auf die Moderation von Text. Bild- und Videomoderation steht auf der Roadmap und wird multimodale KI-Modelle nutzen, sobald diese verfügbar sind.",
-  },
-];
+const locale: Locale = 'de';
+const t = useTranslations(locale);
+const booking = localizePath('/book-a-call', locale);
+const signup = 'https://app.openmoderation.com/signup';
 
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@graph": [
+const c = {
+  "title": "FAQ Kommentarmoderation: KI, Team, DSA und Preise",
+  "description": "Wer moderiert, wie die KI Ihre Regeln befolgt, Test mit Ihren Kommentaren, DSA, Plattformen, Daten und Preise: Antworten für Medien, Marken und Behörden.",
+  "crumb": "FAQ",
+  "h1": "Ihre Fragen zur Kommentarmoderation",
+  "intro": "Die Fragen, die uns Medien, Marken und öffentliche Einrichtungen vor der Entscheidung am häufigsten stellen. Ihre ist nicht dabei? Vereinbaren Sie einen Termin und fragen Sie uns direkt.",
+  "buyerTitle": "Vor der Entscheidung",
+  "techTitle": "Für technische Teams",
+  "techIntro": "Technische Details für Ihre Entwickler und Ihre IT.",
+  "ctaTitle": "Noch eine Frage?",
+  "ctaSubtitle": "Vereinbaren Sie einen Termin: Wir beantworten Ihre Fragen und zeigen Ihnen, was unsere Moderation mit Ihren eigenen Kommentaren machen würde.",
+  "buyer": [
     {
-      "@type": "WebPage",
-      "@id": "https://www.openmoderation.com/de/faq",
-      "url": "https://www.openmoderation.com/de/faq",
-      "name": "FAQ zu Content Moderation: Preise, Hosting & DSA",
-      "inLanguage": "de",
-      "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
+      "question": "Moderiert die KI allein?",
+      "answer": "Nein. Unsere KI wird auf Ihre Regeln eingestellt und entscheidet nur dann allein, wenn sie sicher ist. Heikle Fälle werden von weiteren KI-Modellen gegengeprüft, Zweifelsfälle gehen an unser Team, das nach Ihren Regeln entscheidet und Ihnen berichtet. Sie müssen nichts tun, außer Sie möchten eingreifen."
     },
     {
-      "@type": "FAQPage",
-      "@id": "https://www.openmoderation.com/de/faq#faq",
-      "inLanguage": "de",
-      "mainEntity": faqItems.map(item => ({
-        "@type": "Question",
-        "name": item.question,
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": item.answer.replace(/&mdash;/g, '—')
-        }
-      }))
+      "question": "Wie lernt die KI unsere redaktionelle Linie?",
+      "answer": "Wir gehen von Ihrer Netiquette und Ihren Anwendungsfällen aus: was Sie zulassen, was Sie ablehnen, die Grenzfälle. Wenn Sie eine Entscheidung korrigieren, passen wir die Regeln mit Ihnen an. Es ist keine Liste verbotener Wörter: Die KI liest jeden Kommentar im Kontext."
+    },
+    {
+      "question": "Können wir vor einer Zusage testen?",
+      "answer": "Ja. Im Sandbox-Modus analysiert OpenModeration Ihre echten Kommentare, ohne etwas zu veröffentlichen oder auszublenden. Sie sehen, was wir angenommen oder abgelehnt hätten, mit Begründung, und vergleichen es mit Ihrer aktuellen Moderation. Nichts wird Ihnen vorenthalten."
+    },
+    {
+      "question": "Können wir testen, ohne unseren Dienstleister zu verlassen?",
+      "answer": "Ja. Der Test läuft still parallel zu Ihrer aktuellen Moderation, ohne Ihren Live-Betrieb zu berühren. Sie vergleichen Entscheidung für Entscheidung und wählen dann in Kenntnis der Sache, wann es Ihnen passt."
+    },
+    {
+      "question": "Was sehen wir auf unserer Seite?",
+      "answer": "Alles, in Echtzeit: jeden Kommentar, die getroffene Entscheidung, ihre schriftliche Begründung und den Verlauf. Sie können jede Entscheidung jederzeit in der Konsole korrigieren."
+    },
+    {
+      "question": "Warum wurde ein Kommentar abgelehnt?",
+      "answer": "Jede Entscheidung trägt eine schriftliche Begründung (Beleidigung, persönlicher Angriff, Spam…), die Sie an den Verfasser weitergeben können. Das ist klarer für Ihre Leser und leichter zu rechtfertigen, wenn eine Entscheidung angefochten wird."
+    },
+    {
+      "question": "Hilft OpenModeration beim DSA?",
+      "answer": "Es ist für den DSA gebaut: eine schriftliche Begründung für jede Entscheidung, ein nachvollziehbarer Verlauf, Nachverfolgung von Meldungen und Beschwerden, exportierbare Zahlen. Sie bleiben der verantwortliche Anbieter und haben alles, um jede Entscheidung zu begründen."
+    },
+    {
+      "question": "Was passiert, wenn die KI zögert?",
+      "answer": "Der Kommentar wird zurückgehalten und unser Team bearbeitet ihn nach Ihren Regeln. Sie erhalten einen Bericht über die bearbeiteten Fälle und über Punkte Ihrer Netiquette, die geklärt werden sollten."
+    },
+    {
+      "question": "Und nachts, am Wochenende oder bei Spitzen?",
+      "answer": "Die KI moderiert rund um die Uhr mit denselben Regeln, unabhängig vom Volumen, auch während eines Spiels oder eines Wahlabends. Zweifelhafte Kommentare werden zurückgehalten statt veröffentlicht, bis unser Team sie bearbeitet hat."
+    },
+    {
+      "question": "Auf welchen Plattformen funktioniert OpenModeration?",
+      "answer": "Ihre Website (über unsere API oder WordPress), Facebook, Instagram und YouTube, mit fertigen Konnektoren. TikTok, X, LinkedIn und weitere Netzwerke kommen auf Anfrage schnell hinzu. Unser Team verbindet Ihre Seiten mit Ihnen."
+    },
+    {
+      "question": "Welche Sprachen werden moderiert?",
+      "answer": "OpenModeration ist mehrsprachig: Jeder Kommentar wird in seiner Sprache analysiert, auch in den Sprachen Ihres Publikums. Sagen Sie uns, welche Ihnen wichtig sind, und wir zeigen Ihnen die Ergebnisse mit Ihren eigenen Kommentaren."
+    },
+    {
+      "question": "Wo werden unsere Daten gehostet?",
+      "answer": "In der Europäischen Union, DSGVO-konform. Ihre Kommentare dienen ausschließlich der Moderation Ihrer Bereiche."
+    },
+    {
+      "question": "Müssen wir unser Technik-Team einbinden?",
+      "answer": "Kaum. Für soziale Netzwerke und WordPress verbinden Sie einfach Ihre Konten. Für eine Website oder ein eigenes Tool schickt eine API uns Ihre Kommentare und liefert jede Entscheidung mit Begründung zurück. Unser Team übernimmt die Einrichtung mit Ihnen."
+    },
+    {
+      "question": "Was kostet es?",
+      "answer": "Der Preis hängt vom Volumen der zu moderierenden Kommentare ab. Mit einem kostenlosen Tarif können Sie es ausprobieren; danach bieten wir Ihnen nach einem Test mit Ihren eigenen Kommentaren ein planbares, auf Ihre Volumen zugeschnittenes Paket an. So beurteilen Sie die Qualität, bevor es ums Budget geht."
+    }
+  ],
+  "tech": [
+    {
+      "question": "Gibt es eine API?",
+      "answer": "Ja. Eine REST-API nimmt jeden Kommentar entgegen und liefert Entscheidung, Kategorie und schriftliche Begründung zurück. Webhooks informieren Ihre Tools über jede Entscheidung, Zugriffsschlüssel verwalten Sie in der Konsole."
+    },
+    {
+      "question": "Welche KI nutzt OpenModeration?",
+      "answer": "Unsere eigene Moderations-KI, im Haus entwickelt und seit sieben Jahren mit Millionen von Nachrichten trainiert. Bei heiklen Fällen prüfen weitere KI-Modelle die Entscheidung gegen, bevor sie angewendet wird. Kommt ein besseres Modell heraus, binden wir es ein, ohne Änderung auf Ihrer Seite."
+    },
+    {
+      "question": "Können wir eigene Kategorien hinzufügen?",
+      "answer": "Ja. Über die Standardkategorien (Hass, Belästigung, Spam…) hinaus werden Ihre Regeln in Alltagssprache formuliert, sodass jede Kategorie Ihrer Richtlinie ergänzt werden kann. Die KI wendet sie im Kontext an."
+    },
+    {
+      "question": "Und Bilder oder Videos?",
+      "answer": "Die aktuelle Version konzentriert sich auf Text. Die Moderation von Bildern und Videos steht auf der Roadmap und wird von multimodalen KI-Modellen profitieren, sobald diese besser werden."
+    },
+    {
+      "question": "Läuft es auch auf unseren eigenen Servern?",
+      "answer": "Standardmäßig wird OpenModeration in der Europäischen Union gehostet und Ihre Daten bleiben exportierbar. Ein On-Premise-Betrieb ist auf Anfrage möglich: Sprechen wir darüber."
     }
   ]
 };
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/de/faq",
+  "url": "https://www.openmoderation.com/de/faq",
+  "name": "FAQ Kommentarmoderation: KI, Team, DSA und Preise",
+  "description": "Wer moderiert, wie die KI Ihre Regeln befolgt, Test mit Ihren Kommentaren, DSA, Plattformen, Daten und Preise: Antworten für Medien, Marken und Behörden.",
+  "inLanguage": "de",
+  "isPartOf": {
+    "@id": "https://www.openmoderation.com/#website"
+  }
+};
 ---
 
-<BaseLayout
-  title="FAQ zu Content Moderation: Preise, Hosting & DSA"
-  description="Antworten auf häufige Fragen zu OpenModeration: Preise, Hosting, DSA-Konformität, unsere KI-Engine und Integration."
-  jsonLd={faqJsonLd}
->
-<Breadcrumb items={[{ label: "Startseite", href: "/de" }, { label: "FAQ" }]} />
+<BaseLayout title={c.title} description={c.description} jsonLd={pageJsonLd}>
+<Breadcrumb items={[{ label: "Startseite", href: localizePath('/', locale) }, { label: c.crumb }]} />
   <section class="bg-gradient-to-b from-brand-50 to-white py-20">
     <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Häufig gestellte Fragen</h1>
-      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
-        Alles, was Sie über OpenModeration wissen müssen. Fehlt Ihre Frage, schreiben Sie uns an <a href="mailto:contact@openmoderation.com" class="font-medium text-brand-600 hover:text-brand-500">contact@openmoderation.com</a>.
-      </p>
-      <div class="mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row">
-        <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">
-          Kostenlos testen
-        </a>
-        <a href="/de/preise" class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">
-          Preise ansehen
-        </a>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">{c.h1}</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">{c.intro}</p>
+      <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a href={booking} class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">📅 {t('cta.book')}</a>
+        <a href={signup} class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">{t('cta.button')}</a>
       </div>
-      <p class="mt-4 text-sm text-surface-400">Keine Kreditkarte erforderlich</p>
     </div>
   </section>
   <section class="bg-white py-12">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <FAQ items={faqItems} disableJsonLd />
+      <FAQ items={c.buyer} title={c.buyerTitle} />
     </div>
   </section>
+  <section class="bg-surface-50 py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <p class="mx-auto mb-6 max-w-3xl text-center text-sm text-surface-500">{c.techIntro}</p>
+      <FAQ items={c.tech} title={c.techTitle} disableJsonLd />
+    </div>
+  </section>
+
+  <CTASection title={c.ctaTitle} subtitle={c.ctaSubtitle} />
 </BaseLayout>

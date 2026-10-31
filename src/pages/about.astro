@@ -1,83 +1,139 @@
 ---
-import { bookingUrl } from '../i18n/ui';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CTASection from '../components/CTASection.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
+import TeamSection from '../components/TeamSection.astro';
+import ClientLogos from '../components/ClientLogos.astro';
+import { localizePath, type Locale } from '../i18n/routes';
+import { useTranslations } from '../i18n/ui';
+
+const locale: Locale = 'en';
+const t = useTranslations(locale);
+const booking = localizePath('/book-a-call', locale);
+const signup = 'https://app.openmoderation.com/signup';
+
+const c = {
+  "title": "About OpenModeration: the Logora team, Paris since 2019",
+  "description": "OpenModeration is built by Logora, an employee-owned company founded in Paris in 2019 that moderates comments for 23 publishers in Europe and Latin America.",
+  "orgDescription": "AI comment moderation for news sites, brands, public bodies and platforms, adapted to each client’s rules. Built by Logora (Paris, 2019).",
+  "crumb": "About",
+  "h1": "The team that moderates your comments with you",
+  "lead": "OpenModeration is built by Logora, an independent company founded in Paris in 2019 and owned by its employees. Eight people in Paris, Madrid and Berlin set up and run comment moderation for 23 publishers in Europe and Latin America.",
+  "whoTitle": "Who we are",
+  "who": [
+    "Since 2019, we have been moderating reader comments for news publishers. Doing it every day taught us what media, brands and public bodies need: reliable decisions, a clear reason for each one, and people to turn to when a case is delicate.",
+    "Our references include L’Équipe, Challenges, Sud Ouest, actu.fr, Estadão, Südkurier and Egora. Logora is owned by the people who work there: we are accountable to our clients, not to investors."
+  ],
+  "whatTitle": "What OpenModeration is",
+  "what": "AI comment moderation for news sites, brands, public bodies and platforms, adapted to your rules and use cases. You connect your pages; our AI, built in-house and trained on millions of messages over seven years, handles clear cases. Our team handles doubtful cases, user reports and contested decisions. You see every decision and its written reason in real time, and you can step in whenever you want.",
+  "whatPoints": [
+    "Your website, Facebook, Instagram, YouTube and WordPress; other networks added on request.",
+    "Multilingual: each comment is analysed in its own language, including the languages of your audiences.",
+    "Setup and moderation of doubtful cases by our team are included.",
+    "Hosted in the European Union, in line with the GDPR."
+  ],
+  "disambiguation": "OpenModeration (openmoderation.com) is a Logora service. It is not related to OpenModerator, a separate project with a similar name.",
+  "whyTitle": "Why we built it",
+  "why": [
+    {
+      "title": "Because the DSA asks for explanations",
+      "text": "Under the Digital Services Act, platforms that host comments must explain their moderation decisions, handle user reports and follow up appeals. OpenModeration is built for that: a written reason for every decision, a traceable history and exportable figures."
+    },
+    {
+      "title": "Because good debate is worth protecting",
+      "text": "Insults and spam drive away the readers who have something to say. Careful moderation protects your brand and keeps room for real discussion, without over-censoring the comments that make it lively."
+    }
+  ],
+  "ctaTitle": "Meet the team",
+  "ctaSubtitle": "Book a call: we look at your comments together and show you how the moderation would work on your pages."
+};
 
 const aboutJsonLd = {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Logora",
-  "description": "Creator of OpenModeration, the transparent content moderation platform.",
-  "url": "https://www.openmoderation.com",
+  "@type": "AboutPage",
+  "@id": "https://www.openmoderation.com/about",
+  "url": "https://www.openmoderation.com/about",
+  "name": "About OpenModeration: the Logora team, Paris since 2019",
+  "description": "OpenModeration is built by Logora, an employee-owned company founded in Paris in 2019 that moderates comments for 23 publishers in Europe and Latin America.",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@id": "https://www.openmoderation.com/#website"
+  },
+  "mainEntity": {
+    "@type": "Organization",
+    "@id": "https://www.openmoderation.com/#organization",
+    "name": "OpenModeration",
+    "url": "https://www.openmoderation.com",
+    "description": "AI comment moderation for news sites, brands, public bodies and platforms, adapted to each client’s rules. Built by Logora (Paris, 2019).",
+    "parentOrganization": {
+      "@type": "Organization",
+      "name": "Logora",
+      "url": "https://logora.com"
+    },
+    "founder": [
+      {
+        "@type": "Person",
+        "name": "Pierre Laburthe-Tolra"
+      },
+      {
+        "@type": "Person",
+        "name": "Henry Boisgibault"
+      }
+    ],
+    "sameAs": [
+      "https://logora.com",
+      "https://www.linkedin.com/company/logora"
+    ]
+  }
 };
 ---
 
-<BaseLayout title="About | OpenModeration" description="OpenModeration is built by Logora. Our mission is to make content moderation a transparent, standardized infrastructure layer." jsonLd={aboutJsonLd}>
-<Breadcrumb items={[{ label: "Home", href: "/" }, { label: "About" }]} />
+<BaseLayout title={c.title} description={c.description} jsonLd={aboutJsonLd}>
+<Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: c.crumb }]} />
   <section class="bg-gradient-to-b from-brand-50 to-white py-20">
     <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">About</h1>
-      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
-        We're building the standardized infrastructure layer for content moderation.
-      </p>
-    </div>
-  </section>
-
-  <section class="bg-white py-20">
-    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-      <div class="prose prose-surface mx-auto">
-        <h2 class="text-2xl font-bold text-surface-900">Our mission</h2>
-        <p class="mt-4 text-lg text-surface-500">
-          Every online platform, from a small forum to a social network with millions of users,
-          should be able to moderate comments with a single API call, using the best AI models available,
-          without proprietary lock-in.
-        </p>
-        <p class="mt-4 text-lg text-surface-500">
-          We believe content moderation is becoming as essential as authentication or payments.
-          It should be a standardized infrastructure layer, not a custom build for every company.
-        </p>
-
-        <h2 class="mt-12 text-2xl font-bold text-surface-900">Why transparency?</h2>
-        <p class="mt-4 text-lg text-surface-500">
-          Moderation depends on trust, and nobody can trust a black box. That is why every OpenModeration
-          decision comes with a written reason, and every AI and human action is kept in a full audit trail.
-        </p>
-        <p class="mt-4 text-lg text-surface-500">
-          The moderation follows your own rules and use cases, and our team sets it up with you.
-          Your data is hosted in the European Union, and you can export it at any time.
-        </p>
-
-        <h2 class="mt-12 text-2xl font-bold text-surface-900">Our approach</h2>
-        <div class="mt-6 space-y-6">
-          <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-            <h3 class="font-semibold text-surface-900">Developer-first design</h3>
-            <p class="mt-2 text-sm text-surface-500">The APIs are clean, the responses are typed and the documentation is thorough. Developers built it for other developers.</p>
-          </div>
-          <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-            <h3 class="font-semibold text-surface-900">Model-agnostic</h3>
-            <p class="mt-2 text-sm text-surface-500">We run our own moderation AI, cross-checked by other AI models on delicate cases. When a better or cheaper model comes out, we plug it in quickly, so you benefit from AI progress with nothing to change on your side.</p>
-          </div>
-          <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-            <h3 class="font-semibold text-surface-900">DSA-first compliance</h3>
-            <p class="mt-2 text-sm text-surface-500">Built from the ground up with regulatory compliance in mind. Audit trails, data sovereignty, and transparency reporting are core features.</p>
-          </div>
-          <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-            <h3 class="font-semibold text-surface-900">Hosted in the EU</h3>
-            <p class="mt-2 text-sm text-surface-500">The platform is hosted in the European Union and you can export your data at any time. On-premise deployment is possible on request: <a href={bookingUrl('en')} class="text-brand-600 hover:text-brand-500" target="_blank" rel="noopener">let's talk</a>.</p>
-          </div>
-        </div>
-
-        <h2 class="mt-12 text-2xl font-bold text-surface-900">The team</h2>
-        <p class="mt-4 text-lg text-surface-500">
-          OpenModeration is built by <a href="https://logora.com" class="font-bold text-surface-900 hover:text-brand-600" target="_blank" rel="noopener noreferrer">Logora</a>. We're a small team
-          with long experience building APIs, content platforms and developer tools.
-          We think moderation infrastructure should be transparent, standardized and
-          available to every platform.
-        </p>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">{c.h1}</h1>
+      <p class="mx-auto mt-4 max-w-3xl text-lg text-surface-500">{c.lead}</p>
+      <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a href={booking} class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">📅 {t('cta.book')}</a>
+        <a href={signup} class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">{t('cta.button')}</a>
       </div>
     </div>
   </section>
 
-  <CTASection />
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <ClientLogos />
+    </div>
+  </section>
+
+  <section class="bg-white pb-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold text-surface-900">{c.whoTitle}</h2>
+      {c.who.map((p) => <p class="mt-4 text-lg text-surface-500">{p}</p>)}
+
+      <h2 class="mt-12 text-2xl font-bold text-surface-900">{c.whatTitle}</h2>
+      <p class="mt-4 text-lg text-surface-500">{c.what}</p>
+      <ul class="mt-6 space-y-3">
+        {c.whatPoints.map((p) => (
+          <li class="flex items-start gap-3 text-surface-600"><svg class="mt-0.5 h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>{p}</span></li>
+        ))}
+      </ul>
+      <p class="mt-6 text-sm text-surface-400">{c.disambiguation}</p>
+
+      <h2 class="mt-12 text-2xl font-bold text-surface-900">{c.whyTitle}</h2>
+      <div class="mt-6 grid gap-6 sm:grid-cols-2">
+        {c.why.map((w) => (
+          <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+            <h3 class="font-semibold text-surface-900">{w.title}</h3>
+            <p class="mt-2 text-sm text-surface-500">{w.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <TeamSection />
+
+  <CTASection title={c.ctaTitle} subtitle={c.ctaSubtitle} />
 </BaseLayout>

@@ -3,40 +3,67 @@ import SectorPage from '../../components/SectorPage.astro';
 ---
 
 <SectorPage
-  title="Moderación automática de comentarios con IA"
-  description="Modera automáticamente los comentarios de tu web y tus redes sociales con una IA que sigue tus reglas, día y noche, y explica por escrito cada decisión."
+  title="Moderación automática de comentarios: cómo decide la IA"
+  description="Cómo funciona la moderación automática de comentarios: contexto, ironía, umbrales y lo que sigue siendo humano. Ejemplos reales, cada uno con su motivo."
   crumb="Moderación automática"
   parent={null}
-  eyebrow="Moderación con IA"
-  h1="Moderación automática de comentarios, adaptada a tus reglas"
-  intro="Los comentarios llegan a cualquier hora, y sobre todo cuando tu equipo no está. OpenModeration los modera automáticamente con una IA que aplica tus reglas en pocos segundos y nuestro equipo se ocupa de los casos que necesitan un criterio humano. Tú no tienes nada que hacer."
-  problem="Moderar a mano no es sostenible: los picos llegan por la noche, el fin de semana o con una noticia de última hora. Las herramientas automáticas clásicas, por su parte, se limitan a listas de palabras y ocultan demasiado o demasiado poco."
-  approach="La IA lee cada comentario en su contexto y lo compara con tus reglas. Dos umbrales por categoría separan lo que se oculta automáticamente, lo que se publica y lo que revisa nuestro equipo. Cada decisión va acompañada de una explicación por escrito."
-  result="Los insultos, el odio, el spam y las estafas desaparecen en pocos segundos, sin esperar a que un moderador se conecte. Los verdaderos casos límite los gestiona nuestro equipo, y tú ves cada decisión en tiempo real."
-  featuresTitle="Una moderación automática que sigue bajo control"
-  featuresIntro="Automática no significa caja negra. Tú decides las reglas, ves cada decisión en tiempo real y puedes intervenir cuando quieras."
+  eyebrow="Moderación automática de comentarios"
+  h1="Moderación automática de comentarios: cómo decide la IA"
+  intro="Automático no quiere decir a ciegas. Esto es lo que pasa en los segundos que siguen a la publicación de un comentario: qué lee la IA, cómo pesa el contexto y la ironía, dónde están los umbrales y qué casos deja, a propósito, en manos de una persona."
+  problem="Las listas de palabras juzgan la letra de un comentario, no su sentido. Ocultan «nos han masacrado esta noche» y dejan pasar «que se vuelvan a su país». Y un filtro que oculta comentarios sin decir por qué no se puede defender ante nadie."
+  approach="Nuestra IA lee el comentario con lo que lo rodea: el artículo o la publicación, el mensaje al que responde, su idioma. Puntúa cada categoría de tus normas y compara cada puntuación con dos umbrales: por debajo del primero publica, por encima del segundo oculta, y entre ambos decide una persona."
+  result="Los casos claros se resuelven en segundos, de día y de noche. Los inciertos van a nuestros moderadores en lugar de adivinarse. Cada decisión, automática o humana, llega con una frase que la explica."
+  featuresTitle="Lo que lee la IA antes de decidir"
+  featuresIntro="Cuatro señales, leídas a la vez. Ninguna es una lista de palabras prohibidas."
   features={[
-    { title: "Tú ajustas el nivel de automatización", text: "Más estricta o más flexible: ajustas los umbrales categoría por categoría." },
-    { title: "Una explicación para cada decisión", text: "Cada comentario oculto tiene un motivo por escrito, que puedes mostrar a su autor o a un regulador." },
-    { title: "Todos los idiomas", text: "Las mismas reglas, aplicadas a los comentarios sea cual sea su idioma." },
-    { title: "En todas tus plataformas", text: "Tu web vía API o WordPress, y tus páginas de Facebook, Instagram y YouTube, con las mismas reglas." },
+    { title: "La página", text: "La misma frase no significa lo mismo bajo la crónica de un partido que bajo una noticia de sucesos. La IA lee el tema antes que el comentario." },
+    { title: "La conversación", text: "Una respuesta se lee junto al mensaje al que contesta. El sarcasmo dirigido a un argumento no se trata como un ataque a una persona." },
+    { title: "Ironía y lenguaje en clave", text: "Grafías disfrazadas, emojis usados como insulto, mensajes en clave: la IA mira lo que se quiere decir, no solo lo que está escrito." },
+    { title: "Tus normas", text: "Cada categoría se juzga según las normas definidas contigo en lenguaje claro: lo que aceptas, lo que rechazas y dónde quieres prudencia." },
   ]}
+  examples={{
+    title: "Seis comentarios, seis decisiones",
+    intro: "Ejemplos ilustrativos: la misma IA llega a resultados distintos según el contexto y tus normas.",
+    items: [
+      { comment: "Nos han masacrado esta noche, la defensa ha sido un desastre.", context: "Bajo la crónica de un partido de fútbol", decision: "Publicado", tone: "ok", reason: "Palabra violenta, sentido deportivo. Crítica al rendimiento de un equipo, sin ninguna persona señalada." },
+      { comment: "Genial, otro genio al mando. Qué ganas.", context: "Bajo una noticia sobre un nuevo ministro", decision: "Publicado", tone: "ok", reason: "Irónico, pero dirigido al cargo de una figura pública. La crítica política está permitida por tus normas." },
+      { comment: "La gente como ella debería volverse a su país.", context: "Respuesta a otro lector", decision: "Ocultado", tone: "hide", reason: "Exclusión por origen dirigida a una persona. Incumple la norma sobre contenido de odio." },
+      { comment: "Gana 500 € al día desde casa, escríbeme por privado 💰", context: "Bajo una publicación de Instagram", decision: "Ocultado", tone: "hide", reason: "Spam comercial que pide contacto. Incumple la norma sobre estafas y publicidad." },
+      { comment: "Todos sabemos lo que pasa en ese barrio por la noche…", context: "Bajo una noticia local", decision: "Enviado a nuestro equipo", tone: "review", reason: "Posible insinuación sobre un colectivo, sin objetivo explícito. La puntuación cae entre los dos umbrales: decide un moderador." },
+      { comment: "El alcalde mintió sobre el presupuesto y debería dimitir.", context: "Bajo una noticia del pleno municipal", decision: "Publicado", tone: "ok", reason: "Acusación dura contra un cargo electo, en un debate político. No es un insulto ni una amenaza." },
+    ],
+  }}
+  table={{
+    title: "Umbrales: dónde se detiene lo automático",
+    intro: "Para cada categoría de tus normas, dos umbrales reparten los comentarios en tres resultados. Los fijamos contigo y los ajustamos tras la prueba con tus comentarios.",
+    head: ["Categoría", "Publicado automáticamente", "Enviado a nuestro equipo", "Ocultado automáticamente"],
+    rows: [
+      ["Insultos", "Tono brusco, sin destinatario", "Insulto que puede ser una cita o una broma", "Insulto dirigido a una persona"],
+      ["Odio", "Debate sobre un tema delicado", "Generalización ambigua sobre un colectivo", "Ataque por origen, religión, género…"],
+      ["Amenazas", "Violencia figurada (voy a matar este examen)", "Intención poco clara", "Amenaza explícita contra alguien"],
+      ["Spam y estafas", "Enlace pertinente para la conversación", "Mensaje promocional repetido", "Oferta fraudulenta, phishing"],
+      ["Fuera de tema", "Comentario al margen que sigue siendo correcto", "Mensaje largo sin relación", "Inundación de mensajes, campañas de copia y pega"],
+    ],
+    note: "¿Más estricto o más flexible? Lo eliges por categoría: un medio con mucho tráfico y la página de una marca rara vez fijan los mismos umbrales.",
+  }}
   why={[
-    { title: "Tus reglas, no una plantilla genérica", text: "Adaptamos la moderación a tus reglas y tus casos de uso, y la ajustamos contigo." },
-    { title: "Pruébala en directo", text: "Pega un comentario en la demo y ve la decisión y su explicación, sin registrarte." },
-    { title: "Conforme a la DSA", text: "Declaración de motivos, denuncias gestionadas por nuestro equipo, revisión humana e historial completo incluidos." },
+    { title: "No adivina", text: "Cuando la IA duda, el comentario va a nuestros moderadores, que deciden según tus normas." },
+    { title: "Denuncias y recursos, en manos humanas", text: "Las denuncias de usuarios y las decisiones impugnadas las revisa una persona de nuestro equipo, como exige la DSA." },
+    { title: "La última palabra es tuya", text: "Ves cada decisión automática en tiempo real con su motivo y puedes anular cualquiera de ellas." },
   ]}
   faq={[
-    { question: "¿La moderación automática comete errores?", answer: "Ningún sistema es perfecto. Por eso los casos dudosos no los decide la IA sola: los revisa nuestro equipo. Tú ves cada decisión en tiempo real y puedes anularla con un clic." },
-    { question: "¿Cuánto tarda en moderarse un comentario?", answer: "Unos segundos después de publicarse o de recibirse." },
-    { question: "¿Se pueden moderar automáticamente los comentarios de Facebook?", answer: "Sí. Conecta tus páginas de Facebook y tus cuentas de Instagram: los comentarios que infringen tus reglas se ocultan automáticamente." },
-    { question: "¿Cuánto cuesta?", answer: "Hay un plan gratuito para empezar y un plan Pro. Para grandes volúmenes, reserva una reunión y dimensionamos la oferta contigo." },
+    { question: "¿Cómo funciona la moderación automática de comentarios?", answer: "Cada comentario se lee con su contexto, se puntúa en cada categoría de tus normas y se compara con dos umbrales: publicar, ocultar o enviar a una persona. Todo el proceso dura unos segundos." },
+    { question: "¿La IA entiende la ironía?", answer: "Mucho mejor que una lista de palabras, porque lee el comentario junto con la página y la conversación. Cuando la ironía hace que un comentario sea realmente ambiguo, su puntuación cae entre los umbrales y decide nuestro equipo." },
+    { question: "¿Qué pasa cuando la IA se equivoca?", answer: "Puedes revertir cualquier decisión desde la consola y los autores pueden recurrir. Los errores recurrentes sirven para ajustar contigo tus normas y tus umbrales." },
+    { question: "¿En qué idiomas funciona?", answer: "Los comentarios se analizan en su propio idioma, incluidos los idiomas de tu audiencia, sin un paso de traducción que haga perder matices." },
+    { question: "¿Puedo revisar las decisiones antes de activarla?", answer: "Sí. Una prueba gratuita en entorno de pruebas con tus comentarios reales muestra cada decisión y su motivo antes de que nada entre en producción." },
   ]}
   related={[
-    { eyebrow: "Demo", title: "Probar la moderación", text: "Pega un comentario y ve la decisión en pocos segundos.", href: "/es/probar-moderacion" },
-    { eyebrow: "Integración", title: "Moderación de Facebook", text: "Oculta automáticamente los comentarios de tus publicaciones de Facebook.", href: "/es/integraciones/moderacion-facebook" },
-    { eyebrow: "Guía", title: "Redactar tus normas de moderación", text: "Las reglas que conviene fijar antes de automatizar.", href: "/es/politica-de-moderacion" },
+    { eyebrow: "Demo", title: "Probar un comentario", text: "Pega un comentario y ve la decisión y su motivo.", href: "/demo" },
+    { eyebrow: "Glosario", title: "¿Qué es un umbral de moderación?", text: "El ajuste que separa lo automático de lo humano.", href: "/glossary/threshold" },
+    { eyebrow: "El sistema completo", title: "Software de moderación", text: "IA, consola, equipo y registros DSA en un solo sistema.", href: "/moderation-software" },
   ]}
-  ctaTitle="Automatiza tu moderación esta misma semana."
-  ctaSubtitle="Reserva una reunión: configuramos tus reglas contigo y las probamos con tus comentarios reales."
+  blocks={[]}
+  ctaTitle="Mira cómo decide la IA con tus propios comentarios."
+  ctaSubtitle="Reserva una llamada: pasamos tus comentarios recientes por la IA y repasamos contigo cada decisión y su motivo."
 />

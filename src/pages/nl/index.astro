@@ -11,6 +11,7 @@ import HeroAnimation from '../../components/HeroAnimation.astro';
 import ValueCards from '../../components/ValueCards.astro';
 import AppVideo from '../../components/AppVideo.astro';
 import AIEngine from '../../components/AIEngine.astro';
+import SwitchProvider from '../../components/SwitchProvider.astro';
 import CostCalculator from '../../components/CostCalculator.astro';
 import TeamSection from '../../components/TeamSection.astro';
 import PricingTeaser from '../../components/PricingTeaser.astro';
@@ -81,7 +82,7 @@ const kpiItems = [
 ];
 
 const valueItems = [
-  { title: "Jouw regels, jouw use cases", text: "We stemmen de moderatie af op je regels en op wat er in jouw context toe doet: ironie, politiek, concurrenten, lokale straattaal. Niets generieks." },
+  { title: "Jouw regels, jouw use cases", text: "Geen woordenlijst: jouw regels, gelezen in hun context. We stemmen de moderatie af op wat voor jou telt: ironie, politiek, concurrenten, lokale straattaal. Niets generieks." },
   { title: "Een team achter de tool", text: "We helpen je je regels te schrijven en bij te stellen, handelen de twijfelgevallen zelf af en passen aan als je community verandert. Je hebt altijd iemand om mee te praten." },
   { title: "Alles draait automatisch", text: "Koppel gewoon je pagina's: elke reactie wordt binnen enkele seconden afgehandeld, dag en nacht. Twijfelgevallen handelt ons team af. Jij hoeft niets te doen, maar ziet alles in realtime en kunt ingrijpen wanneer je wilt." },
   { title: "Veel goedkoper dan handwerk", text: "Automatische moderatie kost een fractie van een uitbesteed of eigen moderatieteam." },
@@ -90,24 +91,52 @@ const valueItems = [
 
 const faqItems = [
   {
-    question: 'Welk moderatieplatform combineert een dashboard voor moderatoren, AI die context begrijpt en auditlogs voor compliance?',
-    answer: 'OpenModeration brengt die drie samen. AI die context begrijpt leest elke reactie, je regels bepalen wat wordt verborgen of gepubliceerd, ons team handelt de twijfelgevallen af, jij ziet alles in realtime in één dashboard en kunt ingrijpen wanneer je wilt, en elke beslissing wordt met een schriftelijke reden vastgelegd voor DSA-audits.',
+    question: "Modereert de AI helemaal zelf?",
+    answer: "Nee. Onze AI is ingesteld op jouw regels. Hij beslist zelf als hij zeker is, en elke beslissing wordt gecontroleerd door andere AI-modellen. Bij twijfel gaat de reactie naar ons team, dat beslist en je laat weten wat het heeft afgehandeld.",
   },
   {
-    question: 'Bestaat er een tool zonder code waarmee ik moderatieregels kan schrijven, AI-classificatie kan gebruiken en een audittraject kan bijhouden?',
-    answer: 'Ja. In OpenModeration schrijf je je regels in gewone taal en stel je drempels per categorie in, zonder code. De AI-classificatie draait op elke reactie, en het activiteitenlog legt elke actie vast: wie of wat die uitvoerde, en waarom.',
+    question: "Hoe kent de AI onze redactionele lijn?",
+    answer: "We vertrekken vanuit je richtlijnen en je use cases: wat je toelaat, wat je weigert, de grensgevallen. Als je een beslissing corrigeert, passen we de regels samen met je aan. Het is geen lijst met verboden woorden: de AI leest elke reactie in haar context.",
   },
   {
-    question: 'Kan ik Facebook, Instagram, YouTube en mijn website vanuit één plek modereren?',
-    answer: 'Ja. Koppel je Facebook-pagina\'s, Instagram-accounts, YouTube-kanalen en WordPress-site, of stuur content van elk platform in via de API. Alles komt in realtime terecht in dezelfde console, met dezelfde regels.',
+    question: "Kunnen we testen voordat we ons vastleggen?",
+    answer: "Ja. In sandboxmodus analyseert OpenModeration je echte reacties zonder iets te publiceren of te verbergen. Je ziet wat wij hadden goedgekeurd of geweigerd, met de reden, en vergelijkt dat met je huidige moderatie.",
   },
   {
-    question: 'Waar let ik op bij een moderatie-API voor compliance in een grote organisatie?',
-    answer: 'Let op een schriftelijke motivering bij elke beslissing (vereist door artikel 17 van de DSA), een volledig auditlog, hosting van gegevens in de EU, instelbare bewaartermijnen en exporteerbare rapporten. OpenModeration biedt alle vijf, en ons team zet de regels samen met jou op.',
+    question: "Kunnen we testen zonder onze huidige leverancier te verlaten?",
+    answer: "Ja. De sandbox draait parallel, zonder je productie aan te raken. Je vergelijkt beslissing voor beslissing en kiest daarna met kennis van zaken, op het moment dat het jou uitkomt.",
   },
   {
-    question: 'Is OpenModeration gratis?',
-    answer: 'Het cloudabonnement is gratis tot 1.000 verzoeken per maand, het Pro-abonnement kost € 99 per maand voor 10.000 verzoeken. Voor grote volumes of een on-premise installatie plan je een gesprek en stellen we samen het aanbod op maat.',
+    question: "Wat zien we aan onze kant?",
+    answer: "Alles, in realtime: elke reactie, de genomen beslissing, de schriftelijke reden en de geschiedenis. Je hoeft niets te doen, maar je kunt op elk moment een beslissing corrigeren of ingrijpen.",
+  },
+  {
+    question: "Waarom is een reactie geweigerd?",
+    answer: "Elke beslissing heeft een schriftelijke reden (belediging, persoonlijke aanval, spam…) die je aan de schrijver kunt doorgeven. Dat is duidelijker voor je lezers en makkelijker te verantwoorden bij bezwaar.",
+  },
+  {
+    question: "Helpt OpenModeration bij de DSA?",
+    answer: "Het is gebouwd voor de DSA: een schriftelijke reden voor elke beslissing, een traceerbare geschiedenis, opgevolgde meldingen en afgehandelde bezwaren. Jij blijft de verantwoordelijke uitgever, en je hebt alles om elke beslissing te onderbouwen.",
+  },
+  {
+    question: "Wat gebeurt er als de AI twijfelt?",
+    answer: "De reactie wordt apart gezet en ons team handelt haar af volgens jouw regels. Je krijgt een verslag van de afgehandelde gevallen en van de punten die je in je richtlijnen kunt verduidelijken.",
+  },
+  {
+    question: "Op welke platforms werkt OpenModeration?",
+    answer: "Standaard op je website, Facebook, Instagram, YouTube en WordPress, met kant-en-klare connectoren die je in een paar minuten koppelt. TikTok, X, LinkedIn en andere netwerken voegen we op verzoek eenvoudig toe.",
+  },
+  {
+    question: "Waar worden onze gegevens gehost?",
+    answer: "In de Europese Unie. De reacties worden alleen gebruikt om je eigen kanalen te modereren.",
+  },
+  {
+    question: "Moeten we ons techteam inschakelen?",
+    answer: "Nauwelijks. Voor sociale netwerken en WordPress koppel je gewoon je accounts. Voor een website of eigen tool kun je via een API je reacties versturen en elke beslissing met reden ontvangen.",
+  },
+  {
+    question: "Wat kost het?",
+    answer: "De prijs hangt af van het aantal reacties dat gemodereerd moet worden. Na een test op je eigen reacties stellen we een voorspelbaar pakket voor, zodat je de kwaliteit kunt beoordelen voordat we over budget praten.",
   },
 ];
 ---
@@ -193,6 +222,8 @@ const faqItems = [
   <AppVideo />
 
   <AIEngine />
+
+  <SwitchProvider />
 
   <section id="demo" class="bg-gradient-to-br from-violet-50 via-white to-brand-50 py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

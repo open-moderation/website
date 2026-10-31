@@ -1,165 +1,224 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CTASection from '../../components/CTASection.astro';
+import BrowserFrame from '../../components/BrowserFrame.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
+import { localizePath, type Locale } from '../../i18n/routes';
+import { useTranslations } from '../../i18n/ui';
+
+const locale: Locale = 'it';
+const t = useTranslations(locale);
+const booking = localizePath('/book-a-call', locale);
+const signup = 'https://app.openmoderation.com/signup';
+
+const c = {
+  "title": "Console di moderazione: ogni decisione e il suo motivo, live",
+  "description": "Vedi ogni commento, la sua decisione e il motivo scritto in tempo reale, sul sito e sui social. Il nostro team gestisce i casi dubbi; tu correggi quando vuoi.",
+  "crumb": "Console di moderazione",
+  "badge": "Cosa vedi in tempo reale",
+  "h1": "Ogni decisione e il suo motivo, in tempo reale",
+  "lead": "La console non è uno strumento che devi gestire. La nostra IA e il nostro team moderano; tu vedi ogni commento, la decisione, il motivo scritto e chi l’ha presa, e puoi correggere quando vuoi.",
+  "feedTitle": "La tua moderazione, in diretta",
+  "feedLead": "I commenti del tuo sito e delle tue pagine, uno accanto all’altro, ciascuno con la sua decisione e il motivo che la giustifica.",
+  "quote": [
+    "«",
+    "»"
+  ],
+  "reasonLabel": "Motivo:",
+  "overrideLabel": "Correggi",
+  "feed": [
+    {
+      "platform": "Sito",
+      "kind": "published",
+      "decision": "Pubblicato",
+      "by": "La nostra IA",
+      "text": "Bell’articolo, ma i dati del secondo paragrafo sembrano vecchi.",
+      "reason": "Critica costruttiva, nessuna regola violata."
+    },
+    {
+      "platform": "Facebook",
+      "kind": "refused",
+      "decision": "Nascosto",
+      "by": "La nostra IA, verificata",
+      "text": "Siete tutti corrotti, bisognerebbe farvi tacere per sempre.",
+      "reason": "Minaccia e attacco personale."
+    },
+    {
+      "platform": "Instagram",
+      "kind": "refused",
+      "decision": "Nascosto",
+      "by": "La nostra IA",
+      "text": "Follower a poco prezzo qui, guardate il mio profilo!!!",
+      "reason": "Spam."
+    },
+    {
+      "platform": "YouTube",
+      "kind": "team",
+      "decision": "Rifiutato dopo revisione",
+      "by": "Il nostro team",
+      "text": "Tipico di quella gente, non cambieranno mai.",
+      "reason": "Generalizzazione contro un gruppo, contraria al tuo regolamento."
+    }
+  ],
+  "shotAlt": "Console OpenModeration: commenti, decisioni e motivi scritti, piattaforma per piattaforma",
+  "shotCaption": "La console: commenti, decisioni e motivi, piattaforma per piattaforma.",
+  "illustrative": "Esempi e dati illustrativi, da uno spazio dimostrativo.",
+  "kpis": [
+    {
+      "label": "Commenti analizzati oggi",
+      "value": "84.200"
+    },
+    {
+      "label": "Nascosti, ciascuno con un motivo scritto",
+      "value": "4,7%"
+    },
+    {
+      "label": "Casi dubbi gestiti dal nostro team",
+      "value": "2%"
+    }
+  ],
+  "cardsTitle": "Cosa vedi e cosa puoi fare",
+  "cardsLead": "Trasparenza totale, niente da gestire. Intervieni solo se vuoi.",
+  "cards": [
+    {
+      "title": "Ogni decisione, con il suo motivo",
+      "text": "Ogni commento, la decisione presa e il motivo scritto, sul tuo sito e su ogni pagina collegata."
+    },
+    {
+      "title": "I casi dubbi li gestisce il nostro team",
+      "text": "Quando l’IA è in dubbio, il nostro team decide secondo le tue regole. Vedi cosa ha gestito e perché."
+    },
+    {
+      "title": "Correggi in ogni momento",
+      "text": "Pubblica, nascondi o ripristina un commento con un clic. Ogni modifica è registrata con il suo autore."
+    },
+    {
+      "title": "Segnalazioni e reclami seguiti",
+      "text": "Le segnalazioni degli utenti e le decisioni contestate sono seguite fino alla risposta, come richiede il DSA."
+    },
+    {
+      "title": "Dati esportabili",
+      "text": "Volumi e decisioni per categoria, piattaforma per piattaforma. Esportali per i report DSA e i bilanci interni."
+    },
+    {
+      "title": "Le tue regole, sotto gli occhi",
+      "text": "Vedi le regole applicate ai tuoi spazi. Per cambiarle, diccelo o modificale tu: il nostro team ti aiuta."
+    }
+  ],
+  "devTitle": "Per i team tecnici",
+  "devLead": "La console offre anche ai tuoi sviluppatori il necessario per integrare e monitorare OpenModeration.",
+  "devPoints": [
+    "Chiavi di accesso, con limiti di utilizzo e permessi per chiave",
+    "Storico delle attività consultabile per commento: punteggi, regola applicata e risultato",
+    "Stato dei servizi, con latenza e tassi di errore",
+    "Conservazione dei dati, origini autorizzate e webhook"
+  ]
+};
+
+const decisionStyles: Record<string, string> = {
+  published: 'bg-green-100 text-green-700',
+  refused: 'bg-red-100 text-red-700',
+  team: 'bg-amber-100 text-amber-700',
+};
 
 const pageJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
   "@id": "https://www.openmoderation.com/it/console-di-moderazione",
   "url": "https://www.openmoderation.com/it/console-di-moderazione",
-  "name": "Console di moderazione dei contenuti | OpenModeration",
-  "description": "Vedi ogni decisione di moderazione in tempo reale, con la sua motivazione scritta. I casi dubbi li gestisce il nostro team; tu puoi intervenire quando vuoi.",
+  "name": "Console di moderazione: ogni decisione e il suo motivo, live",
+  "description": "Vedi ogni commento, la sua decisione e il motivo scritto in tempo reale, sul sito e sui social. Il nostro team gestisce i casi dubbi; tu correggi quando vuoi.",
   "inLanguage": "it",
-  "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
+  "isPartOf": {
+    "@id": "https://www.openmoderation.com/#website"
+  }
 };
 ---
 
-<BaseLayout title="Console di moderazione: una coda per tutte le piattaforme" description="Una console unica per sito, Facebook, Instagram e YouTube: vedi ogni decisione in tempo reale con la sua motivazione e intervieni quando vuoi." jsonLd={pageJsonLd}>
-<Breadcrumb items={[{ label: "Home", href: "/it" }, { label: "Console di moderazione" }]} />
+<BaseLayout title={c.title} description={c.description} jsonLd={pageJsonLd}>
+<Breadcrumb items={[{ label: "Home", href: localizePath('/', locale) }, { label: c.crumb }]} />
   <section class="bg-gradient-to-b from-brand-50 to-white py-20">
     <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
       <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600 shadow-sm">
-        Spazio di lavoro dimostrativo
+        <span class="h-2 w-2 rounded-full bg-accent-500"></span> {c.badge}
       </div>
-      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">La console di moderazione dei contenuti per tutto il tuo team</h1>
-      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
-        Vedi ogni decisione in tempo reale: l'automazione modera, il nostro team gestisce i casi dubbi e tu puoi intervenire o annullare una decisione in un clic, quando vuoi. Ogni decisione è accompagnata da una motivazione scritta, difendibile davanti a chiunque.
-      </p>
-      <p class="mx-auto mt-3 max-w-2xl text-sm text-surface-400">
-        Dati illustrativi provenienti da uno spazio di lavoro dimostrativo.
-      </p>
+      <h1 class="mx-auto max-w-4xl text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">{c.h1}</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">{c.lead}</p>
+      <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a href={booking} class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">📅 {t('cta.book')}</a>
+        <a href={signup} class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">{t('cta.button')}</a>
+      </div>
     </div>
   </section>
 
-  <!-- Dashboard Preview -->
+  <!-- What you see: live feed -->
   <section class="bg-white py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="mb-16 grid gap-4 grid-cols-2 md:grid-cols-4">
-        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-          <p class="text-sm text-surface-500">Richieste di oggi</p>
-          <p class="mt-1 text-3xl font-bold text-surface-900">84.200</p>
-          <p class="mt-1 text-xs text-accent-600">+12% rispetto a ieri</p>
-        </div>
-        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-          <p class="text-sm text-surface-500">Tasso di segnalazione</p>
-          <p class="mt-1 text-3xl font-bold text-surface-900">4,7%</p>
-          <p class="mt-1 text-xs text-surface-500">3.957 elementi segnalati</p>
-        </div>
-        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-          <p class="text-sm text-surface-500">Latenza media</p>
-          <p class="mt-1 text-3xl font-bold text-surface-900">267 ms</p>
-          <p class="mt-1 text-xs text-accent-600">P99: 890 ms</p>
-        </div>
-        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-          <p class="text-sm text-surface-500">Stato del servizio</p>
-          <p class="mt-1 text-3xl font-bold text-surface-900">Attivo</p>
-          <p class="mt-1 text-xs text-surface-500">Tutti operativi</p>
+      <div class="mx-auto mb-10 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">{c.feedTitle}</h2>
+        <p class="mt-4 text-lg text-surface-500">{c.feedLead}</p>
+      </div>
+      <div class="grid items-start gap-10 lg:grid-cols-2">
+        <ul class="divide-y divide-surface-100 overflow-hidden rounded-2xl border border-surface-200 bg-white shadow-sm">
+          {c.feed.map((f) => (
+            <li class="p-5">
+              <div class="flex flex-wrap items-center gap-2 text-xs">
+                <span class="rounded-full bg-surface-100 px-2.5 py-0.5 text-surface-600">{f.platform}</span>
+                <span class={`rounded-full px-2.5 py-0.5 font-semibold ${decisionStyles[f.kind]}`}>{f.decision}</span>
+                <span class="text-surface-400">{f.by}</span>
+              </div>
+              <p class="mt-3 text-surface-800">{c.quote[0]}{f.text}{c.quote[1]}</p>
+              <div class="mt-3 flex flex-wrap items-center justify-between gap-3 text-sm">
+                <p class="text-surface-500"><span class="font-medium text-surface-700">{c.reasonLabel}</span> {f.reason}</p>
+                <span class="rounded-md border border-surface-300 px-3 py-1 text-xs font-semibold text-surface-700">{c.overrideLabel}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <div>
+          <BrowserFrame src="/images/dashboard.png" video="om-triage" alt={c.shotAlt} caption={c.shotCaption} eager={false} />
+          <p class="mt-6 text-center text-xs text-surface-400">{c.illustrative}</p>
         </div>
       </div>
-
-      <div class="grid gap-8 lg:grid-cols-2">
-        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-          <h3 class="mb-4 font-semibold text-surface-900">Utilizzo nel tempo</h3>
-          <div class="flex items-end gap-2" style="height: 160px;">
-            <div class="flex-1 rounded-t bg-brand-200" style="height: 60%"></div>
-            <div class="flex-1 rounded-t bg-brand-200" style="height: 45%"></div>
-            <div class="flex-1 rounded-t bg-brand-200" style="height: 75%"></div>
-            <div class="flex-1 rounded-t bg-brand-200" style="height: 55%"></div>
-            <div class="flex-1 rounded-t bg-brand-200" style="height: 80%"></div>
-            <div class="flex-1 rounded-t bg-brand-300" style="height: 70%"></div>
-            <div class="flex-1 rounded-t bg-brand-400" style="height: 90%"></div>
-            <div class="flex-1 rounded-t bg-brand-300" style="height: 65%"></div>
-            <div class="flex-1 rounded-t bg-brand-200" style="height: 85%"></div>
-            <div class="flex-1 rounded-t bg-brand-300" style="height: 95%"></div>
-            <div class="flex-1 rounded-t bg-brand-400" style="height: 78%"></div>
-            <div class="flex-1 rounded-t bg-brand-500" style="height: 88%"></div>
-            <div class="flex-1 rounded-t bg-brand-400" style="height: 72%"></div>
-            <div class="flex-1 rounded-t bg-brand-300" style="height: 82%"></div>
+      <dl class="mt-16 grid grid-cols-1 gap-4 sm:grid-cols-3">
+        {c.kpis.map((k) => (
+          <div class="flex flex-col-reverse rounded-xl border border-surface-200 bg-surface-50 p-6">
+            <dt class="mt-1 text-sm text-surface-500">{k.label}</dt>
+            <dd class="text-3xl font-bold text-surface-900">{k.value}</dd>
           </div>
-          <div class="mt-2 flex justify-between text-xs text-surface-400">
-            <span>1 giu</span>
-            <span>15 giu</span>
-            <span>30 giu</span>
-          </div>
-        </div>
-
-        <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-          <h3 class="mb-4 font-semibold text-surface-900">Volume per canale</h3>
-          <div class="space-y-4">
-            <div>
-              <div class="mb-1 flex justify-between text-sm"><span class="text-surface-600">Sito web</span><span class="text-surface-500">12.400 &middot; 3,1% segnalati</span></div>
-              <div class="h-2 rounded-full bg-surface-200"><div class="h-2 w-4/5 rounded-full bg-brand-500"></div></div>
-            </div>
-            <div>
-              <div class="mb-1 flex justify-between text-sm"><span class="text-surface-600">Facebook</span><span class="text-surface-500">8.700 &middot; 5,4% segnalati</span></div>
-              <div class="h-2 rounded-full bg-surface-200"><div class="h-2 w-3/5 rounded-full bg-brand-400"></div></div>
-            </div>
-            <div>
-              <div class="mb-1 flex justify-between text-sm"><span class="text-surface-600">Instagram</span><span class="text-surface-500">5.200 &middot; 4,2% segnalati</span></div>
-              <div class="h-2 rounded-full bg-surface-200"><div class="h-2 w-2/5 rounded-full bg-brand-300"></div></div>
-            </div>
-            <div>
-              <div class="mb-1 flex justify-between text-sm"><span class="text-surface-600">YouTube</span><span class="text-surface-500">2.900 &middot; 6,8% segnalati</span></div>
-              <div class="h-2 rounded-full bg-surface-200"><div class="h-2 w-1/3 rounded-full bg-brand-300"></div></div>
-            </div>
-          </div>
-        </div>
-      </div>
+        ))}
+      </dl>
     </div>
   </section>
 
-  <!-- Dashboard Features -->
+  <!-- What you see and what you can do -->
   <section class="bg-surface-50 py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="mx-auto mb-12 max-w-2xl text-center">
-        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">Tutto a portata di mano</h2>
-        <p class="mt-4 text-lg text-surface-500">Gestisci tutte le tue attività di moderazione da un unico posto.</p>
+        <h2 class="text-3xl font-bold tracking-tight text-surface-900 sm:text-4xl">{c.cardsTitle}</h2>
+        <p class="mt-4 text-lg text-surface-500">{c.cardsLead}</p>
       </div>
       <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <div class="rounded-xl border border-surface-200 bg-white p-6">
-          <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7h3a2 2 0 012 2v10a2 2 0 01-2 2H6a2 2 0 01-2-2V9a2 2 0 012-2h3m0-4h6v4H9V3z"/></svg>
+        {c.cards.map((card) => (
+          <div class="rounded-xl border border-surface-200 bg-white p-6">
+            <h3 class="font-semibold text-surface-900">{card.title}</h3>
+            <p class="mt-1 text-sm text-surface-500">{card.text}</p>
           </div>
-          <h3 class="font-semibold text-surface-900">Gestione degli accessi</h3>
-          <p class="mt-1 text-sm text-surface-500">Decidi chi può fare cosa. Crea e revoca chiavi di accesso e imposta limiti di frequenza.</p>
-        </div>
-        <div class="rounded-xl border border-surface-200 bg-white p-6">
-          <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-          </div>
-          <h3 class="font-semibold text-surface-900">Cronologia delle attività</h3>
-          <p class="mt-1 text-sm text-surface-500">Segui ogni decisione di moderazione. Cerca ed esamina tutte le richieste con punteggio ed esito.</p>
-        </div>
-        <div class="rounded-xl border border-surface-200 bg-white p-6">
-          <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/></svg>
-          </div>
-          <h3 class="font-semibold text-surface-900">Stato dei servizi</h3>
-          <p class="mt-1 text-sm text-surface-500">Vedi quali servizi sono operativi, con il monitoraggio in tempo reale di latenza e tassi di errore.</p>
-        </div>
-        <div class="rounded-xl border border-surface-200 bg-white p-6">
-          <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-          </div>
-          <h3 class="font-semibold text-surface-900">Report sulle prestazioni</h3>
-          <p class="mt-1 text-sm text-surface-500">Capisci volumi e tendenze della moderazione. Segui i tassi di segnalazione, le azioni intraprese e i costi, con report esportabili per gli audit.</p>
-        </div>
-        <div class="rounded-xl border border-surface-200 bg-white p-6">
-          <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-          </div>
-          <h3 class="font-semibold text-surface-900">Policy e integrazioni</h3>
-          <p class="mt-1 text-sm text-surface-500">Gestisci le impostazioni di moderazione e i collegamenti con le piattaforme. Configura azioni automatiche e soglie direttamente dalla console.</p>
-        </div>
-        <div class="rounded-xl border border-surface-200 bg-white p-6">
-          <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-          </div>
-          <h3 class="font-semibold text-surface-900">Configurazione</h3>
-          <p class="mt-1 text-sm text-surface-500">Impostazioni dell'istanza per limiti di frequenza, conservazione dei dati, origini consentite.</p>
-        </div>
+        ))}
       </div>
+    </div>
+  </section>
+
+  <!-- For technical teams -->
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold text-surface-900">{c.devTitle}</h2>
+      <p class="mt-3 text-surface-500">{c.devLead}</p>
+      <ul class="mt-6 space-y-2 text-sm text-surface-600">
+        {c.devPoints.map((p) => (
+          <li class="flex items-start gap-2"><svg class="mt-0.5 h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>{p}</span></li>
+        ))}
+      </ul>
     </div>
   </section>
 

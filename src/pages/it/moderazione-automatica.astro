@@ -3,40 +3,67 @@ import SectorPage from '../../components/SectorPage.astro';
 ---
 
 <SectorPage
-  title="Moderazione automatica dei commenti con IA"
-  description="Modera i commenti del sito e dei social con un'IA adattata alle tue regole e ai tuoi casi d'uso, giorno e notte, con una spiegazione per ogni decisione."
+  title="Moderazione automatica dei commenti: come decide l'IA"
+  description="Come funziona la moderazione automatica dei commenti: contesto, ironia, soglie e cosa resta umano. Esempi reali di decisioni, ognuna con una motivazione."
   crumb="Moderazione automatica"
   parent={null}
-  eyebrow="Moderazione con IA"
-  h1="La moderazione automatica dei commenti, secondo le tue regole"
-  intro="I commenti arrivano a qualsiasi ora, e soprattutto quando il tuo team non c'è. OpenModeration li modera automaticamente con un'IA che applica le tue regole in pochi secondi e affida al nostro team i casi che richiedono un giudizio umano. Tu non devi fare nulla."
-  problem="Moderare a mano non regge: i picchi arrivano la sera, nel fine settimana o con una notizia calda. Gli strumenti automatici classici, invece, si limitano a liste di parole e nascondono troppo o troppo poco."
-  approach="L'IA legge ogni commento nel suo contesto e lo confronta con le tue regole. Due soglie per categoria separano ciò che viene nascosto automaticamente, ciò che viene pubblicato e ciò che passa alla revisione umana del nostro team. Ogni decisione è accompagnata da una spiegazione scritta."
-  result="Insulti, odio, spam e truffe spariscono in pochi secondi, senza aspettare che un moderatore si colleghi. I veri casi limite li gestisce il nostro team, e tu vedi tutto in tempo reale."
-  featuresTitle="Una moderazione automatica che resta sotto controllo"
-  featuresIntro="Automatica non vuol dire scatola nera. Mantieni il controllo sulle regole e vedi ogni decisione, anche sui casi dubbi."
+  eyebrow="Moderazione automatica dei commenti"
+  h1="Moderazione automatica dei commenti: come decide l'IA"
+  intro="Automatico non vuol dire alla cieca. Ecco cosa succede nei secondi dopo la pubblicazione di un commento: cosa legge l'IA, come pesa contesto e ironia, dove si trovano le soglie e quali casi lascia volutamente a una persona."
+  problem="Le liste di parole giudicano la lettera di un commento, non il suo senso. Nascondono un commento che parla di una difesa massacrata in partita e lasciano passare un invito a tornarsene a casa propria. E un filtro che nasconde senza spiegare perché non si può difendere davanti a nessuno."
+  approach="La nostra IA legge il commento con ciò che lo circonda: l'articolo o il post, il messaggio a cui risponde, la sua lingua. Assegna un punteggio a ogni categoria delle vostre regole, poi lo confronta con due soglie: sotto la prima pubblica, sopra la seconda nasconde, in mezzo decide una persona."
+  result="I casi chiari si chiudono in pochi secondi, giorno e notte. Quelli incerti vanno ai nostri moderatori invece di essere indovinati. Ogni decisione, automatica o umana, ha una frase che la spiega."
+  featuresTitle="Cosa legge l'IA prima di decidere"
+  featuresIntro="Quattro segnali letti insieme. Nessuno di questi è una lista di parole vietate."
   features={[
-    { title: "Sei tu a regolare il livello di automazione", text: "Più severa, più permissiva, più o meno casi inviati in revisione: regoli le soglie categoria per categoria." },
-    { title: "Una spiegazione per ogni decisione", text: "Ogni commento nascosto ha una motivazione scritta, che puoi mostrare al suo autore o a un'autorità di controllo." },
-    { title: "Tutte le lingue", text: "Le stesse regole, applicate ai commenti in qualsiasi lingua." },
-    { title: "Su tutte le tue piattaforme", text: "Il tuo sito tramite API o WordPress, e le tue pagine Facebook, Instagram e YouTube, con le stesse regole." },
+    { title: "La pagina", text: "La stessa frase non ha lo stesso senso sotto la cronaca di una partita e sotto un articolo su un fatto di sangue. L'IA legge l'argomento prima del commento." },
+    { title: "La conversazione", text: "Una risposta viene letta insieme al messaggio a cui risponde. Il sarcasmo rivolto a un argomento non è trattato come un attacco a una persona." },
+    { title: "Ironia e linguaggio in codice", text: "Grafie camuffate, emoji usate come insulti, allusioni: l'IA guarda a ciò che si intende, non solo a ciò che è scritto." },
+    { title: "Le vostre regole", text: "Ogni categoria è valutata secondo le regole definite con voi in linguaggio naturale: cosa accettate, cosa rifiutate, dove volete prudenza." },
   ]}
+  examples={{
+    title: "Sei commenti, sei decisioni",
+    intro: "Esempi illustrativi: la stessa IA arriva a esiti diversi a seconda del contesto e delle vostre regole.",
+    items: [
+      { comment: "Stasera la difesa è stata massacrata, che disastro.", context: "Sotto la cronaca di una partita di Serie A", decision: "Pubblicato", tone: "ok", reason: "Parola violenta, senso sportivo. Critica alla prestazione di una squadra, nessuna persona presa di mira." },
+      { comment: "Benissimo, un altro genio al governo. Non vedo l'ora.", context: "Sotto un articolo su un nuovo ministro", decision: "Pubblicato", tone: "ok", reason: "Ironico, ma rivolto al ruolo di una figura pubblica. La critica politica è ammessa dalle vostre regole." },
+      { comment: "Quelli come lei dovrebbero tornarsene al loro paese.", context: "Risposta a un altro lettore", decision: "Nascosto", tone: "hide", reason: "Esclusione basata sull'origine, rivolta a una persona. Viola la regola sui contenuti d'odio." },
+      { comment: "Guadagna 500 € al giorno da casa, scrivimi in privato 💰", context: "Sotto un post Instagram", decision: "Nascosto", tone: "hide", reason: "Spam commerciale con richiesta di contatto. Viola la regola su truffe e pubblicità." },
+      { comment: "Sappiamo tutti cosa succede in quel quartiere di notte…", context: "Sotto una notizia di cronaca locale", decision: "Inviato al nostro team", tone: "review", reason: "Possibile insinuazione su un gruppo, senza un bersaglio esplicito. Il punteggio cade tra le due soglie: decide un moderatore." },
+      { comment: "Il sindaco ha mentito sul bilancio e deve dimettersi.", context: "Sotto un articolo sul consiglio comunale", decision: "Pubblicato", tone: "ok", reason: "Un'accusa dura a un eletto, in un dibattito politico. Né un insulto né una minaccia." },
+    ],
+  }}
+  table={{
+    title: "Le soglie: dove si ferma l'automatico",
+    intro: "Per ogni categoria delle vostre regole, due soglie dividono i commenti in tre esiti. Le fissiamo con voi e le regoliamo dopo il test sui vostri commenti.",
+    head: ["Categoria", "Pubblicato in automatico", "Inviato al nostro team", "Nascosto in automatico"],
+    rows: [
+      ["Insulti", "Tono brusco, nessun bersaglio", "Insulto che può essere una citazione o una battuta", "Insulto rivolto a una persona"],
+      ["Odio", "Dibattito su un tema sensibile", "Generalizzazione ambigua su un gruppo", "Attacco per origine, religione, genere…"],
+      ["Minacce", "Violenza figurata (domani spacco l'esame)", "Intenzione poco chiara", "Minaccia esplicita contro qualcuno"],
+      ["Spam e truffe", "Link pertinente alla discussione", "Messaggio promozionale ripetuto", "Offerta fraudolenta, phishing"],
+      ["Fuori tema", "Divagazione che resta civile", "Lungo messaggio senza legame con l'argomento", "Flood, campagne di copia-incolla"],
+    ],
+    note: "Più severi o più permissivi? Scegliete categoria per categoria: un sito di notizie molto frequentato e la pagina di un brand raramente fissano le stesse soglie.",
+  }}
   why={[
-    { title: "Le tue regole, non uno schema generico", text: "Adattiamo la moderazione alle tue regole e ai tuoi casi d'uso, e la regoliamo con te." },
-    { title: "Provala dal vivo", text: "Incolla un commento nella demo e vedi la decisione e la sua spiegazione, senza registrazione." },
-    { title: "Conforme al DSA", text: "Motivazione, segnalazioni, revisione umana e cronologia completa sono inclusi." },
+    { title: "Non tira a indovinare", text: "Quando l'IA non è sicura, il commento va ai nostri moderatori, che decidono secondo le vostre regole." },
+    { title: "Segnalazioni e ricorsi restano umani", text: "Le segnalazioni degli utenti e le decisioni contestate sono esaminate da una persona del nostro team, come richiede il DSA." },
+    { title: "L'ultima parola è vostra", text: "Vedete ogni decisione automatica in tempo reale con la sua motivazione e potete modificarla in qualsiasi momento." },
   ]}
   faq={[
-    { question: "La moderazione automatica sbaglia?", answer: "Nessun sistema è perfetto. Per questo i casi dubbi non li decide l'IA da sola: li esamina il nostro team. E tu puoi annullare qualsiasi decisione con un clic, quando vuoi." },
-    { question: "In quanto tempo viene moderato un commento?", answer: "In pochi secondi dalla pubblicazione o dalla ricezione." },
-    { question: "Si possono moderare automaticamente i commenti di Facebook?", answer: "Sì. Collega le tue pagine Facebook e i tuoi account Instagram: i commenti che violano le tue regole vengono nascosti automaticamente." },
-    { question: "Quanto costa?", answer: "C'è un piano gratuito per iniziare e un piano Pro. Per grandi volumi, prenota un incontro e dimensioniamo l'offerta insieme a te." },
+    { question: "Come funziona la moderazione automatica dei commenti?", answer: "Ogni commento viene letto con il suo contesto, valutato per ciascuna categoria delle vostre regole e confrontato con due soglie: pubblicare, nascondere o passare a una persona. Il tutto richiede pochi secondi." },
+    { question: "L'IA capisce l'ironia?", answer: "Molto meglio di una lista di parole, perché legge il commento insieme alla pagina e alla conversazione. Quando l'ironia rende un commento davvero ambiguo, il punteggio cade tra le soglie e decide il nostro team." },
+    { question: "Cosa succede se l'IA sbaglia?", answer: "Potete annullare qualsiasi decisione dalla console e gli autori possono presentare ricorso. Gli errori ricorrenti servono a regolare con voi regole e soglie." },
+    { question: "In quali lingue funziona?", answer: "I commenti sono analizzati nella loro lingua, comprese le lingue del vostro pubblico, senza un passaggio di traduzione che farebbe perdere sfumature." },
+    { question: "Posso verificare le decisioni prima dell'attivazione?", answer: "Sì. Un test gratuito in sandbox sui vostri commenti reali mostra ogni decisione e la sua motivazione prima che qualcosa vada online." },
   ]}
   related={[
-    { eyebrow: "Demo", title: "Prova la moderazione", text: "Incolla un commento e vedi la decisione in pochi secondi.", href: "/it/prova-moderazione" },
-    { eyebrow: "Integrazione", title: "Moderazione Facebook", text: "Nascondi automaticamente i commenti ai tuoi post su Facebook.", href: "/it/integrazioni/moderazione-facebook" },
-    { eyebrow: "Guida", title: "Scrivere la policy di moderazione", text: "Le regole da fissare prima di automatizzare.", href: "/it/policy-di-moderazione" },
+    { eyebrow: "Demo", title: "Provate un commento", text: "Incollate un commento e vedete la decisione e la sua motivazione.", href: "/demo" },
+    { eyebrow: "Glossario", title: "Cos'è una soglia di moderazione?", text: "L'impostazione che separa l'automatico dall'umano.", href: "/glossary/threshold" },
+    { eyebrow: "Il sistema completo", title: "Software di moderazione", text: "IA, console, team e registri DSA in un unico sistema.", href: "/moderation-software" },
   ]}
-  ctaTitle="Automatizza la tua moderazione già questa settimana."
-  ctaSubtitle="Prenota un incontro: configuriamo le tue regole con te e le testiamo sui tuoi commenti reali."
+  blocks={[]}
+  ctaTitle="Guardate l'IA decidere sui vostri commenti."
+  ctaSubtitle="Prenotate una call: facciamo passare i vostri commenti recenti dall'IA e vi spieghiamo ogni decisione e la sua motivazione."
 />

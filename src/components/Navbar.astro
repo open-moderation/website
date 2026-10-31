@@ -56,23 +56,30 @@ const switchTargets = locales.map((code) => ({ code, href: alternates[code] ?? l
       position: absolute; top: 64px; left: 0; right: 0;
       background: white; border-bottom: 1px solid #e2e8f0;
       padding: 16px; flex-direction: column; gap: 4px;
-      max-height: calc(100vh - 64px); overflow-y: auto;
+      max-height: calc(100vh - 64px); max-height: calc(100dvh - 64px); overflow-y: auto; overscroll-behavior: contain;
       box-shadow: 0 12px 24px rgba(0,0,0,0.1);
     }
-    #om-menu > a { padding: 12px 8px; border-radius: 8px; font-size: 14px; font-weight: 500; color: #334155; text-decoration: none; }
-    #om-menu > a:hover { background: #f1f5f9; }
-    #om-menu > hr { margin: 4px 0; border-color: #e2e8f0; }
-    .om-actions-mobile { display: flex !important; flex-direction: column; gap: 8px; padding-top: 12px; border-top: 1px solid #e2e8f0; }
-    .om-actions-mobile a { text-align: center; padding: 10px; border-radius: 8px; font-size: 14px; font-weight: 500; }
+    #om-menu > a.om-top { padding: 12px 8px; border-radius: 0; font-size: 15px; font-weight: 600; color: #0f172a; text-decoration: none; border-bottom: 1px solid #f1f5f9; }
+    #om-menu a:hover { background: #f1f5f9; }
+    .om-group { border-bottom: 1px solid #f1f5f9; }
+    .om-group > summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 12px 8px; font-size: 15px; font-weight: 600; color: #0f172a; }
+    .om-group > summary::-webkit-details-marker { display: none; }
+    .om-group > summary::after { content: ''; width: 8px; height: 8px; border-right: 2px solid #64748b; border-bottom: 2px solid #64748b; transform: rotate(45deg); transition: transform .2s ease; margin-right: 4px; }
+    .om-group[open] > summary::after { transform: rotate(-135deg); }
+    .om-group > div { display: flex; flex-direction: column; padding: 0 0 8px 8px; }
+    .om-group > div > a { padding: 10px 8px; border-radius: 8px; font-size: 14px; font-weight: 500; color: #334155; text-decoration: none; }
+    .om-lang-title { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #64748b; padding: 14px 8px 4px; }
+    .om-actions-mobile { display: flex !important; flex-direction: column; gap: 8px; padding-bottom: 8px; }
+    .om-actions-mobile a { display: block; text-align: center; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: 600; }
   }
 </style>
 
 <nav class="om-nav glass sticky top-0 z-50 border-b border-surface-200/80 bg-white/92">
-  <div class="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8" style="height: 64px;">
+  <div class="mx-auto flex max-w-[90rem] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8" style="height: 64px;">
     <a href={l('/')} class="flex items-center gap-2 text-lg font-semibold text-surface-900 shrink-0">
       <img src="/logo.svg" alt={t('nav.home')} width="224" height="40" fetchpriority="high" decoding="async" class="h-[2.5rem] w-auto" />
     </a>
-    <a href="https://logora.com" target="_blank" rel="noopener" class="-ml-1 mr-auto hidden shrink-0 items-center gap-1 rounded-full border border-violet-200 bg-gradient-to-r from-violet-50 to-rose-50 px-2.5 py-0.5 text-xs font-medium text-surface-500 transition hover:border-violet-300 hover:text-surface-700 sm:inline-flex lg:hidden xl:inline-flex">
+    <a href="https://logora.com" target="_blank" rel="noopener" class="-ml-1 mr-auto hidden shrink-0 items-center gap-1 rounded-full border border-violet-200 bg-gradient-to-r from-violet-50 to-rose-50 px-2.5 py-0.5 text-xs font-medium text-surface-500 transition hover:border-violet-300 hover:text-surface-700 sm:inline-flex lg:hidden 2xl:inline-flex">
       {t('brand.by')} <strong class="font-bold text-violet-700">Logora</strong>
     </a>
 
@@ -174,67 +181,83 @@ const switchTargets = locales.map((code) => ({ code, href: alternates[code] ?? l
           ))}
         </div>
       </div>
-      <a href="https://app.openmoderation.com/login" class="hidden whitespace-nowrap px-2 py-2 text-sm font-medium text-surface-600 transition hover:text-surface-900 xl:inline-block">{t('nav.login')}</a>
-      <a href="https://app.openmoderation.com/signup" class="hidden whitespace-nowrap rounded-lg border border-surface-300 px-4 py-2 text-sm font-medium text-surface-700 transition hover:border-surface-900 hover:text-surface-900 sm:inline-block">{t('nav.signup')}</a>
+      <a href="https://app.openmoderation.com/login" class="hidden whitespace-nowrap px-2 py-2 text-sm font-medium text-surface-600 transition hover:text-surface-900 2xl:inline-block">{t('nav.login')}</a>
+      <a href="https://app.openmoderation.com/signup" class="hidden whitespace-nowrap rounded-lg border border-surface-300 px-4 py-2 text-sm font-medium text-surface-700 transition hover:border-surface-900 hover:text-surface-900 2xl:inline-block">{t('nav.signup')}</a>
       <a href={BOOKING_URL} target="_blank" rel="noopener" class="inline-flex items-center gap-2 whitespace-nowrap rounded-lg bg-brand-900 px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">📅 {t('cta.book')}</a>
     </div>
 
     <!-- Mobile hamburger -->
-    <button aria-label="Menu" aria-controls="om-menu" class="om-hamburger hidden h-10 w-10 flex-col items-center justify-center gap-1.5 rounded-lg" onclick="document.getElementById('om-menu').classList.toggle('open');this.classList.toggle('open')">
+    <button aria-label="Menu" aria-controls="om-menu" class="om-hamburger hidden h-11 w-11 flex-col items-center justify-center gap-1.5 rounded-lg" aria-expanded="false" onclick="var o=document.getElementById('om-menu').classList.toggle('open');this.classList.toggle('open',o);this.setAttribute('aria-expanded',String(o));document.documentElement.style.overflow=o?'hidden':''">
       <span class="block h-0.5 w-5 rounded-full bg-surface-600"></span>
       <span class="block h-0.5 w-5 rounded-full bg-surface-600"></span>
       <span class="block h-0.5 w-5 rounded-full bg-surface-600"></span>
     </button>
   </div>
 
-  <!-- Mobile menu -->
+  <!-- Mobile menu : actions et Tarifs en tête, puis groupes repliables -->
   <div id="om-menu">
     <div class="om-actions-mobile">
       <a href={BOOKING_URL} target="_blank" rel="noopener" style="background:#1e3a8a;color:white">📅 {t('cta.book')}</a>
-      <a href="https://app.openmoderation.com/signup" style="color:#1e3a8a;border:1px solid #1e3a8a">{t('nav.signup')}</a>
-      <a href="https://app.openmoderation.com/login" style="color:#334155;border:1px solid #cbd5e1">{t('nav.login')}</a>
+      <div class="grid grid-cols-2 gap-2">
+        <a href="https://app.openmoderation.com/signup" style="color:#1e3a8a;border:1px solid #1e3a8a">{t('nav.signup')}</a>
+        <a href="https://app.openmoderation.com/login" style="color:#334155;border:1px solid #cbd5e1">{t('nav.login')}</a>
+      </div>
     </div>
-    <hr style="margin: 0; border-color: #e2e8f0;" />
-    <a href={l('/demo')}>{t('nav.demo')}</a>
-    <p style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94a3b8;padding:8px 8px 0;">{t('nav.product')}</p>
-    <a href={l('/features')}>{t('footer.features')}</a>
-    <a href={l('/product/transparency')}>{t('nav.transparency')}</a>
-    <a href={l('/dashboard')}>{t('nav.console')}</a>
-    <a href={l('/how-it-works')}>{t('nav.actionEngine')}</a>
-    <a href={l('/connectors')}>{t('nav.integrations')}</a>
-    <a href="https://api.openmoderation.com/docs" target="_blank">{t('nav.docs')}</a>
-    <hr />
-    <p style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94a3b8;padding:8px 8px 0;">{t('nav.useCases')}</p>
-    <a href={l('/use-cases/news-publishers')}>{t('nav.newsPublishers')}</a>
-    <a href={l('/use-cases/brands-retail')}>{t('nav.brands')}</a>
-    <a href={l('/use-cases/luxury-fashion')}>{t('nav.luxury')}</a>
-    <a href={l('/use-cases/public-sector')}>{t('nav.public')}</a>
-    <a href={l('/use-cases/social-platforms')}>{t('nav.social')}</a>
-    <a href={l('/use-cases/ai-applications')}>{t('nav.ai')}</a>
-    <a href={l('/use-cases/marketplaces')}>{t('nav.marketplaces')}</a>
-    <a href={l('/use-cases/gaming')}>{t('nav.gaming')}</a>
-    <a href={l('/use-cases/enterprise-saas')}>{t('nav.saas')}</a>
-    <hr />
-    <a href={l('/build-vs-buy')}>{t('nav.buildVsBuy')}</a>
-    <a href={l('/alternatives/bodyguard')}>Bodyguard</a>
-    <a href={l('/alternatives/utopia')}>Utopia</a>
-    <a href={l('/alternatives/mistral-moderation')}>{t('nav.mistral')}</a>
-    <a href={l('/alternatives/hive-moderation')}>{t('nav.hive')}</a>
-    <a href={l('/alternatives/ferret-go-vs-conversario')}>Conversario & Ferret Go</a>
-    <a href={l('/alternatives/netino')}>Netino</a>
-    <a href={l('/alternatives')}>{t('nav.allComparisons')}</a>
-    <a href={l('/dsa-compliance')}>{t('nav.dsa')}</a>
-    <a href={l('/pricing')}>{t('nav.pricing')}</a>
-    <hr />
-    <a href={l('/blog')}>{t('nav.blog')}</a>
-    <a href={l('/faq')}>{t('nav.faq')}</a>
-    <a href={l('/about')}>{t('nav.about')}</a>
-    <a href={l('/terms')}>{t('nav.legal')}</a>
-    <hr />
-    <p style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94a3b8;padding:8px 8px 0;">{t('nav.switchLang')}</p>
+    <a href={l('/pricing')} class="om-top">{t('nav.pricing')}</a>
+    <a href={l('/demo')} class="om-top">{t('nav.demo')}</a>
+    <details class="om-group">
+      <summary>{t('nav.product')}</summary>
+      <div>
+        <a href={l('/features')}>{t('footer.features')}</a>
+        <a href={l('/product/transparency')}>{t('nav.transparency')}</a>
+        <a href={l('/dashboard')}>{t('nav.console')}</a>
+        <a href={l('/how-it-works')}>{t('nav.actionEngine')}</a>
+        <a href={l('/connectors')}>{t('nav.integrations')}</a>
+        <a href={l('/dsa-compliance')}>{t('nav.dsa')}</a>
+        <a href="https://api.openmoderation.com/docs" target="_blank">{t('nav.docs')}</a>
+      </div>
+    </details>
+    <details class="om-group">
+      <summary>{t('nav.useCases')}</summary>
+      <div>
+        <a href={l('/use-cases/news-publishers')}>{t('nav.newsPublishers')}</a>
+        <a href={l('/use-cases/brands-retail')}>{t('nav.brands')}</a>
+        <a href={l('/use-cases/luxury-fashion')}>{t('nav.luxury')}</a>
+        <a href={l('/use-cases/public-sector')}>{t('nav.public')}</a>
+        <a href={l('/use-cases/social-platforms')}>{t('nav.social')}</a>
+        <a href={l('/use-cases/ai-applications')}>{t('nav.ai')}</a>
+        <a href={l('/use-cases/marketplaces')}>{t('nav.marketplaces')}</a>
+        <a href={l('/use-cases/gaming')}>{t('nav.gaming')}</a>
+        <a href={l('/use-cases/enterprise-saas')}>{t('nav.saas')}</a>
+      </div>
+    </details>
+    <details class="om-group">
+      <summary>{t('footer.compare')}</summary>
+      <div>
+        <a href={l('/build-vs-buy')}>{t('nav.buildVsBuy')}</a>
+        <a href={l('/alternatives/bodyguard')}>{compare[0]} Bodyguard</a>
+        <a href={l('/alternatives/utopia')}>{compare[0]} Utopia</a>
+        <a href={l('/alternatives/netino')}>{compare[0]} Netino</a>
+        <a href={l('/alternatives/ferret-go-vs-conversario')}>Conversario & Ferret Go</a>
+        <a href={l('/alternatives/mistral-moderation')}>{t('nav.mistral')}</a>
+        <a href={l('/alternatives/hive-moderation')}>{t('nav.hive')}</a>
+        <a href={l('/alternatives')}>{t('nav.allComparisons')} &rarr;</a>
+      </div>
+    </details>
+    <details class="om-group">
+      <summary>{t('nav.resources')}</summary>
+      <div>
+        <a href={l('/blog')}>{t('nav.blog')}</a>
+        <a href={l('/faq')}>{t('nav.faq')}</a>
+        <a href={glossaryHref}>{glossary[0]}</a>
+        <a href={l('/about')}>{t('nav.about')}</a>
+        <a href={l('/terms')}>{t('nav.legal')}</a>
+      </div>
+    </details>
+    <p class="om-lang-title">{t('nav.switchLang')}</p>
     <div class="flex flex-wrap gap-2 px-2 pb-2">
       {switchTargets.map(({ code, href }) => (
-        <a href={href} hreflang={code} lang={code} class={`rounded-md border px-3 py-1.5 text-sm ${code === locale ? 'border-surface-900 font-semibold text-surface-900' : 'border-surface-200 text-surface-600'}`}>{localeNames[code]}</a>
+        <a href={href} hreflang={code} lang={code} class={`rounded-md border px-3 py-2.5 text-sm ${code === locale ? 'border-surface-900 font-semibold text-surface-900' : 'border-surface-200 text-surface-600'}`}>{localeNames[code]}</a>
       ))}
     </div>
   </div>
@@ -245,6 +268,7 @@ const switchTargets = locales.map((code) => ({ code, href: alternates[code] ?? l
     a.addEventListener('click', function() {
       document.getElementById('om-menu').classList.remove('open');
       document.querySelector('.om-hamburger').classList.remove('open');
+      document.documentElement.style.overflow = '';
     });
   });
 </script>

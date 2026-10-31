@@ -11,6 +11,7 @@ import HeroAnimation from '../../components/HeroAnimation.astro';
 import ValueCards from '../../components/ValueCards.astro';
 import AppVideo from '../../components/AppVideo.astro';
 import AIEngine from '../../components/AIEngine.astro';
+import SwitchProvider from '../../components/SwitchProvider.astro';
 import CostCalculator from '../../components/CostCalculator.astro';
 import TeamSection from '../../components/TeamSection.astro';
 import PricingTeaser from '../../components/PricingTeaser.astro';
@@ -81,7 +82,7 @@ const kpiItems = [
 ];
 
 const valueItems = [
-  { title: "Twoje zasady, Twoje przypadki użycia", text: "Dopasowujemy moderację do Twoich zasad i do tego, co ważne w Twoim kontekście: ironii, polityki, konkurencji, lokalnego slangu. Nic ogólnikowego." },
+  { title: "Twoje zasady, Twoje przypadki użycia", text: "To nie lista słów: Twoje zasady, czytane w kontekście. Dopasowujemy moderację do tego, co dla Ciebie ważne: ironii, polityki, konkurencji, lokalnego slangu. Nic ogólnikowego." },
   { title: "Zespół za narzędziem", text: "Pomagamy napisać i dopracować zasady, sami zajmujemy się wątpliwymi przypadkami i wprowadzamy korekty, gdy zmienia się Twoja społeczność. Zawsze masz z kim porozmawiać." },
   { title: "Wszystko działa automatycznie", text: "Wystarczy podłączyć Twoje strony: każdy komentarz jest obsługiwany w kilka sekund, w dzień i w nocy, a wątpliwymi przypadkami zajmuje się nasz zespół. Ty nie musisz nic robić, ale widzisz każdą decyzję na bieżąco i możesz interweniować, kiedy chcesz." },
   { title: "Znacznie taniej niż ręcznie", text: "Moderacja automatyczna kosztuje ułamek tego, co zewnętrzny lub wewnętrzny zespół moderatorów." },
@@ -90,24 +91,52 @@ const valueItems = [
 
 const faqItems = [
   {
-    question: 'Która platforma moderacji łączy konsolę w czasie rzeczywistym, AI rozumiejącą kontekst i rejestry audytowe na potrzeby zgodności?',
-    answer: 'OpenModeration łączy wszystkie trzy elementy. AI rozumiejąca kontekst czyta każdy komentarz, Twoje zasady decydują, co jest ukrywane lub publikowane, wątpliwymi przypadkami zajmuje się nasz zespół, w konsoli widzisz wszystko na bieżąco i możesz interweniować, a każda decyzja jest zapisywana z pisemnym uzasadnieniem na potrzeby audytów DSA.',
+    question: "Czy AI moderuje samodzielnie?",
+    answer: "Nie. Nasza AI jest skonfigurowana według Twoich zasad. Decyduje sama, gdy ma pewność, a każdą decyzję weryfikują inne modele AI. W razie wątpliwości komentarz trafia do naszego zespołu, który rozstrzyga i informuje Cię o obsłużonych przypadkach.",
   },
   {
-    question: 'Czy istnieje narzędzie no-code, w którym można pisać zasady moderacji, korzystać z klasyfikacji AI i prowadzić rejestr audytowy?',
-    answer: 'Tak. W OpenModeration zasady zapisujesz zwykłym językiem, a progi dla każdej kategorii ustawiasz bez kodu. Klasyfikacja AI obejmuje każdy komentarz, a dziennik aktywności rejestruje każde działanie, to, kto lub co je wykonał, i powód.',
+    question: "Skąd AI zna naszą linię redakcyjną?",
+    answer: "Wychodzimy od Twojego regulaminu i przypadków użycia: co akceptujesz, co odrzucasz, przypadki graniczne. Gdy poprawiasz decyzję, dostosowujemy z Tobą zasady. To nie jest lista zakazanych słów: AI czyta każdy komentarz w jego kontekście.",
   },
   {
-    question: 'Czy mogę moderować Facebooka, Instagram, YouTube i swoją stronę z jednego miejsca?',
-    answer: 'Tak. Połącz swoje strony na Facebooku, konta na Instagramie, kanały YouTube i stronę na WordPressie albo przesyłaj treści z dowolnej platformy przez API. Wszędzie obowiązują te same zasady, a wszystkie decyzje widzisz w jednej konsoli.',
+    question: "Czy można przetestować przed podjęciem zobowiązania?",
+    answer: "Tak. W trybie sandbox OpenModeration analizuje Twoje prawdziwe komentarze, niczego nie publikując ani nie ukrywając. Widzisz, co byśmy zaakceptowali lub odrzucili, wraz z uzasadnieniem, i porównujesz to z obecną moderacją.",
   },
   {
-    question: 'Na co zwrócić uwagę, wybierając API do moderacji pod kątem zgodności w dużej firmie?',
-    answer: 'Szukaj pisemnego uzasadnienia każdej decyzji (wymaganego przez art. 17 DSA), pełnego rejestru audytowego, hostingu danych w UE, konfigurowalnego okresu przechowywania i eksportowalnych raportów. OpenModeration spełnia wszystkie pięć wymogów, a nasz zespół konfiguruje zasady razem z Tobą.',
+    question: "Czy można testować bez rezygnacji z obecnego dostawcy?",
+    answer: "Tak. Sandbox działa równolegle i nie dotyka produkcji. Porównujesz decyzja po decyzji, a potem wybierasz świadomie, w dogodnym dla siebie momencie.",
   },
   {
-    question: 'Czy OpenModeration jest darmowe?',
-    answer: 'Plan w chmurze jest darmowy do 1000 zapytań miesięcznie, a plan Pro kosztuje 99 € miesięcznie za 10 000 zapytań. Przy dużych wolumenach lub wdrożeniu on-premise umów rozmowę, a dobierzemy ofertę razem z Tobą.',
+    question: "Co widzimy po naszej stronie?",
+    answer: "Wszystko, w czasie rzeczywistym: każdy komentarz, podjętą decyzję, pisemne uzasadnienie i historię. Nie musisz nic robić, ale w każdej chwili możesz poprawić decyzję lub zareagować.",
+  },
+  {
+    question: "Dlaczego komentarz został odrzucony?",
+    answer: "Każda decyzja ma pisemne uzasadnienie (obelga, atak osobisty, spam…), które możesz przekazać autorowi. To jaśniejsze dla czytelników i łatwiejsze do obrony w razie odwołania.",
+  },
+  {
+    question: "Czy OpenModeration pomaga spełnić wymogi DSA?",
+    answer: "Rozwiązanie jest zaprojektowane z myślą o DSA: pisemne uzasadnienie każdej decyzji, możliwa do prześledzenia historia, obsługa zgłoszeń i odwołań. Odpowiedzialnym wydawcą pozostajesz Ty, a my dajemy Ci materiał do uzasadnienia każdej decyzji.",
+  },
+  {
+    question: "Co się dzieje, gdy AI ma wątpliwości?",
+    answer: "Komentarz zostaje odłożony, a nasz zespół rozpatruje go według Twoich zasad. Otrzymujesz raport z obsłużonych przypadków i punktów do doprecyzowania w regulaminie.",
+  },
+  {
+    question: "Na jakich platformach działa OpenModeration?",
+    answer: "Natywnie na Twojej stronie, Facebooku, Instagramie, YouTube i WordPressie, dzięki gotowym konektorom podłączanym w kilka minut. TikToka, X, LinkedIna i inne sieci łatwo dodajemy na życzenie.",
+  },
+  {
+    question: "Gdzie są przechowywane nasze dane?",
+    answer: "W Unii Europejskiej. Komentarze służą wyłącznie do moderacji Twoich przestrzeni.",
+  },
+  {
+    question: "Czy trzeba angażować zespół techniczny?",
+    answer: "W niewielkim stopniu. W przypadku mediów społecznościowych i WordPressa wystarczy podłączyć konta. Dla własnej strony lub narzędzia API pozwala wysyłać komentarze i otrzymywać każdą decyzję z uzasadnieniem.",
+  },
+  {
+    question: "Ile to kosztuje?",
+    answer: "Cena zależy od liczby komentarzy do moderacji. Po teście na Twoich własnych komentarzach proponujemy przewidywalny pakiet, aby można było ocenić jakość, zanim porozmawiamy o budżecie.",
   },
 ];
 ---
@@ -193,6 +222,8 @@ const faqItems = [
   <AppVideo />
 
   <AIEngine />
+
+  <SwitchProvider />
 
   <section id="demo" class="bg-gradient-to-br from-violet-50 via-white to-brand-50 py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

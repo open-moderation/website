@@ -1,233 +1,59 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import CTASection from '../../components/CTASection.astro';
-import Breadcrumb from '../../components/Breadcrumb.astro';
-
-const pageJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  "@id": "https://www.openmoderation.com/es/construir-o-comprar",
-  "url": "https://www.openmoderation.com/es/construir-o-comprar",
-  "name": "Moderación de contenido: ¿construir o comprar? Comparativa de costes reales",
-  "description": "Compara el coste real de construir tu propia infraestructura de moderación frente a usar OpenModeration: tiempo de ingeniería, mantenimiento y equivalencia de funcionalidades.",
-  "inLanguage": "es",
-  "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
-};
-
-const costs = [
-  { item: 'Tiempo hasta estar operativo', build: '6-12 meses', buy: 'Minutos' },
-  { item: 'Esfuerzo de desarrollo', build: 'Varios ingenieros construyendo herramientas internas', buy: 'Cero (plataforma lista para usar)' },
-  { item: 'Mantenimiento y actualizaciones continuas', build: 'Requiere un equipo dedicado', buy: 'Lo gestiona la plataforma' },
-  { item: 'Infraestructura (servidores, BD, Redis)', build: 'De 500 a 5.000 €/mes', buy: 'Incluida en la nube gestionada, alojada en la UE' },
-  { item: 'Puesta en marcha del cumplimiento y la auditoría', build: 'De 30.000 a 100.000 € en desarrollo a medida', buy: '0 € (integrado)' },
-  { item: 'Gestión de equipos e interfaz de revisión', build: 'Meses de desarrollo UX/UI interno', buy: 'Incluido de serie' },
-];
+import BuildVsBuyDecision from '../../components/BuildVsBuyDecision.astro';
 ---
 
-<BaseLayout
-  title="Moderación de contenido: ¿construir o comprar? Costes reales"
-  description="Compara el coste real de construir tu propia infraestructura de moderación frente a usar OpenModeration: ingeniería, mantenimiento y funcionalidades."
-  jsonLd={pageJsonLd}
->
-<Breadcrumb items={[{ label: "Inicio", href: "/es" }, { label: "Construir o comprar" }]} />
-  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
-    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
-        Construir o comprar
-      </div>
-      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">¿Construir o comprar? El coste real de una infraestructura de moderación</h1>
-      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
-        Antes de construir tu propio sistema de moderación, conviene saber lo que cuesta de verdad.
-      </p>
-    </div>
-  </section>
-
-  <section class="bg-white py-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="grid gap-8 lg:grid-cols-2">
-        <div class="rounded-xl border-2 border-surface-200 bg-surface-50 p-8">
-          <h2 class="text-xl font-bold text-surface-900">Construir herramientas internas</h2>
-          <div class="mt-6 space-y-4">
-            <div class="border-b border-surface-200 pb-4">
-              <p class="text-sm text-surface-500">Tiempo hasta estar operativo</p>
-              <p class="text-2xl font-bold text-surface-900">6-12 meses</p>
-            </div>
-            <div class="border-b border-surface-200 pb-4">
-              <p class="text-sm text-surface-500">Esfuerzo de desarrollo</p>
-              <p class="text-2xl font-bold text-surface-900">Elevado</p>
-              <p class="text-xs text-surface-400">Varios ingenieros construyendo consolas, reglas e integraciones</p>
-            </div>
-            <div class="border-b border-surface-200 pb-4">
-              <p class="text-sm text-surface-500">Mantenimiento</p>
-              <p class="text-2xl font-bold text-surface-900">Permanente</p>
-              <p class="text-xs text-surface-400">Actualizaciones continuas por los cambios en los modelos de IA y en la normativa</p>
-            </div>
-            <div>
-              <p class="text-sm text-surface-500">Revisión de los casos dudosos</p>
-              <p class="text-2xl font-bold text-surface-900">Herramienta y equipo a tu cargo</p>
-            </div>
-          </div>
-        </div>
-        <div class="rounded-xl border-2 border-brand-500 bg-brand-50 p-8">
-          <div class="mb-2 inline-flex items-center gap-2 rounded-full bg-brand-100 px-3 py-1 text-xs font-semibold text-brand-700">Recomendado</div>
-          <h2 class="text-xl font-bold text-surface-900">OpenModeration</h2>
-          <div class="mt-6 space-y-4">
-            <div class="border-b border-brand-200 pb-4">
-              <p class="text-sm text-surface-500">Tiempo hasta estar operativo</p>
-              <p class="text-2xl font-bold text-surface-900">Minutos</p>
-              <p class="text-xs text-surface-400">Plataforma lista para usar</p>
-            </div>
-            <div class="border-b border-brand-200 pb-4">
-              <p class="text-sm text-surface-500">Esfuerzo de desarrollo</p>
-              <p class="text-2xl font-bold text-accent-600">Cero</p>
-              <p class="text-xs text-surface-400">Tus ingenieros se centran en tu producto principal</p>
-            </div>
-            <div class="border-b border-brand-200 pb-4">
-              <p class="text-sm text-surface-500">Mantenimiento</p>
-              <p class="text-2xl font-bold text-surface-900">Mínimo</p>
-              <p class="text-xs text-surface-400">Incorporamos los nuevos modelos de IA y nos ocupamos del cumplimiento</p>
-            </div>
-            <div>
-              <p class="text-sm text-surface-500">Revisión de los casos dudosos</p>
-              <p class="text-2xl font-bold text-surface-900">A cargo de nuestro equipo</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="bg-surface-50 py-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="mb-8 text-2xl font-bold text-surface-900 sm:text-3xl">Desglose de costes del primer año</h2>
-      <div class="overflow-x-auto rounded-xl border border-surface-200">
-        <table class="w-full text-left text-sm">
-          <thead>
-            <tr class="bg-surface-100">
-              <th class="px-6 py-4 font-semibold text-surface-900">Partida</th>
-              <th class="px-6 py-4 font-semibold text-red-600">Construir</th>
-              <th class="px-6 py-4 font-semibold text-accent-600">OpenModeration</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-surface-200 bg-white">
-            {costs.map((c) => (
-              <tr>
-                <td class="px-6 py-4 text-surface-600">{c.item}</td>
-                <td class="px-6 py-4 text-surface-900">{c.build}</td>
-                <td class="px-6 py-4 font-medium text-accent-600">{c.buy}</td>
-              </tr>
-            ))}
-            <tr><td class="px-6 py-4 text-surface-600">Esfuerzo total del primer año</td>
-              <td class="px-6 py-4 font-bold text-red-600">Elevado (varios equivalentes a tiempo completo)</td>
-              <td class="px-6 py-4 font-bold text-accent-600">Mínimo (listo para usar)</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="mt-4 text-xs text-surface-400">Estimaciones basadas en ciclos típicos de desarrollo de herramientas internas. Tu caso puede variar.</p>
-    </div>
-  </section>
-
-  <section class="bg-white py-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="mb-8 text-2xl font-bold text-surface-900 sm:text-3xl">Lo que obtienes frente a lo que tendrías que construir</h2>
-      <div class="overflow-x-auto rounded-xl border border-surface-200">
-        <table class="w-full text-left text-sm">
-          <thead>
-            <tr class="bg-surface-100">
-              <th class="px-6 py-4 font-semibold text-surface-900">Funcionalidad</th>
-              <th class="px-6 py-4 font-semibold text-red-600">Desarrollo interno</th>
-              <th class="px-6 py-4 font-semibold text-accent-600">OpenModeration</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-surface-200 bg-white">
-            <tr><td class="px-6 py-4 text-surface-600">IA de moderación</td><td class="px-6 py-4 text-surface-500">Elegir, integrar y ajustar un modelo, y volver a empezar con cada modelo nuevo</td><td class="px-6 py-4 text-accent-600">IA propia, arbitrada por otros modelos en los casos delicados</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Formato de respuesta unificado</td><td class="px-6 py-4 text-surface-500">Normalización a medida para cada modelo</td><td class="px-6 py-4 text-accent-600">Estandarizado de serie</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Nuevos modelos de IA</td><td class="px-6 py-4 text-surface-500">Cada cambio de modelo es un proyecto de migración</td><td class="px-6 py-4 text-accent-600">Los incorporamos rápido, sin cambios por tu parte</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Consola de administración</td><td class="px-6 py-4 text-surface-500">Desarrollar una consola en React/Vue</td><td class="px-6 py-4 text-accent-600">Incluida y lista para usar</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Revisión humana de los casos dudosos</td><td class="px-6 py-4 text-surface-500">Meses de desarrollo de herramientas internas y un equipo de moderadores</td><td class="px-6 py-4 text-accent-600">A cargo de nuestro equipo; tú lo ves todo en tiempo real</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Reglas de IA inteligentes y contextuales</td><td class="px-6 py-4 text-surface-500">Lógica a medida compleja y frágil</td><td class="px-6 py-4 text-accent-600">Tres herramientas sencillas: filtros de palabras, umbrales y normas de la comunidad</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Motor de acciones</td><td class="px-6 py-4 text-surface-500">Desarrollar un motor de reglas + webhooks</td><td class="px-6 py-4 text-accent-600">Motor de acciones integrado</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Conectores sociales</td><td class="px-6 py-4 text-surface-500">Integrar cada plataforma por separado</td><td class="px-6 py-4 text-accent-600">Facebook, Instagram, YouTube y WordPress incluidos</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Registro de auditoría</td><td class="px-6 py-4 text-surface-500">Diseñar un sistema de registro desde cero</td><td class="px-6 py-4 text-accent-600">Registros de auditoría conformes a la DSA</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Moderación por lotes</td><td class="px-6 py-4 text-surface-500">Desarrollar procesamiento asíncrono + webhooks</td><td class="px-6 py-4 text-accent-600">API batch nativa</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Gestión de claves de API</td><td class="px-6 py-4 text-surface-500">Implementar autenticación + límites de uso</td><td class="px-6 py-4 text-accent-600">Gestión de claves integrada</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Despliegue y alojamiento</td><td class="px-6 py-4 text-surface-500">Contenerizar, orquestar y alojar</td><td class="px-6 py-4 text-accent-600">Nube gestionada en la UE; on-premise bajo petición</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-
-  <section class="bg-ink-900 py-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="mx-auto max-w-3xl text-center">
-        <h2 class="text-2xl font-bold text-white sm:text-3xl">Los costes ocultos del desarrollo interno</h2>
-      </div>
-      <div class="mt-8 grid gap-6 md:grid-cols-2">
-        <div class="rounded-xl border border-ink-700 bg-ink-800 p-6">
-          <h3 class="font-semibold text-white">Cambios en los modelos de IA</h3>
-          <p class="mt-2 text-sm text-surface-400">Los modelos de IA cambian de esquema, se retiran y actualizan sus taxonomías sin previo aviso. En un sistema interno, cada cambio se convierte en una urgencia. OpenModeration incorpora estas actualizaciones por ti, y también los modelos nuevos cuando son mejores o más baratos.</p>
-        </div>
-        <div class="rounded-xl border border-ink-700 bg-ink-800 p-6">
-          <h3 class="font-semibold text-white">Desfase normativo</h3>
-          <p class="mt-2 text-sm text-surface-400">La DSA y otras normativas evolucionan. Los equipos internos tienen que seguir la legislación y adaptar sus registros de auditoría. OpenModeration está diseñado para cumplir la DSA desde el primer día.</p>
-        </div>
-        <div class="rounded-xl border border-ink-700 bg-ink-800 p-6">
-          <h3 class="font-semibold text-white">Carga operativa</h3>
-          <p class="mt-2 text-sm text-surface-400">La API es solo el 20 % del trabajo. El otro 80 % es la consola, el motor de reglas, la gestión de equipos, la interfaz de revisión y las personas que revisan los casos dudosos y las denuncias.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="bg-surface-50 py-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="mb-8 text-2xl font-bold text-surface-900 sm:text-3xl">Cuándo construir y cuándo comprar</h2>
-      <div class="grid gap-8 md:grid-cols-2">
-        <div class="rounded-xl border border-surface-200 bg-white p-6">
-          <h3 class="flex items-center gap-2 text-lg font-semibold text-red-600">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-            Construye si...
-          </h3>
-          <ul class="mt-4 space-y-2 text-sm text-surface-600">
-            <li>Las herramientas de moderación son el principal factor diferenciador de tu producto</li>
-            <li>Tienes un equipo de ingeniería dedicado para construirlas y mantenerlas</li>
-            <li>Necesitas algoritmos de moderación muy propios y hechos a medida</li>
-          </ul>
-        </div>
-        <div class="rounded-xl border border-brand-200 bg-brand-50 p-6">
-          <h3 class="flex items-center gap-2 text-lg font-semibold text-accent-600">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-            Elige OpenModeration si...
-          </h3>
-          <ul class="mt-4 space-y-2 text-sm text-surface-600">
-            <li>Quieres una plataforma de moderación completa funcionando hoy, no dentro de 6 meses</li>
-            <li>Tu equipo de ingeniería debe centrarse en tu producto principal, no en herramientas internas</li>
-            <li>No quieres que tu equipo dedique tiempo a moderar: nuestro equipo se ocupa de los casos dudosos y tú lo ves todo en tiempo real</li>
-            <li>Quieres aprovechar el progreso de los modelos de IA sin quedarte atado a uno</li>
-            <li>Necesitas cumplir la DSA sin contratar expertos en cumplimiento dedicados</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="border-t border-surface-100 bg-white py-12">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="text-lg font-bold text-surface-900">Para saber más</h2>
-      <ul class="mt-4 space-y-2 text-sm">
-        <li><a href="/es/blog/moderacion-construir-o-comprar" class="font-medium text-brand-600 hover:text-brand-500">Análisis a fondo: los costes de una infraestructura de moderación en 2026 &rarr;</a></li>
-        <li><a href="/es/precios" class="font-medium text-brand-600 hover:text-brand-500">Precios sencillos y transparentes &rarr;</a></li>
-        <li><a href="/es/cumplimiento-dsa" class="font-medium text-brand-600 hover:text-brand-500">Cumplir la DSA sin un equipo de cumplimiento &rarr;</a></li>
-      </ul>
-    </div>
-  </section>
-
-  <CTASection
-    title="Dedica tu tiempo a tu comunidad, no a construir herramientas internas."
-    subtitle="Conecta tus páginas, define tus reglas en lenguaje natural y obtén una explicación de cada comentario ocultado. Operativo en 5 minutos."
-    buttonText="Pruébalo gratis"
-    buttonHref="https://app.openmoderation.com/signup"
-  />
-</BaseLayout>
+<BuildVsBuyDecision copy={{
+  title: "¿Desarrollar o contratar la moderación? Guía para decidir",
+  description: "¿Desarrollar tu propia moderación de comentarios o contratar un servicio gestionado? Una tabla de decisión, los casos claros de cada opción y una llamada.",
+  home: "Inicio",
+  crumb: "Construir o comprar",
+  eyebrow: "Guía para decidir",
+  h1: "Construir o comprar tu moderación: cómo decidir",
+  intro: "Desarrollar internamente tiene sentido para unas pocas organizaciones. Para la mayoría, contratar es más rápido y más seguro. Esta página te ayuda a situarte en seis criterios y a revisar tu caso con nosotros en una llamada de 60 minutos.",
+  secondaryCta: "Ver el desglose detallado de costes",
+  tableTitle: "La tabla de decisión",
+  tableIntro: "Lee cada fila y anota qué columna te describe mejor. Con tres filas o más a la derecha, la pregunta suele quedar resuelta.",
+  tableHead: ["Criterio", "Desarrollar encaja si…", "Contratar encaja si…"],
+  tableRows: [
+    ["Papel de la moderación", "La moderación forma parte del producto que vendes", "La moderación protege tu producto, pero no es tu producto"],
+    ["Equipo", "Puedes mantener ingenieros, científicos de datos y moderadores durante años", "Tus ingenieros hacen falta en tu producto principal"],
+    ["Plazo", "Puedes esperar meses hasta la primera decisión útil", "Los comentarios, las denuncias o una consulta sobre la DSA exigen respuesta ya"],
+    ["Casos dudosos", "Tienes personas para revisar denuncias y recursos cada día", "Quieres un equipo que se ocupe de ellos por ti"],
+    ["Modelos de IA", "Quieres entrenar, evaluar y sustituir modelos tú mismo", "Quieres que los nuevos modelos se incorporen sin trabajo por tu parte"],
+    ["Cumplimiento", "Tienes capacidad jurídica y técnica para seguir la DSA", "Quieres motivos por escrito, historial y recursos ya integrados"],
+  ],
+  buildTitle: "Cuándo tiene sentido desarrollar",
+  buildItems: [
+    "La moderación es una función diferencial de lo que vendes, no una función de soporte.",
+    "Tus contenidos o tus normas son tan específicos que ningún servicio existente puede adaptarse.",
+    "Ya tienes un equipo de machine learning y otro de moderación, y puedes financiar ambos durante varios años.",
+  ],
+  buyTitle: "Cuándo tiene sentido contratar",
+  buyItems: [
+    "Alojas comentarios en una web o en redes sociales y quieres que se moderen bien y pronto.",
+    "No quieres contratar moderadores ni desarrollar una interfaz de revisión.",
+    "Necesitas lo básico de la DSA (motivos por escrito, denuncias, recursos, historial) sin abrir un proyecto.",
+    "Quieres comparar antes de comprometerte: una prueba gratuita con tus comentarios reales muestra cada decisión.",
+  ],
+  hybridTitle: "Un camino intermedio: desarrollar sobre un servicio",
+  hybridText: "Si tienes tu propia plataforma y quieres conservar el control de la interfaz, puedes llamar a nuestra API de moderación desde tu sistema y seguir contando con nuestra IA y nuestro equipo para los casos dudosos. Desarrollas lo que te diferencia y contratas el resto.",
+  includedTitle: "Qué incluye contratar OpenModeration",
+  included: [
+    { title: "Nuestra propia IA de moderación", text: "Desarrollada internamente, entrenada con millones de mensajes durante siete años y contrastada con otros modelos de IA en los casos delicados." },
+    { title: "Nuestro equipo en los casos dudosos", text: "Los casos dudosos, las denuncias de usuarios y las decisiones impugnadas los gestionan nuestros moderadores. Ves cada decisión y puedes anularla." },
+    { title: "Puesta en marcha contigo", text: "Convertimos tus normas en instrucciones y las probamos con tus comentarios reales antes de activar nada." },
+    { title: "Registros DSA y alojamiento en la UE", text: "Un motivo por escrito para cada decisión, historial trazable y cifras exportables. Alojado en la UE, conforme al RGPD." },
+  ],
+  costTitle: "¿Necesitas las cifras detrás de la decisión?",
+  costText: "Nuestro artículo del blog desglosa, línea por línea, lo que cuesta un sistema de moderación propio a tres años: ingeniería, mantenimiento, modelos de IA, infraestructura y cumplimiento.",
+  costLink: "Leer el desglose de costes de desarrollar la moderación",
+  faqTitle: "Preguntas antes de decidir",
+  faq: [
+    { question: "¿Es más barato desarrollar la moderación internamente?", answer: "Rara vez. La primera versión es la parte visible; el mantenimiento, los cambios de modelo, la revisión humana y el cumplimiento siguen costando cada año. El desglose detallado está en nuestro artículo sobre los costes de la infraestructura de moderación." },
+    { question: "¿Podemos empezar con un servicio y desarrollar después?", answer: "Sí. Nada te ata: tus normas están escritas en lenguaje claro y el historial de decisiones se puede exportar." },
+    { question: "¿Mantenemos el control si contratamos?", answer: "Sí. Ves cada decisión y su motivo por escrito en tiempo real, y puedes intervenir o anularla cuando quieras." },
+    { question: "¿Cómo comprobamos que contratar encaja con nuestro caso?", answer: "Reserva una llamada. Revisamos juntos tus volúmenes, plataformas y normas, y después puedes hacer una prueba gratuita en entorno de pruebas con tus comentarios reales." },
+  ],
+  ctaTitle: "Revisa tu caso en 60 minutos.",
+  ctaSubtitle: "Reserva una llamada: recorremos la tabla de decisión con tus volúmenes y tus normas, y te decimos con franqueza si desarrollar tiene más sentido.",
+}} />

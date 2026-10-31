@@ -1,126 +1,146 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import FAQ from '../../components/FAQ.astro';
+import CTASection from '../../components/CTASection.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
-import { bookingUrl } from '../../i18n/ui';
-import { getLocale, localizePath } from '../../i18n/routes';
+import { localizePath, type Locale } from '../../i18n/routes';
+import { useTranslations } from '../../i18n/ui';
 
-const locale = getLocale(Astro.url.pathname);
-const BOOKING_URL = bookingUrl(locale);
+const locale: Locale = 'pl';
+const t = useTranslations(locale);
+const booking = localizePath('/book-a-call', locale);
+const signup = 'https://app.openmoderation.com/signup';
 
-const faqItems = [
-  {
-    question: "Czy do skonfigurowania zasad moderacji trzeba umieć programować?",
-    answer: "Nie. OpenModeration korzysta z trzech prostych narzędzi: zakazanych słów do natychmiastowego blokowania, progów dla kategorii do automatycznych decyzji oraz własnych zasad zapisanych zwykłym językiem. Silnik akcji (Action Engine) stosuje je następnie automatycznie, bez pisania kodu.",
-  },
-  {
-    question: "Czy można ręcznie zmienić decyzję AI?",
-    answer: "Tak. Nie muszą Państwo nic robić: wątpliwymi przypadkami zajmuje się nasz zespół. W konsoli moderacji widzą Państwo jednak każdą decyzję i jej uzasadnienie w czasie rzeczywistym i mogą w każdej chwili zatwierdzić, odrzucić lub zmienić decyzję. Każde działanie jest zapisywane na potrzeby audytu.",
-  },
-  {
-    question: "Czy jest dostępny plan darmowy?",
-    answer: "Tak. OpenModeration oferuje plan darmowy do 1000 zapytań miesięcznie, bez karty kredytowej. Plan Pro kosztuje 99 € miesięcznie za 10 000 zapytań. Szczegóły znajdują się na stronie cennika.",
-  },
-  {
-    question: "Czym OpenModeration różni się od OpenAI Moderation API?",
-    answer: "OpenAI Moderation API to pojedynczy klasyfikator, który niewiele pokazuje z tego, jak działa moderacja. OpenModeration korzysta z własnej AI do moderacji, skonfigurowanej według Państwa reguł i przypadków użycia, a trudne przypadki weryfikują inne modele AI. Każda decyzja ma pisemne uzasadnienie, a platforma obejmuje konsolę w czasie rzeczywistym i silnik akcji do automatyzacji procesów.",
-  },
-  {
-    question: "Czym OpenModeration różni się od Nima (Tremau)?",
-    answer: "OpenModeration wyjaśnia każdą decyzję na piśmie, prowadzi pełny dziennik audytowy, weryfikuje trudne przypadki innymi modelami AI i hostuje dane w Unii Europejskiej. Wdrożenie on-premise jest możliwe na życzenie.",
-  },
-  {
-    question: "Czym OpenModeration różni się od Checkstep?",
-    answer: "OpenModeration jest projektowane przede wszystkim wokół API i korzysta z własnej AI do moderacji, weryfikowanej w trudnych przypadkach przez inne modele AI. Każda decyzja ma pisemne uzasadnienie, dane są hostowane w UE, a nasz zespół konfiguruje moderację według Państwa reguł i zajmuje się wątpliwymi przypadkami.",
-  },
-  {
-    question: "Co oznacza zgodność z DSA?",
-    answer: "OpenModeration prowadzi pełny dziennik audytowy każdej decyzji moderacyjnej, z konfigurowalnym okresem przechowywania danych i raportami do eksportu. Pomaga to platformom spełnić wymogi przejrzystości i rozliczalności unijnego aktu o usługach cyfrowych (DSA).",
-  },
-  {
-    question: "Z jakiej AI korzysta OpenModeration?",
-    answer: "OpenModeration korzysta z własnej AI do moderacji, wytrenowanej do moderacji komentarzy i skonfigurowanej według Państwa reguł i przypadków użycia. W trudnych przypadkach inne modele AI rozstrzygają decyzję, zanim zostanie zastosowana: mniej błędów i mniej niesłusznie ukrytych komentarzy.",
-  },
-  {
-    question: "Czy można wdrożyć OpenModeration na własnej infrastrukturze?",
-    answer: "Wdrożenie on-premise jest możliwe na życzenie: porozmawiajmy o Państwa potrzebach. Domyślnie OpenModeration działa w naszej zarządzanej chmurze, hostowanej w Unii Europejskiej.",
-  },
-  {
-    question: "Czy oferujecie zarządzaną chmurę?",
-    answer: "Tak, nasza zarządzana chmura SaaS kosztuje od 99 €/mies. W cenie: 10 000 zapytań miesięcznie, brak infrastruktury do utrzymania, modele AI w cenie, infrastruktura hostowana w UE, priorytetowe wsparcie i SLA. Szczegóły znajdują się na stronie cennika.",
-  },
-  {
-    question: "Jak szybko można zacząć z tego realnie korzystać?",
-    answer: "Kilka minut w przypadku podstawowej moderacji przez REST API. Kilka godzin na wdrożenie pełnej platformy z konsolą, silnikiem akcji i konektorami według przewodnika szybkiego startu. Od tego momentu moderacja działa sama, a Państwo widzą każdą decyzję w czasie rzeczywistym.",
-  },
-  {
-    question: "Co się dzieje, gdy pojawia się lepszy model AI?",
-    answer: "Nasz silnik nie jest przywiązany do jednego modelu. Gdy pojawia się lepszy lub tańszy model AI, nasz zespół szybko go podłącza, a po Państwa stronie nic się nie zmienia. Modele AI co roku są lepsze i tańsze, a Państwo korzystają z tego postępu, zamiast utknąć na wczorajszym modelu.",
-  },
-  {
-    question: "Czy mogę dodać własne kategorie?",
-    answer: "Tak. W przeciwieństwie do tradycyjnych klasyfikatorów opartych na kategoriach dowolne kategorie moderacji definiuje się promptami w języku naturalnym, dopasowując moderację do własnych zasad publikowania treści.",
-  },
-  {
-    question: "A co z obrazami i wideo?",
-    answer: "Obecna wersja koncentruje się na moderacji tekstu. Moderacja obrazów i wideo jest w planach rozwoju i będzie korzystać z multimodalnych modeli AI, gdy tylko staną się dostępne.",
-  },
-];
-
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@graph": [
+const c = {
+  "title": "FAQ moderacji komentarzy: AI, zespół, DSA i ceny",
+  "description": "Kto moderuje, jak AI stosuje twoje zasady, test na twoich komentarzach, DSA, platformy, dane i ceny: odpowiedzi dla mediów, marek i instytucji.",
+  "crumb": "FAQ",
+  "h1": "Twoje pytania o moderację komentarzy",
+  "intro": "Pytania, które media, marki i instytucje publiczne zadają nam najczęściej przed wyborem. Nie ma tu twojego? Umów rozmowę i zapytaj nas bezpośrednio.",
+  "buyerTitle": "Zanim wybierzesz",
+  "techTitle": "Dla zespołów technicznych",
+  "techIntro": "Więcej szczegółów technicznych dla programistów i działu IT.",
+  "ctaTitle": "Masz jeszcze pytanie?",
+  "ctaSubtitle": "Umów rozmowę: odpowiemy na twoje pytania i pokażemy, co nasza moderacja zrobiłaby z twoimi komentarzami.",
+  "buyer": [
     {
-      "@type": "WebPage",
-      "@id": "https://www.openmoderation.com/pl/faq",
-      "url": "https://www.openmoderation.com/pl/faq",
-      "name": "FAQ o moderacji treści: cennik, hosting i DSA",
-      "inLanguage": "pl",
-      "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
+      "question": "Czy AI moderuje samodzielnie?",
+      "answer": "Nie. Nasza AI jest skonfigurowana według twoich zasad i decyduje sama tylko wtedy, gdy jest pewna. Trudne przypadki są weryfikowane przez inne modele AI, a wątpliwe trafiają do naszego zespołu, który rozstrzyga je według twoich zasad i zdaje ci z tego relację. Nie musisz nic robić, chyba że chcesz zareagować."
     },
     {
-      "@type": "FAQPage",
-      "@id": "https://www.openmoderation.com/pl/faq#faq",
-      "inLanguage": "pl",
-      "mainEntity": faqItems.map(item => ({
-        "@type": "Question",
-        "name": item.question,
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": item.answer.replace(/&mdash;/g, '—')
-        }
-      }))
+      "question": "Skąd AI zna naszą linię redakcyjną?",
+      "answer": "Zaczynamy od twojego regulaminu i przypadków użycia: co akceptujesz, co odrzucasz, przypadki graniczne. Gdy poprawiasz decyzję, dostosowujemy z tobą zasady. To nie jest lista zakazanych słów: AI czyta każdy komentarz w kontekście."
+    },
+    {
+      "question": "Czy możemy przetestować przed podpisaniem umowy?",
+      "answer": "Tak. W trybie sandbox OpenModeration analizuje twoje prawdziwe komentarze, niczego nie publikując ani nie ukrywając. Widzisz, co byśmy zaakceptowali lub odrzucili, wraz z uzasadnieniem, i porównujesz to z obecną moderacją. Niczego przed tobą nie ukrywamy."
+    },
+    {
+      "question": "Czy możemy testować bez rezygnacji z obecnego dostawcy?",
+      "answer": "Tak. Test działa po cichu, równolegle z obecną moderacją, bez ingerencji w produkcję. Porównujesz decyzję po decyzji i wybierasz świadomie, w dogodnym dla ciebie momencie."
+    },
+    {
+      "question": "Co widzimy po naszej stronie?",
+      "answer": "Wszystko, w czasie rzeczywistym: każdy komentarz, podjętą decyzję, jej pisemne uzasadnienie i historię. W każdej chwili możesz zmienić dowolną decyzję w konsoli."
+    },
+    {
+      "question": "Dlaczego komentarz został odrzucony?",
+      "answer": "Każda decyzja ma pisemne uzasadnienie (obelga, atak osobisty, spam…), które możesz przekazać autorowi. To jaśniejsze dla czytelników i łatwiejsze do uzasadnienia w razie odwołania."
+    },
+    {
+      "question": "Czy OpenModeration pomaga spełnić wymogi DSA?",
+      "answer": "Jest zaprojektowany pod DSA: pisemne uzasadnienie każdej decyzji, identyfikowalna historia, obsługa zgłoszeń i odwołań, dane do eksportu. To ty pozostajesz odpowiedzialnym wydawcą i masz czym uzasadnić każdą decyzję."
+    },
+    {
+      "question": "Co się dzieje, gdy AI ma wątpliwości?",
+      "answer": "Komentarz zostaje wstrzymany, a nasz zespół rozpatruje go według twoich zasad. Otrzymujesz raport z rozpatrzonych przypadków i z punktów regulaminu, które warto doprecyzować."
+    },
+    {
+      "question": "A w nocy, w weekendy i w szczytach ruchu?",
+      "answer": "AI moderuje całą dobę według tych samych zasad, niezależnie od liczby komentarzy, także podczas meczu czy wieczoru wyborczego. Wątpliwe komentarze są wstrzymywane zamiast publikowane, dopóki nasz zespół ich nie rozpatrzy."
+    },
+    {
+      "question": "Na jakich platformach działa OpenModeration?",
+      "answer": "Na twojej stronie (przez nasze API lub WordPress), na Facebooku, Instagramie i YouTube, dzięki gotowym konektorom. TikTok, X, LinkedIn i inne sieci dodajemy na życzenie, szybko. Nasz zespół podłącza twoje strony razem z tobą."
+    },
+    {
+      "question": "Jakie języki są moderowane?",
+      "answer": "OpenModeration jest wielojęzyczny: każdy komentarz jest analizowany w swoim języku, w tym w językach twoich odbiorców. Powiedz nam, które są dla ciebie ważne, a pokażemy wyniki na twoich komentarzach."
+    },
+    {
+      "question": "Gdzie są przechowywane nasze dane?",
+      "answer": "W Unii Europejskiej, zgodnie z RODO. Twoje komentarze służą wyłącznie do moderacji twoich przestrzeni."
+    },
+    {
+      "question": "Czy musimy angażować nasz zespół techniczny?",
+      "answer": "W niewielkim stopniu. W przypadku mediów społecznościowych i WordPressa wystarczy podłączyć konta. Dla strony lub własnego narzędzia API przesyła nam komentarze i zwraca każdą decyzję z uzasadnieniem. Wdrożeniem zajmuje się z tobą nasz zespół."
+    },
+    {
+      "question": "Ile to kosztuje?",
+      "answer": "Cena zależy od liczby komentarzy do moderacji. Darmowy plan pozwala wypróbować usługę; potem proponujemy przewidywalny pakiet dopasowany do twoich wolumenów, po teście na twoich komentarzach: oceniasz jakość, zanim porozmawiamy o budżecie."
+    }
+  ],
+  "tech": [
+    {
+      "question": "Czy jest API?",
+      "answer": "Tak. API REST przyjmuje każdy komentarz i zwraca decyzję, kategorię i pisemne uzasadnienie. Webhooki powiadamiają twoje narzędzia o każdej decyzji, a kluczami dostępu zarządzasz w konsoli."
+    },
+    {
+      "question": "Na jakiej AI opiera się OpenModeration?",
+      "answer": "Na naszej własnej AI do moderacji, rozwijanej wewnętrznie i trenowanej na milionach wiadomości przez siedem lat. W trudnych przypadkach inne modele AI weryfikują decyzję, zanim zostanie zastosowana. Gdy pojawia się lepszy model, podłączamy go, bez zmian po twojej stronie."
+    },
+    {
+      "question": "Czy możemy dodać własne kategorie?",
+      "answer": "Tak. Oprócz kategorii standardowych (mowa nienawiści, nękanie, spam…) twoje zasady zapisuje się zwykłym językiem, więc można dodać każdą kategorię właściwą dla twojej polityki. AI stosuje je z uwzględnieniem kontekstu."
+    },
+    {
+      "question": "A obrazy i wideo?",
+      "answer": "Obecna wersja koncentruje się na tekście. Moderacja obrazów i wideo jest w planach i skorzysta z multimodalnych modeli AI w miarę ich rozwoju."
+    },
+    {
+      "question": "Czy można to uruchomić na naszych serwerach?",
+      "answer": "Domyślnie OpenModeration jest hostowany w Unii Europejskiej, a twoje dane można wyeksportować. Wdrożenie on-premise jest możliwe na życzenie: porozmawiajmy."
     }
   ]
 };
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.openmoderation.com/pl/faq",
+  "url": "https://www.openmoderation.com/pl/faq",
+  "name": "FAQ moderacji komentarzy: AI, zespół, DSA i ceny",
+  "description": "Kto moderuje, jak AI stosuje twoje zasady, test na twoich komentarzach, DSA, platformy, dane i ceny: odpowiedzi dla mediów, marek i instytucji.",
+  "inLanguage": "pl",
+  "isPartOf": {
+    "@id": "https://www.openmoderation.com/#website"
+  }
+};
 ---
 
-<BaseLayout
-  title="FAQ o moderacji treści: cennik, hosting i DSA"
-  description="Odpowiedzi na najczęstsze pytania o OpenModeration: cennik, hosting w UE, zgodność z DSA, nasza AI do moderacji i integracje."
-  jsonLd={faqJsonLd}
->
-<Breadcrumb items={[{ label: "Strona główna", href: localizePath('/', locale) }, { label: "FAQ" }]} />
+<BaseLayout title={c.title} description={c.description} jsonLd={pageJsonLd}>
+<Breadcrumb items={[{ label: "Strona główna", href: localizePath('/', locale) }, { label: c.crumb }]} />
   <section class="bg-gradient-to-b from-brand-50 to-white py-20">
     <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Najczęściej zadawane pytania</h1>
-      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
-        Odpowiedzi na pytania, które najczęściej słyszymy o OpenModeration. Jeśli nie ma tu Twojego, <a href={BOOKING_URL} class="text-brand-600 hover:text-brand-500" target="_blank" rel="noopener">porozmawiajmy</a>.
-      </p>
-      <div class="mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row">
-        <a href="https://app.openmoderation.com/signup" class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">
-          Wypróbuj za darmo
-        </a>
-        <a href={localizePath('/pricing', locale)} class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">
-          Zobacz cennik
-        </a>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">{c.h1}</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">{c.intro}</p>
+      <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a href={booking} class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">📅 {t('cta.book')}</a>
+        <a href={signup} class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">{t('cta.button')}</a>
       </div>
-      <p class="mt-4 text-sm text-surface-400">Bez karty kredytowej</p>
     </div>
   </section>
   <section class="bg-white py-12">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <FAQ items={faqItems} disableJsonLd />
+      <FAQ items={c.buyer} title={c.buyerTitle} />
     </div>
   </section>
+  <section class="bg-surface-50 py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <p class="mx-auto mb-6 max-w-3xl text-center text-sm text-surface-500">{c.techIntro}</p>
+      <FAQ items={c.tech} title={c.techTitle} disableJsonLd />
+    </div>
+  </section>
+
+  <CTASection title={c.ctaTitle} subtitle={c.ctaSubtitle} />
 </BaseLayout>

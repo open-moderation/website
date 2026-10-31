@@ -2,87 +2,138 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CTASection from '../../components/CTASection.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
-import { bookingUrl } from '../../i18n/ui';
-import { getLocale, localizePath } from '../../i18n/routes';
+import TeamSection from '../../components/TeamSection.astro';
+import ClientLogos from '../../components/ClientLogos.astro';
+import { localizePath, type Locale } from '../../i18n/routes';
+import { useTranslations } from '../../i18n/ui';
 
-const locale = getLocale(Astro.url.pathname);
-const BOOKING_URL = bookingUrl(locale);
+const locale: Locale = 'pt';
+const t = useTranslations(locale);
+const booking = localizePath('/book-a-call', locale);
+const signup = 'https://app.openmoderation.com/signup';
+
+const c = {
+  "title": "Sobre a OpenModeration: a equipe da Logora, desde 2019",
+  "description": "A OpenModeration é da Logora, fundada em Paris em 2019 e controlada pelos funcionários, que modera comentários de 23 veículos na Europa e América Latina.",
+  "orgDescription": "Moderação de comentários com IA para veículos, marcas, órgãos públicos e plataformas, adaptada às regras de cada cliente. Pela Logora (Paris, 2019).",
+  "crumb": "Sobre nós",
+  "h1": "A equipe que modera seus comentários com você",
+  "lead": "A OpenModeration é criada pela Logora, uma empresa independente fundada em Paris em 2019 e controlada pelos seus funcionários. Oito pessoas em Paris, Madri e Berlim implantam e cuidam da moderação de comentários de 23 veículos na Europa e na América Latina.",
+  "whoTitle": "Quem somos",
+  "who": [
+    "Desde 2019 moderamos comentários de leitores para veículos de imprensa. Fazer isso todos os dias nos ensinou o que veículos, marcas e órgãos públicos precisam: decisões confiáveis, um motivo claro para cada uma e pessoas a quem recorrer quando um caso é delicado.",
+    "Entre nossas referências: L’Équipe, Challenges, Sud Ouest, actu.fr, Estadão, Südkurier e Egora. A Logora pertence a quem trabalha nela: prestamos contas aos nossos clientes, não a investidores."
+  ],
+  "whatTitle": "O que é a OpenModeration",
+  "what": "Moderação de comentários com IA para veículos, marcas, órgãos públicos e plataformas, adaptada às suas regras e casos de uso. Você conecta suas páginas; nossa IA, desenvolvida internamente e treinada com milhões de mensagens ao longo de sete anos, resolve os casos claros. Nossa equipe cuida dos casos duvidosos, das denúncias e dos recursos. Você vê cada decisão e o motivo por escrito em tempo real, e pode intervir quando quiser.",
+  "whatPoints": [
+    "Seu site, Facebook, Instagram, YouTube e WordPress; outras redes sob demanda.",
+    "Multilíngue: cada comentário é analisado no seu idioma, incluindo os idiomas do seu público.",
+    "A implantação e a moderação dos casos duvidosos pela nossa equipe estão incluídas.",
+    "Hospedada na União Europeia, em conformidade com o RGPD."
+  ],
+  "disambiguation": "A OpenModeration (openmoderation.com) é um serviço da Logora. Não tem relação com o OpenModerator, outro projeto de nome parecido.",
+  "whyTitle": "Por que a criamos",
+  "why": [
+    {
+      "title": "Porque o DSA exige explicações",
+      "text": "Com o Digital Services Act europeu, as plataformas que hospedam comentários precisam justificar suas decisões de moderação, tratar denúncias e acompanhar recursos. A OpenModeration foi pensada para isso: um motivo por escrito para cada decisão, um histórico rastreável e números exportáveis."
+    },
+    {
+      "title": "Porque um bom debate merece proteção",
+      "text": "Insultos e spam afastam os leitores que têm algo a dizer. Uma moderação cuidadosa protege a sua marca e abre espaço para conversas de verdade, sem censurar demais os comentários que dão vida à discussão."
+    }
+  ],
+  "ctaTitle": "Conheça a equipe",
+  "ctaSubtitle": "Agende uma conversa: olhamos seus comentários juntos e mostramos como a moderação funcionaria nas suas páginas."
+};
 
 const aboutJsonLd = {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Logora",
-  "description": "Criadora do OpenModeration, a plataforma transparente de moderação de conteúdo.",
-  "url": "https://www.openmoderation.com",
+  "@type": "AboutPage",
+  "@id": "https://www.openmoderation.com/pt/sobre-nos",
+  "url": "https://www.openmoderation.com/pt/sobre-nos",
+  "name": "Sobre a OpenModeration: a equipe da Logora, desde 2019",
+  "description": "A OpenModeration é da Logora, fundada em Paris em 2019 e controlada pelos funcionários, que modera comentários de 23 veículos na Europa e América Latina.",
   "inLanguage": "pt",
+  "isPartOf": {
+    "@id": "https://www.openmoderation.com/#website"
+  },
+  "mainEntity": {
+    "@type": "Organization",
+    "@id": "https://www.openmoderation.com/#organization",
+    "name": "OpenModeration",
+    "url": "https://www.openmoderation.com",
+    "description": "Moderação de comentários com IA para veículos, marcas, órgãos públicos e plataformas, adaptada às regras de cada cliente. Pela Logora (Paris, 2019).",
+    "parentOrganization": {
+      "@type": "Organization",
+      "name": "Logora",
+      "url": "https://logora.com"
+    },
+    "founder": [
+      {
+        "@type": "Person",
+        "name": "Pierre Laburthe-Tolra"
+      },
+      {
+        "@type": "Person",
+        "name": "Henry Boisgibault"
+      }
+    ],
+    "sameAs": [
+      "https://logora.com",
+      "https://www.linkedin.com/company/logora"
+    ]
+  }
 };
 ---
 
-<BaseLayout title="Sobre nós | OpenModeration" description="O OpenModeration é desenvolvido pela Logora. Nossa missão: fazer da moderação de conteúdo uma camada de infraestrutura transparente, padronizada e acessível." jsonLd={aboutJsonLd}>
-<Breadcrumb items={[{ label: "Início", href: localizePath('/', locale) }, { label: "Sobre nós" }]} />
+<BaseLayout title={c.title} description={c.description} jsonLd={aboutJsonLd}>
+<Breadcrumb items={[{ label: "Início", href: localizePath('/', locale) }, { label: c.crumb }]} />
   <section class="bg-gradient-to-b from-brand-50 to-white py-20">
     <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Sobre nós</h1>
-      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
-        Estamos construindo a camada de infraestrutura padronizada para a moderação de conteúdo.
-      </p>
-    </div>
-  </section>
-
-  <section class="bg-white py-20">
-    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-      <div class="prose prose-surface mx-auto">
-        <h2 class="text-2xl font-bold text-surface-900">Nossa missão</h2>
-        <p class="mt-4 text-lg text-surface-500">
-          Toda plataforma online, de um pequeno fórum a uma rede social com milhões de usuários,
-          deveria poder moderar comentários com uma única chamada de API, usando os melhores modelos de IA disponíveis,
-          sem ficar presa a uma solução proprietária.
-        </p>
-        <p class="mt-4 text-lg text-surface-500">
-          Acreditamos que a moderação de conteúdo está se tornando tão essencial quanto a autenticação ou os pagamentos.
-          Ela deveria ser uma camada de infraestrutura padronizada, e não um desenvolvimento sob medida em cada empresa.
-        </p>
-
-        <h2 class="mt-12 text-2xl font-bold text-surface-900">Por que transparência?</h2>
-        <p class="mt-4 text-lg text-surface-500">
-          A moderação depende de confiança, e ninguém confia numa caixa-preta. Por isso, cada decisão do OpenModeration
-          vem com um motivo por escrito, e cada ação da IA e da equipe humana fica guardada em uma trilha de auditoria completa.
-        </p>
-        <p class="mt-4 text-lg text-surface-500">
-          A moderação segue as suas próprias regras e os seus casos de uso, e a nossa equipe faz a implantação com você.
-          Seus dados ficam hospedados na União Europeia, e você pode exportá-los a qualquer momento.
-        </p>
-
-        <h2 class="mt-12 text-2xl font-bold text-surface-900">Nossa abordagem</h2>
-        <div class="mt-6 space-y-6">
-          <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-            <h3 class="font-semibold text-surface-900">Pensado para desenvolvedores</h3>
-            <p class="mt-2 text-sm text-surface-500">As APIs são limpas, as respostas são tipadas e a documentação é completa. Feito por desenvolvedores, para desenvolvedores.</p>
-          </div>
-          <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-            <h3 class="font-semibold text-surface-900">Independente de modelo</h3>
-            <p class="mt-2 text-sm text-surface-500">Usamos a nossa própria IA de moderação, validada por outros modelos nos casos delicados. Quando surge um modelo melhor ou mais barato, nós o conectamos rapidamente, e nada muda para os nossos clientes.</p>
-          </div>
-          <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-            <h3 class="font-semibold text-surface-900">Conformidade com o DSA desde a origem</h3>
-            <p class="mt-2 text-sm text-surface-500">Concebido desde o início com a conformidade regulatória em mente. Trilhas de auditoria, soberania dos dados e relatórios de transparência são funcionalidades centrais.</p>
-          </div>
-          <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
-            <h3 class="font-semibold text-surface-900">Hospedado na UE</h3>
-            <p class="mt-2 text-sm text-surface-500">A plataforma é hospedada na União Europeia e você pode exportar seus dados a qualquer momento. A implantação on-premise é possível sob consulta: <a href={BOOKING_URL} class="text-brand-600 hover:text-brand-500" target="_blank" rel="noopener">vamos conversar</a>.</p>
-          </div>
-        </div>
-
-        <h2 class="mt-12 text-2xl font-bold text-surface-900">A equipe</h2>
-        <p class="mt-4 text-lg text-surface-500">
-          O OpenModeration é desenvolvido pela <a href="https://logora.com" class="font-bold text-surface-900 hover:text-brand-600" target="_blank" rel="noopener noreferrer">Logora</a>. Somos uma equipe pequena,
-          com longa experiência na criação de APIs, plataformas de conteúdo e ferramentas para desenvolvedores.
-          Acreditamos que a infraestrutura de moderação deve ser transparente, padronizada e
-          acessível a todas as plataformas.
-        </p>
+      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">{c.h1}</h1>
+      <p class="mx-auto mt-4 max-w-3xl text-lg text-surface-500">{c.lead}</p>
+      <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a href={booking} class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">📅 {t('cta.book')}</a>
+        <a href={signup} class="inline-flex items-center gap-2 rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">{t('cta.button')}</a>
       </div>
     </div>
   </section>
 
-  <CTASection />
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <ClientLogos />
+    </div>
+  </section>
+
+  <section class="bg-white pb-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold text-surface-900">{c.whoTitle}</h2>
+      {c.who.map((p) => <p class="mt-4 text-lg text-surface-500">{p}</p>)}
+
+      <h2 class="mt-12 text-2xl font-bold text-surface-900">{c.whatTitle}</h2>
+      <p class="mt-4 text-lg text-surface-500">{c.what}</p>
+      <ul class="mt-6 space-y-3">
+        {c.whatPoints.map((p) => (
+          <li class="flex items-start gap-3 text-surface-600"><svg class="mt-0.5 h-4 w-4 shrink-0 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>{p}</span></li>
+        ))}
+      </ul>
+      <p class="mt-6 text-sm text-surface-400">{c.disambiguation}</p>
+
+      <h2 class="mt-12 text-2xl font-bold text-surface-900">{c.whyTitle}</h2>
+      <div class="mt-6 grid gap-6 sm:grid-cols-2">
+        {c.why.map((w) => (
+          <div class="rounded-xl border border-surface-200 bg-surface-50 p-6">
+            <h3 class="font-semibold text-surface-900">{w.title}</h3>
+            <p class="mt-2 text-sm text-surface-500">{w.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <TeamSection />
+
+  <CTASection title={c.ctaTitle} subtitle={c.ctaSubtitle} />
 </BaseLayout>

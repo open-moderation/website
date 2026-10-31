@@ -1,7 +1,9 @@
 ---
-import { getLocale } from '../i18n/routes';
+import { getLocale, localizePath } from '../i18n/routes';
+import { useTranslations } from '../i18n/ui';
 
 const locale = getLocale(Astro.url.pathname);
+const t = useTranslations(locale);
 
 const copyAll = {
   en: {
@@ -367,7 +369,10 @@ const config = JSON.stringify({
         <ul class="om-demo-batch hidden w-full space-y-3 text-sm"></ul>
       </div>
       <p class="mt-4 text-xs leading-relaxed text-surface-400">{copy.note}</p>
-      <a href={copy.signup} class="mt-3 text-sm font-semibold text-brand-700 hover:text-brand-600">{copy.cta} &rarr;</a>
+      <div class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
+        <a href={localizePath('/book-a-call', locale)} class="inline-flex items-center gap-2 rounded-lg bg-brand-900 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">📅 {t('cta.book')}</a>
+        <a href={copy.signup} class="text-sm font-semibold text-brand-700 hover:text-brand-600">{copy.cta} &rarr;</a>
+      </div>
     </div>
   </div>
 </div>

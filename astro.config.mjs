@@ -12,7 +12,7 @@ export default defineConfig({
     locales: ['en', 'fr', 'es', 'de', 'it', 'pt', 'pl', 'nl'],
     routing: { prefixDefaultLocale: false },
   },
-  integrations: [sitemap()],
+  integrations: [sitemap({ filter: (page) => !/\/404\/?$/.test(page) })],
   build: { inlineStylesheets: 'always' },
   trailingSlash: 'never'
 });

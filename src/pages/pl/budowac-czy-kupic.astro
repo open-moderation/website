@@ -1,235 +1,59 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import CTASection from '../../components/CTASection.astro';
-import Breadcrumb from '../../components/Breadcrumb.astro';
-import { getLocale, localizePath } from '../../i18n/routes';
-
-const locale = getLocale(Astro.url.pathname);
-
-const pageJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  "@id": "https://www.openmoderation.com/pl/budowac-czy-kupic",
-  "url": "https://www.openmoderation.com/pl/budowac-czy-kupic",
-  "name": "Moderacja treści: budować czy kupić? Porównanie kosztów",
-  "description": "Porównanie rzeczywistego kosztu budowy własnej infrastruktury moderacji z wdrożeniem OpenModeration: czas programistów, utrzymanie i zakres funkcji.",
-  "inLanguage": "pl",
-  "isPartOf": { "@id": "https://www.openmoderation.com/#website" }
-};
-
-const costs = [
-  { item: 'Czas do uzyskania działającego rozwiązania', build: '6–12 miesięcy', buy: 'Kilka minut' },
-  { item: 'Nakład pracy programistycznej', build: 'Kilku inżynierów budujących narzędzia wewnętrzne', buy: 'Zerowy (gotowa platforma)' },
-  { item: 'Bieżące utrzymanie i aktualizacje', build: 'Wymagany dedykowany zespół', buy: 'Po stronie platformy' },
-  { item: 'Infrastruktura (serwery, baza danych, Redis)', build: '500 € do 5 tys. €/mies.', buy: 'W cenie (zarządzana chmura w UE)' },
-  { item: 'Zgodność z przepisami i dziennik audytu', build: '30 tys. € do 100 tys. € na prace programistyczne', buy: '0 € (wbudowane)' },
-  { item: 'Zarządzanie zespołem i interfejs weryfikacji', build: 'Miesiące prac nad UX/UI', buy: 'W standardzie' },
-];
+import BuildVsBuyDecision from '../../components/BuildVsBuyDecision.astro';
 ---
 
-<BaseLayout
-  title="Moderacja: budować czy kupić? Porównanie kosztów"
-  description="Porównaj rzeczywisty koszt budowy własnej infrastruktury moderacji treści z wdrożeniem OpenModeration: czas programistów, utrzymanie i zakres funkcji."
-  jsonLd={pageJsonLd}
->
-<Breadcrumb items={[{ label: "Strona główna", href: localizePath('/', locale) }, { label: "Budować czy kupić" }]} />
-  <section class="bg-gradient-to-b from-brand-50 to-white py-20">
-    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-surface-200 bg-white px-4 py-1.5 text-sm text-surface-600">
-        Budować czy kupić
-      </div>
-      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Budować czy kupić: rzeczywisty koszt infrastruktury moderacji</h1>
-      <p class="mx-auto mt-4 max-w-2xl text-lg text-surface-500">
-        Zanim zdecydujesz się zbudować własny system moderacji, sprawdź, ile naprawdę kosztuje.
-      </p>
-    </div>
-  </section>
-
-  <section class="bg-white py-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="grid gap-8 lg:grid-cols-2">
-        <div class="rounded-xl border-2 border-surface-200 bg-surface-50 p-8">
-          <h2 class="text-xl font-bold text-surface-900">Budowa narzędzi wewnętrznych</h2>
-          <div class="mt-6 space-y-4">
-            <div class="border-b border-surface-200 pb-4">
-              <p class="text-sm text-surface-500">Czas do uzyskania działającego rozwiązania</p>
-              <p class="text-2xl font-bold text-surface-900">6–12 miesięcy</p>
-            </div>
-            <div class="border-b border-surface-200 pb-4">
-              <p class="text-sm text-surface-500">Nakład pracy programistycznej</p>
-              <p class="text-2xl font-bold text-surface-900">Wysoki</p>
-              <p class="text-xs text-surface-400">Kilku inżynierów buduje panele, reguły i integracje</p>
-            </div>
-            <div class="border-b border-surface-200 pb-4">
-              <p class="text-sm text-surface-500">Utrzymanie</p>
-              <p class="text-2xl font-bold text-surface-900">Bez końca</p>
-              <p class="text-xs text-surface-400">Ciągłe aktualizacje po zmianach modeli AI i w przepisach</p>
-            </div>
-            <div>
-              <p class="text-sm text-surface-500">Interfejs weryfikacji dla zespołu</p>
-              <p class="text-2xl font-bold text-surface-900">Trzeba go zbudować</p>
-            </div>
-          </div>
-        </div>
-        <div class="rounded-xl border-2 border-brand-500 bg-brand-50 p-8">
-          <div class="mb-2 inline-flex items-center gap-2 rounded-full bg-brand-100 px-3 py-1 text-xs font-semibold text-brand-700">Polecane</div>
-          <h2 class="text-xl font-bold text-surface-900">OpenModeration</h2>
-          <div class="mt-6 space-y-4">
-            <div class="border-b border-brand-200 pb-4">
-              <p class="text-sm text-surface-500">Czas do uzyskania działającego rozwiązania</p>
-              <p class="text-2xl font-bold text-surface-900">Kilka minut</p>
-              <p class="text-xs text-surface-400">Gotowa do użycia platforma</p>
-            </div>
-            <div class="border-b border-brand-200 pb-4">
-              <p class="text-sm text-surface-500">Nakład pracy programistycznej</p>
-              <p class="text-2xl font-bold text-accent-600">Zerowy</p>
-              <p class="text-xs text-surface-400">Twoi inżynierowie skupiają się na głównym produkcie</p>
-            </div>
-            <div class="border-b border-brand-200 pb-4">
-              <p class="text-sm text-surface-500">Utrzymanie</p>
-              <p class="text-2xl font-bold text-surface-900">Minimalne</p>
-              <p class="text-xs text-surface-400">Platforma obsługuje aktualizacje modeli AI i zgodność z przepisami</p>
-            </div>
-            <div>
-              <p class="text-sm text-surface-500">Interfejs weryfikacji dla zespołu</p>
-              <p class="text-2xl font-bold text-surface-900">W standardzie</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="bg-surface-50 py-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="mb-8 text-2xl font-bold text-surface-900 sm:text-3xl">Koszty w pierwszym roku</h2>
-      <div class="overflow-x-auto rounded-xl border border-surface-200">
-        <table class="w-full text-left text-sm">
-          <thead>
-            <tr class="bg-surface-100">
-              <th class="px-6 py-4 font-semibold text-surface-900">Pozycja kosztowa</th>
-              <th class="px-6 py-4 font-semibold text-red-600">Budowa</th>
-              <th class="px-6 py-4 font-semibold text-accent-600">OpenModeration</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-surface-200 bg-white">
-            {costs.map((c) => (
-              <tr>
-                <td class="px-6 py-4 text-surface-600">{c.item}</td>
-                <td class="px-6 py-4 text-surface-900">{c.build}</td>
-                <td class="px-6 py-4 font-medium text-accent-600">{c.buy}</td>
-              </tr>
-            ))}
-            <tr><td class="px-6 py-4 text-surface-600">Łączny nakład w pierwszym roku</td>
-              <td class="px-6 py-4 font-bold text-red-600">Wysoki (kilka etatów)</td>
-              <td class="px-6 py-4 font-bold text-accent-600">Minimalny (gotowe do użycia)</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="mt-4 text-xs text-surface-400">Szacunki oparte na typowych cyklach tworzenia narzędzi wewnętrznych. Rzeczywiste wartości mogą się różnić.</p>
-    </div>
-  </section>
-
-  <section class="bg-white py-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="mb-8 text-2xl font-bold text-surface-900 sm:text-3xl">Co dostajesz, a co musisz zbudować</h2>
-      <div class="overflow-x-auto rounded-xl border border-surface-200">
-        <table class="w-full text-left text-sm">
-          <thead>
-            <tr class="bg-surface-100">
-              <th class="px-6 py-4 font-semibold text-surface-900">Funkcja</th>
-              <th class="px-6 py-4 font-semibold text-red-600">Budowa we własnym zakresie</th>
-              <th class="px-6 py-4 font-semibold text-accent-600">OpenModeration</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-surface-200 bg-white">
-            <tr><td class="px-6 py-4 text-surface-600">AI do moderacji</td><td class="px-6 py-4 text-surface-500">Trenowanie, ocena i utrzymanie własnych modeli</td><td class="px-6 py-4 text-accent-600">Nasza własna AI do moderacji, weryfikowana w trudnych przypadkach przez inne modele AI</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Ujednolicony format odpowiedzi</td><td class="px-6 py-4 text-surface-500">Własna normalizacja dla każdego modelu</td><td class="px-6 py-4 text-accent-600">Ujednolicony od razu</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Nadążanie za nowymi modelami AI</td><td class="px-6 py-4 text-surface-500">Ponowna integracja i testy przy każdym wydaniu</td><td class="px-6 py-4 text-accent-600">Podłączamy lepsze modele, gdy się pojawiają; po Twojej stronie nic się nie zmienia</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Panel administracyjny</td><td class="px-6 py-4 text-surface-500">Budowa panelu w React/Vue</td><td class="px-6 py-4 text-accent-600">W pakiecie, gotowy do użycia</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Interfejs weryfikacji i zarządzanie zespołem</td><td class="px-6 py-4 text-surface-500">Miesiące prac nad narzędziami wewnętrznymi</td><td class="px-6 py-4 text-accent-600">Wątpliwymi przypadkami zajmuje się nasz zespół; Ty masz panel w czasie rzeczywistym</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Inteligentne reguły AI uwzględniające kontekst</td><td class="px-6 py-4 text-surface-500">Złożona i krucha logika własna</td><td class="px-6 py-4 text-accent-600">Trzy proste narzędzia: filtry słów, progi, Twoje reguły zapisane zwykłym językiem</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Silnik działań</td><td class="px-6 py-4 text-surface-500">Budowa silnika reguł + webhooków</td><td class="px-6 py-4 text-accent-600">Wbudowany Action Engine</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Konektory społecznościowe</td><td class="px-6 py-4 text-surface-500">Osobna integracja każdej platformy</td><td class="px-6 py-4 text-accent-600">Facebook, Instagram, YouTube, WordPress w pakiecie</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Dziennik audytu</td><td class="px-6 py-4 text-surface-500">Projektowanie systemu logowania od zera</td><td class="px-6 py-4 text-accent-600">Dziennik audytu zgodny z DSA</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Moderacja wsadowa</td><td class="px-6 py-4 text-surface-500">Budowa przetwarzania asynchronicznego + webhooków</td><td class="px-6 py-4 text-accent-600">Natywne API wsadowe</td></tr>
-            <tr><td class="px-6 py-4 text-surface-600">Zarządzanie kluczami API</td><td class="px-6 py-4 text-surface-500">Implementacja uwierzytelniania i limitów zapytań</td><td class="px-6 py-4 text-accent-600">Wbudowane zarządzanie kluczami</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-
-  <section class="bg-ink-900 py-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="mx-auto max-w-3xl text-center">
-        <h2 class="text-2xl font-bold text-white sm:text-3xl">Ukryte koszty budowy we własnym zakresie</h2>
-      </div>
-      <div class="mt-8 grid gap-6 md:grid-cols-2">
-        <div class="rounded-xl border border-ink-700 bg-ink-800 p-6">
-          <h3 class="font-semibold text-white">Zmiany modeli AI</h3>
-          <p class="mt-2 text-sm text-surface-400">Dostawcy AI bez ostrzeżenia zmieniają schematy, wycofują modele i aktualizują taksonomie. W systemie wewnętrznym każda taka zmiana to sytuacja awaryjna. OpenModeration zajmuje się tymi aktualizacjami za Ciebie.</p>
-        </div>
-        <div class="rounded-xl border border-ink-700 bg-ink-800 p-6">
-          <h3 class="font-semibold text-white">Zmieniające się przepisy</h3>
-          <p class="mt-2 text-sm text-surface-400">DSA i inne regulacje ewoluują. Zespoły wewnętrzne muszą śledzić legislację i wprowadzać zmiany w dzienniku audytu. OpenModeration od pierwszego dnia jest zbudowane zgodnie z DSA.</p>
-        </div>
-        <div class="rounded-xl border border-ink-700 bg-ink-800 p-6">
-          <h3 class="font-semibold text-white">Koszty operacyjne</h3>
-          <p class="mt-2 text-sm text-surface-400">Zbudowanie API to tylko 20% pracy. Pozostałe 80% to panel, silnik reguł, zarządzanie zespołem i interfejs weryfikacji, których moderacja potrzebuje na co dzień. W OpenModeration wątpliwymi przypadkami zajmuje się też nasz zespół.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="bg-surface-50 py-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="mb-8 text-2xl font-bold text-surface-900 sm:text-3xl">Kiedy budować, a kiedy kupić</h2>
-      <div class="grid gap-8 md:grid-cols-2">
-        <div class="rounded-xl border border-surface-200 bg-white p-6">
-          <h3 class="flex items-center gap-2 text-lg font-semibold text-red-600">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-            Buduj, gdy...
-          </h3>
-          <ul class="mt-4 space-y-2 text-sm text-surface-600">
-            <li>narzędzia moderacji są głównym wyróżnikiem Twojego produktu</li>
-            <li>masz dedykowany zespół inżynierów, który je zbuduje i będzie utrzymywał</li>
-            <li>potrzebujesz wysoce autorskich, niestandardowych algorytmów moderacji</li>
-          </ul>
-        </div>
-        <div class="rounded-xl border border-brand-200 bg-brand-50 p-6">
-          <h3 class="flex items-center gap-2 text-lg font-semibold text-accent-600">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-            Wybierz OpenModeration, gdy...
-          </h3>
-          <ul class="mt-4 space-y-2 text-sm text-surface-600">
-            <li>chcesz kompletnej platformy moderacji działającej już dziś, a nie za 6 miesięcy</li>
-            <li>Twój zespół inżynierów ma się skupić na głównym produkcie, a nie na narzędziach wewnętrznych</li>
-            <li>chcesz, żeby ktoś zajął się wątpliwymi przypadkami za Ciebie, a Ty widzisz każdą decyzję w czasie rzeczywistym</li>
-            <li>chcesz korzystać z postępu AI, zamiast utknąć na jednym, niezmiennym modelu</li>
-            <li>potrzebujesz zgodności z DSA bez zatrudniania dedykowanych specjalistów ds. compliance</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="border-t border-surface-100 bg-white py-12">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="text-lg font-bold text-surface-900">Warto przeczytać</h2>
-      <ul class="mt-4 space-y-2 text-sm">
-        <li><a href={localizePath('/blog/build-vs-buy-moderation', locale)} class="font-medium text-brand-600 hover:text-brand-500">Analiza: koszty infrastruktury moderacji w 2026 roku &rarr;</a></li>
-        <li><a href={localizePath('/pricing', locale)} class="font-medium text-brand-600 hover:text-brand-500">Prosty, przejrzysty cennik &rarr;</a></li>
-        <li><a href={localizePath('/dsa-compliance', locale)} class="font-medium text-brand-600 hover:text-brand-500">Zgodność z DSA bez zespołu compliance &rarr;</a></li>
-      </ul>
-    </div>
-  </section>
-
-  <CTASection
-    title="Przestań budować narzędzia wewnętrzne. Zacznij chronić swoją społeczność."
-    subtitle="Połącz swoje strony i profile, zapisz reguły zwykłym językiem i otrzymuj uzasadnienie każdego ukrytego komentarza. Możesz zacząć w 5 minut."
-    buttonText="Wypróbuj za darmo"
-    buttonHref="https://app.openmoderation.com/signup"
-  />
-</BaseLayout>
+<BuildVsBuyDecision copy={{
+  title: "Budować czy kupić moderację? Przewodnik decyzyjny",
+  description: "Budować własną moderację komentarzy czy kupić usługę zarządzaną? Tabela decyzyjna, jasne przypadki dla obu opcji i rozmowa o Twojej sytuacji.",
+  home: "Strona główna",
+  crumb: "Budować czy kupić",
+  eyebrow: "Przewodnik decyzyjny",
+  h1: "Budować czy kupić moderację: jak podjąć decyzję",
+  intro: "Własny system ma sens dla nielicznych organizacji. Dla większości zakup jest szybszy i bezpieczniejszy. Ta strona pomoże Ci ocenić swoją sytuację według sześciu kryteriów, a potem sprawdzić ją z nami podczas 60-minutowej rozmowy.",
+  secondaryCta: "Zobacz szczegółowe zestawienie kosztów",
+  tableTitle: "Tabela decyzyjna",
+  tableIntro: "Przeczytaj każdy wiersz i zaznacz kolumnę, która lepiej Cię opisuje. Trzy lub więcej wierszy po prawej zwykle rozstrzyga sprawę.",
+  tableHead: ["Kryterium", "Budowa ma sens, jeśli…", "Zakup ma sens, jeśli…"],
+  tableRows: [
+    ["Rola moderacji", "Moderacja jest częścią produktu, który sprzedajesz", "Moderacja chroni Twój produkt, ale nim nie jest"],
+    ["Zespół", "Możesz przez lata utrzymywać programistów, data scientistów i moderatorów", "Twoi programiści są potrzebni przy głównym produkcie"],
+    ["Termin", "Możesz czekać miesiącami na pierwszą użyteczną decyzję", "Komentarze, zgłoszenia lub pytanie o DSA wymagają odpowiedzi teraz"],
+    ["Wątpliwe przypadki", "Masz ludzi, którzy codziennie rozpatrzą zgłoszenia i odwołania", "Chcesz, żeby zajął się nimi zespół za Ciebie"],
+    ["Modele AI", "Chcesz sam trenować, oceniać i wymieniać modele", "Chcesz, żeby nowe modele były podłączane bez pracy po Twojej stronie"],
+    ["Zgodność", "Masz zasoby prawne i techniczne, by śledzić wymogi DSA", "Chcesz mieć wbudowane uzasadnienia, historię i odwołania"],
+  ],
+  buildTitle: "Kiedy warto budować",
+  buildItems: [
+    "Moderacja wyróżnia to, co sprzedajesz, a nie jest funkcją pomocniczą.",
+    "Twoje treści lub zasady są tak specyficzne, że żadnej istniejącej usługi nie da się do nich dostosować.",
+    "Masz już zespół uczenia maszynowego i zespół moderacji i możesz finansować oba przez kilka lat.",
+  ],
+  buyTitle: "Kiedy warto kupić",
+  buyItems: [
+    "Publikujesz komentarze na stronie lub kontach społecznościowych i chcesz, by były moderowane dobrze i szybko.",
+    "Nie chcesz zatrudniać moderatorów ani budować interfejsu do weryfikacji.",
+    "Potrzebujesz podstaw DSA (pisemne uzasadnienia, zgłoszenia, odwołania, historia) bez osobnego projektu.",
+    "Chcesz porównać przed decyzją: bezpłatny test na Twoich prawdziwych komentarzach pokazuje każdą decyzję.",
+  ],
+  hybridTitle: "Droga pośrednia: budowa na bazie usługi",
+  hybridText: "Jeśli masz własną platformę i chcesz zachować kontrolę nad interfejsem, możesz wywoływać nasze API moderacji ze swojego systemu, a wątpliwe przypadki nadal zostawić naszej AI i naszemu zespołowi. Budujesz to, co Cię wyróżnia, a resztę kupujesz.",
+  includedTitle: "Co obejmuje zakup OpenModeration",
+  included: [
+    { title: "Nasza własna AI do moderacji", text: "Zbudowana u nas, trenowana na milionach wiadomości przez siedem lat; delikatne przypadki sprawdzają dodatkowo inne modele AI." },
+    { title: "Nasz zespół przy wątpliwych przypadkach", text: "Wątpliwe przypadki, zgłoszenia użytkowników i zakwestionowane decyzje obsługują nasi moderatorzy. Widzisz każdą decyzję i możesz ją zmienić." },
+    { title: "Wdrożenie razem z Tobą", text: "Przekładamy Twoje zasady na instrukcje i testujemy je na Twoich prawdziwych komentarzach, zanim cokolwiek włączymy." },
+    { title: "Rejestry DSA i hosting w UE", text: "Pisemne uzasadnienie każdej decyzji, pełna historia, dane do eksportu. Hosting w UE, zgodnie z RODO." },
+  ],
+  costTitle: "Potrzebujesz liczb, które stoją za decyzją?",
+  costText: "Nasz artykuł na blogu rozbija na pozycje koszt własnego systemu moderacji w ciągu trzech lat: programiści, utrzymanie, modele AI, infrastruktura i zgodność.",
+  costLink: "Przeczytaj zestawienie kosztów własnej moderacji",
+  faqTitle: "Pytania przed decyzją",
+  faq: [
+    { question: "Czy budowa własnej moderacji jest tańsza?", answer: "Rzadko. Pierwsza wersja to tylko widoczna część: utrzymanie, zmiany modeli, weryfikacja przez ludzi i zgodność kosztują co roku. Szczegółowe zestawienie znajdziesz w naszym artykule o kosztach infrastruktury moderacji." },
+    { question: "Czy możemy zacząć od usługi, a zbudować później?", answer: "Tak. Nic Cię nie wiąże: zasady są zapisane zwykłym językiem, a historię decyzji można wyeksportować." },
+    { question: "Czy zachowamy kontrolę, jeśli kupimy?", answer: "Tak. Widzisz każdą decyzję i jej pisemne uzasadnienie w czasie rzeczywistym i możesz w każdej chwili zareagować lub ją zmienić." },
+    { question: "Jak sprawdzić, czy zakup pasuje do naszej sytuacji?", answer: "Umów rozmowę. Razem przejrzymy wolumeny, platformy i zasady, a potem możesz przeprowadzić bezpłatny test w sandboksie na swoich prawdziwych komentarzach." },
+  ],
+  ctaTitle: "Sprawdź swoją sytuację w 60 minut.",
+  ctaSubtitle: "Umów rozmowę: przejdziemy przez tabelę decyzyjną z Twoimi wolumenami i zasadami i uczciwie powiemy, czy budowa ma większy sens.",
+}} />
