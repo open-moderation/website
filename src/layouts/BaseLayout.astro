@@ -58,7 +58,20 @@ const onBookPage = Astro.url.pathname.replace(/\/$/, '') === bookPath;
       }
 
       // Mesure des conversions dans Umami : ouverture de l'agenda, réservation confirmée, clics vers la page de rendez-vous.
-      const track = (name: string, data?: Record<string, string>) => (window as any).umami?.track(name, data);
+      // Langue et type de page joints à chaque événement, pour lire le parcours par langue et par type de page.
+      const seg = location.pathname.split('/').filter(Boolean);
+      const lang = ['fr', 'es', 'de', 'it', 'pt', 'pl', 'nl'].includes(seg[0]) ? seg[0] : 'en';
+      const rest = (lang === 'en' ? seg : seg.slice(1)).join('/');
+      const pageType =
+        rest === '' ? 'home'
+        : /^(alternatives|alternativas|alternativen|alternative|alternatywy|alternatieven)(\/|$)/.test(rest) ? 'comparison'
+        : /^blog(\/|$)/.test(rest) ? 'guide'
+        : /^(glossary|lexique|glosario|glossar|glossario|slownik|woordenlijst)(\/|$)/.test(rest) ? 'glossary'
+        : /^(use-cases|cas-usage|casos-de-uso|anwendungsfaelle|casi-d-uso|zastosowania|toepassingen)(\/|$)/.test(rest) ? 'sector'
+        : /^(pricing|tarifs|precios|preise|prezzi|precos|cennik|prijzen)$/.test(rest) ? 'pricing'
+        : /(book-a-call|rendez-vous|reservar-llamada|termin-vereinbaren|prenota-una-call|agendar|umow|afspraak)/.test(rest) ? 'booking'
+        : 'product';
+      const track = (name: string, data?: Record<string, string>) => (window as any).umami?.track(name, { lang, pageType, ...data });
       addEventListener('message', (e) => {
         if (e.origin === 'https://calendly.com' && e.data?.event === 'calendly.event_scheduled') track('booking_scheduled', { page: location.pathname });
       });
@@ -66,7 +79,7 @@ const onBookPage = Astro.url.pathname.replace(/\/$/, '') === bookPath;
         const a = (event.target as HTMLElement).closest<HTMLAnchorElement>('a[href]');
         if (!a) return;
         const href = a.getAttribute('href') || '';
-        if (/\/(book-a-call|rendez-vous|reservar-llamada|termin-vereinbaren|prenota-una-call)$/.test(href)) track('booking_page_click', { page: location.pathname, from: a.classList.contains('om-sticky-book') ? 'sticky' : 'link' });
+        if (/\/(book-a-call|rendez-vous|reservar-llamada|termin-vereinbaren|prenota-una-call|agendar-reuniao|umow-rozmowe|afspraak-maken)$/.test(href)) track('booking_page_click', { page: location.pathname, from: a.classList.contains('om-sticky-book') ? 'sticky' : 'link' });
         if (href.startsWith('https://app.openmoderation.com/signup')) track('signup_click', { page: location.pathname });
       });
 
