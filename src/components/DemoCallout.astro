@@ -1,0 +1,31 @@
+---
+// Encart compact « Testez sur vos propres commentaires » vers la démo en direct.
+// Lien secondaire (bouton contour) : la prise de rendez-vous reste l'appel à l'action principal.
+import { getLocale, localizePath } from '../i18n/routes';
+
+export interface Props { bare?: boolean }
+const { bare = false } = Astro.props;
+const locale = getLocale(Astro.url.pathname);
+
+const copyAll = {
+  en: { title: 'Test it on your own comments', text: 'Paste a comment, adjust the rules and see the decision with its written reason. Free, no sign-up.', link: 'Open the live demo' },
+  fr: { title: 'Testez sur vos propres commentaires', text: 'Collez un commentaire, ajustez les règles et voyez la décision avec son explication écrite. Gratuit, sans inscription.', link: 'Ouvrir la démo en direct' },
+  es: { title: 'Pruébalo con tus propios comentarios', text: 'Pega un comentario, ajusta las reglas y ve la decisión con su explicación por escrito. Gratis, sin registro.', link: 'Abrir la demo en directo' },
+  de: { title: 'Testen Sie mit Ihren eigenen Kommentaren', text: 'Kommentar einfügen, Regeln anpassen und die Entscheidung mit schriftlicher Begründung sehen. Kostenlos, ohne Anmeldung.', link: 'Live-Demo öffnen' },
+  it: { title: 'Provala sui tuoi commenti', text: 'Incolla un commento, regola le regole e guarda la decisione con la sua motivazione scritta. Gratis, senza registrazione.', link: 'Apri la demo dal vivo' },
+  pt: { title: 'Teste com os seus próprios comentários', text: 'Cole um comentário, ajuste as regras e veja a decisão com a explicação por escrito. Grátis, sem cadastro.', link: 'Abrir a demo ao vivo' },
+  pl: { title: 'Przetestuj na własnych komentarzach', text: 'Wklej komentarz, dostosuj zasady i zobacz decyzję wraz z pisemnym uzasadnieniem. Za darmo, bez rejestracji.', link: 'Otwórz demo na żywo' },
+  nl: { title: 'Test het op je eigen reacties', text: 'Plak een reactie, pas de regels aan en zie de beslissing met een schriftelijke motivering. Gratis, zonder account.', link: 'Open de live demo' },
+};
+const copy = copyAll[locale as keyof typeof copyAll] ?? copyAll.en;
+---
+
+<aside class:list={['om-demo-callout', bare ? 'mt-10' : 'mx-auto max-w-3xl px-4 pb-10 sm:px-6 lg:px-8']}>
+  <div class="om-card flex flex-col gap-4 border-violet-100 bg-violet-50/60 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <p class="font-bold text-surface-900">🧪 {copy.title}</p>
+      <p class="mt-1 text-sm text-surface-600">{copy.text}</p>
+    </div>
+    <a href={localizePath('/demo', locale)} class="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg border border-surface-300 bg-white px-5 py-2.5 text-sm font-semibold text-surface-700 transition hover:bg-surface-50">{copy.link} &rarr;</a>
+  </div>
+</aside>

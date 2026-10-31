@@ -1,6 +1,9 @@
 ---
 // « Comparatifs proches » : relie chaque page concurrente aux concurrents de la même famille.
 import { getLocale, localizePath } from '../i18n/routes';
+import { comparisonFamilies } from '../data/maillage';
+import UseCaseLinks from './UseCaseLinks.astro';
+import RelatedArticles from './RelatedArticles.astro';
 
 const locale = getLocale(Astro.url.pathname);
 const current = Astro.url.pathname.replace(/\/$/, '').split('/').pop() ?? '';
@@ -19,7 +22,9 @@ const groups = [
   ['openai-moderation', 'perspective-api', 'azure-content-safety', 'mistral-moderation', 'hive-moderation', 'sightengine', 'webpurify', 'moderation-api'],
   ['checkstep', 'activefence', 'cinder', 'tremau', 'community-sift', 'besedo', 'utopia'],
 ];
-const group = groups.find((g) => g.includes(current)) ?? groups[0];
+const groupIndex = Math.max(0, groups.findIndex((g) => g.includes(current)));
+const group = groups[groupIndex];
+const family = comparisonFamilies[groupIndex];
 const picks = [...group.filter((s) => s !== current), ...groups.flat().filter((s) => !group.includes(s))].filter((s, i, a) => s !== current && a.indexOf(s) === i).slice(0, 6);
 
 const t = {
@@ -44,5 +49,7 @@ const t = {
       ))}
     </ul>
     <p class="mt-5"><a href={localizePath('/alternatives', locale)} class="inline-block py-2 text-sm font-semibold text-brand-700">{t[2]} &rarr;</a></p>
+    <UseCaseLinks keys={family.useCases} bare />
+    <RelatedArticles slugs={family.articles} bare />
   </div>
 </section>

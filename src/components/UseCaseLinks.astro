@@ -1,0 +1,29 @@
+---
+// « Par cas d'usage » : cartes-liens vers les pages cas d'usage (même style que « Comparatifs proches »).
+import { getLocale, localizePath } from '../i18n/routes';
+import { useCaseLabels } from '../data/maillage';
+
+export interface Props { keys: string[]; bare?: boolean }
+const { keys, bare = false } = Astro.props;
+const locale = getLocale(Astro.url.pathname);
+const here = Astro.url.pathname.replace(/\/$/, '');
+const items = keys.map((k) => ({ k, href: localizePath(`/use-cases/${k}`, locale) })).filter((i) => i.href !== here);
+
+const t = {
+  en: ['By use case', 'All use cases'], fr: ["Par cas d'usage", "Tous les cas d'usage"], es: ['Por caso de uso', 'Todos los casos de uso'],
+  de: ['Nach Anwendungsfall', 'Alle Anwendungsfälle'], it: ["Per caso d'uso", "Tutti i casi d'uso"], pt: ['Por caso de uso', 'Todos os casos de uso'],
+  pl: ['Według zastosowania', 'Wszystkie zastosowania'], nl: ['Per toepassing', 'Alle toepassingen'],
+}[locale] ?? ['By use case', 'All use cases'];
+---
+
+{items.length > 0 && (
+  <div class:list={['om-usecases', bare ? 'mt-10' : 'mx-auto max-w-3xl px-4 pb-12 sm:px-6 lg:px-8']}>
+    <h2 class="text-lg font-bold text-surface-900">{t[0]}</h2>
+    <ul class="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+      {items.map(({ k, href }) => (
+        <li><a href={href} class="om-link-card text-sm"><span>{useCaseLabels[k]?.[locale] ?? useCaseLabels[k]?.en}</span><span class="text-violet-600" aria-hidden="true">&rarr;</span></a></li>
+      ))}
+    </ul>
+    <p class="mt-3"><a href={localizePath('/use-cases', locale)} class="inline-block py-2 text-sm font-semibold text-brand-700">{t[1]} &rarr;</a></p>
+  </div>
+)}

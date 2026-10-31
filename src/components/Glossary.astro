@@ -5,6 +5,9 @@ import Breadcrumb from './Breadcrumb.astro';
 import CTASection from './CTASection.astro';
 import { getLocale, localizePath } from '../i18n/routes';
 import { glossaryBase, glossaryTerms, type GlossaryTerm } from '../data/glossary';
+import { articlesUsingTerm } from '../data/glossaryLinks';
+import RelatedArticles from './RelatedArticles.astro';
+import DemoCallout from './DemoCallout.astro';
 
 export interface Props { term?: GlossaryTerm }
 
@@ -24,6 +27,8 @@ const L = {
   nl: { home: 'Home', name: 'Woordenlijst moderatie', title: 'Woordenlijst contentmoderatie: DSA, AI en community', desc: 'Heldere definities van de begrippen uit reactie- en contentmoderatie: DSA, motivering, melding en actie, AI-moderatie, fout-positieven en meer.', h1: 'Woordenlijst contentmoderatie', intro: 'De woorden van reactiemoderatie, de DSA en AI-moderatie, eenvoudig uitgelegd.', what: 'Wat is', short: 'Kort gezegd', related: 'Verder lezen', see: 'Zie ook', all: 'Alle begrippen', termTitle: (t: string) => `${t}: definitie` },
 }[locale] ?? null;
 const l = L!;
+const inArticles = ({ en: 'Articles that use this term', fr: 'Les articles qui en parlent', es: 'Artículos que usan este término', de: 'Artikel zu diesem Begriff', it: 'Articoli che usano questo termine', pt: 'Artigos que usam este termo', pl: 'Artykuły, w których pojawia się to pojęcie', nl: 'Artikelen over dit begrip' } as Record<string, string>)[locale] ?? 'Articles that use this term';
+const usedIn = term ? articlesUsingTerm(locale, term.id) : [];
 const url = (slug?: string) => `https://www.openmoderation.com${base}${slug ? `/${slug}` : ''}`;
 const byId = Object.fromEntries(terms.map((t) => [t.id, t]));
 const letters = [...new Set(terms.map((t) => t.term[0].toUpperCase()))].sort((a, b) => a.localeCompare(b, locale));
@@ -67,6 +72,8 @@ const jsonLd = term
           </ul>
         </div>
       )}
+      {usedIn.length > 0 && <RelatedArticles slugs={usedIn} title={inArticles} cols={1} bare />}
+      <DemoCallout bare />
       <p class="mt-10"><a href={base} class="text-sm font-semibold text-brand-700">&larr; {l.all}</a></p>
     </article>
   ) : (

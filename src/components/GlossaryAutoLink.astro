@@ -1,0 +1,11 @@
+---
+// Enveloppe le corps d'un article : relie la première occurrence des termes du lexique (même langue).
+import { getLocale } from '../i18n/routes';
+import { linkifyGlossary } from '../data/glossaryLinks';
+
+const locale = getLocale(Astro.url.pathname);
+const html = await Astro.slots.render('default');
+const out = linkifyGlossary(html, locale).html;
+---
+
+<Fragment set:html={out} />

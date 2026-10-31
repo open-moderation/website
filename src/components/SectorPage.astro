@@ -9,7 +9,10 @@ import SwitchProvider from './SwitchProvider.astro';
 import CostCalculator from './CostCalculator.astro';
 import CTASection from './CTASection.astro';
 import FAQ from './FAQ.astro';
-import { getLocale, localizePath } from '../i18n/routes';
+import { getAlternates, getLocale, localizePath } from '../i18n/routes';
+import { sectorArticles, useCaseKeys } from '../data/maillage';
+import UseCaseLinks from './UseCaseLinks.astro';
+import RelatedArticles from './RelatedArticles.astro';
 import { bookingUrl, useTranslations } from '../i18n/ui';
 
 const BOOKING_URL = bookingUrl(getLocale(Astro.url.pathname));
@@ -69,6 +72,7 @@ const showCalculator = ['/outsourced-moderation', '/automatic-comment-moderation
 const show = (b: string) => (p.blocks ? p.blocks.includes(b) : b !== 'calculator' || showCalculator);
 const quotes = locale === 'fr' ? ['« ', ' »'] : locale === 'de' ? ['„', '“'] : locale === 'pl' ? ['„', '”'] : ['“', '”'];
 const toneClass = { ok: 'bg-mint-100 text-mint-600', review: 'bg-sun-100 text-sun-600', hide: 'bg-rose-100 text-rose-600' };
+const enPath = getAlternates(Astro.url.pathname).en ?? '';
 const parent = p.parent === undefined ? { label: labels.useCases, href: localizePath('/use-cases', locale) } : p.parent;
 ---
 
@@ -226,6 +230,8 @@ const parent = p.parent === undefined ? { label: labels.useCases, href: localize
           </a>
         ))}
       </div>
+      <RelatedArticles slugs={sectorArticles[enPath] ?? []} bare />
+      <UseCaseLinks keys={[...useCaseKeys]} bare />
     </div>
   </section>
 
