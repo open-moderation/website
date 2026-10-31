@@ -1,39 +1,57 @@
 ---
+// Seule page 404 servie par BunnyCDN pour tout le site : elle lit la langue dans l'adresse et se traduit côté navigateur.
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { locales, localizePath } from '../i18n/routes';
+
+const copy = {
+  en: { h1: 'Page not found', text: 'This page does not exist or has moved. Here is where to go next.', home: 'Back to home', book: 'Book a call', popular: 'Popular pages', guides: 'Guides', compare: 'Comparisons', glossary: 'Glossary' },
+  fr: { h1: 'Page introuvable', text: "Cette page n'existe pas ou a été déplacée. Voici où aller ensuite.", home: "Retour à l'accueil", book: 'Prendre rendez-vous', popular: 'Pages populaires', guides: 'Guides', compare: 'Comparatifs', glossary: 'Lexique' },
+  es: { h1: 'Página no encontrada', text: 'Esta página no existe o se ha movido. Esto es lo que puedes ver.', home: 'Volver al inicio', book: 'Reservar una llamada', popular: 'Páginas populares', guides: 'Guías', compare: 'Comparativas', glossary: 'Glosario' },
+  de: { h1: 'Seite nicht gefunden', text: 'Diese Seite existiert nicht oder wurde verschoben. Hier geht es weiter.', home: 'Zur Startseite', book: 'Termin vereinbaren', popular: 'Beliebte Seiten', guides: 'Leitfäden', compare: 'Vergleiche', glossary: 'Glossar' },
+  it: { h1: 'Pagina non trovata', text: 'Questa pagina non esiste o è stata spostata. Ecco dove andare.', home: 'Torna alla home', book: 'Prenota una call', popular: 'Pagine popolari', guides: 'Guide', compare: 'Confronti', glossary: 'Glossario' },
+  pt: { h1: 'Página não encontrada', text: 'Esta página não existe ou foi movida. Veja para onde ir agora.', home: 'Voltar ao início', book: 'Agendar uma conversa', popular: 'Páginas populares', guides: 'Guias', compare: 'Comparativos', glossary: 'Glossário' },
+  pl: { h1: 'Nie znaleziono strony', text: 'Ta strona nie istnieje lub została przeniesiona. Oto dokąd możesz przejść.', home: 'Wróć na stronę główną', book: 'Umów rozmowę', popular: 'Popularne strony', guides: 'Poradniki', compare: 'Porównania', glossary: 'Słownik' },
+  nl: { h1: 'Pagina niet gevonden', text: 'Deze pagina bestaat niet of is verplaatst. Hier kun je verder.', home: 'Terug naar home', book: 'Afspraak maken', popular: 'Populaire pagina’s', guides: 'Gidsen', compare: 'Vergelijkingen', glossary: 'Woordenlijst' },
+};
+const links = Object.fromEntries(locales.map((l) => [l, {
+  home: localizePath('/', l), book: localizePath('/book-a-call', l), guides: localizePath('/blog', l),
+  compare: localizePath('/alternatives', l), glossary: localizePath('/glossary', l),
+}]));
+const data = JSON.stringify({ copy, links });
+const c = copy.en;
 ---
 
-<BaseLayout
-  title="Page not found | OpenModeration"
-  description="The page you're looking for doesn't exist or has been moved."
-  robots="noindex, nofollow"
->
-  <section class="bg-white py-20">
-    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-      <h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl">Page not found</h1>
-      <p class="mx-auto mt-4 max-w-md text-lg text-surface-500">
-        The page you're looking for doesn't exist or has been moved.
+<BaseLayout title="Page not found | OpenModeration" description="This page does not exist or has moved." robots="noindex, nofollow">
+  <section class="bg-gradient-to-b from-brand-50 to-white py-24" data-404={data}>
+    <div class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
+      <p class="font-display text-6xl font-extrabold text-violet-600">404</p>
+      <h1 class="mt-4 text-4xl font-extrabold tracking-tight text-surface-900 sm:text-5xl" data-k="h1">{c.h1}</h1>
+      <p class="mx-auto mt-4 max-w-md text-lg text-surface-600" data-k="text">{c.text}</p>
+      <div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <a href="/book-a-call" data-k="book" data-h="book" class="rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm">{c.book}</a>
+        <a href="/" data-k="home" data-h="home" class="rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700">{c.home}</a>
+      </div>
+      <p class="mt-10 text-sm font-semibold text-surface-700" data-k="popular">{c.popular}</p>
+      <p class="mt-2 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm">
+        <a href="/blog" data-k="guides" data-h="guides" class="text-brand-600 hover:text-brand-500">{c.guides}</a>
+        <a href="/alternatives" data-k="compare" data-h="compare" class="text-brand-600 hover:text-brand-500">{c.compare}</a>
+        <a href="/glossary" data-k="glossary" data-h="glossary" class="text-brand-600 hover:text-brand-500">{c.glossary}</a>
       </p>
-      <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-        <a href="/" class="rounded-lg bg-brand-900 px-6 py-3 text-sm font-semibold text-white shadow-sm">
-          Back to home
-        </a>
-        <a href="/features" class="rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700">
-          See features
-        </a>
-        <a href="/pricing" class="rounded-lg border border-surface-300 bg-white px-6 py-3 text-sm font-semibold text-surface-700">
-          See pricing
-        </a>
-      </div>
-      <div class="mx-auto mt-10 max-w-md text-sm text-surface-500">
-        <p class="font-semibold text-surface-700">Popular pages</p>
-        <p class="mt-2 flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
-          <a href="/how-it-works" class="text-brand-600 hover:text-brand-500">How it works</a>
-          <a href="/product/transparency" class="text-brand-600 hover:text-brand-500">Transparency</a>
-          <a href="/dsa-compliance" class="text-brand-600 hover:text-brand-500">DSA compliance</a>
-          <a href="/faq" class="text-brand-600 hover:text-brand-500">FAQ</a>
-          <a href="/blog" class="text-brand-600 hover:text-brand-500">Blog</a>
-        </p>
-      </div>
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-404]');
+  if (root) {
+    const { copy, links } = JSON.parse(root.dataset['404'] || '{}');
+    const seg = location.pathname.split('/')[1];
+    const lang = copy[seg] ? seg : 'en';
+    if (lang !== 'en') {
+      document.documentElement.lang = lang;
+      document.title = `${copy[lang].h1} | OpenModeration`;
+      root.querySelectorAll<HTMLElement>('[data-k]').forEach((el) => { el.textContent = copy[lang][el.dataset.k!]; });
+      root.querySelectorAll<HTMLAnchorElement>('[data-h]').forEach((a) => { a.href = links[lang][a.dataset.h!]; });
+    }
+  }
+</script>

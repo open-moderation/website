@@ -230,3 +230,15 @@ a.rounded-xl:hover, .lift:hover { transform: translateY(-4px); box-shadow: 0 18p
 
 /* Titres posés sur un fond sombre : ils héritent du blanc du bloc au lieu du gris foncé de base. */
 .text-white :is(h1, h2, h3, h4), [class*="text-white"] > :is(h1, h2, h3, h4) { color: inherit; }
+
+/* Mobile : les éléments de grille peuvent rétrécir (plus de débordement horizontal causé par un mot long ou un bloc de code). */
+.grid > * { min-width: 0; }
+/* Tableaux larges : défilement horizontal dans leur cadre plutôt que la page entière. */
+main table { display: block; max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+main pre { max-width: 100%; overflow-x: auto; }
+/* Champs de formulaire à 16 px sur mobile : iOS ne zoome plus à la saisie. */
+@media (max-width: 640px) { input, textarea, select { font-size: 16px !important; } }
+/* Étiquettes en ligne (blog, cartes) : elles passent à la ligne au lieu d'élargir la page. */
+main .flex:has(> .rounded-full) { flex-wrap: wrap; }
+/* Les taches de couleur décoratives ne doivent jamais créer de défilement horizontal. */
+html, body { overflow-x: clip; }
