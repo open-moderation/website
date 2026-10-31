@@ -144,6 +144,15 @@ const faqItems = [
   description="AI comment moderation that adapts to your rules and use cases, on your site and social pages. DSA-compliant, hosted in the EU, with a team at your side."
   jsonLd={homeJsonLd}
 >
+  <script is:inline slot="head">
+    (() => {
+      const supported = ['en', 'fr', 'es', 'de', 'it', 'pt', 'pl', 'nl'];
+      let lang;
+      try { lang = localStorage.getItem('om-lang'); } catch {}
+      if (!supported.includes(lang)) lang = (navigator.languages || [navigator.language]).map((l) => (l || '').slice(0, 2).toLowerCase()).find((l) => supported.includes(l));
+      if (lang && lang !== 'en') location.replace(`/${lang}${location.search}${location.hash}`);
+    })();
+  </script>
   <!-- Hero -->
   <section class="relative overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-br from-brand-50 via-white to-violet-50" />
