@@ -52,6 +52,7 @@ const switchTargets = locales.map((code) => ({ code, href: alternates[code] ?? l
   @media (max-width: 1100px) {
     .om-desktop { display: none; }
     .om-hamburger { display: flex !important; }
+    .om-mobile-bar { display: flex !important; }
     #om-menu {
       position: absolute; top: 64px; left: 0; right: 0;
       background: white; border-bottom: 1px solid #e2e8f0;
@@ -181,17 +182,20 @@ const switchTargets = locales.map((code) => ({ code, href: alternates[code] ?? l
           ))}
         </div>
       </div>
-      <a href="https://app.openmoderation.com/login" class="hidden whitespace-nowrap px-2 py-2 text-sm font-medium text-surface-600 transition hover:text-surface-900 2xl:inline-block">{t('nav.login')}</a>
+      <a href="https://app.openmoderation.com/login" aria-label={t('nav.login')} title={t('nav.login')} class="inline-flex items-center gap-1.5 whitespace-nowrap rounded-lg px-2 py-2 text-sm font-medium text-surface-700 transition hover:bg-surface-100 hover:text-surface-900"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg><span class="hidden xl:inline">{t('nav.login')}</span></a>
       <a href="https://app.openmoderation.com/signup" class="hidden whitespace-nowrap rounded-lg border border-surface-300 px-4 py-2 text-sm font-medium text-surface-700 transition hover:border-surface-900 hover:text-surface-900 2xl:inline-block">{t('nav.signup')}</a>
       <a href={BOOKING_URL} target="_blank" rel="noopener" class="inline-flex items-center gap-2 whitespace-nowrap rounded-lg bg-brand-900 px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-800">📅 {t('cta.book')}</a>
     </div>
 
-    <!-- Mobile hamburger -->
-    <button aria-label="Menu" aria-controls="om-menu" class="om-hamburger hidden h-11 w-11 flex-col items-center justify-center gap-1.5 rounded-lg" aria-expanded="false" onclick="var o=document.getElementById('om-menu').classList.toggle('open');this.classList.toggle('open',o);this.setAttribute('aria-expanded',String(o));document.documentElement.style.overflow=o?'hidden':''">
-      <span class="block h-0.5 w-5 rounded-full bg-surface-600"></span>
-      <span class="block h-0.5 w-5 rounded-full bg-surface-600"></span>
-      <span class="block h-0.5 w-5 rounded-full bg-surface-600"></span>
-    </button>
+    <div class="om-mobile-bar hidden items-center">
+      <a href="https://app.openmoderation.com/login" aria-label={t('nav.login')} title={t('nav.login')} class="flex h-11 w-11 items-center justify-center rounded-lg text-surface-700 hover:bg-surface-100"><svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg></a>
+      <!-- Mobile hamburger -->
+      <button aria-label="Menu" aria-controls="om-menu" class="om-hamburger hidden h-11 w-11 flex-col items-center justify-center gap-1.5 rounded-lg" aria-expanded="false" onclick="var o=document.getElementById('om-menu').classList.toggle('open');this.classList.toggle('open',o);this.setAttribute('aria-expanded',String(o));document.documentElement.style.overflow=o?'hidden':''">
+        <span class="block h-0.5 w-5 rounded-full bg-surface-600"></span>
+        <span class="block h-0.5 w-5 rounded-full bg-surface-600"></span>
+        <span class="block h-0.5 w-5 rounded-full bg-surface-600"></span>
+      </button>
+    </div>
   </div>
 
   <!-- Mobile menu : actions et Tarifs en tête, puis groupes repliables -->
