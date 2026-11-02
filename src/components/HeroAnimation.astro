@@ -121,28 +121,23 @@ const platforms = {
   instagram: { label: 'Instagram', bg: 'linear-gradient(45deg,#f59e0b,#ec4899 55%,#8b5cf6)', path: 'M7 3h10a4 4 0 014 4v10a4 4 0 01-4 4H7a4 4 0 01-4-4V7a4 4 0 014-4zm5 5a4 4 0 100 8 4 4 0 000-8zm5.5-1.5h.01' },
   youtube: { label: 'YouTube', bg: '#ff0033', path: 'M10 9l5 3-5 3V9z' },
 };
-const avatarColors = ['#fde68a', '#fbcfe8', '#c7d2fe', '#a7f3d0', '#fed7aa', '#ddd6fe'];
+const avatarBg = '#f1f5f9';
 const verdictStyle: Record<Verdict, string> = {
-  ok: 'bg-mint-100 text-mint-600',
-  hidden: 'bg-rose-100 text-rose-600',
-  review: 'bg-sun-100 text-sun-600',
+  ok: 'om-status-ok',
+  hidden: 'om-status-hidden',
+  review: 'om-status-review',
 };
 const verdictIcon: Record<Verdict, string> = { ok: 'M5 13l4 4L19 7', hidden: 'M6 18L18 6M6 6l12 12', review: 'M12 8v4m0 4h.01' };
 ---
 
 <div class="relative mx-auto w-full max-w-xl lg:max-w-none" data-hero-anim>
-  <!-- taches de couleur derrière la carte -->
-  <div class="joy-blob pointer-events-none absolute -left-10 -top-10 h-56 w-56 rounded-full bg-violet-300/50 blur-3xl" aria-hidden="true"></div>
-  <div class="joy-blob pointer-events-none absolute -bottom-12 -right-6 h-64 w-64 rounded-full bg-rose-300/40 blur-3xl" style="animation-delay:-6s" aria-hidden="true"></div>
-  <div class="joy-blob pointer-events-none absolute right-1/3 top-1/3 h-40 w-40 rounded-full bg-sun-300/40 blur-3xl" style="animation-delay:-11s" aria-hidden="true"></div>
-
-  <div class="relative overflow-hidden rounded-2xl border border-white/70 bg-white/90 shadow-[0_30px_60px_-20px_rgba(76,29,149,0.35)] backdrop-blur">
-    <div class="flex items-center justify-between border-b border-surface-100 bg-gradient-to-r from-brand-50 via-violet-50 to-rose-50 px-5 pb-3 pt-5">
+  <div class="relative overflow-hidden rounded-2xl border border-surface-200 bg-white shadow-[0_24px_50px_-24px_rgba(15,23,42,0.3)]">
+    <div class="flex items-center justify-between border-b border-surface-100 bg-surface-50 px-5 pb-3 pt-5">
       <div class="flex items-center gap-2 text-sm font-semibold text-surface-900">
-        <span class="relative flex h-2.5 w-2.5"><span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-mint-400 opacity-75"></span><span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-mint-500"></span></span>
+        <span class="relative flex h-2 w-2 rounded-full bg-brand-600"></span>
         {c.live}
       </div>
-      <span class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-violet-600 shadow-sm">✍️ {c.charter}</span>
+      <span class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-brand-700 ring-1 ring-surface-200">{c.charter}</span>
     </div>
 
     <ul class="relative flex h-[23rem] flex-col gap-3 overflow-hidden p-4 sm:h-[24rem]" data-list aria-live="off">
@@ -152,7 +147,7 @@ const verdictIcon: Record<Verdict, string> = { ok: 'M5 13l4 4L19 7', hidden: 'M6
           <li class={`hero-row rounded-xl border border-surface-100 bg-white p-3 shadow-sm ${i > 3 ? 'hidden' : ''}`} data-row data-verdict={item.verdict}>
             <div class="flex items-start gap-3">
               <div class="relative shrink-0">
-                <div class="flex h-9 w-9 items-center justify-center rounded-full text-xs font-bold text-surface-800" style={`background:${avatarColors[i % avatarColors.length]}`}>{item.author.slice(0, 1)}</div>
+                <div class="flex h-9 w-9 items-center justify-center rounded-full text-xs font-bold text-surface-700 ring-1 ring-surface-200" style={`background:${avatarBg}`}>{item.author.slice(0, 1)}</div>
                 <span class="absolute -bottom-1 -right-1 flex h-4.5 w-4.5 items-center justify-center rounded-full ring-2 ring-white" style={`background:${p.bg}`} title={p.label}>
                   <svg class="h-2.5 w-2.5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d={p.path} /></svg>
                 </span>
@@ -166,7 +161,7 @@ const verdictIcon: Record<Verdict, string> = { ok: 'M5 13l4 4L19 7', hidden: 'M6
                   </span>
                 </div>
                 <p class={`mt-1 text-sm leading-snug ${item.verdict === 'hidden' ? 'hero-text-hidden' : ''} text-surface-700`}>{item.text}</p>
-                <p class="hero-reason mt-1.5 text-xs font-medium text-surface-500"><span class="hero-analysing text-violet-500">{c.analysing}</span><span class="hero-reason-text">→ {item.reason}</span></p>
+                <p class="hero-reason mt-1.5 text-xs font-medium text-surface-500"><span class="hero-analysing text-brand-600">{c.analysing}</span><span class="hero-reason-text">→ {item.reason}</span></p>
               </div>
             </div>
           </li>
@@ -176,10 +171,10 @@ const verdictIcon: Record<Verdict, string> = { ok: 'M5 13l4 4L19 7', hidden: 'M6
     <div class="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white to-transparent" aria-hidden="true"></div>
   </div>
 
-  <!-- pastilles flottantes -->
-  <div class="joy-float absolute -top-4 left-8 z-10 hidden rounded-full bg-mint-500 px-3.5 py-1.5 text-xs font-bold text-white shadow-lg sm:block" style="--r:-4deg">✓ {c.badges[0]}</div>
-  <div class="joy-float absolute -bottom-5 right-6 z-10 hidden rounded-full bg-violet-500 px-3.5 py-1.5 text-xs font-bold text-white shadow-lg sm:block" style="--r:3deg; animation-delay:-2s">✍️ {c.badges[1]}</div>
-  <div class="joy-float absolute -bottom-5 left-8 z-10 hidden rounded-full bg-sun-400 px-3.5 py-1.5 text-xs font-bold text-surface-900 shadow-lg sm:block" style="--r:-2deg; animation-delay:-4s">⚡ {c.badges[2]}</div>
+  <!-- pastilles sobres -->
+  <div class="absolute -top-4 left-8 z-10 hidden rounded-full bg-white px-3.5 py-1.5 text-xs font-semibold text-surface-700 shadow-md ring-1 ring-surface-200 sm:block">{c.badges[0]}</div>
+  <div class="absolute -bottom-5 right-6 z-10 hidden rounded-full bg-surface-900 px-3.5 py-1.5 text-xs font-semibold text-white shadow-lg sm:block">{c.badges[1]}</div>
+  <div class="absolute -bottom-5 left-8 z-10 hidden rounded-full bg-white px-3.5 py-1.5 text-xs font-semibold text-surface-700 shadow-md ring-1 ring-surface-200 sm:block">{c.badges[2]}</div>
 </div>
 
 <style>
